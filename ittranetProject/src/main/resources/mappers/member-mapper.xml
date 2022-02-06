@@ -3,4 +3,48 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
+
+	<resultMap id="memberResult" type="Employee">
+		<result column="emp_no" property="empNo"/>
+		<result column="emp_id" property="empId"/>
+		<result column="emp_pwd" property="empPwd"/>
+		<result column="emp_name" property="empName"/>
+		<result column="phone" property="phone"/>
+		<result column="email" property="email"/>
+		<result column="address" property="address"/>
+		<result column="dept_code" property="deptCode"/>
+		<result column="team_code" property="teamCode"/>
+		<result column="job_code" property="jobCode"/>
+		<result column="hire_date" property="hireDate"/>
+		<result column="ent_date" property="entDate"/>
+		<result column="join_date" property="joinDate"/>
+		<result column="status" property="status"/>
+		<result column="admin" property="admin"/>
+		<result column="profile" property="profile"/>
+	</resultMap>
+
+	<select id="loginMember" resultMap="memberResult">
+		select
+		      emp_no
+		    , emp_id
+		    , emp_pwd
+		    , emp_name
+		    , phone
+		    , email
+		    , address
+		    , dept_code
+		    , team_code
+		    , job_code
+		    , hire_date
+		    , ent_date
+		    , join_date
+		    , status
+		    , admin
+		    , profile
+		 from employee
+		where status = 'Y'
+		  and emp_id = #{empId}
+		  and emp_pwd = #{empPwd}
+	</select>
+
 </mapper>
