@@ -179,6 +179,10 @@
 
         </div>
         <div class="two">
+        <!-- 헤더 -->
+        <jsp:include page="header.jsp"/>
+        <!-- 메뉴바 -->
+    	<jsp:include page="adminMenu.jsp"/>
             <!--조직인원현황표-->
             <div id="box">
                 <div id="box1">
