@@ -22,9 +22,8 @@ public class EmployeeController {
 		Employee loginUser = eService.loginMember(e);
 		
 		if(loginUser == null) {
-			// 에러페이지(추후추가)
+			mv.setViewName("common/error");
 		} else {
-			// 찐메인페이지(WEB-INF/views/common/home.jsp)
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("common/userMain");
 		}
