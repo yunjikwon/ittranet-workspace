@@ -26,7 +26,7 @@ public class EmployeeController {
 		} else {
 			// 찐메인페이지(WEB-INF/views/common/home.jsp)
 			session.setAttribute("loginUser", loginUser);
-			mv.setViewName("common/home");
+			mv.setViewName("common/userMain");
 		}
 		
 		return mv;
