@@ -129,7 +129,7 @@
         <br><br><br><br><br>
         <div class="anton" style="font-style:italic;" id="hi">IT!tranet</div>
         <br>
-        <form action="login.me" method="post">
+        <form action="hi.me" method="post">
             <p class="anton">ID</p>
             <input type="text" class="input-form" id="empId" name="empId" placeholder="아이디를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder='아이디를 입력하세요'" required><br>
             <br>
