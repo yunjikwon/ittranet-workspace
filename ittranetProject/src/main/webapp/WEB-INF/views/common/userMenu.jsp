@@ -11,108 +11,146 @@
         width: 1400px;
         float: right;
         height: 170px;
+        list-style: none;
     }
     .menu{
         width: 140px;
         height: 100%;
         float: left;
         box-sizing: border-box;
-        text-align: center;       
+        text-align: center;      
     }
     .menu>p{
         font-size:medium;
     }
+    .circle{
+        border-radius:75px; 
+        width: 90px; 
+        height: 90px; 
+        background: pink; 
+        margin: auto; 
+        padding-top: 18px;
+    }
     /*hover*/
-    .menu:hover{
-        cursor: pointer;
+    div.circle:after {
+        bottom: 4px;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+        right: 4px;
+        -webkit-transform: skew(2deg, 2deg);
+        transform: skew(2deg, 2deg);
+        position: absolute;
+        z-index: -1;
+        -webkit-transition: all 0.4s ease;
+        transition: all 0.4s ease;
+        content: "";
+        height: 200px;
+        width: 90%;
+    }
+    div.circle:hover {
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .menu {
+        color: #333;
+        text-decoration: none;
+        display: inline-block;
+        padding: 15px 0;
+        position: relative;
+    }
+    .menu:after {    
+        background: none repeat scroll 0 0 transparent;
+        bottom: 0;
+        content: "";
+        display: block;
+        height: 2px;
+        left: 50%;
+        position: absolute;
+        background: #e6a4e0;
+        transition: width 0.3s ease 0s, left 0.3s ease 0s;
+        width: 0;
+    }
+    .menu:hover:after { 
+        width: 100%; 
+        left: 0; 
     }
 </style>
 </head>
 <body>
     <!--메뉴바 영역-->
     <!--a태그에 각 메뉴 연결해주시면 됩니다-->
-    <div class="menubar">
-        <div class="menu">
+    <ul class="menubar">
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(177, 212, 241)"></i>
-                    <i class="fas fa-briefcase fa-stack-1x"></i>  
-                </span>
+                    <div class="circle" style="background: rgb(147, 205, 207)">
+                        <i class="fas fa-briefcase fa-3x"></i> 
+                    </div>
                 <p><b>근태관리</b></p>
             </a>
-        </div>
-        <div class="menu">
+        </li>
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(147, 205, 207)"></i>
-                    <i class="far fa-envelope fa-stack-1x"></i>  
-                </span>
-                <p><b>메일</b></p>
+                    <div class="circle" style="background: rgb(171, 187, 240)">
+                        <i class="far fa-envelope fa-3x"></i>  
+                    </div>
+                    <p><b>메일</b></p>
             </a>
-        </div>
-        <div class="menu">
+        </li>
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(171, 187, 240)"></i>
-                    <i class="far fa-comment-dots fa-stack-1x"></i>  
-                </span>
-                <p><b>채팅</b></p>
+                    <div class="circle" style="background: rgb(191, 177, 241)">
+                        <i class="far fa-comment-dots fa-3x"></i> 
+                    </div>
+                    <p><b>채팅</b></p>
             </a>
-        </div>
-        <div class="menu">
+        </li>
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(191, 177, 241)"></i>
-                    <i class="far fa-edit fa-stack-1x"></i>  
-                </span>
-                <p><b>쪽지</b></p>
+                    <div class="circle" style="background: rgb(181, 211, 236)">
+                        <i class="fas fa-edit fa-3x"></i> 
+                    </div>
+                    <p><b>쪽지</b></p>
             </a>
-        </div>
-        <div class="menu">
+        </li>
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(181, 211, 236)"></i>
-                    <i class="fas fa-bullhorn fa-stack-1x"></i>  
-                </span>
-                <p><b>게시판</b></p>
+                    <div class="circle" style="background: rgb(194, 184, 206)">
+                        <i class="fas fa-bullhorn fa-3x"></i> 
+                    </div>
+                    <p><b>게시판</b></p>
             </a>
-        </div>
-        <div class="menu">
+        </li>
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(183, 170, 199)"></i>
-                    <i class="fas fa-desktop fa-stack-1x"></i>  
-                </span>
-                <p><b>프로젝트</b></p>
+                    <div class="circle" style="background: rgb(183, 188, 235)">
+                        <i class="fas fa-desktop fa-3x"></i> 
+                    </div>
+                    <p><b>프로젝트</b></p>
             </a>
-        </div>
-        <div class="menu">
+        </li>
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(177, 183, 241)"></i>
-                    <i class="fas fa-calendar-alt fa-stack-1x"></i>  
-                </span>
-                <p><b>일정</b></p>
+                    <div class="circle" style="background: rgb(218, 172, 236)">
+                        <i class="fas fa-calendar-alt fa-3x"></i> 
+                    </div>
+                    <p><b>일정</b></p>
             </a>
-        </div>
-        <div class="menu">
+        </li>
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(199, 177, 241)"></i>
-                    <i class="far fa-user fa-stack-1x"></i>  
-                </span>
-                <p><b>조직도</b></p>
+                    <div class="circle" style="background: rgb(205, 186, 241)">
+                        <i class="far fa-user fa-3x"></i> 
+                    </div>
+                    <p><b>조직도</b></p>
             </a>
-        </div>
-        <div class="menu">
+        </li>
+        <li class="menu">
             <a href="">
-                <span class="fa-stack fa-3x"> 
-                    <i class="fas fa-circle fa-stack-2x" style="color: rgb(217, 177, 241)"></i>
-                    <i class="fas fa-paperclip fa-stack-1x"></i>  
-                </span>
-                <p><b>전자결재</b></p>
+                    <div class="circle" style="background: rgb(240, 195, 237)">
+                        <i class="fas fa-paperclip fa-3x"></i> 
+                    </div>
+                    <p><b>전자결재</b></p>
             </a>
-        </div>
-    </div>
+        </li>
+    </ul>
 </body>
 </html>
