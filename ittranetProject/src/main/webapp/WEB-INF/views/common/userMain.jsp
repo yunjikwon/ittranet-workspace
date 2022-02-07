@@ -136,7 +136,7 @@
                 </div>
                 <div align="center">
                     <button class="header-btn" onclick="location.href=''">마이페이지</button>
-                    <button class="header-btn" onclick="location.href=''">로그아웃</button>   
+                    <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>   
                 </div>
             </div>
             <div class="commute-box">

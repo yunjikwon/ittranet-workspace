@@ -42,7 +42,7 @@
         <div class="header" align="right">
             <span style="font-size: 16px;">김땡땡</span> <span style="font-size: 16px;">사원</span>
             <button class="header-btn" onclick="location.href=''">마이페이지</button>
-            <button class="header-btn" onclick="location.href=''">로그아웃</button>
+            <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>
         </div>
 
 </body>

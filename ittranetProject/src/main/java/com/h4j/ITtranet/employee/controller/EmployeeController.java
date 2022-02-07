@@ -16,7 +16,7 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService eService;
 	
-	@RequestMapping("login.me")
+	@RequestMapping("hi.me")
 	public ModelAndView loginMember(Employee e, HttpSession session, ModelAndView mv) {
 		
 		Employee loginUser = eService.loginMember(e);
@@ -29,7 +29,12 @@ public class EmployeeController {
 		}
 		
 		return mv;
-		
+	}
+	
+	@RequestMapping("bye.me")
+	public String logoutMember(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 
 }
