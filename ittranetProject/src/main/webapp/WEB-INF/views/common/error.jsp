@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>여기가 로그인 성공하면 보이는 홈페이지(찐 메인페이지)</h1>
+	
 </body>
 </html>
