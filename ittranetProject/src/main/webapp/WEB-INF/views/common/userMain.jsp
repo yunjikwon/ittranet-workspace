@@ -228,6 +228,6 @@
         </div>
     </div>
     <!-- 푸터바 -->
-    <jsp:include page="common/footer.jsp" />
+    <jsp:include page="footer.jsp" />
 </body>
 </html>
