@@ -64,7 +64,7 @@
         	width:65%;
         	height:auto;
         	margin-left:400px;
-        	margin-bottom:100px;
+        	margin-bottom:150px; /*푸터바와의 간격*/
         }
         </style>
 
