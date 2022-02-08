@@ -3,5 +3,39 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">
+
+	<resultMap id="boardResult" type="Board">
+		<result column="board_no" property="boardNo"/>
+		<result column="emp_no" property="empNo"/>
+		<result column="board_title" property="boardTitle"/>
+		<result column="board_content" property="boardContent"/>
+		<result column="create_date" property="createDate"/>
+		<result column="count" property="count"/>		
+		<result column="emp_id" property="empId"/>		
+		<result column="emp_name" property="empName"/>		
+	</resultMap>
+
  
+ 	<select id="selectListCount" resultType="_int">
+ 		select
+ 			   count(*) as "count"
+ 		  from board
+ 		 where status = 'Y'
+ 	</select>
+ 	
+ 	<select id="selectList" resultMap="boardResult">
+ 		select 
+	        board_no
+	      , emp_name
+	      , board_title
+	      , to_char(create_date, 'YYYY-MM-DD') as "create_date"
+	      , count
+	      
+	  from board b
+	  join employee using (emp_no)
+	 where b.status = 'Y'
+	 order
+	    by board_no desc
+ 			 
+ 	</select>
 </mapper>

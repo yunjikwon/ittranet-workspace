@@ -1,6 +1,5 @@
 package com.h4j.ITtranet.common.model.vo;
 
-import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +21,6 @@ public class Reply {
 	private String replyContent;
 	private int replyOriginNo;
 	private int replyBranch;
-	private Date createDate;
+	private String createDate;
 	private String status;
 }
