@@ -12,7 +12,8 @@
             height:200px;
             margin:auto;
             margin-top:1px;
-            background-color: #efefef;
+            background-color: rgba(233, 232, 232,0.8);
+            opacity:0.8;
         }
         #footer-1{
             width:80%;

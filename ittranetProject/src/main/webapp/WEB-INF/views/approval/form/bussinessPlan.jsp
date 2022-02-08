@@ -97,6 +97,11 @@
         </form>
 
     </div>
+	
+
+    
+    <!-- 푸터 -->
+    <jsp:include page="../../common/footer.jsp"/>
 </div>    
 </div>   
 </body>

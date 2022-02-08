@@ -31,7 +31,6 @@
         background:rgb(233, 232, 232);
         border-radius: 30px;
         margin-bottom: 100px;
-        padding-bottom:100px;
     }
     .header{
         width: 1200px;

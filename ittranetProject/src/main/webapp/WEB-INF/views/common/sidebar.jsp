@@ -23,6 +23,8 @@
             position: fixed !important; /* 사이드바 스크롤? 효과 */
 			top:370px;
             left:250px;
+            overflow: hidden;
+            margin-bottom:200px;
         }
 
  
@@ -66,6 +68,7 @@
         	width:65%;
         	height:auto;
         	margin-left:400px;
+        	margin-bottom:100px;
         }
         </style>
 
