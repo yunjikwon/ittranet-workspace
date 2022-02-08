@@ -5,15 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+</head>
     <style>
-        /*메뉴바에 포함된 주석 이용
-        .outer{
-            width:800px;
-            height:550px;
-            background-color: rgb(224, 224, 224);
-            margin:auto;
-        }
-		*/
         #title{
             font-size: 20px;
             font-weight: 700;
@@ -28,13 +21,13 @@
             margin-top: 10px;
             margin-bottom:50px;
         }
-        table{
+         table{
             width: 800px;
             height:400px;
             margin: auto;
             margin-top:20px;
         }
-        td{
+       td{
             padding: 15px;
             color:rgb(94, 94, 94);
             font-weight:700;
@@ -42,7 +35,7 @@
         .formbtn{
             border:none;
             border-radius: 3px;
-            width:80px;
+            width:100px;
             height:40px;
             font-size:15px;    
             color:color:rgb(94, 94, 94);        
@@ -61,6 +54,7 @@
     </style>
 </head>
 <body>
+
 <div class="back">
 <div class="innerBack">
 	<!-- 헤더 -->
@@ -73,7 +67,7 @@
     <div class="mainOuter">
         <br>
         <div id="title">
-            사업계획서
+           	 시말서
         </div>
         <form action="" method="post" onsubmit="">
         <div id="innerouter">
@@ -98,7 +92,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>프로젝트 제안</td>
+                    <td>내용</td>
                     <td><textarea name="" id="" cols="47" rows="10"></textarea></td>
                     <td>
                         <br><br><br><br><br><br><br>
@@ -118,6 +112,5 @@
     <!-- 푸터 -->
     <jsp:include page="../../common/footer.jsp"/>
 </div>    
-</div>   
-</body>
+</div>
 </html>
