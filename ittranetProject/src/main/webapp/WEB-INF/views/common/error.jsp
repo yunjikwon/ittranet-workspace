@@ -15,7 +15,12 @@
         height: 90vh;
 	}
 </style>
+<!-- sweetalert2 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
+	<script>
+		Swal.fire('Error!')
+	</script>
 </body>
 </html>
