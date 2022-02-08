@@ -11,12 +11,21 @@
         ol,ul,li{list-style: none;}
         *{padding:0; margin:0;}
         a{text-decoration: none;}
+        
         .container{
-            display:flex;
             justify-content: center;
             align-items: center;
-            height:100vh;
+            width:220px;
+            height:60vh;
+            /*
+            position:absolute;                                                                                 
+            */
+            position: fixed !important; /* 사이드바 스크롤? 효과 */
+			top:225px;
+            left:130px;
         }
+
+ 
         #ac{
             width: 220px;
             border-radius: 10px;
@@ -25,8 +34,8 @@
             display:block;
             width: 100%;
             text-align: center;
-            height:50px;
-            line-height: 50px;
+            height:70px;
+            line-height: 70px;
         }
         #ac .menu1 a{
             color: #000;
@@ -51,6 +60,12 @@
             border-bottom-right-radius: 10px; 
             border-bottom-left-radius: 10px;
         }
+        .mainOuter{
+        	display:inline-block; !important;
+        	background-color:rgb(224, 224, 224);
+        	width:65%;
+        	margin-left:500px;
+        }
         </style>
 
     </head>
@@ -61,23 +76,22 @@
                     <a href="#">전자결재</a>
                 </li>
                 <div id="border">
-               <li class="menu1">
-                  <a href="#">Menu1</a>
-               </li>
-               <li class="menu1">
-                  <a href="#">Menu2</a>
-               </li>
-               <li class="menu1">
-                  <a href="#">Menu3</a>
-                  
-               </li>
-               <li class="menu1">
-                  <a href="#">Menu4</a>
-               </li>
+		               <li class="menu1">
+		                  <a href="#">Menu1</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="#">Menu2</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="#">Menu3</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="#">Menu4</a>
+		               </li>
+            	</div>
             </ul>
-            </div>
          </div>
-
+         
     </body>
     </html>
 </html>

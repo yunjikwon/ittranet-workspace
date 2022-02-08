@@ -6,26 +6,27 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-        /*메뉴바에 포함된 주석 이용*/
+        /*메뉴바에 포함된 주석 이용
         .outer{
             width:800px;
             height:550px;
             background-color: rgb(224, 224, 224);
             margin:auto;
         }
-
+		*/
         #title{
             font-size: 20px;
             font-weight: 700;
-            margin-left: 20px;
+            margin-left: 120px;
 
         }
         #innerouter{
-            width:750px;
+            width:80%;
             height:450px;
             background-color: white;
             margin:auto;
             margin-top: 10px;
+            margin-bottom:50px;
         }
         table{
             width: 600px;
@@ -45,8 +46,15 @@
     </style>
 </head>
 <body>
-
-    <div class="outer">
+<div class="outer">
+	<!-- 헤더 -->
+    <jsp:include page="../../common/header.jsp"/>
+    <!-- 메뉴바 -->
+   	<jsp:include page="../../common/userMenu.jsp"/>.
+   	<!-- 사이드바 -->
+   	<jsp:include page="../../common/sidebar.jsp" />
+   	
+    <div class="mainOuter">
         <br>
         <div id="title">
             사업계획서
@@ -84,10 +92,10 @@
                     </td>
                 </tr>
             </table>
-        </form>
         </div>
+        </form>
 
     </div>
-    
+</div>   
 </body>
 </html>
