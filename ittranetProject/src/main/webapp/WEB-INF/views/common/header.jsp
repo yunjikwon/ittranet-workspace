@@ -17,7 +17,7 @@
         width:100vw;
         height:100vh;
     }
-    .header{
+    .headerOuter{
         width: 1200px;
         float:right;
         height: 50px;
@@ -39,7 +39,7 @@
 </head>
 <body>
         <!--헤더 영역-->
-        <div class="header" align="right">
+        <div class="headerOuter" align="right">
             <span style="font-size: 16px;">김땡땡</span> <span style="font-size: 16px;">사원</span>
             <button class="header-btn" onclick="location.href=''">마이페이지</button>
             <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>
