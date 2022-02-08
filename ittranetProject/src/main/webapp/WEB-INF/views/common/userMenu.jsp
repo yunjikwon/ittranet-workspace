@@ -8,7 +8,7 @@
 <style>
     /*메뉴바 스타일*/
     .menubar{
-        width: 1400px;
+        width: 1350px;
         float: right;
         height: 170px;
         list-style: none;
