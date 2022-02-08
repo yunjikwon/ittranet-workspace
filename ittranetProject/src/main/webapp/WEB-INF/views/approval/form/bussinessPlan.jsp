@@ -51,7 +51,7 @@
 	<!-- 헤더 -->
     <jsp:include page="../../common/pageHeader.jsp"/>
     <!-- 메뉴바 -->
-   	<jsp:include page="../../common/userMenu.jsp"/>.
+   	<jsp:include page="../../common/userMenu.jsp"/>
    	<!-- 사이드바 -->
    	<jsp:include page="../../common/sidebar.jsp" />
    	
@@ -100,9 +100,9 @@
 	
 
     
+</div>    
     <!-- 푸터 -->
     <jsp:include page="../../common/footer.jsp"/>
-</div>    
 </div>   
 </body>
 </html>

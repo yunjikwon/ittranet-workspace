@@ -22,6 +22,7 @@
         top: 0;
         width: 100%;
         padding: 60px;
+        padding-bottom:0px;
     }
     /*연회색배경*/
     .innerBack{

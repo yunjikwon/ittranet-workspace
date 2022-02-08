@@ -11,20 +11,16 @@
         ol,ul,li{list-style: none;}
         *{padding:0; margin:0;}
         a{text-decoration: none;}
-        
         .container{
             justify-content: center;
             align-items: center;
             width:220px;
-            height:60vh;
             /*
             position:absolute;                                                                                 
             */
             position: fixed !important; /* 사이드바 스크롤? 효과 */
 			top:370px;
             left:250px;
-            overflow: hidden;
-            margin-bottom:200px;
         }
 
  
@@ -95,7 +91,6 @@
             	</div>
             </ul>
          </div>
-         
     </body>
     </html>
 </html>

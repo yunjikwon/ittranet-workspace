@@ -8,31 +8,31 @@
 <style>
         /*div{border:1px solid red;} */
         #footer{
-            width:100%;
+            width:90%;
             height:200px;
             margin:auto;
-            margin-top:1px;
-            background-color: rgba(233, 232, 232,0.8);
             opacity:0.8;
         }
         #footer-1{
-            width:80%;
+            width:90%;
             height:20%;
-            border-top:1px solid lightgray;
-            border-bottom:1px solid lightgray;
+            border-top:1px solid #585858;
+            border-bottom:1px solid #585858;
+            margin-left:50px;
         }
         #footer-2{width:100%;height:80%;}
         #footer-1, #footer-2{padding-left:50px}
         #footer-1 > a{
             text-decoration:none;
             font-weight: 600;
-            margin:10px;
+            margin:20px;
             line-height: 40px;
             color: black;
         }
         #footer-2>p{
             margin: 0;
             padding:10px;
+            padding-left:50px;
             font-size: 13px;
         }
         #p2{text-align:center;}
