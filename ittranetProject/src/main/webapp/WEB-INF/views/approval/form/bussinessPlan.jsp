@@ -46,9 +46,10 @@
     </style>
 </head>
 <body>
-<div class="outer">
+<div class="back">
+<div class="innerBack">
 	<!-- 헤더 -->
-    <jsp:include page="../../common/header.jsp"/>
+    <jsp:include page="../../common/pageHeader.jsp"/>
     <!-- 메뉴바 -->
    	<jsp:include page="../../common/userMenu.jsp"/>.
    	<!-- 사이드바 -->
@@ -96,6 +97,7 @@
         </form>
 
     </div>
+</div>    
 </div>   
 </body>
 </html>

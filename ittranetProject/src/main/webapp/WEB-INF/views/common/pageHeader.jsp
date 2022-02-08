@@ -20,19 +20,18 @@
         position: absolute;
         left: 0;
         top: 0;
-        height: 100%;
         width: 100%;
         padding: 60px;
     }
     /*연회색배경*/
     .innerBack{
         width:1700px;
-        height: 100%;
         margin:auto;
         padding: 10px;
         background:rgb(233, 232, 232);
         border-radius: 30px;
         margin-bottom: 100px;
+        padding-bottom:100px;
     }
     .header{
         width: 1200px;

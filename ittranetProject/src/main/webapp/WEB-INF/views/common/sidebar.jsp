@@ -21,8 +21,8 @@
             position:absolute;                                                                                 
             */
             position: fixed !important; /* 사이드바 스크롤? 효과 */
-			top:225px;
-            left:130px;
+			top:370px;
+            left:250px;
         }
 
  
@@ -64,7 +64,8 @@
         	display:inline-block; !important;
         	background-color:rgb(224, 224, 224);
         	width:65%;
-        	margin-left:500px;
+        	height:auto;
+        	margin-left:400px;
         }
         </style>
 
