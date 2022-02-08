@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>IT!tranet 화이팅!</h1>
 	<jsp:forward page="WEB-INF/views/main.jsp"/>
 </body>
 </html>

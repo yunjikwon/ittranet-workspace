@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="projectMapper">
+
+<resultMap type="project" id="projectList">
+	<result column="pr_no" property="prNo"  />
+	<result column="emp_no" property="empNo"  />
+	<result column="pr_title" property="prTitle"  />
+	<result column="pr_startdate" property="prStartdate"  />
+	<result column="pr_enddate" property="prEnddate"  />
+	<result column="pr_size" property="prSize"  />
+	<result column="pr_content" property="prContent"  />
+	<result column="pr_logo" property="prLogo"  />
+	<result column="status" property="status"  />
+</resultMap>
+
+</mapper>

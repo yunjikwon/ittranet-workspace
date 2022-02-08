@@ -9,7 +9,12 @@
 	<!-- 이곳에서 mapper.xml에서 쓸 풀클래스명(주로 vo클래스명)을 별칭으로 등록 (주의:프로젝트에 존재하는 클래스만 등록 가능)-->
 	<!-- message : 여러분 ITtranet 쓸 때 오타 주의하세요!! 저 Ittranet으로 썼다가 오류나서 심장 떨어질 뻔 했어요... -->
 	<typeAliases>
-		<typeAlias type="com.h4j.ITtranet.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.h4j.ITtranet.employee.model.vo.Employee" alias="Employee"/>
+		<typeAlias type="com.h4j.ITtranet.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.h4j.ITtranet.common.model.vo.Attachment" alias="Attachment"/>
+		<typeAlias type="com.h4j.ITtranet.common.model.vo.Reply" alias="Reply"/>
+		<typeAlias type="com.h4j.ITtranet.project.model.vo.Project" alias="Project"/>
+		
 	</typeAliases>
 	
 	<!-- ERD피드백 받고 테이블 만들고 나서 db연결정보 root-context.xml에 작성 -->
@@ -17,6 +22,9 @@
 	<!-- 사용할 mapper.xml 파일들 등록(프로젝트에 존재하고 + ★namespace지정되어 있는 mapper파일만 등록 가능) -->
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/board-mapper.xml"/>
+		<mapper resource="/mappers/project-mapper.xml" />
+		
 	</mappers>
 
 </configuration>
