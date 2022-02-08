@@ -13,7 +13,7 @@
 		<typeAlias type="com.h4j.ITtranet.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.h4j.ITtranet.common.model.vo.Attachment" alias="Attachment"/>
 		<typeAlias type="com.h4j.ITtranet.common.model.vo.Reply" alias="Reply"/>
-		<typeAlias type="com.h4j.ITtranet.project.model.vo.Reply" alias="Project"/>
+		<typeAlias type="com.h4j.ITtranet.project.model.vo.Project" alias="Project"/>
 		
 	</typeAliases>
 	
