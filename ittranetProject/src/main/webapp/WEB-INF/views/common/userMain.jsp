@@ -68,7 +68,7 @@
     .content-area{
         width: 1500px;
         float: right;
-        padding: 0px 50px;
+        padding: 0px 100px;
     }
     /*게시판 연결*/
     .contentbox{
@@ -167,7 +167,7 @@
 
         <!--각 메뉴 연결할 영역-->
         <div class="content-area">
-            <div class="contentbox" style="width: 420px; height: 300px;">
+            <div class="contentbox" style="width: 390px; height: 280px;">
                 <div class="category-title">
                     &nbsp;&nbsp;프로젝트
                     <a href="" class="plus-btn">+</a>
@@ -179,7 +179,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="contentbox" style="width: 420px; height: 300px; margin-left: 0px;">
+            <div class="contentbox" style="width: 390px; height: 280px; margin-left: 0px;">
                 <div class="category-title">
                     &nbsp;&nbsp;결제내역
                     <a href="" class="plus-btn">+</a>
@@ -191,7 +191,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="contentbox" style="width: 420px; height: 630px; float: right; margin-left: 0px;">
+            <div class="contentbox" style="width: 390px; height: 590px; float: right; margin-left: 0px;">
                 <div class="category-title">
                     &nbsp;&nbsp;일정
                     <a href="" class="plus-btn">+</a>
@@ -212,7 +212,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="contentbox" style="width: 870px; height: 300px;">
+            <div class="contentbox" style="width: 810px; height: 280px;">
                 <div class="category-title">
                     &nbsp;&nbsp;게시판
                     <a href="" class="plus-btn">+</a>

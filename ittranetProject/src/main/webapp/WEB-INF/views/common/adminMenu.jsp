@@ -8,28 +8,29 @@
 <style>
     /*메뉴바 스타일*/
     .menubar{
-        width: 1150px;
+        width: 72%;
         float: right;
-        height: 170px;
+        height: 150px;
         list-style: none;
+        margin-bottom: 30px;
     }
     .menu{
-        width: 140px;
+        width: 120px;
         height: 100%;
         float: left;
         box-sizing: border-box;
-        text-align: center;      
+        text-align: center;       
     }
     .menu>p{
         font-size:medium;
     }
     .circle{
         border-radius:75px; 
-        width: 90px; 
-        height: 90px; 
-        background: pink; 
+        width: 75px; 
+        height: 75px; 
         margin: auto; 
         padding-top: 18px;
+        margin-bottom: 15px;
     }
     /*hover*/
     div.circle:after {
@@ -73,6 +74,13 @@
         width: 100%; 
         left: 0; 
     }
+    .menu a:hover{
+        text-decoration: none;
+        color: black;
+    }
+    .menu i{
+        font-size: 35px;
+    }
 </style>
 </head>
 <body>
@@ -112,7 +120,7 @@
         </li>
         <li class="menu">
             <a href="">
-                    <div class="circle" style="background: rgb(194, 184, 206)">
+                    <div class="circle" style="background: rgb(194, 151, 250)">
                         <i class="fas fa-building fa-3x"></i> 
                     </div>
                     <p><b>회사관리</b></p>
