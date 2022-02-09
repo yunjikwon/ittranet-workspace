@@ -36,5 +36,6 @@ public class EmployeeController {
 		session.invalidate();
 		return "redirect:/";
 	}
+	
 
 }

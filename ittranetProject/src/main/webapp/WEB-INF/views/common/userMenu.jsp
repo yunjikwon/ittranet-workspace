@@ -128,7 +128,7 @@
             </a>
         </li>
         <li class="menu">
-            <a href="">
+            <a href="viewCalendar.ca">
                     <div class="circle" style="background: rgb(218, 172, 236)">
                         <i class="fas fa-calendar-alt fa-3x"></i> 
                     </div>
