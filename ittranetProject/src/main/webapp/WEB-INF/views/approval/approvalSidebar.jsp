@@ -20,16 +20,19 @@
        	ol,ul,li{list-style: none;}
         *{padding:0; margin:0;}
         a{text-decoration: none;}
-        .container{
+        .cont{
             justify-content: center;
             align-items: center;
             width:220px;
-            /*
-            position:absolute;                                                                                 
-            */
-            position: fixed !important; /* 사이드바 스크롤? 효과 */
-			top:370px;
-            left:250px;
+            
+            position:absolute;
+            top:0;
+            left:160px;
+        }
+        .fixed{
+        	position: fixed !important;
+        	left:230px !important;
+        	top:70px !important;
         }
         #ac{
             width: 220px;
@@ -133,16 +136,35 @@
 		    font-size: 14px;
 		}
         </style>
-
+	<script>
+   		$(function(){
+   			$(window).scroll(function(){
+   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
+   				let mainOuterTop = $(".mainOuter").offset().top;
+   				
+   				console.log("scroll : " + scrollTop);
+   				console.log("mainOuter : " + mainOuterTop);
+   				
+   				if(scrollTop > mainOuterTop - 70){
+   					$(".cont").addClass("fixed");
+   				}else{
+   					$(".cont").removeClass("fixed");
+   				}
+   			})
+   		})
+   	</script>
     </head>
     <body>
-        <div class="container">
+        <div class="cont">
             <ul id="ac">
                 <li class="division">
                     <a href="#">전자결재</a>
                 </li>
                 <li id="newDraft">
+                	<button onclick="fnModuleInfo('${test.id}')">
+                	<!--  
                     <button class="approvalbtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#newFormModal">
+                    -->
                     	+ 새 기안
                     </button>
                 </li>
@@ -168,71 +190,12 @@
             </ul>
          </div>
          
-<!-- 새기안 모달창 -->
-<!-- The Modal -->
-<div class="modal" id="newFormModal">
-    <div class="modal-dialog">
+<!-- newFormModal-->
+  <div class="modal fade" id="newFormModal" tabindex="-1" role="dialog" aria-labelledby="newFormModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
-
-
-        <!-- Modal body -->
-        <div class="modal-body">
-		<div class="contentArea">
-
-		        <div id="newFormtitle">새기안 작성</div>
-		
-		        <hr width="95%">
-		        <br>
-		        <div class="content">
-		            <div id="cTitle">지출결의서</div>
-		            <hr>		        
-		            <div id="cEx">
-		               	 업무처리시 지출되는<br> 비용 사전 승인
-		            </div>
-		        </div>
-		
-		        <div class="content">
-		            <div id="cTitle">추가예산신청</div>
-		            <hr>
-		            <div id="cEx">
-		                	프로젝트 비용<br> 추가 신청
-		            </div>
-		        </div>
-		        <div class="content">
-		            <div id="cTitle">연장근무신청</div>
-		            <hr>
-		            <div id="cEx">
-		                	연장 근무 신청 양식
-		            </div>
-		        </div>
-		        <div class="content">
-		            <div id="cTitle">회의록</div>
-		            <hr>
-		            <div id="cEx">
-		                	회의록 양식
-		            </div>
-		        </div>
-		        <div class="content">
-		            <div id="cTitle">사업계획서</div>
-		            <hr>
-		            <div id="cEx">
-		              	 새로운 프로젝트/사업시<br>계획서 양식
-		            </div>
-		        </div>
-		        <div class="content">
-		            <div id="cTitle">시말서</div>
-		            <hr>
-		            <div id="cEx">
-		                	업무과실등에 대한<br> 사유 기재한 문서
-		            </div>
-		        </div>
-		
-		    </div>
-        </div>
-
-        
     </div>
-    </div>
+  </div>
 </div>
          
          
@@ -264,8 +227,17 @@
                 }, 1200);
             }).scroll();
 		*/
+		
+		/*모달*/
+		function fnModuleInfo(str){
+		   $('#newFormModal .modal-content').load("newForm?id="+str);
+		   $('#newFormModal').modal();
+
+		}
+		
         </script>
+        
 
     </body>
-    </html>
+
 </html>

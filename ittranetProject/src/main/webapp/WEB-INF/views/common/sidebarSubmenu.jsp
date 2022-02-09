@@ -11,16 +11,19 @@
        	ol,ul,li{list-style: none;}
         *{padding:0; margin:0;}
         a{text-decoration: none;}
-        .container{
+        .cont{
             justify-content: center;
             align-items: center;
             width:220px;
-            /*
-            position:absolute;                                                                                 
-            */
-            position: fixed !important; /* 사이드바 스크롤? 효과 */
-			top:370px;
-            left:250px;
+            
+            position:absolute;
+            top:0;
+            left:160px;
+        }
+        .fixed{
+        	position: fixed !important;
+        	left:230px !important;
+        	top:70px !important;
         }
         #ac{
             width: 220px;
@@ -76,10 +79,27 @@
         	margin-bottom:150px;
         }
         </style>
+       	<script>
+	   		$(function(){
+	   			$(window).scroll(function(){
+	   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
+	   				let mainOuterTop = $(".mainOuter").offset().top;
+	   				
+	   				console.log("scroll : " + scrollTop);
+	   				console.log("mainOuter : " + mainOuterTop);
+	   				
+	   				if(scrollTop > mainOuterTop - 70){
+	   					$(".cont").addClass("fixed");
+	   				}else{
+	   					$(".cont").removeClass("fixed");
+	   				}
+	   			})
+	   		})
+   	</script>
 
     </head>
     <body>
-        <div class="container">
+        <div class="cont">
             <ul id="ac">
                 <li class="division">
                     <a href="#">전자결재</a>

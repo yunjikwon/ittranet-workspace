@@ -51,19 +51,29 @@
 </style>
 </head>
 <body>
+<!--  
 <button class="approvalbtn" style="background-color:rgba(36, 151, 123, 0.26);"type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
                 반려처리</button>
+-->
+                
+<!-- 새기안 모달창 -->
 <!-- The Modal -->
-<div class="modal" id="myModal1">
+<div class="modal" id="newFormModal">
     <div class="modal-dialog">
     <div class="modal-content">
-
+    	
+		<div class="modal-header">
+          <h5 class="modal-title" id="newFormModalLabel">새기안 작성</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">x</span>
+          </button>
+        </div>
 
         <!-- Modal body -->
         <div class="modal-body">
 		<div class="contentArea">
 
-		        <div id="title">새기안 작성</div>
+		        <div id="newFormtitle">새기안 작성</div>
 		
 		        <hr width="95%">
 		        <br>
@@ -118,6 +128,7 @@
     </div>
     </div>
 </div>
+
 
 
 </body>
