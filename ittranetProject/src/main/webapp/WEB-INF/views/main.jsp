@@ -147,7 +147,7 @@
             <input type="text" class="input-form" id="empId" name="empId" placeholder="아이디를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder='아이디를 입력하세요'" required><br>
             <br>
             <p class="anton">PASSWORD</p>
-            <i id="checkPwd" class="fas fa-glasses">비밀번호확인</i>
+            &nbsp;&nbsp;<i id="checkPwd" class="fas fa-glasses">비밀번호확인</i>
             <input type="password" class="input-form" id="empPwd" name="empPwd" placeholder="비밀번호를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder='비밀번호를 입력하세요'" required>
             <br><br>
             <div class="form-check-inline">
@@ -160,6 +160,7 @@
             <button id="submitBtn">CLICK!</button>
         </form>
         <br><br><br><br><br><br>
+        <a href='joinForm.me'>회원가입테스트</a>
     </div>
 
     <!-- The Modal -->
@@ -177,7 +178,6 @@
             <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
             </div>
-    
         </div>
         </div>
     </div>
