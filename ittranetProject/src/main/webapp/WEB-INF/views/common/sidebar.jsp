@@ -5,22 +5,34 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- jQuery 라이브러리 -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+<!-- Popper JS -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    
+ <!-- jQuery 라이브러리 -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <style>
         ol,ul,li{list-style: none;}
         *{padding:0; margin:0;}
         a{text-decoration: none;}
-        .container{
+        .cont{
             justify-content: center;
             align-items: center;
             width:220px;
-            /*
-            position:absolute;                                                                                 
-            */
-            position: fixed !important; /* 사이드바 스크롤? 효과 */
-			top:370px;
-            left:250px;
+            
+            position:absolute;
+            top:0;
+            left:130px;
+        }
+        .fixed{
+        	position: fixed !important;
+        	left:230px !important;
+        	top:70px !important;
         }
 
  
@@ -67,10 +79,27 @@
         	margin-bottom:150px; /*푸터바와의 간격*/
         }
         </style>
+    	<script>
+	   		$(function(){
+	   			$(window).scroll(function(){
+	   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
+	   				let mainOuterTop = $(".mainOuter").offset().top;
+	   				
+	   				console.log("scroll : " + scrollTop);
+	   				console.log("mainOuter : " + mainOuterTop);
+	   				
+	   				if(scrollTop > mainOuterTop - 70){
+	   					$(".cont").addClass("fixed");
+	   				}else{
+	   					$(".cont").removeClass("fixed");
+	   				}
+	   			})
+	   		})
+	   	</script>
 
     </head>
     <body>
-        <div class="container">
+        <div class="cont">
             <ul id="ac">
                 <li class="division">
                     <a href="#">전자결재</a>
