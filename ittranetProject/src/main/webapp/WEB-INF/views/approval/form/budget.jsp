@@ -60,57 +60,62 @@
     <jsp:include page="../../common/pageHeader.jsp"/>
     <!-- 메뉴바 -->
    	<jsp:include page="../../common/userMenu.jsp"/>
-   	<!-- 사이드바 -->
-   	<jsp:include page="../approvalSidebar.jsp" />
    	
-    <div class="mainOuter">
-        <br>
-        <div id="title">
-            추가예산신청
-        </div>
-        <form action="" method="post" onsubmit="">
-        <div id="innerouter">
-            <table>
-                <tr>
-                    <td width=120>제목</td>
-                    <td width=450><input type="text" placeholder="내용을 입력해주세요" name="" value="" size="50"></td>
-                    <td><button class="formbtn" >결재선</button></td>
-                </tr>
-                <tr>
-                    <td>파일첨부</td>
-                    <td>
-                        <button style="width:60px; height:20px; font-size: 10px;">파일첨부</button>
-                        <br><br>
-                        <input type="text" placeholder="파일첨부"  name="" value="" size="50">
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>사유</td>
-                    <td><input type="text" placeholder="사유"  name="" value="" size="50"></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>비용청구</td>
-                    <td><input type="text" placeholder="비용청구"  name="" value="" size="50"></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><textarea  name="" value="" cols="62" rows="10">위 금액을 청구하오니, 자세한 항목은 첨부파일을 확인해주시기 바랍니다.
-                    </textarea></td>
-                    <td>
-                        <br><br><br><br><br><br><br>
-                        <button class="formbtn" style="background-color: rgba(158, 214, 252, 0.44);">
-                        작성
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        </form>
-
-    </div>
-	
+   	<br clear="both">
+	   	
+   	<div style="position:relative">
+   	
+	   	<!-- 사이드바 -->
+	   	<jsp:include page="../approvalSidebar.jsp" />
+   	
+		    <div class="mainOuter">
+		        <br>
+		        <div id="title">
+		            추가예산신청
+		        </div>
+		        <form action="" method="post" onsubmit="">
+		        <div id="innerouter">
+		            <table>
+		                <tr>
+		                    <td width=120>제목</td>
+		                    <td width=450><input type="text" placeholder="내용을 입력해주세요" name="" value="" size="50"></td>
+		                    <td><button class="formbtn" >결재선</button></td>
+		                </tr>
+		                <tr>
+		                    <td>파일첨부</td>
+		                    <td>
+		                        <button style="width:60px; height:20px; font-size: 10px; border:none;">파일첨부</button>
+		                        <br><br>
+		                        <input type="text" placeholder="파일첨부"  name="" value="" size="50">
+		                    </td>
+		                    <td></td>
+		                </tr>
+		                <tr>
+		                    <td>사유</td>
+		                    <td><input type="text" placeholder="사유"  name="" value="" size="50"></td>
+		                    <td></td>
+		                </tr>
+		                <tr>
+		                    <td>비용청구</td>
+		                    <td><input type="text" placeholder="비용청구"  name="" value="" size="50"></td>
+		                    <td></td>
+		                </tr>
+		                <tr>
+		                    <td colspan="2"><textarea  name="" value="" cols="62" rows="10">위 금액을 청구하오니, 자세한 항목은 첨부파일을 확인해주시기 바랍니다.
+		                    </textarea></td>
+		                    <td>
+		                        <br><br><br><br><br><br><br>
+		                        <button class="formbtn" style="background-color: rgba(158, 214, 252, 0.44);">
+		                        작성
+		                        </button>
+		                    </td>
+		                </tr>
+		            </table>
+		        </div>
+		        </form>
+		
+		    </div>
+		</div>	
 
     
     <!-- 푸터 -->

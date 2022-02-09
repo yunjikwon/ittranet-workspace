@@ -35,6 +35,7 @@
             text-align: center;
             height:70px;
             line-height: 70px;
+            text-decoration: none !important;
         }
         #ac .menu1 a{
             color: #000;
@@ -71,7 +72,7 @@
             border-bottom-left-radius: 10px;
         }
         .mainOuter{
-        	display:inline-block; !important;
+        	display:inline-block !important;
         	background-color:rgb(224, 224, 224);
         	width:65%;
         	height:auto;

@@ -67,9 +67,7 @@
 	   	
 	   	<div style="position:relative">
 		   	<!-- 사이드바 -->
- 
-		   	<jsp:include page="../../common/sidebar.jsp" />
-		   	
+		   	<jsp:include page="../approvalSidebar.jsp" />
 		   	
 		    <div class="mainOuter">
 		        <br>
@@ -87,7 +85,7 @@
 			                <tr>
 			                    <td>파일첨부</td>
 			                    <td>
-			                        <button style="width:60px; height:20px; font-size: 10px;">파일첨부</button>
+			                        <button style="width:60px; height:20px; font-size: 10px; border:none;">파일첨부</button>
 			                        <br><br>
 			                        <input type="text" placeholder="파일첨부" size="50">
 			                    </td>

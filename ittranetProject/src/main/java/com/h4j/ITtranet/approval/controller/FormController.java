@@ -10,7 +10,7 @@ public class FormController {
 	//@Autowired
 	//private FormService fService;
 
-	@RequestMapping("business.fo")
+	@RequestMapping("bussiness.fo")
 	public String bussinessPlanForm() {
 		// /WEB-INF/views/approval/form/bussinessPlan.jsp
 		return "approval/form/bussinessPlan";
@@ -45,6 +45,12 @@ public class FormController {
 	public String newForm() {
 		return "approval/form/newForm";
 	}
+	
+
+	
+	
+
+	
 	
 	
 }
