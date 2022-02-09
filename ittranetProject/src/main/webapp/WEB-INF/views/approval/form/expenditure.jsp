@@ -6,14 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-        /*메뉴바에 포함된 주석 이용
-        .outer{
-            width:800px;
-            height:550px;
-            background-color: rgb(224, 224, 224);
-            margin:auto;
-        }
-		*/
         #title{
             font-size: 20px;
             font-weight: 700;
@@ -28,18 +20,18 @@
             margin-top: 10px;
             margin-bottom:50px;
         }
-        table{
+         table{
             width: 800px;
             height:400px;
             margin: auto;
             margin-top:20px;
         }
-        td{
+       td{
             padding: 15px;
             color:rgb(94, 94, 94);
             font-weight:700;
         }
-        .formbtn{
+       .formbtn{
             border:none;
             border-radius: 3px;
             width:80px;
@@ -73,7 +65,7 @@
     <div class="mainOuter">
         <br>
         <div id="title">
-            사업계획서
+            지출결의서
         </div>
         <form action="" method="post" onsubmit="">
         <div id="innerouter">
@@ -93,17 +85,16 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>지결합계</td>
                     <td><input type="text" placeholder="합계" size="50"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>프로젝트 제안</td>
-                    <td><textarea name="" id="" cols="47" rows="10"></textarea></td>
+                    <td colspan="2"><textarea name="" id="" cols="62" rows="10"></textarea></td>
                     <td>
                         <br><br><br><br><br><br><br>
                         <button class="formbtn" style="background-color: rgba(158, 214, 252, 0.44);">
-                        	작성
+                        작성
                         </button>
                     </td>
                 </tr>
@@ -118,6 +109,5 @@
     <!-- 푸터 -->
     <jsp:include page="../../common/footer.jsp"/>
 </div>    
-</div>   
-</body>
+</div>
 </html>

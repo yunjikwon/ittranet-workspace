@@ -5,19 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-
-<!-- Popper JS -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-    
  <!-- jQuery 라이브러리 -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <style>
-        ol,ul,li{list-style: none;}
+       	ol,ul,li{list-style: none;}
         *{padding:0; margin:0;}
         a{text-decoration: none;}
         .cont{
@@ -27,15 +18,13 @@
             
             position:absolute;
             top:0;
-            left:130px;
+            left:160px;
         }
         .fixed{
         	position: fixed !important;
         	left:230px !important;
         	top:70px !important;
         }
-
- 
         #ac{
             width: 220px;
             border-radius: 10px;
@@ -52,7 +41,18 @@
             font-size: 18px;
             font-weight: 600;
         }
-        #ac .menu1 a:hover{
+        #ac .menu1.on{
+            background-color:rgb(191, 134, 218);
+        }
+        #ac .menu2{
+            display:none;
+        }
+        #ac .menu2 a{
+            color:black;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        #ac .menu2 a:hover{
             background-color:rgb(224, 224, 224);
         }
         .division{
@@ -75,11 +75,11 @@
         	background-color:rgb(224, 224, 224);
         	width:65%;
         	height:auto;
-        	margin-left:400px;
-        	margin-bottom:150px; /*푸터바와의 간격*/
+        	margin-left:450px;
+        	margin-bottom:150px;
         }
         </style>
-    	<script>
+       	<script>
 	   		$(function(){
 	   			$(window).scroll(function(){
 	   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
@@ -95,7 +95,7 @@
 	   				}
 	   			})
 	   		})
-	   	</script>
+   	</script>
 
     </head>
     <body>
@@ -105,21 +105,58 @@
                     <a href="#">전자결재</a>
                 </li>
                 <div id="border">
-		               <li class="menu1">
-		                  <a href="#">Menu1</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="#">Menu2</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="#">Menu3</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="#">Menu4</a>
-		               </li>
-            	</div>
+               <li class="menu1">
+                  <a href="#">Menu1</a>
+                  <ul class="menu2">
+                     <li><a href="#">Sub-Menu1</a></li>
+                     <li><a href="#">Sub-Menu2</a></li>
+                     <li><a href="#">Sub-Menu3</a></li>
+                  </ul>
+               </li>
+               <li class="menu1">
+                  <a href="#">Menu2</a>
+                  <ul class="menu2">
+                     <li><a href="#">Sub-Menu1</a></li>
+                     <li><a href="#">Sub-Menu2</a></li>
+                     <li><a href="#">Sub-Menu3</a></li>
+                  </ul>
+               </li>
+               <li class="menu1">
+                  <a href="#">Menu3</a>
+                  <ul class="menu2">
+                     <li><a href="#">Sub-Menu1</a></li>
+                     <li><a href="#">Sub-Menu2</a></li>
+                     <li><a href="#">Sub-Menu3</a></li>
+                  </ul>
+               </li>
+               <li class="menu1" style="border-radius: 10px;">
+                  <a href="#">Menu4</a>
+                  <ul class="menu2">
+                     <li><a href="#">Sub-Menu1</a></li>
+                     <li><a href="#">Sub-Menu2</a></li>
+                     <li><a href="#">Sub-Menu3</a></li>
+                  </ul>
+               </li>
+            </div>
             </ul>
          </div>
+
+        <script>
+            $('.menu1').click(function(){
+
+            $('.menu2').slideUp();
+
+            if ($(this).children('.menu2').is(':hidden')){
+                $(this).children('.menu2').slideDown();
+                
+                $statsArrow .attr('src', src);
+
+            } else{
+                $(this).children('.menu2').slideUp();
+            }
+        });
+        </script>
+
     </body>
     </html>
 </html>

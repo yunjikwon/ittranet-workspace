@@ -6,14 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-        /*메뉴바에 포함된 주석 이용
-        .outer{
-            width:800px;
-            height:550px;
-            background-color: rgb(224, 224, 224);
-            margin:auto;
-        }
-		*/
         #title{
             font-size: 20px;
             font-weight: 700;
@@ -28,13 +20,13 @@
             margin-top: 10px;
             margin-bottom:50px;
         }
-        table{
+         table{
             width: 800px;
             height:400px;
             margin: auto;
             margin-top:20px;
         }
-        td{
+       td{
             padding: 15px;
             color:rgb(94, 94, 94);
             font-weight:700;
@@ -54,13 +46,14 @@
         	border-radius:5px;
         }
         textarea{
-        	width:400px;
+        	width:550px;
         	border:2px solid lightgray;
         	border-radius:5px;
         }
     </style>
 </head>
 <body>
+
 <div class="back">
 <div class="innerBack">
 	<!-- 헤더 -->
@@ -73,14 +66,14 @@
     <div class="mainOuter">
         <br>
         <div id="title">
-            사업계획서
+            추가예산신청
         </div>
         <form action="" method="post" onsubmit="">
         <div id="innerouter">
             <table>
                 <tr>
                     <td width=120>제목</td>
-                    <td width=450><input type="text" placeholder="내용을 입력해주세요" size="50"></td>
+                    <td width=450><input type="text" placeholder="내용을 입력해주세요" name="" value="" size="50"></td>
                     <td><button class="formbtn" >결재선</button></td>
                 </tr>
                 <tr>
@@ -88,22 +81,27 @@
                     <td>
                         <button style="width:60px; height:20px; font-size: 10px;">파일첨부</button>
                         <br><br>
-                        <input type="text" placeholder="파일첨부" size="50">
+                        <input type="text" placeholder="파일첨부"  name="" value="" size="50">
                     </td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><input type="text" placeholder="합계" size="50"></td>
+                    <td>사유</td>
+                    <td><input type="text" placeholder="사유"  name="" value="" size="50"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>프로젝트 제안</td>
-                    <td><textarea name="" id="" cols="47" rows="10"></textarea></td>
+                    <td>비용청구</td>
+                    <td><input type="text" placeholder="비용청구"  name="" value="" size="50"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><textarea  name="" value="" cols="62" rows="10">위 금액을 청구하오니, 자세한 항목은 첨부파일을 확인해주시기 바랍니다.
+                    </textarea></td>
                     <td>
                         <br><br><br><br><br><br><br>
                         <button class="formbtn" style="background-color: rgba(158, 214, 252, 0.44);">
-                        	작성
+                        작성
                         </button>
                     </td>
                 </tr>
@@ -118,6 +116,5 @@
     <!-- 푸터 -->
     <jsp:include page="../../common/footer.jsp"/>
 </div>    
-</div>   
-</body>
+</div>
 </html>

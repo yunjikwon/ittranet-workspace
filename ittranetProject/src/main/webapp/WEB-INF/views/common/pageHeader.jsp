@@ -5,6 +5,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- jQuery 라이브러리 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- alert창 꾸미기 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- 아이콘 -->
 <script src="https://kit.fontawesome.com/07e0557a32.js" crossorigin="anonymous"></script>
 <style>
     /*헤더 스타일*/
@@ -20,14 +29,13 @@
         position: absolute;
         left: 0;
         top: 0;
-        height: 100%;
         width: 100%;
         padding: 60px;
+        padding-bottom:0px;
     }
     /*연회색배경*/
     .innerBack{
         width:1700px;
-        height: 100%;
         margin:auto;
         padding: 10px;
         background:rgb(233, 232, 232);
