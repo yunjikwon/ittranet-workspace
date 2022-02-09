@@ -112,7 +112,7 @@
             </a>
         </li>
         <li class="menu">
-            <a href="">
+            <a href="list.bo">
                     <div class="circle" style="background: rgb(194, 184, 206)">
                         <i class="fas fa-bullhorn fa-3x"></i> 
                     </div>
