@@ -120,7 +120,7 @@
             </a>
         </li>
         <li class="menu">
-            <a href="">
+            <a href="list.pr">
                     <div class="circle" style="background: rgb(183, 188, 235)">
                         <i class="fas fa-desktop fa-3x"></i> 
                     </div>
