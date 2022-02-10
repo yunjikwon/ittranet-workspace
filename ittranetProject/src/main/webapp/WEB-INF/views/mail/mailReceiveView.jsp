@@ -1,10 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<title>Document</title>
 <style>
+	.wrap{
+        width: 900px;
+    }
     .outer{
            width:1200px;
            height:800px;
@@ -39,12 +43,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="outer">
-        <div class="top"></div>
+    <div class="back">
+        <div class="innerBack">
+			<jsp:include page="../common/pageHeader.jsp" />
+ 			<jsp:include page="../common/userMenu.jsp" />
 
-        <div class="sidebar"></div>
-
-        <div class="middle">
+ 		<br clear="both">
+ 		<div style="position:relative">
+			<jsp:include page="../mail/mailSideBar.jsp" />
+			
+        <div class="mainOuter">
 
             <br><br>
             <div id="buttonbar">
@@ -75,8 +83,12 @@
             페이징바 자리ㅎㅎ
 
         </div>
+        
+        <jsp:include page="../common/footer.jsp" />
 
 
+    </div>
+    </div>
     </div>
 
 
