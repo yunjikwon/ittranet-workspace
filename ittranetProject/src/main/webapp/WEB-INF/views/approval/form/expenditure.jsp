@@ -20,35 +20,35 @@
             margin-top: 10px;
             margin-bottom:50px;
         }
-         table{
+        .formTable table{
             width: 800px;
             height:400px;
             margin: auto;
             margin-top:20px;
         }
-       td{
+       .formTable td{
             padding: 15px;
             color:rgb(94, 94, 94);
             font-weight:700;
         }
-       .formbtn{
+        .formTable input{
+        	width:350px;
+        	height:30px;
+        	border:2px solid lightgray;
+        	border-radius:5px;
+        }
+        .formTable textarea{
+        	width:400px;
+        	border:2px solid lightgray;
+        	border-radius:5px;
+        }
+        .formbtn{
             border:none;
             border-radius: 3px;
             width:80px;
             height:40px;
             font-size:15px;    
             color:color:rgb(94, 94, 94);        
-        }
-        input{
-        	width:400px;
-        	height:25px;
-        	border:2px solid lightgray;
-        	border-radius:5px;
-        }
-        textarea{
-        	width:400px;
-        	border:2px solid lightgray;
-        	border-radius:5px;
         }
     </style>
 </head>
@@ -74,11 +74,17 @@
 		        </div>
 		        <form action="" method="post" onsubmit="">
 		        <div id="innerouter">
-		            <table>
+		            <table  class="formTable">
 		                <tr>
 		                    <td width=120>제목</td>
 		                    <td width=450><input type="text" placeholder="내용을 입력해주세요" size="50"></td>
-		                    <td><button class="formbtn" >결재선</button></td>
+		                    <td>
+		                    	<button class="formbtn">
+		                    		<a data-toggle="modal" data-target="#line" data-backdrop="static" role="button">
+				                      	결재선
+				                    </a>		                    		
+	                    		</button>
+                    		</td>
 		                </tr>
 		                <tr>
 		                    <td>파일첨부</td>
@@ -109,7 +115,15 @@
 		
 		    </div>
 		</div>
-	
+
+		<!-- 결재선 모달창 -->
+		<div id="line" class="modal fade" tabindex="-1" role="dialog">
+		    <div class="modal-dialog" style="max-width: 700px;">
+		        <div class="modal-content">
+			   		<jsp:include page="line.jsp"/>
+		        </div>
+		    </div>
+		</div>		
 	    
     <!-- 푸터 -->
     <jsp:include page="../../common/footer.jsp"/>

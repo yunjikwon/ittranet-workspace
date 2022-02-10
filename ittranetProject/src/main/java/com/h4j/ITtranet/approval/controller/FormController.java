@@ -41,12 +41,17 @@ public class FormController {
 		return "approval/form/proceedings";
 	}
 	
+	//새기안 모달창
 	@RequestMapping("newForm.fo")
 	public String newForm() {
-		return "approval/form/newForm";
+		return "approval/newForm";
 	}
 	
-
+	// 결재선 모달창
+	@RequestMapping("line.fo")
+	public String approvalLine() {
+		return "approval/form/line";
+	}
 	
 	
 
