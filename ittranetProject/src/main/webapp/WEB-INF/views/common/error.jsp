@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <style>
 	body {
-		background-image: url('resources/images/errorImg.jpg');
+		background-image: url('resources/images/backImg.jpg');
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -19,8 +19,16 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
+	
+	
 	<script>
-		Swal.fire('Error!')
+		Swal.fire({
+			  icon: 'error',
+			  title:'Error!',
+			  text: 'Something went wrong!',
+			  footer: '<a href="#" onClick="history.back()">Back Step</a>'
+			})
 	</script>
+	
 </body>
 </html>

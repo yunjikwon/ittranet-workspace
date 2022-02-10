@@ -29,7 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public int insertMember(Employee e) {
-		return 0;
+		int result = eDao.insertMember(sqlSession, e);
+		return result;
 	}
 
 	@Override

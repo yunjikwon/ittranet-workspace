@@ -40,8 +40,8 @@
             color:color:rgb(94, 94, 94);        
         }
         input{
-        	width:400px;
-        	height:25px;
+        	width:350px;
+        	height:30px;
         	border:2px solid lightgray;
         	border-radius:5px;
         }
@@ -60,56 +60,61 @@
     <jsp:include page="../../common/pageHeader.jsp"/>
     <!-- 메뉴바 -->
    	<jsp:include page="../../common/userMenu.jsp"/>
-   	<!-- 사이드바 -->
-   	<jsp:include page="../approvalSidebar.jsp" />
+   	   	
+   	<br clear="both">
+	   	
+   	<div style="position:relative">
    	
-    <div class="mainOuter">
-        <br>
-        <div id="title">
-            연장근무신청
-        </div>
-        <form action="" method="post" onsubmit="">
-        <div id="innerouter">
-            <table>
-                <tr>
-                    <td width=120>제목</td>
-                    <td width=450><input type="text" placeholder="내용을 입력해주세요" name="" value="" size="50"></td>
-                    <td><button class="formbtn" >결재선</button></td>
-                </tr>
-                <tr>
-                    <td>파일첨부</td>
-                    <td>
-                        <button style="width:60px; height:20px; font-size: 10px;">파일첨부</button>
-                        <br><br>
-                        <input type="text" placeholder="파일첨부"  name="" value="" size="50">
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>연장근무시간</td>
-                    <td><input type="text" placeholder="연장근무시간"  name="" value="" size=""> 시간</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>연장근무일</td>
-                    <td><input type="date" placeholder="연장근무일"  name="" value="" size="50"></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                    </td>
-                    <td>
-                        <button class="formbtn" style="background-color: rgba(158, 214, 252, 0.44);">
-                        작성
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        </form>
-
-    </div>
-	
+	   	<!-- 사이드바 -->
+	   	<jsp:include page="../approvalSidebar.jsp" />
+   	
+		    <div class="mainOuter">
+		        <br>
+		        <div id="title">
+		            연장근무신청
+		        </div>
+		        <form action="" method="post" onsubmit="">
+		        <div id="innerouter">
+		            <table>
+		                <tr>
+		                    <td width=150>제목</td>
+		                    <td width=450><input type="text" placeholder="내용을 입력해주세요" name="" value="" size="50"></td>
+		                    <td><button class="formbtn" >결재선</button></td>
+		                </tr>
+		                <tr>
+		                    <td>파일첨부</td>
+		                    <td>
+		                        <button style="width:60px; height:20px; font-size: 10px; border:none;">파일첨부</button>
+		                        <br><br>
+		                        <input type="text" placeholder="파일첨부"  name="" value="" size="50">
+		                    </td>
+		                    <td></td>
+		                </tr>
+		                <tr>
+		                    <td>연장근무시간</td>
+		                    <td><input type="text" placeholder="연장근무시간"  name="" value="" size=""> 시간</td>
+		                    <td></td>
+		                </tr>
+		                <tr>
+		                    <td>연장근무일</td>
+		                    <td><input type="date" placeholder="연장근무일"  name="" value="" size="50"></td>
+		                    <td></td>
+		                </tr>
+		                <tr>
+		                    <td colspan="2">
+		                    </td>
+		                    <td>
+		                        <button class="formbtn" style="background-color: rgba(158, 214, 252, 0.44);">
+		                        작성
+		                        </button>
+		                    </td>
+		                </tr>
+		            </table>
+		        </div>
+		        </form>
+		
+		    </div>
+		</div>	
 
     
     <!-- 푸터 -->
