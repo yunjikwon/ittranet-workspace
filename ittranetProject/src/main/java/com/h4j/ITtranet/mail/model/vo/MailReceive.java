@@ -23,4 +23,10 @@ public class MailReceive {
 	private String status;
 	
 
+	private String empName;
+	private String mailTitle;
+	private String sendDate;
+	private String wroteme_status;
 }
+
+

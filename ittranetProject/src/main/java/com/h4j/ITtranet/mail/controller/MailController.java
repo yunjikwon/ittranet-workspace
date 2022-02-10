@@ -25,7 +25,7 @@ public class MailController {
 		
 		int listCount = mService.selectListCount();
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
 		ArrayList<MailReceive> rvlist = mService.selectList(pi);
 

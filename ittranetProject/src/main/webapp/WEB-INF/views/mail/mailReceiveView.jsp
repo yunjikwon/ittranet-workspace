@@ -29,18 +29,38 @@
     }
 
     #buttonbar{
-               float:right;
-            
+    	float:right;
+    	padding-left:5px;        
                
     }
     table{
           text-align:center;
     }
+    
+    /* 버튼 그라데이션 존예 */
+    .w-btn {
+    	position: relative;
+    	border: none;
+    	display: inline-block;
+    	padding: 15px 30px;
+    	border-radius: 15px;
+    	font-family: "paybooc-Light", sans-serif;
+    	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    	text-decoration: none;
+    	font-weight: 800;
+    	transition: 0.25s;
+	}
+    .w-btn-gra1 {
+    	background: linear-gradient(-45deg, #33ccff 0%, #ff99cc 100%);
+    	color: white;
+	}
+	.w-btn-gra2{
+		background: linear-gradient(to top right, #33ccff 0%, #ff0000 100%);
+		color: white;
+	}
+
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
     <div class="back">
@@ -53,35 +73,93 @@
 			<jsp:include page="../mail/mailSideBar.jsp" />
 			
         <div class="mainOuter">
-
+			
             <br><br>
             <div id="buttonbar">
-                <button class="btn btn-success">메일쓰기</button>
-                <button class="btn btn-danger">삭제</button>
+            	<button class="w-btn w-btn-gra1" type="button">메일쓰기</button>
+                <button class="w-btn w-btn-gra2" type="button" data-toggle="modal" data-target="#exampleModal">삭제</button>
+            
+            	<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+        </button>
+      </div>
+      <div class="modal-body">
+정말로 삭제하시겠습니까?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger">네</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
+      </div>
+    </div>
+  </div>
+</div>
             </div>
             <br><br><br>
 
             <div class="table table-hover" align="center">
-                <table>
-                    <tr>
-                        <th style="width:50px;"><input type="checkbox"></th>
-                        <th style="width:50px;">☆</th>
-                        <th style="width:150px;">보낸사람</th>
-                        <th style="width:500px;">제목</th>
-                        <th style="width:200px;">날짜</th>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td>★</td>
-                        <td>김과장</td>
-                        <td>이트라사원 자료 하나만 찾아주세요.</td>
-                        <td>2022-01-19 07:10</td>
-                    </tr>
+                <table id="mailalllist" style="background-color:white">
+                	<thead>
+                    	<tr>
+                        	<th style="width:50px;"><input type="checkbox"></th>
+                        	<th style="width:50px;">☆</th>
+                        	<th style="width:150px;">보낸사람</th>
+                        	<th style="width:500px;">제목</th>
+                        	<th style="width:200px;">날짜</th>
+                    	</tr>
+                    </thead>
+                    <tbody>
+                    	<c:forEach var="m" items="${ list }">
+                    		<tr>
+                        		<td><input type="checkbox"></td>
+                        		<td>★</td>
+                        		<td>${ m.empName }</td>
+                        		<td>${ m.mailTitle }</td>
+                        		<td>${ m.sendDate }</td>
+                    		</tr>
+                    	</c:forEach>
+                    </tbody>
                 </table>
+                <script>
+            		$(function(){
+            			$("#mailalllist>tbody>tr").click(function(){
+            				location.href = 'detail.ml?mno=' + $(this).children(".mno").text();
+            			});
+            		})
+            	</script>
             </div>
 
-            페이징바 자리ㅎㅎ
-
+          	<div id="pagingArea">
+    	<ul class="pagination justify-content-center">
+	        <c:choose>
+            	<c:when test="${ pi.currentPage eq 1 }">
+                   			<li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage-1 }">&lt;</a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                    
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                    	<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ p }">${ p }</a></li>
+                    </c:forEach>
+                    
+                    <c:choose>
+                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+                    		<li class="page-item disabled"><a class="page-link" href="#">&gt;</a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage+1 }">&gt;</a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                </ul>
+            </div>
         </div>
         
         <jsp:include page="../common/footer.jsp" />
