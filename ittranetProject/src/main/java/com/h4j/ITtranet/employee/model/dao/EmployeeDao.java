@@ -11,5 +11,9 @@ public class EmployeeDao {
 	public Employee loginMember(SqlSessionTemplate sqlSession, Employee e) {
 		return sqlSession.selectOne("memberMapper.loginMember",e);
 	}
+	
+	public int insertMember(SqlSessionTemplate sqlSession, Employee e) {
+		return sqlSession.insert("memberMapper.insertMember", e);
+	}
 
 }

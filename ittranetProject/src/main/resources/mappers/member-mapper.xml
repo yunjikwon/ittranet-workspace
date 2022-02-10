@@ -44,7 +44,30 @@
 		 from employee
 		where status = 'Y'
 		  and emp_id = #{empId}
-		  and emp_pwd = #{empPwd}
 	</select>
+	
+	<insert id="insertMember">
+		insert
+		  into employee
+		  (
+		    emp_no
+		  , emp_id
+		  , emp_pwd
+		  , emp_name
+		  , phone
+		  , email
+		  , address
+		  )
+		  values
+		  (
+		    seq_eno.nextval
+		  , #{empId}
+		  , #{empPwd}
+		  , #{empName}
+		  , #{phone}
+		  , #{email}
+		  , #{address}
+		  )
+	</insert>
 
 </mapper>

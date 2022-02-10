@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mailMapper">
+
+	<resultMap id="mailSendResult" type="MailSend">
+		<result column="send_mail_no" property="sendMailNo" />
+		<result column="emp_no" property="empNo" />
+		<result column="sender_account" property="senderAccount" />
+		<result column="mail_title" property="mailTitle" />
+		<result column="mail_content" property="mailContent" />
+		<result column="send_date" property="sendDate" />
+		<result column="tem_status" property="temStatus" />
+		<result column="status" property="status" />
+		<result column="wroteme_status" property="wrotemeStatus" />
+	</resultMap>
+	
+	
+	<resultMap id="mailReceiveResult" type="MailReceive">
+		<result column="receive_mail_no" property="receiveMailNo" />
+		<result column="send_mail_no" property="sendMailNo" />
+		<result column="emp_no" property="empNo" />
+		<result column="receiver_account" property="receiverAccount" />
+		<result column="read" property="read" />
+		<result column="important" property="important" />
+		<result column="spam" property="spam" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+</mapper>

@@ -62,15 +62,15 @@
     }
     /*컬러로고스타일*/
     #pageLogo{
-        height:130px; 
-        width:300px;
+        height:10px;
+        width: 250px; 
     }
-    #pageLogo>img{
-        width:80%;
-        height:100px;
+    #pageLogo img{
+        width:270px;
+        height:120px;
         margin:auto;
-        margin-top: 20px;
-        margin-left: 40px;
+        margin-top: 75px;
+        margin-left: 70px;
         display: inline-block;
     }
 </style>
