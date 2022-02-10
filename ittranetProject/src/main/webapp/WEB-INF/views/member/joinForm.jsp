@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -123,6 +124,17 @@
 </style>
 </head>
 <body>
+	
+	<c:if test="${ not empty success }">
+		<script>
+			Swal.fire({
+				icon: 'success',
+				title: '회원 가입 요청 완료!',
+				text: '승인 후 가입시 작성한 이메일로 링크가 발송됩니다',
+			})
+		</script>
+		<c:remove var="success" scope="session"/>
+	</c:if>
     
     <div class="content">
         <br><br><br>
@@ -140,7 +152,7 @@
 	        <br>
 	        <p class="anton">PASSWORD</p>
 	        &nbsp;<i id="checkPwd" class="fas fa-check">비밀번호확인</i>
-	        <input type="password" class="input-form" id="empPwd" name="empPwd" placeholder="영문,숫자,특문(!@#$%^&*)조합 8~16글자" onfocus="this.placeholder = ''" onblur="this.placeholder='영문,숫자,특문(!@#$%^&*)조합 8~16글자'" required><br>
+	        <input type="text" class="input-form" id="empPwd" name="empPwd" placeholder="영문,숫자,특문(!@#$%^&*)조합 8~16글자" onfocus="this.placeholder = ''" onblur="this.placeholder='영문,숫자,특문(!@#$%^&*)조합 8~16글자'" required><br>
 	        <br>
 	        <p class="anton">PHONE</p>
 	        <input type="text" class="input-form" id="phone" name="phone" placeholder="-포함 13자리 핸드폰 번호 입력(000-0000-0000)" onfocus="this.placeholder = ''" onblur="this.placeholder='-포함 13자리 핸드폰 번호 입력(000-0000-0000)'" required><br>
@@ -164,7 +176,9 @@
 				$('#empPwd').attr('type','text');
 			}, function(){
 				$('#empPwd').attr('type','password');
-			})
+			});
+			
+			
 		});
     
     	// 주소 api
@@ -206,6 +220,10 @@
             	}
          	}).open();
     	};
+    	
+    	function joinSubmit(){
+    		joinForm.submit(); 
+    	}
         
         // 회원가입 submit
         function joinSubmit(){
@@ -228,9 +246,9 @@
         			})
         	} else{
         		joinForm.submit();        		
-        	}
-        	
+        	}	
         };
+        
 
     </script>
 
