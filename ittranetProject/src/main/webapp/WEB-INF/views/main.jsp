@@ -6,10 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!--BOOTSTRAP-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- alert창 꾸미기 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- 아이콘 -->
+<script src="https://kit.fontawesome.com/07e0557a32.js" crossorigin="anonymous"></script>
 <!--FONT-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -122,6 +128,13 @@
             color:#3c5a50;
             cursor: pointer;
         }
+        #checkPwd {
+        	color : gray;
+        }
+        #checkPwd:hover {
+        	cursor: pointer;
+        	color : black;
+        }
     </style>
 </head>
 <body>	
@@ -134,6 +147,7 @@
             <input type="text" class="input-form" id="empId" name="empId" placeholder="아이디를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder='아이디를 입력하세요'" required><br>
             <br>
             <p class="anton">PASSWORD</p>
+            &nbsp;&nbsp;<i id="checkPwd" class="fas fa-glasses">비밀번호확인</i>
             <input type="password" class="input-form" id="empPwd" name="empPwd" placeholder="비밀번호를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder='비밀번호를 입력하세요'" required>
             <br><br>
             <div class="form-check-inline">
@@ -146,6 +160,7 @@
             <button id="submitBtn">CLICK!</button>
         </form>
         <br><br><br><br><br><br>
+        <a href='joinForm.me'>회원가입테스트</a>
     </div>
 
     <!-- The Modal -->
@@ -163,10 +178,19 @@
             <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
             </div>
-    
         </div>
         </div>
     </div>
+    
+    <script>
+    	$(document).ready(function(){
+    		$('.content i').hover(function(){
+    			$('#empPwd').attr('type','text');
+    		}, function(){
+    			$('#empPwd').attr('type','password');
+    		})
+    	})
+    </script>
 	
 </body>
 </html>
