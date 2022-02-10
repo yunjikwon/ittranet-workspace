@@ -97,7 +97,7 @@
                 </a>
             </li>
             <li class="menu">
-                <a href="">
+                <a href="alllist.ml">
                         <div class="circle" style="background: rgb(171, 187, 240)">
                             <i class="far fa-envelope fa-3x"></i>  
                         </div>
