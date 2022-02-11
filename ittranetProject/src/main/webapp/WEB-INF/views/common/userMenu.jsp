@@ -139,9 +139,9 @@
             <li class="menu">
                 <a href="viewCalendar.ca">
                         <div class="circle" style="background: rgb(218, 172, 236)">
-                            <i class="fas fa-calendar-alt fa-3x"></i> 
+                            <i class="fas fa-calendar-alt fa-3x schedule"></i> 
                         </div>
-                        <p><b>일정</b></p>
+                        <p class="schedule"><b>일정</b></p>
                 </a>
             </li>
             <li class="menu">
