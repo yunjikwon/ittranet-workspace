@@ -99,6 +99,9 @@
 
     </head>
     <body>
+    
+    	<!-- 각 메뉴에 맞게 수정 -->
+    	<!-- 
         <div class="cont">
             <ul id="ac">
                 <li class="division">
@@ -120,6 +123,8 @@
             	</div>
             </ul>
          </div>
+          -->
+         
     </body>
     </html>
 </html>
