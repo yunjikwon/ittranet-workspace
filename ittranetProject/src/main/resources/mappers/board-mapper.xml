@@ -14,7 +14,15 @@
 		<result column="emp_id" property="empId"/>		
 		<result column="emp_name" property="empName"/>		
 	</resultMap>
-
+	
+	<resultMap id="attachmentResult" type="Attachment">
+		<result column="attachment_no" property="attachmentNo" />
+		<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
+		<result column="file_path" property="filePath" />
+		<result column="ref_code" property="refCode" />
+		<result column="ref_no" property="refNo" />
+	</resultMap>
  
  	<select id="selectListCount" resultType="_int">
  		select
@@ -36,6 +44,84 @@
 	 where b.status = 'Y'
 	 order
 	    by board_no desc
- 			 
  	</select>
+ 	
+ 	<update id="increaseCount">
+ 		update board
+ 		   set count = count + 1
+ 		 where board_no = #{boardNo}
+ 		   and status = 'Y'
+ 	</update>
+ 	
+ 	<select id="selectBoard" resultMap="boardResult">
+ 		select
+ 			   board_no 
+		     , board_title
+		     , emp_name
+		     , to_char(create_date, 'YYYY-MM-DD') as "create_date"
+		     , board_content
+		  from board b
+		  join employee using(emp_no)
+		 where b.status = 'Y'
+		   and board_no = #{boardNo}
+ 	</select>
+ 	
+ 	<select id="selectAttachment" resultMap="attachmentResult">
+ 		select attachment_no
+ 		     , origin_name
+ 		     , change_name
+ 		     , file_path
+ 			 , ref_no
+		  from attachment
+		 where ref_Code = 'B'
+		   and ref_no = #{boardNo}
+ 
+ 	</select>
+
+	<insert id="insertBoard">
+		insert 
+		  into board
+		     (
+		       board_no
+		     , emp_no
+		     , board_title
+		     , board_content
+		     , create_date
+		     , count
+		     , status
+		     )
+		 values
+		    (
+		      seq_board.nextval
+		    , #{empNo}
+		    , #{boardTitle}
+		    , #{boardContent}
+		    , sysdate
+		    , 0
+		    , 'Y'
+		    )
+	</insert>
+	
+	<insert id="insertAttachment">
+		insert 
+	      into attachment
+	         (
+	           attachment_no
+	         , origin_name
+	         , change_name
+	         , file_path
+	         , ref_code
+	         , ref_no
+	         )
+	     values
+	        (
+	          seq_atno.nextval
+	        , #{originName}
+	        , #{changeName}
+	        , #{filePath}
+	        , 'B'
+	        , seq_board.currval
+	        )
+		
+	</insert>
 </mapper>
