@@ -16,6 +16,7 @@
 		<typeAlias type="com.h4j.ITtranet.project.model.vo.Project" alias="Project"/>
 		<typeAlias type="com.h4j.ITtranet.mail.model.vo.MailReceive" alias="MailReceive" />
 		<typeAlias type="com.h4j.ITtranet.mail.model.vo.MailSend" alias="MailSend" />
+		<typeAlias type="com.h4j.ITtranet.approval.model.vo.AppLine" alias="AppLine" />
 	</typeAliases>
 	
 	<!-- ERD피드백 받고 테이블 만들고 나서 db연결정보 root-context.xml에 작성 -->
@@ -26,6 +27,7 @@
 		<mapper resource="/mappers/board-mapper.xml"/>
 		<mapper resource="/mappers/project-mapper.xml" />
 		<mapper resource="/mappers/mail-mapper.xml" />
+		<mapper resource="/mappers/approval-mapper.xml" />
 	</mappers>
 
 </configuration>

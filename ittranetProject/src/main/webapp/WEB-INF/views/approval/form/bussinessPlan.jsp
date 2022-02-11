@@ -6,15 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-        /*메뉴바에 포함된 주석 이용
-        .outer{
-            width:800px;
-            height:550px;
-            background-color: rgb(224, 224, 224);
-            margin:auto;
-        }
-		*/
-        #title{
+        #formtitle{
             font-size: 20px;
             font-weight: 700;
             margin-left: 120px;
@@ -28,7 +20,7 @@
             margin-top: 10px;
             margin-bottom:50px;
         }
-        .formTable table{
+        .formTable{
             width: 800px;
             height:400px;
             margin: auto;
@@ -77,14 +69,14 @@
    	
 		    <div class="mainOuter">
 		        <br>
-		        <div id="title">
+		        <div id="formtitle">
 		            사업계획서
 		        </div>
 		        <form action="" method="post" onsubmit="">
 		        <div id="innerouter">
 		            <table  class="formTable">
 		                <tr>
-		                    <td width=140>제목</td>
+		                    <td width=200>제목</td>
 		                    <td width=450><input type="text" placeholder="내용을 입력해주세요" size="50"></td>
 		                    <td>
 		                    	<button class="formbtn">

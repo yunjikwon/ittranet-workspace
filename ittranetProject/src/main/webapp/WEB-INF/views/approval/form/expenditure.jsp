@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-        #title{
+        #formtitle{
             font-size: 20px;
             font-weight: 700;
             margin-left: 120px;
@@ -20,7 +20,7 @@
             margin-top: 10px;
             margin-bottom:50px;
         }
-        .formTable table{
+        .formTable{
             width: 800px;
             height:400px;
             margin: auto;
@@ -69,7 +69,7 @@
 	   	
 		    <div class="mainOuter">
 		        <br>
-		        <div id="title">
+		        <div id="formtitle">
 		           	 지출결의서
 		        </div>
 		        <form action="" method="post" onsubmit="">

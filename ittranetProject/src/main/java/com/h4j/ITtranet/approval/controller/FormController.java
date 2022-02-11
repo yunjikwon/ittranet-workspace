@@ -1,14 +1,21 @@
 package com.h4j.ITtranet.approval.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.h4j.ITtranet.approval.model.service.ApprovalService;
+import com.h4j.ITtranet.approval.model.service.ApprovalServiceImpl;
+import com.h4j.ITtranet.approval.model.vo.AppLine;
 
 @Controller
 public class FormController {
 
-	//@Autowired
-	//private FormService fService;
+	@Autowired
+	private ApprovalService aService;
 
 	@RequestMapping("bussiness.fo")
 	public String bussinessPlanForm() {
@@ -53,8 +60,29 @@ public class FormController {
 		return "approval/form/line";
 	}
 	
-	
+	// 검색
+	@RequestMapping("search.fo")
+	public ArrayList<AppLine> selectSearchLine(@RequestParam("team") String team, @RequestParam("name") String name) {
+		AppLine appLine = new AppLine();
+		appLine.setTeam(team);
+		appLine.setEmpName(name);
+		
+		ArrayList<AppLine> FormSearch = aService.selectSearchLine(appLine);	
+		
+		
+		return "";
+	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

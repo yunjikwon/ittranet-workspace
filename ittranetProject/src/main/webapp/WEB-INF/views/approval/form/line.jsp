@@ -129,21 +129,23 @@
     
             <br>
             <div id="searchBox-1">
-                <div style="margin-top:5px;">
-                    <label class="stitle">팀</label>
-                    <div class="searchBox">
-                        <input type="text" name="" class="sinput" placeholder="검색어 입력">
-                        <button type="submit" class="sbtn">검색</button>
-                    </div>
-
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                    <label class="stitle">성명</label>
-                    <div class="searchBox">
-                        <input type="text" name="" class="sinput" placeholder="검색어 입력">
-                        <button type="submit" class="sbtn">검색</button>
-                    </div>
-                </div>
+            	<form action="search.fo" name="search-form" method="get">
+	                <div style="margin-top:5px;">
+	                    <label class="stitle">팀</label>
+	                    <div class="searchBox">
+	                        <input type="text" name="team" value="" class="sinput" placeholder="검색어 입력">
+	                        <button type="submit" class="sbtn">검색</button>
+	                    </div>
+	
+	                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	
+	                    <label class="stitle">성명</label>
+	                    <div class="searchBox">
+	                        <input type="text" name="name" value="" class="sinput" placeholder="검색어 입력">
+	                        <button type="submit" class="sbtn">검색</button>
+	                    </div>
+	                </div>
+	        	</form>        
             </div>
         <br>
             <div class="tablelayout">
@@ -217,5 +219,33 @@
 
         </div>    
        </div>
+       
+    <script>
+    	function getsearchList(){
+    		$.ajax({
+    			type : 'GET',
+    			url : $("form[name=search-form]").serialize(),
+    			sucess : function(result){
+    				//테이블 초기화
+    				$('#boardList > tbody').empty();
+    				if(result.length>=1){
+    					result.forEach(function(item){
+    						str="<tr>"
+    						   += <"td>"+ + "</td>"
+    						   += <"td>"+ 팀 + "</td>"
+    						   += <"td>"+ 직급 + "</td>"
+    						   += <"td>"+ 직원코드 + "</td>"
+    						   += <"td>"+ 직원명 + "</td>"
+    						   += "</tr>"
+    						$('#boardList').append(str);	   
+    					})
+    						
+    					
+    				}
+    			}
+    		})
+    	}
+    </script> 
+       
     </body>
     </html>
