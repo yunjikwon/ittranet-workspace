@@ -8,7 +8,7 @@
 
     
 <style>
-    .contentArea{
+    .FormcontentArea{
         text-align: center;
         margin:auto;
     }
@@ -31,7 +31,7 @@
         font-size: 14px;
     }
     .modal-title{
-    	font-size: 20px;
+    	font-size: 22px;
         font-weight: 700;
         color:rgb(94, 94, 94);
     }
@@ -48,7 +48,7 @@
 
 <!-- Modal body -->
 <div class="modal-body">
-	<div class="contentArea">
+	<div class="FormcontentArea">
 
         <br>
         <div class="content" onclick="location.href='expenditure.fo'">

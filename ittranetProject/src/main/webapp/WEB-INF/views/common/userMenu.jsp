@@ -153,7 +153,7 @@
                 </a>
             </li>
             <li class="menu">
-                <a href="">
+                <a href="draftWait.dr">
                         <div class="circle" style="background: rgb(240, 195, 237)">
                             <i class="fas fa-paperclip fa-3x"></i> 
                         </div>

@@ -27,7 +27,9 @@
 		<mapper resource="/mappers/board-mapper.xml"/>
 		<mapper resource="/mappers/project-mapper.xml" />
 		<mapper resource="/mappers/mail-mapper.xml" />
+
 		<mapper resource="/mappers/calendar-mapper.xml"/>
+
 	</mappers>
 
 </configuration>
