@@ -25,7 +25,6 @@
     .middle{
             width:880px;
             height:580px;
-
     }
 
     #buttonbar{
@@ -60,7 +59,9 @@
 	}
 
 </style>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="back">
@@ -72,7 +73,7 @@
  		<div style="position:relative">
 			<jsp:include page="../mail/mailSideBar.jsp" />
 			
-        <div class="mainOuter">
+        <div class="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 			
             <br><br>
 
@@ -101,7 +102,7 @@
   </div>
 </div>
             </div>
-            <form id="postForm" action="" method="post">
+            <form id="postForm" action="alllist.ml" method="post">
             	<input type="hidden" name="mno" value="${ m.sendMailNo }">
             </form>
             

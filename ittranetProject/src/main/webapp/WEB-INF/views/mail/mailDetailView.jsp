@@ -45,22 +45,18 @@
             <button type="button" class="btn btn-light">목록</button>
         </div>
 
+		<input type="hidden" name="mno" value="${ m.sendMailNo }">
+		
         <div class="mailcontent">
-            <div id="title">${m.mailtitle}</div>
-            <div id="senddate">2021-01-20 12:22</div>
+            <div>${ m.mailtitle }</div>
+            <div>${ m.sendDate }</div>
             <br>
             <div>${ m.sdpp }</div>
-            <div>받는사람 : 이트라사원 <ittra> </div>
+            <div>${ m.rvpp }</div>
             <br>
             <hr>
 
-            <div id="content">
-                1월 22일 11:00 예정이었던 회의가 변경되어 안내드립니다<br>
-                착오 없으시길 바랍니다.<br>
-                <br>
-                변경 전 : 2022년 1월 22일 11:00<br>
-                변경 후 : 2022년 1월 22일 14:00
-            </div>
+            <div>${ m.mailContent }</div>
         </div>
     </div>
 

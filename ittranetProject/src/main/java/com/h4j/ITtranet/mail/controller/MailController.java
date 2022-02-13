@@ -1,6 +1,12 @@
 package com.h4j.ITtranet.mail.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,16 +55,22 @@ public class MailController {
 	
 	// 3. 새로운 메일 데이터 추가
 	@RequestMapping("insert.ml")
-	public String insertMail(Mail m, MultipartFile upfile, HttpSession session, Model model) {
+	public void insertMail(Mail m, MultipartFile upfile, HttpSession session, Model model) {
 		
-		if(!upfile.getOriginalFilename().equals("")) {
+		
 			String changeName = saveFile(upfile, session);
 			
-			m.setOriginName(upfile.getOriginalFilename());
-			m.setChangeName("resources/uploadFiles/" + changeName);
+			model.addAttribute("setOriginName", upfile.getOriginalFilename());
+			model.addAttribute("setChangeName", "resources/uploadFiles/" + changeName);
+
 			
-		}
+
+			
+
+			
 		
+
+		/*
 		int result = mService.insertMail(m);
 		
 		if(result > 0) {
@@ -68,6 +80,7 @@ public class MailController {
 			model.addAttribute("errorMsg", "메일 보내기에 실패하였습니다.");
 			return "common/errer";
 		}
+		*/
 	}
 	
 	// 4. 상세조회 메일
@@ -77,10 +90,31 @@ public class MailController {
 		Mail m = mService.selectMail(sendMailNo);
 		mv.addObject("m", m).setViewName("mail/mailDetailView");
 		
-		
-		System.out.println(sendMailNo);
-		System.out.println(m);
+
 		return mv;
+	}
+	
+	// 넘어온 첨부파일 서버의 폴더에 저장시킴
+	public String saveFile(MultipartFile upfile, HttpSession session) {
+		String originName = upfile.getOriginalFilename();
+		
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		String changeName = currentTime + ranNum + ext;
+		
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+			
+		}catch(IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
+		
 	}
 
 }

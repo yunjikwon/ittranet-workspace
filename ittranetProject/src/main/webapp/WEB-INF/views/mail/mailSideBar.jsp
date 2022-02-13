@@ -78,8 +78,9 @@
         	margin-left:400px;
         	margin-bottom:150px; /*푸터바와의 간격*/
         }
+
         </style>
-    	<script>
+    	<script src="https://kit.fontawesome.com/6aa80e3f77.js" crossorigin="anonymous">
 	   		$(function(){
 	   			$(window).scroll(function(){
 	   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
@@ -96,7 +97,7 @@
 	   			})
 	   		})
 	   	</script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+
    </head>
     <body>
         <div class="cont">
@@ -106,19 +107,19 @@
                 </li>
                 <div id="border">
 		               <li class="menu1">
-		                  <a href="#"><i class="fa-regular fa-envelope"></i>안읽은메일함</a>
+		                  <a href="#"><i class="fa-solid fa-envelope"></i>안읽은메일함</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="alllist.ml"><i class="fa-solid fa-reply"></i>받은메일함</a>
+		                  <a href="alllist.ml"><i class="fa-solid fa-inbox"></i>받은메일함</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#"><i class="fa-solid fa-share"></i>보낸메일함</a>
+		                  <a href="#"><i class="fa-solid fa-paper-plane"></i>보낸메일함</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="#"><i class="fa-solid fa-star"></i>중요메일함</a>
 		               </li>
                        <li class="menu1">
-                          <a href="#"><i class="fa-solid fa-timer"></i>임시보관함</a>
+                          <a href="#"><i class="fa-solid fa-clock"></i>임시보관함</a>
                        </li>
                        <li class="menu1">
                           <a href="#"><i class="fa-solid fa-ban"></i>스팸메일함</a>

@@ -1,46 +1,73 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	.back{
+        width: 900px;
+    }
+    .mainOuter{
+           width:1200px;
+           height:800px;
+          }
+
+    .sidebar{
+         width:300px;
+         height:600px;
+        }
     .middle{
-             width:800px;
-             height:800px;
-             font-family: 'Gowun Dodum', sans-serif;
-    }
-    .buttonbar{
-        float:right;
-        width:800px;
-        height:80px;
-            
+            width:880px;
+            height:580px;
+            font-family: 'Gowun Dodum', sans-serif;
+
     }
 
-
-    .mailsend{
-              width:800px;
-              height:750px;
+    #buttonbar{
+    	float:right;
+    	padding-left:5px;     
+               
     }
+    table{
+          text-align:center;
+    }
+    
+    
+    
+    
+    
+
     .maildetail{
                 width:800px;
-                height:70px;
-                font-size:15px;
+                height:550px;
+                font-size:17px;
+                background-color:white;
+                margin:5px;
 
     }
-    .maildetail div{
-                    width:800px;
+	.maildetail th{
+		width:100px;
+		height:50px;
+	}
+    .maildetail td{
+    	width:700px;
+    	height:50px;
+    	padding-top:10px;
+
     }
     .maildetail input{
-                      float:right;
-                      width:700px;
-
+    	width:700px;
+    	height:50px;
     }
-    .mailsend textarea{
+    .maildetail textarea{
                     width:800px;
-                    height:500px;
-
+                    height:400px;
+    }
+    #enrollForm{
+    	height:800px;
     }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,44 +75,64 @@
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="middle">
+    <div class="back">
+        <div class="innerBack">
+			<jsp:include page="../common/pageHeader.jsp" />
+ 			<jsp:include page="../common/userMenu.jsp" />
+
+ 		<br clear="both">
+ 		<div style="position:relative">
+			<jsp:include page="../mail/mailSideBar.jsp" />
+			
+        <div class="mainOuter" align="center">
         
+        	<br><br>
+			<div id="buttonbar">
+            	<button type="button" class="btn btn-secondary"><a href="enrollForm.mlme"></a>내게쓰기</button>
+            	<button type="submit" class="btn btn-success">보내기</button>
+            	<button type="reset" class="btn btn-light">취소</button>
+        	</div>
+        	
         <br><br>
-        <div class="buttonbar">
-            <button type="button" class="btn btn-secondary">내게쓰기</button>
-            <button type="button" class="btn btn-success">보내기</button>
-            <button type="button" class="btn btn-light">취소</button>
-        </div>
+        
+        <form id="enrollForm" method="post" action="insert.ml" enctype="multipart/form-data">
+        
+        <input type="hidden" name="senderNo" value="${ loginUser }">
+        
+        
 
-        <div class="mailsend">
-
-			<form id="enrollForm" method="post" action="insert.ml" enctype="multipart/form-data">
+			
             <div class="maildetail">
 
-			<input type="hidden" id="sdaccount" name="senderAccount" va>
-			
-                <div class="receiver">
-                    받는사람 <input type="text" id="rvaccount" name="receiverAcoount" required>
-                </div>
+			<input type="hidden" id="sdaccount" name="senderAccount">
+			<table id="mailinsert" align="center" style="font-family: 'Gowun Dodum', sans-serif;">
+				<tr>
+					<th>받는사람</th>
+					<td><input type="text" id="rvaccount" name="receiverAcoount" required></td>
 
-                <br>
-                <div class="subject">
-                    제목  <input type="text" id="title" name="mailTitle" >
-                </div>
+				</tr>
+				<tr>
+					<th>제목</th>
+					<td><input type="text" id="title" name="mailTitle"></td>
+                </tr>
+                <tr>
+					<th>첨부</th>
+					<td><input type="file" multiple="multiple" name="upfile"></td>
+                </tr>
+                <tr>
+                	<td colspan="2"><textarea id="content" name="mailContent" placeholder="내용을 입력해주세요." required></textarea></td>
 
-                <br>
-                <div class="attach">
-                    첨부 <input type="file" multiple>
-                </div>
-
-                <br>
-                <br>
-                <textarea placeholder="내용을 입력해주세요."></textarea>
-
+            </table>
             </div>
-
-            
-        </div>
+		</form>
+	</div>
+	
+	<jsp:include page="../common/footer.jsp" />
+	
+	</div>
     </div>
+    </div>
+       
+
 </body>
 </html>
