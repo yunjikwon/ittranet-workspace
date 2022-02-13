@@ -9,8 +9,9 @@
 		<result column="dr_title" property="drTitle" />
 		<result column="dr_date" property="drDate" />
 		<result column="dr_status" property="drStatus" />
+		<result column="dr_division" property="drDivision" />
 		<result column="emp_name" property="empName" />
-		<result column="count" property="count" />
+		<result column="team_name" property="teamName" />
 		
 	</resultMap>
 
@@ -53,13 +54,12 @@
 		     , dr_status
 		     , emp_name
 		     , team_name
-		     , count
 		  from draft
 		  join employee using (emp_no)
 		  join team using (team_code)
 		 where dr_status = '결재대기'
 		 order 
-		    by emp_no desc
+		    by dr_date
 	</select>
 
 

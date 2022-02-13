@@ -44,6 +44,7 @@ public class ApprovalController {
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .setViewName("approval/draftWait");
+		System.out.println(pi);
 		return mv;
 	}	
 }
