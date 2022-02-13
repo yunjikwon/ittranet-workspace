@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.h4j.ITtranet.approval.model.service.ApprovalService;
-import com.h4j.ITtranet.approval.model.service.ApprovalServiceImpl;
 import com.h4j.ITtranet.approval.model.vo.AppLine;
 
 @Controller
@@ -17,6 +17,7 @@ public class FormController {
 	@Autowired
 	private ApprovalService aService;
 
+	// ----- 양식 ------
 	@RequestMapping("bussiness.fo")
 	public String bussinessPlanForm() {
 		// /WEB-INF/views/approval/form/bussinessPlan.jsp
@@ -48,6 +49,8 @@ public class FormController {
 		return "approval/form/proceedings";
 	}
 	
+	
+	
 	//새기안 모달창
 	@RequestMapping("newForm.fo")
 	public String newForm() {
@@ -62,15 +65,15 @@ public class FormController {
 	
 	// 검색
 	@RequestMapping("search.fo")
-	public ArrayList<AppLine> selectSearchLine(@RequestParam("team") String team, @RequestParam("name") String name) {
+	public ArrayList<AppLine> selectSearchLine(@RequestParam("keywordTeam") String keywordTeam, @RequestParam("keywordName") String keywordName, Model model) {
 		AppLine appLine = new AppLine();
-		appLine.setTeam(team);
-		appLine.setEmpName(name);
+		appLine.setKeywordName(keywordTeam);
+		appLine.setKeywordName(keywordName);
 		
-		ArrayList<AppLine> FormSearch = aService.selectSearchLine(appLine);	
+		//ArrayList<AppLine> FormSearch = aService.selectSearchLine(appLine);	
 		
 		
-		return "";
+		return aService.selectSearchLine(appLine);
 	}
 
 	

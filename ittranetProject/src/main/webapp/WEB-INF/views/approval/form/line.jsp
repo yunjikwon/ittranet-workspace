@@ -128,12 +128,14 @@
         <div class="contentArea">
     
             <br>
+            
+            <!-- 검색기능 -->
             <div id="searchBox-1">
             	<form action="search.fo" name="search-form" method="get">
 	                <div style="margin-top:5px;">
 	                    <label class="stitle">팀</label>
 	                    <div class="searchBox">
-	                        <input type="text" name="team" value="" class="sinput" placeholder="검색어 입력">
+	                        <input type="text" name="keywordTeam" value="" class="sinput" placeholder="검색어 입력">
 	                        <button type="submit" class="sbtn">검색</button>
 	                    </div>
 	
@@ -141,21 +143,23 @@
 	
 	                    <label class="stitle">성명</label>
 	                    <div class="searchBox">
-	                        <input type="text" name="name" value="" class="sinput" placeholder="검색어 입력">
+	                        <input type="text" name="keywordName" value="" class="sinput" placeholder="검색어 입력">
 	                        <button type="submit" class="sbtn">검색</button>
 	                    </div>
 	                </div>
 	        	</form>        
             </div>
+            
         <br>
+        
             <div class="tablelayout">
-	            <table class="boardList" align="center">
+	            <table class="boardList" id="boardList" align="center">
 	                <thead>
 	                  <tr>
 	                    <th width="10%"></th>
 	                    <th>팀</th>
 	                    <th>직급</th>
-	                    <th>직원코드</th>
+	                    <th>직원ID</th>
 	                    <th>직원명</th>
 	                  </tr>
 	                </thead>
@@ -189,7 +193,7 @@
 	                    <th width="10%"></th>
 	                    <th>팀</th>
 	                    <th>직급</th>
-	                    <th>직원코드</th>
+	                    <th>직원ID</th>
 	                    <th>직원명</th>
 	                  </tr>
 	                </thead>
@@ -231,11 +235,11 @@
     				if(result.length>=1){
     					result.forEach(function(item){
     						str="<tr>"
-    						   += <"td>"+ + "</td>"
-    						   += <"td>"+ 팀 + "</td>"
-    						   += <"td>"+ 직급 + "</td>"
-    						   += <"td>"+ 직원코드 + "</td>"
-    						   += <"td>"+ 직원명 + "</td>"
+    						   += <"td><input type='checkbox' name='' id=''></td>"
+    						   += <"td>"+ item.team + "</td>"
+    						   += <"td>"+ item.job + "</td>"
+    						   += <"td>"+ item.empCode + "</td>"
+    						   += <"td>"+ item.empName + "</td>"
     						   += "</tr>"
     						$('#boardList').append(str);	   
     					})

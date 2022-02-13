@@ -4,11 +4,63 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="appMapper">
 
+	<resultMap id="appResultSet" type="Approval">
+		<result column="dr_no" property="drNo" />
+		<result column="dr_title" property="drTitle" />
+		<result column="dr_date" property="drDate" />
+		<result column="dr_status" property="drStatus" />
+		<result column="emp_name" property="empName" />
+		<result column="count" property="count" />
+		
+	</resultMap>
+
+
+	<!-- 결재선 검색 -->
 	<select id="selectSearchList" resultType="AppLine">
 		select
+		       team_name, job_name, emp_id, emp_name 
+		  from employee
+		  join job using(job_code)
+		  join team using(team_code)
+		 where 
+		 <choose>
+		    <when test="keywordName">
+		        and team_name like '%' || #{keywordName} || '%'  
+		    </when>
+		    <when test="keywordTeam">
+		        and emp_name like '%' || #{keywordTeam} || '%' 
+		    </when>
+		 </choose>
+		 order
+		    by team_name
 			   
 	</select>
 
+	<!-- 기안 게시판 -->
+	<select id="selectListCount" resultType="_int">
+		select
+		       count(*)
+		  from draft
+		 where dr_status = '결재대기'
+	</select>
+	
+	<select id="selectList" resultMap="appResultSet">
+		select 
+		       dr_no
+		     , dr_division  
+		     , dr_title
+		     , dr_date
+		     , dr_status
+		     , emp_name
+		     , team_name
+		     , count
+		  from draft
+		  join employee using (emp_no)
+		  join team using (team_code)
+		 where dr_status = '결재대기'
+		 order 
+		    by emp_no desc
+	</select>
 
 
 

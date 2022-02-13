@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.h4j.ITtranet.approval.model.dao.ApprovalDao;
 import com.h4j.ITtranet.approval.model.vo.AppLine;
+import com.h4j.ITtranet.approval.model.vo.Approval;
+import com.h4j.ITtranet.common.model.vo.PageInfo;
 
+@Service
 public class ApprovalServiceImpl implements ApprovalService {
 
 	@Autowired
@@ -26,6 +30,16 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return aDao.selectSearchLine(sqlSession, appLine);
 		
+	}
+
+	@Override
+	public int selectListCount() {
+		return aDao.selectListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Approval> selectList(PageInfo pi) {
+		return aDao.selectList(sqlSession, pi);
 	}
 	
 	
