@@ -19,5 +19,8 @@ public class Attachment {
 	private String filePath;
 	private String refCode;
 	private int refNo;	
+	
+	//게시판 용 변수
+	private int boardNo;
 
 }

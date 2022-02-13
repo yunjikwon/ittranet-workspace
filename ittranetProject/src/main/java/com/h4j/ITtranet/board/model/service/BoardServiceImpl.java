@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.h4j.ITtranet.board.model.dao.BoardDao;
 import com.h4j.ITtranet.board.model.vo.Board;
+import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.model.vo.Reply;
 
@@ -31,18 +32,29 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int insertBoard(Board b) {
-		return 0;
+	public int insertBoard(Board b) {		
+		
+		return bDao.insertBoard(sqlSession, b);
 	}
 
 	@Override
+	public int insertAttachment(Attachment at) {
+		return bDao.insertAttachment(sqlSession, at);
+	}
+	
+	@Override
 	public int increaseCount(int boardNo) {
-		return 0;
+		return bDao.increaseCount(sqlSession, boardNo);
 	}
 
 	@Override
 	public Board SelectBoard(int boardNo) {
-		return null;
+		return bDao.selectBoard(sqlSession, boardNo);
+	}
+
+	@Override
+	public ArrayList<Attachment> selectAttachment(int boardNo) {
+		return bDao.selectAttachment(sqlSession, boardNo);
 	}
 
 	@Override
@@ -69,5 +81,7 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<Board> selectNewBoardList() {
 		return null;
 	}
+
+
 	
 }

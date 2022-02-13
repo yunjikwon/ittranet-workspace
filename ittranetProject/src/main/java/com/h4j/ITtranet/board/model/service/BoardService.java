@@ -2,7 +2,10 @@ package com.h4j.ITtranet.board.model.service;
 
 import java.util.ArrayList;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.h4j.ITtranet.board.model.vo.Board;
+import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.model.vo.Reply;
 
@@ -15,9 +18,13 @@ public interface BoardService {
 	// 2. 게시글 작성하기 서비스
 	int insertBoard(Board b);
 	
+	// 2-1. 첨부파일 추가 서비스
+	int insertAttachment(Attachment at);
+	
 	// 3. 게시글 상세조회용 서비스
 	int increaseCount(int boardNo);
 	Board SelectBoard(int boardNo);
+	ArrayList<Attachment> selectAttachment(int boardNo);
 	
 	// 4. 게시글 삭제용 서비스
 	int deleteBoard(int boardNo);
