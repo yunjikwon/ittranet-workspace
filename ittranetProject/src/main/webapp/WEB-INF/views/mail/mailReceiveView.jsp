@@ -75,8 +75,9 @@
         <div class="mainOuter">
 			
             <br><br>
+
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button">메일쓰기</button>
+            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
                 <button class="w-btn w-btn-gra2" type="button" data-toggle="modal" data-target="#exampleModal">삭제</button>
             
             	<!-- Modal -->
@@ -100,6 +101,11 @@
   </div>
 </div>
             </div>
+            <form id="postForm" action="" method="post">
+            	<input type="hidden" name="mno" value="${ m.sendMailNo }">
+            </form>
+            
+            
             <br><br><br>
 
             <div class="table table-hover" align="center">
@@ -114,11 +120,14 @@
                     	</tr>
                     </thead>
                     <tbody>
+                    
+                    
                     	<c:forEach var="m" items="${ list }">
+                    	
                     		<tr>
                         		<td><input type="checkbox"></td>
                         		<td>★</td>
-                        		<td>${ m.empName }</td>
+                        		<td>${ m.empNameSd }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
                     		</tr>
@@ -128,7 +137,8 @@
                 <script>
             		$(function(){
             			$("#mailalllist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children(".mno").text();
+            				location.href = 'detail.ml?mno=' + $(this).children().text();
+            				console.log(mno);
             			});
             		})
             	</script>

@@ -109,7 +109,7 @@
 		                  <a href="#"><i class="fa-regular fa-envelope"></i>안읽은메일함</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#"><i class="fa-solid fa-reply"></i>받은메일함</a>
+		                  <a href="alllist.ml"><i class="fa-solid fa-reply"></i>받은메일함</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="#"><i class="fa-solid fa-share"></i>보낸메일함</a>

@@ -7,7 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.h4j.ITtranet.common.model.vo.PageInfo;
-import com.h4j.ITtranet.mail.model.vo.MailReceive;
+import com.h4j.ITtranet.mail.model.vo.Mail;
 
 @Repository
 public class MailDao {
@@ -17,12 +17,21 @@ public class MailDao {
 		
 	}
 	
-	public ArrayList<MailReceive>  selectList(SqlSessionTemplate sqlSession, PageInfo pi){
+	public ArrayList<Mail>  selectList(SqlSessionTemplate sqlSession, PageInfo pi){
 		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
 		return (ArrayList)sqlSession.selectList("mailMapper.selectList", null, rowBounds);
+		
+	}
+	
+	public int insertMail(SqlSessionTemplate sqlSession, Mail m) {
+		return sqlSession.insert("mailMapper.insertMail", m);
+	}
+	
+	public Mail selectMail(SqlSessionTemplate sqlSession, int sendMailNo) {
+		return sqlSession.selectOne("mailMapper.selectMail", sendMailNo);
 	}
 
 }

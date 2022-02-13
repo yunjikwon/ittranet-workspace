@@ -11,22 +11,24 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class MailReceive {
+public class Mail {
 	
-	private String receiveMailNo;
-	private String sendMailNo;
-	private String empNo;
-	private String receiverAccount;
+	private int receiveMailNo;
+	private int sendMailNo;
+	private String empNameRv;
+	private String receiverAcoount;
 	private String read;
 	private String important;
 	private String spam;
-	private String status;
-	
-
-	private String empName;
+	private String statusRv;
+	private String empNameSd;
+	private String senderAccount;
 	private String mailTitle;
+	private String mailContent;
 	private String sendDate;
-	private String wroteme_status;
+	private String temStatus;
+	private String statusSd;
+	private String wrotemeStatus;
+
+
 }
-
-
