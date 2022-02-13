@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+  
 <!DOCTYPE html>
 <html>
 <head>
@@ -132,7 +133,7 @@
 	               <li class="sideMenu">
 	                  <a href="#">기안함</a>
 	                  <ul class="subMenu">
-	                  	 <li><a href="#">대기 결재</a></li>
+	                  	 <li><a href="draftWait.dr?category=1">대기 결재</a></li>
 	                     <li><a href="#">진행중 결재</a></li>
 	                     <li><a href="#">반려 결재</a></li>
 	                     <li><a href="#">완료 결재</a></li>
@@ -189,8 +190,15 @@
 	                $(this).children('.subMenu').slideUp();
 	            }
 	        });
-
-
+		
+		/*게시판 구분
+       	$(function(){
+       		$("#border>tbody>tr").click(function(){
+       			location.href = 'detail.bo?bno=' + $(this).children(".bno").text();
+       		});
+       	})
+	   */
+	   
         </script>
         
 
