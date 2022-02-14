@@ -19,13 +19,13 @@ public class MailServiceImpl implements MailService{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	@Override
-	public int selectListCount() {
-		return mDao.selectListCount(sqlSession);
+	public int selectListCount(String empNo) {
+		return mDao.selectListCount(sqlSession, empNo);
 	}
 
 	@Override
-	public ArrayList<Mail> selectList(PageInfo pi) {
-		return mDao.selectList(sqlSession, pi);
+	public ArrayList<Mail> selectList(PageInfo pi, String empNo) {
+		return mDao.selectList(sqlSession, pi, empNo);
 	}
 
 	@Override

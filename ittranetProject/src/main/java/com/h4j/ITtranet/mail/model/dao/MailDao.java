@@ -12,17 +12,18 @@ import com.h4j.ITtranet.mail.model.vo.Mail;
 @Repository
 public class MailDao {
 	
-	public int selectListCount(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("mailMapper.selectListCount");
+	public int selectListCount(SqlSessionTemplate sqlSession, String empNo) {
+		
+		return sqlSession.selectOne("mailMapper.selectListCount", empNo);
 		
 	}
 	
-	public ArrayList<Mail>  selectList(SqlSessionTemplate sqlSession, PageInfo pi){
+	public ArrayList<Mail>  selectList(SqlSessionTemplate sqlSession, PageInfo pi, String empNo){
 		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("mailMapper.selectList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("mailMapper.selectList", empNo, rowBounds);
 		
 	}
 	

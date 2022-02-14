@@ -49,7 +49,7 @@
 
     }
 	.maildetail th{
-		width:150px;
+		width:100px;
 		height:50px;
 	}
     .maildetail td{
@@ -108,28 +108,24 @@
 			<table id="mailinsert" align="center" style="font-family: 'Gowun Dodum', sans-serif;">
 				<tr>
 					<th>받는사람</th>
-					<td colspan="2"><input type="text" id="rvaccount" name="receiverAcoount" required></td>
+					<td><input type="text" id="rvaccount" name="receiverAcoount" required></td>
 
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td colspan="2"><input type="text" id="title" name="mailTitle"></td>
+					<td><input type="text" id="title" name="mailTitle"></td>
                 </tr>
                 <tr>
 					<th>첨부</th>
-					<td><i class="fa-solid fa-file-plus"><input type="file" multiple="multiple" name="upfile"></i></td>
+					<td><input type="file" multiple="multiple" name="upfile"></td>
                 </tr>
                 <tr>
-                	<td colspan="3"><textarea id="content" name="mailContent" placeholder="내용을 입력해주세요." required></textarea></td>
+                	<td colspan="2"><textarea id="content" name="mailContent" placeholder="내용을 입력해주세요." required></textarea></td>
 
             </table>
             </div>
 		</form>
 	</div>
-	
-	<script src="https://kit.fontawesome.com/6aa80e3f77.js" crossorigin="anonymous">
-	</script>
-
 	
 	<jsp:include page="../common/footer.jsp" />
 	

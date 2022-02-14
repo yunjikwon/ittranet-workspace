@@ -4,7 +4,7 @@
 
 	<resultMap id="mailResult" type="Mail">
 		<result column="send_mail_no" property="sendMailNo" />
-		<result column="emp_no" property="empNoSd" />
+		<result column="sdpp" property="empNameSd" />
 		<result column="sender_account" property="senderAccount" />
 		<result column="mail_title" property="mailTitle" />
 		<result column="mail_content" property="mailContent" />
@@ -14,7 +14,7 @@
 		<result column="wroteme_status" property="wrotemeStatus" />
 		<result column="receive_mail_no" property="receiveMailNo" />
 		<result column="send_mail_no" property="sendMailNo" />
-		<result column="emp_no" property="empNoRv" />
+		<result column="rvpp" property="empNameRv" />
 		<result column="receiver_account" property="receiverAccount" />
 		<result column="read" property="read" />
 		<result column="important" property="important" />
@@ -28,49 +28,60 @@
 			   count(*)
 		  from mail_receive
 		 where status = 'Y'
+		   and emp_no = #{empNo}
 	</select>
 	
 	<select id="selectList" resultMap="mailResult">
 		select 
                receive_mail_no
-             , emp_name 
+             , send_mail_no
+             , sdpp
              , mail_title
              , send_date
              , wroteme_status
          from
          	  (select 
                       receive_mail_no
-                    , sd.emp_no sdpp
+                    , send_mail_no
+                    , emp_name sdpp
+                    , sd.emp_no emp_no
                     , mail_title
                     , send_date
                     , wroteme_status
+                    , sd.status
                  from mail_receive rv
-                 join mail_send sd using (send_mail_no)) a
-          join employee on (sdpp = emp_no)
+                 join mail_send sd using (send_mail_no)
+                 join employee e on (sd.emp_no = e.emp_no)) a
+          
          where status = 'Y'
+           and emp_no = #{empNo}
 	</select>
 	
 	<select id="selectMail" resultMap="mailResult">
 		select
 			   send_mail_no
-			 , sdpp
+			 , emp_name sdpp
 			 , rvpp
 			 , mail_title
 			 , mail_content
 			 , send_date
+			 , receiver_account
+             , sender_account
 		  from
 		  	   (select
 					   send_mail_no
 					 , sd.emp_no sdpp
-					 , rv.emp_no rvpp
+					 , emp_name rvpp
 					 , mail_title
 					 , mail_content
 					 , send_date
+					 , receiver_account
+                     , sender_account
 				  from mail_receive rv
-				  join mail_send sd using (send_mail_no)) a
-				  join employee e on (sdpp = e.emp_no)
-				  join employee e1 on (rvpp = e1.emp_no)
-				 where send_mail_no = ?
+				  join mail_send sd using (send_mail_no)
+                  join employee e on (rv.emp_no = e.emp_no)) a
+				  join employee e1 on (sdpp = e1.emp_no)
+				 where send_mail_no = #{ sendMailNo }
 	</select>
 	
 	

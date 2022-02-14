@@ -77,9 +77,10 @@
 			
             <br><br>
 
+			<!-- 버튼 2개 (메일쓰기, 삭제) -->
             <div id="buttonbar">
             	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="button" data-toggle="modal" data-target="#exampleModal">삭제</button>
+                <button class="w-btn w-btn-gra2" type="submit">삭제</button>
             
             	<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -103,8 +104,8 @@
 </div>
             </div>
             <form id="postForm" action="alllist.ml" method="post">
-            	<input type="hidden" name="mno" value="${ m.sendMailNo }">
-            </form>
+
+            
             
             
             <br><br><br>
@@ -113,7 +114,7 @@
                 <table id="mailalllist" style="background-color:white">
                 	<thead>
                     	<tr>
-                        	<th style="width:50px;"><input type="checkbox"></th>
+                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
                         	<th style="width:50px;">☆</th>
                         	<th style="width:150px;">보낸사람</th>
                         	<th style="width:500px;">제목</th>
@@ -126,7 +127,9 @@
                     	<c:forEach var="m" items="${ list }">
                     	
                     		<tr>
-                        		<td><input type="checkbox"></td>
+                    			
+                    			<input type="hidden" value=${ m.sendMailNo }>
+                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
                         		<td>★</td>
                         		<td>${ m.empNameSd }</td>
                         		<td>${ m.mailTitle }</td>
@@ -135,13 +138,28 @@
                     	</c:forEach>
                     </tbody>
                 </table>
+                
+			</form>
+			
                 <script>
             		$(function(){
             			$("#mailalllist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().text();
+            				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
             				console.log(mno);
             			});
             		})
+            	</script>
+            	<script>	
+            		$(document).ready(function() {
+            			$("#allCheck").click(function() {
+            				if($("#allCheck").prop("checked")) { 
+            				$("input[name=checked]").prop("checked", true);
+            			}else {
+            				$("input[name=checked]").prop("checked", false);
+            			}
+            			});
+            		})
+
             	</script>
             </div>
 

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.template.Pagination;
+import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.mail.model.service.MailService;
 import com.h4j.ITtranet.mail.model.vo.Mail;
 
@@ -30,16 +31,16 @@ public class MailController {
 	
 	// 1. 받은메일함 조회 (메일 전체조회)
 	@RequestMapping("alllist.ml")
-	public String selectList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model) {
+	public String selectList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
-		int listCount = mService.selectListCount();
+		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		
+		int listCount = mService.selectListCount(empNo);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
-		ArrayList<Mail> rvlist = mService.selectList(pi);
+		ArrayList<Mail> rvlist = mService.selectList(pi, empNo);
 
-
-		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", rvlist);
 		 
@@ -85,9 +86,9 @@ public class MailController {
 	
 	// 4. 상세조회 메일
 	@RequestMapping("detail.ml")
-	public ModelAndView selectMail(int sendMailNo, ModelAndView mv) {
+	public ModelAndView selectMail(int mno, ModelAndView mv) {
 		
-		Mail m = mService.selectMail(sendMailNo);
+		Mail m = mService.selectMail(mno);
 		mv.addObject("m", m).setViewName("mail/mailDetailView");
 		
 

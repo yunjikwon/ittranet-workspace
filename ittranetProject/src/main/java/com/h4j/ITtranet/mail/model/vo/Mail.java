@@ -16,7 +16,7 @@ public class Mail {
 	private int receiveMailNo;
 	private int sendMailNo;
 	private String empNameRv;
-	private String receiverAcoount;
+	private String receiverAccount;
 	private String read;
 	private String important;
 	private String spam;
