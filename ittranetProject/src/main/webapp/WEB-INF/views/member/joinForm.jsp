@@ -140,22 +140,24 @@
         <br><br><br>
         <p class="anton" style="font-style:italic;" id="hi">JOIN IT!tranet</p>
         <br>
-        <form name="joinForm" action="join.me" method="post">
+        <form name="joinForm" id="joinForm" action="join.me" method="post">
 	        <p class="anton">NAME</p>
-	        <input type="text" class="input-form" id="empName" name="empName" placeholder="한글 성명 2자 이상 15자 이하" onfocus="this.placeholder = ''" onblur="this.placeholder='한글 성명 2자 이상 15자 이하'" required><br>
+	        <input type="text" class="input-form" id="empName" name="empName" placeholder="한글 성명 2자 이상 15자 이하" onfocus="this.placeholder = ''" onblur="this.placeholder='한글 성명 2자 이상 15자 이하'"><br>
 	        <br>
 	        <p class="anton">E-MAIL</p>
-	        <input type="text" class="input-form" id="email" name="email" placeholder="가입 링크를 받은 메일 주소 입력(@포함)" onfocus="this.placeholder = ''" onblur="this.placeholder='가입 링크를 받은 메일 주소 입력(@포함)'" required><br>
+	        <input type="text" class="input-form" id="email" name="email" placeholder="가입 링크를 받은 메일 주소 입력(@포함)" onfocus="this.placeholder = ''" onblur="this.placeholder='가입 링크를 받은 메일 주소 입력(@포함)'"><br>
+	        <div id="checkMail" style="font-size:0.8em; display:none"></div>
 	        <br>
 	        <p class="anton">ID</p>
-	        <input type="text" class="input-form" id="empId" name="empId" placeholder="영소문자, 숫자 조합 4~12글자" onfocus="this.placeholder = ''" onblur="this.placeholder='영소문자, 숫자 조합 4~12글자'" required><br>
+	        <input type="text" disabled class="input-form" id="empId" name="empId" placeholder="영소문자, 숫자 조합 4~12글자" onfocus="this.placeholder = ''" onblur="this.placeholder='영소문자, 숫자 조합 4~12글자'"><br>
+	        <div id="checkId" style="font-size:0.8em; display:none"></div>
 	        <br>
 	        <p class="anton">PASSWORD</p>
 	        &nbsp;<i id="checkPwd" class="fas fa-check">비밀번호확인</i>
-	        <input type="text" class="input-form" id="empPwd" name="empPwd" placeholder="영문,숫자,특문(!@#$%^&*)조합 8~16글자" onfocus="this.placeholder = ''" onblur="this.placeholder='영문,숫자,특문(!@#$%^&*)조합 8~16글자'" required><br>
+	        <input type="text" disabled class="input-form" id="empPwd" name="empPwd" placeholder="4~16글자 (영문,숫자,특문(!@#$%^&*)사용가능)" onfocus="this.placeholder = ''" onblur="this.placeholder='영문,숫자,특문(!@#$%^&*)조합 8~16글자'"><br>
 	        <br>
 	        <p class="anton">PHONE</p>
-	        <input type="text" class="input-form" id="phone" name="phone" placeholder="-포함 13자리 핸드폰 번호 입력(000-0000-0000)" onfocus="this.placeholder = ''" onblur="this.placeholder='-포함 13자리 핸드폰 번호 입력(000-0000-0000)'" required><br>
+	        <input type="text" disabled class="input-form" id="phone" name="phone" placeholder="-포함 13자리 핸드폰 번호 입력(000-0000-0000)" onfocus="this.placeholder = ''" onblur="this.placeholder='-포함 13자리 핸드폰 번호 입력(000-0000-0000)'"><br>
 	        <br>
 	        <p class="anton">ADDRESS</p>                  
 	        <input class="input-form" style="width: 60%; display: inline;" placeholder="우편번호" name="addr1" id="addr1" type="text" readonly="readonly">&nbsp;
@@ -170,18 +172,74 @@
     </div>
     
     <script>
-    	// 비밀번호 확인
-		$(document).ready(function(){
+		$(function(){
+			
+			// *** 아이디,이메일 중복 확인 ***
+			// * 이메일 확인 *
+			const $mailInput = $("#joinForm input[name=email]");
+			$mailInput.keyup(function(){
+				
+				// console.log($mailInput.val());
+					
+				$.ajax({
+					url:"mailCheck.me",
+					data:{checkMail:$mailInput.val()},
+					success:function(result){
+						
+						if(result == "PASS") {
+							$("#checkMail").show();
+							$("#checkMail").css("color", "green").text("멋진 이메일이네요!");
+							$("#empId").removeAttr("disabled");
+						}else {
+							$("#checkMail").show();
+							$("#checkMail").css("color", "red").text("중복된 이메일이 존재합니다. 다시 입력해주세요.");
+						}
+						
+					},error:function(){
+						console.log("메일 중복체크용 ajax통신 실패")
+					}
+					
+				})				
+			});
+			
+			// * 아이디 확인 *
+			const $idInput = $("#joinForm input[name=empId]");
+			$idInput.keyup(function(){
+				
+				// console.log($idInput.val());
+					
+				$.ajax({
+					url:"idCheck.me",
+					data:{checkId:$idInput.val()},
+					success:function(result){
+						
+						if(result == "PASS") {
+							$("#checkId").show();
+							$("#checkId").css("color", "green").text("멋진 아이디네요!");
+							$("#empPwd").removeAttr("disabled");
+							$("#phone").removeAttr("disabled");
+						}else {
+							$("#checkId").show();
+							$("#checkId").css("color", "red").text("중복된 아이디가 존재합니다. 다시 입력해주세요.");
+						}
+						
+					},error:function(){
+						console.log("아이디 중복체크용 ajax통신 실패")
+					}
+					
+				})				
+			});
+			
+			// *** 비밀번호 확인 ***
 			$('.content i').hover(function(){
 				$('#empPwd').attr('type','text');
 			}, function(){
 				$('#empPwd').attr('type','password');
-			});
-			
+			});	
 			
 		});
     
-    	// 주소 api
+    	// *** 주소 api ***
         function execPostCode() {
          new daum.Postcode({
              oncomplete: function(data) {
@@ -220,33 +278,106 @@
             	}
          	}).open();
     	};
-    	
-    	function joinSubmit(){
-    		joinForm.submit(); 
-    	}
         
-        // 회원가입 submit
+        // *** 회원가입 submit ***
         function joinSubmit(){
         	var joinForm = document.joinForm;
-        	var empName = joinForm.empName.value;
-        	var email = joinForm.email.value;
-        	var empId = joinForm.empId.value;
-        	var empPwd = joinForm.empPwd.value;
-        	var phone = joinForm.phone.value;
-        	var addr1 = joinForm.addr1.value;
-        	var addr2 = joinForm.addr2.value;
-        	var addr3 = joinForm.addr3.value;
+        	const empName = joinForm.empName.value;
+        	const email = joinForm.email.value;
+        	const empId = joinForm.empId.value;
+        	const empPwd = joinForm.empPwd.value;
+        	const phone = joinForm.phone.value;
+        	const addr1 = joinForm.addr1.value;
+        	const addr2 = joinForm.addr2.value;
+        	const addr3 = joinForm.addr3.value;
         	$("[name=address]").val("[" + addr1 +"] " + addr2 + " " + addr3);
         	
-        	if(!empName||!email||!empId||!empPwd||!phone||!addr1||!addr3) {
+        	// * 정규식 유효성 검사 *
+        	const regName = /^[가-힣]{2,15}$/;
+        	const regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+        	const regId = /^[a-z][a-z\d]{3,11}$/;
+        	const regPwd = /^[a-z\d!@#$%^&*]{4,16}$/i;
+        	const regPhone = /^\d{2,3}-\d{3,4}-\d{4}$/;
+        	
+        	if(!empName) {
+        		$("[name=empName]").focus();
         		Swal.fire({
-        			  icon: 'error',
-        			  title: 'Oops...',
-        			  text: '모든 입력 사항을 작성해 주세요!'
-        			})
-        	} else{
+      			  icon: 'error',
+      			  title: 'Oops...',
+      			  text: '이름을 입력해주세요!'
+      			});
+        	} else if(!regName.test(empName)) {
+        		$("[name=empName]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '유효한 형식의 이름을 입력해주세요!'
+       			});
+        	} else if(!email) {
+        		$("[name=email]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '이메일을 입력해주세요!'
+       			});
+        	} else if(!regEmail.test(email)) {
+        		$("[name=email]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '유효한 형식의 이메일을 입력해주세요!'
+       			});
+        	} else if(!empId) {
+        		$("[name=empId]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '아이디를 입력해주세요!'
+       			});
+        	} else if(!regId.test(empId)) {
+        		$("[name=empId]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '유효한 형식의 아이디를 입력해주세요!'
+       			});
+        	} else if(!empPwd) {
+        		$("[name=empPwd]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '비밀번호를 입력해주세요!'
+       			});
+        	} else if(!regPwd.test(empPwd)) {
+        		$("[name=empPwd]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '유효한 형식의 비밀번호를 입력해주세요!'
+       			});
+        	} else if(!phone) {
+        		$("[name=phone]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '번호를 입력해주세요!'
+       			});
+        	} else if(!regPhone.test(phone)) {
+        		$("[name=phone]").focus();
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '유효한 형식의 번호를 입력해주세요!'
+       			});
+        	} else if(!addr1||!addr3) {
+        		Swal.fire({
+       			  icon: 'error',
+       			  title: 'Oops...',
+       			  text: '주소를 입력해주세요!'
+       			});
+        	} else {
         		joinForm.submit();        		
-        	}	
+        	} 	 
         };
         
 

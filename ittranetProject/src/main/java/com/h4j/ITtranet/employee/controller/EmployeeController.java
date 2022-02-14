@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.h4j.ITtranet.employee.model.service.EmployeeService;
@@ -54,11 +55,39 @@ public class EmployeeController {
 		return "redirect:/";
 	}
 	
+	// 아이디 비밀번호 찾기
+	@ResponseBody
+	@RequestMapping(value="findIdPwd.me", produces="application/json; charset=UTF-8")
+	public String findIdPwd(String email) {
+		System.out.println(email);
+		String responseData = "문자열";
+		return responseData;
+	}
+	
 	// 회원가입페이지 호출(메일 => 링크 클릭 => 회원가입 페이지(당연히 서버 돌고 있어야 함)
 	// 링크 주소 : http://localhost:8174/ITtranet/joinForm.me
 	@RequestMapping("joinForm.me")
 	public String joinForm() {
 		return "member/joinForm";
+	}
+	
+	/**
+	 * 회원가입 메일 중복 확인
+	 * @param checkMail
+	 * @return int count
+	 */
+	@ResponseBody
+	@RequestMapping("mailCheck.me")
+	public String mailCheck(String checkMail) {
+		int count = 0;
+		return eService.mailCheck(checkMail) > 0 ? "FAIL" : "PASS";
+	}
+	
+	@ResponseBody
+	@RequestMapping("idCheck.me")
+	public String idCheck(String checkId) {
+		int count = 0;
+		return eService.idCheck(checkId) > 0 ? "FAIL" : "PASS";
 	}
 	
 	// 회원가입 요청 => DB에 정보 담김 but 상태(status)는 W(wait)
@@ -71,7 +100,7 @@ public class EmployeeController {
 		
 		String encPwd = bcryptPasswordEncoder.encode(e.getEmpPwd()); // 암호화
 		
-		System.out.println(encPwd);
+		// System.out.println(encPwd);
 		
 		e.setEmpPwd(encPwd); // empPwd필드 암호문으로 변경
 		

@@ -172,24 +172,39 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-            * @포함 이메일 형태로 입력하세요
-            <input type="text" class="form-control form-control">
+            * 가입시 입력한 이메일을 작성하세요 (@포함)
+            <input type="text" id="email" name="email" class="form-control form-control">
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="findIdPwd();">확인</button>
             </div>
         </div>
         </div>
     </div>
     
     <script>
-    	$(document).ready(function(){
+    	// 비밀번호 확인
+    	$(function(){
     		$('.content i').hover(function(){
     			$('#empPwd').attr('type','text');
     		}, function(){
     			$('#empPwd').attr('type','password');
     		})
-    	})
+    	});
+    	
+    	// ID/PWD찾기
+    	function findIdPwd(){
+    		$.ajax({
+    			url:"findIdPwd.me",
+    			data:{email:$("#email").val()},
+    			type:"post",
+    			success:function(result){
+    				console.log(result)
+    			},error:function(){
+    				console.log("ajax통신 실패");
+    			}
+    		})
+    	};
     </script>
 	
 </body>
