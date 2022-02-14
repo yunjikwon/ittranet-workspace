@@ -45,7 +45,7 @@
     }
     .btnStyle:hover{opacity: 50%;}
     .aTag:hover{color: grey;}
-	#updateBtn, #replyInsertBtn{
+	#updateBtn, #replyInsertBtn, #backBtn, #deleteBtn{
 		width : 70px;
 		height : 30px;
 	}
@@ -55,10 +55,25 @@
 </style>
 </head>
 <body>
+	
 	<div class="back">
 		<div class="innerBack">
 			<!--헤더자리-->
 			<jsp:include page="../common/pageHeader.jsp" />
+			<!-- 글 수정시 나타나는 alert창 위한 구문 -->
+			<c:if test="${ not empty alertMsg }">
+				<script>
+					Swal.fire({
+					  position: 'middle',
+					  icon: 'success',
+					  text: '${ alertMsg }',
+					  showConfirmButton: false,
+					  timer: 1500
+					})
+				</script>
+				<c:remove var="alertMsg"  />
+				
+			</c:if>
 			<!-- 메뉴바-->
 			<jsp:include page="../common/userMenu.jsp" />
 
@@ -94,8 +109,43 @@
 					<div class="boardDetailOuter" align="center">
 						
 						<br><br>
-						<button id="updateBtn" class="btnStyle" style="float:right; margin-right:50px;"><a class="aTag">수정하기</a></button>
+						<button id="backBtn" class="btnStyle" style="float:right; margin-right:50px;" onclick="goBack();"><a class="aTag">목록으로</a></button>
+						<c:if test="${ b.empNo eq loginUser.empNo }">
+							<button id="updateBtn" class="btnStyle" style="float:right; margin-right:5px;" onclick="postFormSubmit(1);">수정하기</button>
+							<button id="deleteBtn" class="btnStyle" style="float:right; margin-right:5px;" onclick="delBoard();">삭제하기</button>
+						</c:if>
+						<form id="postForm" action="" method="post">
+							<input type="hidden" name="bno" value="${ b.boardNo }">
+							<input type="hidden" name="filePath" value="${ at.changeName }">
+						</form>
 						<br><br>
+						<script>
+						
+							function delBoard(){
+								
+								Swal.fire({
+								  title: '삭제하시겠습니까?',
+								  icon: 'warning',
+								  showCancelButton: true,
+								  confirmButtonColor: '#3085d6',
+								  cancelButtonColor: '#d33',
+								  confirmButtonText: '삭제하기',
+								  cancelButtonText : '취소'
+								}).then((result) => {
+								  if (result.isConfirmed) {
+									$("#postForm").attr("action", "delete.bo").submit();  
+								   
+								  }
+								})
+							}
+							
+							function postFormSubmit(num){
+								if(num == 1){
+									$("#postForm").attr("action", "updateForm.bo").submit();
+								
+								}
+							}
+						</script>
 						<!-- 게시글 상세내역-->
 						<table id="boardDetailTable" align="center">
 							<tr>
@@ -138,6 +188,12 @@
 								</td>
 							</tr>
 						</table>
+						<script>
+							 function goBack(){
+								location.href="list.bo";
+							 }
+
+						</script>
 						
 						<!-- 댓글 영역 -->
 						<div id="reply-area" align="center">

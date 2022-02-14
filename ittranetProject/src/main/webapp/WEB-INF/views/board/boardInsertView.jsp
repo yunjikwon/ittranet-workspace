@@ -6,11 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://kit.fontawesome.com/07e0557a32.js" crossorigin="anonymous"></script>
+
 <style>
     .boardDetailOuter{
 		width: 900px;
@@ -22,6 +18,7 @@
     #boardDetailTable{
 		width: 700px;
 		border-collapse: collapse;
+		margin: auto;
     }
 	.aTag, .aTag:hover{
 		text-decoration: none;
@@ -39,7 +36,7 @@
 		border-bottom: 1px solid rgb(184, 184, 184);
         border-top: 1px solid rgb(184, 184, 184);
 	}
-    .btn{
+    .btnStyle{
         border: none;
         margin: 5px;
         padding:0;
@@ -49,7 +46,7 @@
 		background: rgba(162, 171, 255, 0.822);
         cursor: pointer;
     }
-    .btn:hover{opacity: 50%;}
+    .btnStyle:hover{opacity: 50%;}
 	#updateBtn, #btn-area>button{
 		width : 70px;
 		height : 30px;		
@@ -57,6 +54,15 @@
     .formInput{
         width: 90%;
         height: 25px;
+    }
+    #addFileBtn, #removeFileBtn{
+    	width: 25px;
+    	height: 25px;
+        font-size: 14px;
+        font-weight: 900;
+        border: none;
+        border-radius: 1.05ex;
+        background: rgba(195, 200, 247, 0.822);
     }
 	
 </style>
@@ -101,28 +107,26 @@
                     <div class="boardDetailOuter" align="center">
                         
                         <br><br>
-                        <button id="updateBtn" class="btn" style="float:right; margin-right:50px;"><a class="aTag">수정하기</a></button>
                         <br clear="both"><br>
                         <!-- 게시글 상세내역-->
                         <form id="insertForm" method="post" action="insert.bo" enctype="multipart/form-data" align="center">
                         	<input type="hidden" id="empNo" name="empNo" value="${ loginUser.empNo }">
                             <table id="boardDetailTable" align="center">
                                 <tr>
-                                    <th height="50">글제목</th>
+                                    <th height="50" width="100">글제목</th>
                                     <td colspan="3">
-                                        <input type="text" id="title" name="boardTitle" class="formInput">
+                                        <input type="text" id="title" name="boardTitle" class="formInput" required>
                                     </td>
                                 </tr>
                                 
                                 <tr>
                                     <th height="120">첨부파일</th>
                                     <td colspan="2" id="file-area">
-                                        <input type="file" name="upfile" class="formInput">
-                                    </td>
-                                                                       
+                                       		<input type="file" name="upfile" class="formInput" >
+                                    </td>                                                                       
                                     <td width="80">
-                                        <button type="button" id="addFileBtn"><i class="fa-solid fa-plus"></i></button>
-                                        <button type="button" id="removeFileBtn"><i class="fa-solid fa-minus"></i></button>
+                                        <button type="button" id="addFileBtn"><i class="fa fa-solid fa-plus"></i></button>
+                                        <button type="button" id="removeFileBtn"><i class="fa fa-solid fa-minus"></i></button>
                                     </td>
                                     
                                 </tr>
@@ -133,29 +137,35 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4" height="400px" align="center" >
-                                        <textarea name="boardContent" id="content" cols="80" rows="20"></textarea>
+                                        <textarea name="boardContent" id="content" cols="80" rows="20" style="resize:none" required></textarea>
                                     </td>
                                 </tr>
                             </table>
                             <div align="center" id="btn-area">
-                                <button class="btn" onclick="goBack();">뒤로가기</button>
-                                <button class="btn" type="submit">등록하기</button>
+                                <button class="btnStyle" onclick="goBack();">뒤로가기</button>
+                                <button class="btnStyle" type="submit">등록하기</button>
                             </div>
-                            
                         </form>
+                        
                         <script>
+                        	//뒤로가기
                             function goBack(){
                                 window.history.back();
                             }
-
+							
+                        	// 파일 추가 삭제
                             $(function(){
 
                                 let maxAppend = 1;
-                                let text = "<input type='file' name='upfile' class='formInput'>";
+                                let text = "<input type='file' name='upfile' class='formInput' required>";
 
                                 $("#addFileBtn").on("click", function(){
+
+                                                                      
                                     if(maxAppend >= 5){
-                                        Swal.fire('첨부파일은 5개까지만 추가 가능합니다');
+                                        Swal.fire({
+                                        	text : '첨부파일은 5개까지만 추가 가능합니다'
+                                        });
                                         return;
                                     }
                                     $("#file-area").append(text);
@@ -164,10 +174,12 @@
 
                                 $("#removeFileBtn").on("click", function(){
                                     if(maxAppend <= 1) return;
-                                    $("input:last-child").remove();
+                                    $("input[name=upfile]:last-child").remove();
                                     maxAppend--;
                                 })
                             })
+                        	
+                        
                         </script>
                         
 
