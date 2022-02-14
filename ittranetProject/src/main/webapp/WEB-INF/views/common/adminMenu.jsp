@@ -89,49 +89,49 @@
         <li class="menu">
             <a href="">
                     <div class="circle" style="background: rgb(147, 205, 207)">
-                        <i class="fas fa-briefcase fa-3x"></i> 
+                        <i class="fas fa-briefcase fa-3x attendance_mn"></i> 
                     </div>
-                <p><b>근태관리</b></p>
+                <p class="attendance_mn"><b>근태관리</b></p>
             </a>
         </li>
         <li class="menu">
             <a href="">
                     <div class="circle" style="background: rgb(171, 187, 240)">
-                        <i class="far fa-envelope fa-3x"></i>  
+                        <i class="far fa-envelope fa-3x mail_mn"></i>  
                     </div>
-                    <p><b>메일</b></p>
+                    <p class="mail_mn"><b>메일</b></p>
             </a>
         </li>
         <li class="menu">
             <a href="">
                     <div class="circle" style="background: rgb(191, 177, 241)">
-                        <i class="far fa-smile fa-3x"></i> 
+                        <i class="far fa-smile fa-3x employee_mn"></i> 
                     </div>
-                    <p><b>사원관리</b></p>
+                    <p class="employee_mn"><b>사원관리</b></p>
             </a>
         </li>        
         <li class="menu">
             <a href="">
                     <div class="circle" style="background: rgb(194, 184, 206)">
-                        <i class="fas fa-bullhorn fa-3x"></i> 
+                        <i class="fas fa-bullhorn fa-3x board_mn"></i> 
                     </div>
-                    <p><b>게시판관리</b></p>
+                    <p class="board_mn"><b>게시판관리</b></p>
             </a>
         </li>
         <li class="menu">
             <a href="">
                     <div class="circle" style="background: rgb(194, 151, 250)">
-                        <i class="fas fa-building fa-3x"></i> 
+                        <i class="fas fa-building fa-3x company_mn"></i> 
                     </div>
-                    <p><b>회사관리</b></p>
+                    <p class="company_mn"><b>회사관리</b></p>
             </a>
         </li>
         <li class="menu">
             <a href="">
                     <div class="circle" style="background: rgb(240, 195, 237)">
-                        <i class="fas fa-paperclip fa-3x"></i> 
+                        <i class="fas fa-paperclip fa-3x approval_mn"></i> 
                     </div>
-                    <p><b>결재관리</b></p>
+                    <p class="approval_mn"><b>결재관리</b></p>
             </a>
         </li>
     </ul>

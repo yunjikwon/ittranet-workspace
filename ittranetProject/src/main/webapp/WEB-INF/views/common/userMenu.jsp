@@ -89,75 +89,75 @@
     <div class="menubar">
         <ul>
             <li class="menu">
-                <a href="">
+                <a href="main.at">
                         <div class="circle" style="background: rgb(147, 205, 207)">
-                            <i class="fas fa-briefcase"></i> 
+                            <i class="fas fa-briefcase attendance_mn"></i> 
                         </div>
-                    <p><b>근태관리</b></p>
+                    <p class="attendance_mn"><b>근태관리</b></p>
                 </a>
             </li>
             <li class="menu">
                 <a href="">
                         <div class="circle" style="background: rgb(171, 187, 240)">
-                            <i class="far fa-envelope fa-3x"></i>  
+                            <i class="far fa-envelope fa-3x mail_mn"></i>  
                         </div>
-                        <p><b>메일</b></p>
+                        <p class="mail_mn"><b>메일</b></p>
                 </a>
             </li>
             <li class="menu">
                 <a href="">
                         <div class="circle" style="background: rgb(191, 177, 241)">
-                            <i class="far fa-comment-dots fa-3x"></i> 
+                            <i class="far fa-comment-dots fa-3x chat_mn"></i> 
                         </div>
-                        <p><b>채팅</b></p>
+                        <p class="chat_mn"><b>채팅</b></p>
                 </a>
             </li>
             <li class="menu">
                 <a href="">
                         <div class="circle" style="background: rgb(181, 211, 236)">
-                            <i class="fas fa-edit fa-3x"></i> 
+                            <i class="fas fa-edit fa-3x message_mn"></i> 
                         </div>
-                        <p><b>쪽지</b></p>
+                        <p class="message_mn"><b>쪽지</b></p>
                 </a>
             </li>
             <li class="menu">
                 <a href="list.bo">
                         <div class="circle" style="background: rgb(194, 184, 206)">
-                            <i class="fas fa-bullhorn fa-3x"></i> 
+                            <i class="fas fa-bullhorn fa-3x board_mn"></i> 
                         </div>
-                        <p><b>게시판</b></p>
+                        <p class="board_mn"><b>게시판</b></p>
                 </a>
             </li>
             <li class="menu">
                 <a href="list.pr">
                         <div class="circle" style="background: rgb(183, 188, 235)">
-                            <i class="fas fa-desktop fa-3x"></i> 
+                            <i class="fas fa-desktop fa-3x project_mn"></i> 
                         </div>
-                        <p><b>프로젝트</b></p>
+                        <p class="project_mn"><b>프로젝트</b></p>
                 </a>
             </li>
             <li class="menu">
                 <a href="viewCalendar.ca">
                         <div class="circle" style="background: rgb(218, 172, 236)">
-                            <i class="fas fa-calendar-alt fa-3x schedule"></i> 
+                            <i class="fas fa-calendar-alt fa-3x schedule schedule_mn"></i> 
                         </div>
-                        <p class="schedule"><b>일정</b></p>
+                        <p class="schedule schedule_mn"><b>일정</b></p>
                 </a>
             </li>
             <li class="menu">
                 <a href="">
                         <div class="circle" style="background: rgb(205, 186, 241)">
-                            <i class="far fa-user fa-3x"></i> 
+                            <i class="far fa-user fa-3x company_mn"></i> 
                         </div>
-                        <p><b>조직도</b></p>
+                        <p class="company_mn"><b>조직도</b></p>
                 </a>
             </li>
             <li class="menu">
                 <a href="draftWait.dr">
                         <div class="circle" style="background: rgb(240, 195, 237)">
-                            <i class="fas fa-paperclip fa-3x"></i> 
+                            <i class="fas fa-paperclip fa-3x approval_mn"></i> 
                         </div>
-                        <p><b>전자결재</b></p>
+                        <p class="approval_mn"><b>전자결재</b></p>
                 </a>
             </li>
         </ul>
