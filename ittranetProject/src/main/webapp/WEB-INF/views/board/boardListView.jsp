@@ -63,10 +63,25 @@
 </style>
 </head>
 <body>	
+	 
     <div class="back">
         <div class="innerBack">
             <!--헤더-->
             <jsp:include page="../common/pageHeader.jsp" />
+            <!-- 글 삭제시 나타나는 alert창 위한 구문 -->
+			<c:if test="${ not empty alertMsg }">
+				<script>
+					Swal.fire({
+					  position: 'middle',
+					  icon: 'success',
+					  text: '${ alertMsg }',
+					  showConfirmButton: false,
+					  timer: 1500
+					})
+				</script>
+				<c:remove var="alertMsg"  />
+				
+			</c:if>
             <!--메뉴바-->
             <jsp:include page="../common/userMenu.jsp" />
             <br clear="both">
@@ -91,6 +106,7 @@
 		            </ul>
 		         </div>
                 <!--구현시작!-->
+             
                 <div class="mainOuter">
                     <br>
                     <span style="margin: 10px;">

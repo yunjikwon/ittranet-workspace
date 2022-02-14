@@ -47,7 +47,6 @@ public class BoardController {
 	}
 	
 	// 게시글 상세 조회
-	// 첨부파일 부분 구현 아직 안함!!
 	@RequestMapping("detail.bo")
 	public ModelAndView selectBoard(int bno, ModelAndView mv) {
 		
@@ -77,65 +76,104 @@ public class BoardController {
 	// 게시글 작성하기
 	@RequestMapping("insert.bo")
 	public String insertBoard(Board b, Attachment at, MultipartFile[] upfile, HttpSession session, Model model) {
-		
 				
 		int result = bService.insertBoard(b);
 		int resultAt = 1;
 		
-		if(!upfile[0].getOriginalFilename().equals("")) {	
-			
+		if(!upfile[0].getOriginalFilename().equals("")) {			
 			
 			for(MultipartFile file : upfile) {
 				
 				String changeName = saveFile(file, session);
-				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
 				at.setOriginName(file.getOriginalFilename());
 				at.setChangeName("resources/uploadFiles/" + changeName);
-				at.setFilePath(filePath);
+				//at.setFilePath(filePath);
 				
 				resultAt = bService.insertAttachment(at);				
-			}					
-			
+			}			
 		}
 		
-		
 		if(result * resultAt > 0) {
+			session.setAttribute("alertMsg", "게시글이 성공적으로 등록되었습니다.");
 			return "redirect:list.bo";
 		}else {
 			model.addAttribute("errorMsg", "게시글 등록실패");
 			return "common/error";
 		}
-				
 	}
-	// 다중파일 업로드
-	/*
-	@PostMapping
-	public String saveFiles(@RequestParam("upfile") ArrayList<MultipartFile> upfile, HttpSession session) {
+	
+	// 게시글 삭제
+	@RequestMapping("delete.bo")
+	public String delectBoard(int bno, String filePath, HttpSession session, Model model) {
 		
-		
-		for(MultipartFile file : upfile) {
-			
-			String originName = file.getOriginalFilename();
-			
-			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-			int ranNum = (int)(Math.random() * 90000 + 10000);
-			String ext = originName.substring(originName.lastIndexOf("."));
-			String changeName = currentTime + ranNum + ext;
-			String filePath = "resources/uploadFiles" + originName ;
-			String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
-			
-			try {
-				((MultipartFile) upfile).transferTo(new File(savePath + changeName));
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+		int result = bService.deleteBoard(bno);
+		int resultAt = 1;
+		ArrayList<Attachment> atList = new ArrayList<Attachment>();
+		atList = bService.selectAttachment(bno);
+		if(result > 0) {	
+
+			for(int i=0; i<atList.size(); i++) {
+				int atNo = atList.get(i).getAttachmentNo();
+				resultAt = bService.deleteAttachment(atNo);
 			}
+			
+			
+			session.setAttribute("alertMsg", "게시글이 성공적으로 삭제되었습니다.");
+			return "redirect:list.bo";
+		}else {
+			return "common/error";
+		}
+	}
+	
+	// 게시글 수정 페이지로 이동
+	@RequestMapping("updateForm.bo")
+	public String updateForm(int bno, Model model) {
+		model.addAttribute("b", bService.SelectBoard(bno));
+		model.addAttribute("atList", bService.selectAttachment(bno));
+		return "board/boardUpdateForm";
+	}
+	// 게시글 수정하기
+	@RequestMapping("update.bo")
+	public String updateBoard(int boardNo, Board b, Attachment at, @RequestParam(value="fileNoDel[]") String[] delFiles, MultipartFile[] reupfile, HttpSession session, Model model) {
+
+		
+		int result = bService.updateBoard(b);
+		int resultAt = 1;
+		
+		//삭제된 파일 db에서 지워주기
+		if(delFiles.length > 0) {
+			int atNo = 0;
+			for(int i=0; i<delFiles.length; i++) {
+				atNo = Integer.valueOf(delFiles[i]);
+				resultAt = bService.deleteAttachment(atNo);
+			}
+			
 		}
 		
-		return "uploaded";
+		// 새로 업데이트 된 첨부파일 db등록하기
+		if(!reupfile[0].getOriginalFilename().equals("")) {			
+			
+			for(MultipartFile file : reupfile) {
+				
+				String changeName = saveFile(file, session);
+				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
+				at.setOriginName(file.getOriginalFilename());
+				at.setChangeName("resources/uploadFiles/" + changeName);
+				//at.setFilePath(filePath);
+				at.setBoardNo(boardNo);
+				resultAt = bService.insertNewAttachment(at);				
+			}	
+			
+		}
+
+		if(result + resultAt > 0) {
+			session.setAttribute("alertMsg", "게시글이 성공적으로 수정되었습니다.");
+			return "redirect:detail.bo?bno=" + boardNo;
+		}else {
+			return "common/error";
+		}
 	}
-	*/
 	
 	// 첨부파일 폴더에 저장시키기	
 	public String saveFile(MultipartFile upfile, HttpSession session) {
@@ -159,5 +197,11 @@ public class BoardController {
 		return changeName;
 	}
 	
+	// 첨부파일 삭제하기
+	public int deleteFile(MultipartFile file, HttpSession session) {
+		
+		int result = 0;
+		return result;				
+	}
 	
 }

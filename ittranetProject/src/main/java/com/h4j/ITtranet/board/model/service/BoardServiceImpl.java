@@ -59,14 +59,29 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int deleteBoard(int boardNo) {
-		return 0;
+		return bDao.deleteBoard(sqlSession, boardNo);
+	}
+	
+	@Override
+	public int attachmentCount(int boardNo) {
+		return bDao.attachmentCount(sqlSession, boardNo);
 	}
 
 	@Override
+	public int deleteAttachment(int attachmentNo) {
+		return bDao.deleteAttachment(sqlSession, attachmentNo);
+	}
+	
+	@Override
 	public int updateBoard(Board b) {
-		return 0;
+		return bDao.updateBoard(sqlSession, b);
 	}
 
+	@Override
+	public int insertNewAttachment(Attachment at) {
+		return bDao.insertNewAttachment(sqlSession, at);
+	}
+	
 	@Override
 	public ArrayList<Reply> selectReplyList(int boardNo) {
 		return null;
@@ -81,6 +96,9 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<Board> selectNewBoardList() {
 		return null;
 	}
+
+
+
 
 
 	

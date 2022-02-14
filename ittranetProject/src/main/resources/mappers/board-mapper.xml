@@ -56,6 +56,7 @@
  	<select id="selectBoard" resultMap="boardResult">
  		select
  			   board_no 
+ 			 , emp_no
 		     , board_title
 		     , emp_name
 		     , to_char(create_date, 'YYYY-MM-DD') as "create_date"
@@ -122,6 +123,55 @@
 	        , 'B'
 	        , seq_board.currval
 	        )
-		
+	</insert>
+	
+	<select id="attachmentCount" resultType="_int">
+ 		select
+ 			   count(*) as "count"
+ 		  from attachment
+ 		 where ref_code = 'B'
+ 		   and ref_no = #{boardNo}
+ 	</select>
+ 	
+ 	<update id="deleteBoard">
+ 		update board
+ 		   set status = 'N'
+ 		 where board_no = #{ boardNo }
+ 	</update>
+ 	
+ 	<delete id="deleteAttachment">
+ 		delete 
+ 		  from attachment
+ 		 where attachment_no = #{attachmentNo}
+ 	</delete>
+ 	
+ 	<update id="updateBoard">
+ 		update 
+ 			   board
+ 		   set board_title = #{boardTitle}
+ 		     , board_content = #{boardContent}
+ 		 where board_no = #{boardNo}
+ 	</update>
+ 	
+ 	<insert id="insertNewAttachment">
+		insert 
+	      into attachment
+	         (
+	           attachment_no
+	         , origin_name
+	         , change_name
+	         , file_path
+	         , ref_code
+	         , ref_no
+	         )
+	     values
+	        (
+	          seq_atno.nextval
+	        , #{originName}
+	        , #{changeName}
+	        , #{filePath}
+	        , 'B'
+	        , #{boardNo}
+	        )
 	</insert>
 </mapper>

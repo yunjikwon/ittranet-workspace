@@ -29,8 +29,17 @@ public interface BoardService {
 	// 4. 게시글 삭제용 서비스
 	int deleteBoard(int boardNo);
 	
+	// 4-1. 첨부파일 갯수 조회 서비스
+	int attachmentCount(int boardNo);
+	
+	// 4-2. 첨부파일 삭제 서비스
+	int deleteAttachment(int attachmentNo);
+	
 	// 5. 게시글 수정용 서비스
 	int updateBoard(Board b);
+	
+	// 5-1. 게시글 수정 중 첨부파일 추가 서비스
+	int insertNewAttachment(Attachment at);
 	
 	// 6. 댓글 리스트 조회용 서비스 (ajax)
 	ArrayList<Reply> selectReplyList(int boardNo);
