@@ -15,5 +15,13 @@ public class EmployeeDao {
 	public int insertMember(SqlSessionTemplate sqlSession, Employee e) {
 		return sqlSession.insert("memberMapper.insertMember", e);
 	}
+	
+	public int mailCheck(SqlSessionTemplate sqlSession, String checkMail) {
+		return sqlSession.selectOne("memberMapper.mailCheck", checkMail);
+	}
+	
+	public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
+		return sqlSession.selectOne("memberMapper.idCheck", checkId);
+	}
 
 }

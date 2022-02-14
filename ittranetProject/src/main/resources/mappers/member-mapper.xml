@@ -69,5 +69,19 @@
 		  , #{address}
 		  )
 	</insert>
+	
+	<select id="mailCheck" resultType="_int">
+  		select
+  			   count(*)
+  		  from employee
+  		 where email = #{checkMail}
+  	</select>
+  	
+  	<select id="idCheck" resultType="_int">
+  		select
+  			   count(*)
+  		  from employee
+  		 where emp_id = #{checkId}
+  	</select>
 
 </mapper>
