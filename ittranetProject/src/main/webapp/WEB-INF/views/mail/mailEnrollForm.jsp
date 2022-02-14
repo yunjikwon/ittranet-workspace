@@ -73,6 +73,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/6aa80e3f77.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="back">
@@ -117,18 +118,19 @@
                 </tr>
                 <tr>
 					<th>첨부</th>
-					<td><i class="fa-solid fa-file-plus"><input type="file" multiple="multiple" name="upfile"></i></td>
+					<td><input type="file" multiple="multiple" name="upfile"></td>
                 </tr>
                 <tr>
                 	<td colspan="3"><textarea id="content" name="mailContent" placeholder="내용을 입력해주세요." required></textarea></td>
-
+				</tr>
+				<tr>
+					<i class="fa-solid fa-file-plus"></i>
+				</tr>
             </table>
             </div>
 		</form>
 	</div>
 	
-	<script src="https://kit.fontawesome.com/6aa80e3f77.js" crossorigin="anonymous">
-	</script>
 
 	
 	<jsp:include page="../common/footer.jsp" />

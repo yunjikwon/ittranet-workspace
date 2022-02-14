@@ -95,6 +95,14 @@ public class MailController {
 		return mv;
 	}
 	
+	// 5. 메일 삭제
+	@RequestMapping("delete.ml")
+	public String deleteMail(@RequestParam("delete.ml") <Mail> checkedValue) {
+		for (Mail m : checkedValue) {
+			mService.insertMail(c);
+		}
+	}
+	
 	// 넘어온 첨부파일 서버의 폴더에 저장시킴
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 		String originName = upfile.getOriginalFilename();
