@@ -130,7 +130,7 @@
                     	</tr>
                     </thead>
                     <tbody>
-                    	<c:forEach var="m" items="${ list }">
+                    	<c:forEach var="m" items="${ rvlist }">
 	                    	<tr>
 	                    		<input type="hidden" value=${ m.sendMailNo }>
                         		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>

@@ -36,13 +36,18 @@ public class MailController {
 	@RequestMapping("alllist.ml")
 	public String selectList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
+		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
 		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		
 		
 		int listCount = mService.selectListCount(empNo);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
-		ArrayList<Mail> rvlist = mService.selectList(pi, empNo);
+		ArrayList<Mail> rvlist = mService.selectList(pi, email);
+		
+		System.out.println(pi);
+		System.out.println(rvlist);
 
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", rvlist);

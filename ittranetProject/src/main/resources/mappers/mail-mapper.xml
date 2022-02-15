@@ -3,23 +3,22 @@
 <mapper namespace="mailMapper">
 
 	<resultMap id="mailResult" type="Mail">
+		<result column="receive_mail_no" property="receiveMailNo" />
 		<result column="send_mail_no" property="sendMailNo" />
 		<result column="sdpp" property="empNameSd" />
 		<result column="sender_account" property="senderAccount" />
+		<result column="receiver_account" property="receiverAccount" />
 		<result column="mail_title" property="mailTitle" />
-		<result column="mail_content" property="mailContent" />
 		<result column="send_date" property="sendDate" />
 		<result column="tem_status" property="temStatus" />
-		<result column="status" property="statusSd" />
+		<result column="mail_content" property="mailContent" />
+		<result column="statusSd" property="statusSd" />
 		<result column="wroteme_status" property="wrotemeStatus" />
-		<result column="receive_mail_no" property="receiveMailNo" />
-		<result column="send_mail_no" property="sendMailNo" />
-		<result column="rvpp" property="empNameRv" />
-		<result column="receiver_account" property="receiverAccount" />
 		<result column="read" property="read" />
 		<result column="important" property="important" />
 		<result column="spam" property="spam" />
-		<result column="status" property="statusRv" />
+		<result column="statusRv" property="statusRv" />
+		<result column="rvpp" property="empNameRv" />
 	</resultMap>
 	
 	<resultMap id="attachmentResult" type="Attachment">
@@ -41,56 +40,47 @@
 	</select>
 	
 	<select id="selectList" resultMap="mailResult">
-		select 
-               receive_mail_no
-             , send_mail_no
-             , sdpp
-             , mail_title
-             , send_date
-             , wroteme_status
-         from
-         	  (select 
-                      receive_mail_no
-                    , send_mail_no
-                    , emp_name sdpp
-                    , sd.emp_no emp_no
-                    , mail_title
-                    , send_date
-                    , wroteme_status
-                    , sd.status
-                 from mail_receive rv
-                 join mail_send sd using (send_mail_no)
-                 join employee e on (sd.emp_no = e.emp_no)) a
-          
-         where status = 'Y'
-           and emp_no = #{empNo}
+    select send_mail_no
+      , emp_name
+      , mail_title
+      , send_date
+      , receiver_account
+		from(
+		select send_mail_no
+		      , emp_name
+		      , mail_title
+		      , send_date
+		      , receiver_account
+		  from mail_send
+		  join employee using(emp_no)
+		  join mail_receive using(send_mail_no))
+		  where receiver_account = #{email}
 	</select>
 	
 	<select id="selectMail" resultMap="mailResult">
-		select
-			   send_mail_no
-			 , emp_name sdpp
-			 , rvpp
-			 , mail_title
-			 , mail_content
-			 , send_date
-			 , receiver_account
-             , sender_account
-		  from
-		  	   (select
-					   send_mail_no
-					 , sd.emp_no sdpp
-					 , emp_name rvpp
-					 , mail_title
-					 , mail_content
-					 , send_date
-					 , receiver_account
-                     , sender_account
-				  from mail_receive rv
-				  join mail_send sd using (send_mail_no)
-                  join employee e on (rv.emp_no = e.emp_no)) a
-				  join employee e1 on (sdpp = e1.emp_no)
-				 where send_mail_no = #{ sendMailNo }
+		select send_mail_no
+      , sdpp
+      , sender_account
+      , mail_title
+      , mail_content
+      , send_date
+      , wroteme_status
+      , receiver_account
+      , e2.emp_name rvpp
+  from (select
+                send_mail_no
+              , emp_name sdpp
+              , sender_account
+              , mail_title
+              , mail_content
+              , send_date
+              , wroteme_status
+              , receiver_account
+          from mail_send ms
+          join employee e1 on (ms.emp_no = e1.emp_no)
+          join mail_receive using(send_mail_no)) 
+  join employee e2 on(receiver_account = e2.email)
+  
 	</select>
 	
 	

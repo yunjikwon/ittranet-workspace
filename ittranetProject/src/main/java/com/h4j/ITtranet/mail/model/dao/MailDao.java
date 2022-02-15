@@ -20,12 +20,12 @@ public class MailDao {
 	}
 	
 	// 1-1. 페이징바를 위해 카운트 조회
-	public ArrayList<Mail>  selectList(SqlSessionTemplate sqlSession, PageInfo pi, String empNo){
+	public ArrayList<Mail>  selectList(SqlSessionTemplate sqlSession, PageInfo pi, String email){
 		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("mailMapper.selectList", empNo, rowBounds);
+		return (ArrayList)sqlSession.selectList("mailMapper.selectList", email, rowBounds);
 		
 	}
 	

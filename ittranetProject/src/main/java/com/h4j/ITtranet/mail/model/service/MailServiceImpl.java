@@ -28,8 +28,8 @@ public class MailServiceImpl implements MailService{
 
 	// 1-2. 받은메일함 리스트 페이지 (페이징바)
 	@Override
-	public ArrayList<Mail> selectList(PageInfo pi, String empNo) {
-		return mDao.selectList(sqlSession, pi, empNo);
+	public ArrayList<Mail> selectList(PageInfo pi, String email) {
+		return mDao.selectList(sqlSession, pi, email);
 	}
 
 	// 2. 메일 쓰기 (+첨부파일)
