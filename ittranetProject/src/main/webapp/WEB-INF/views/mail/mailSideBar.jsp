@@ -78,7 +78,6 @@
         	margin-left:400px;
         	margin-bottom:150px; /*푸터바와의 간격*/
         }
-
         </style>
     	<script src="https://kit.fontawesome.com/6aa80e3f77.js" crossorigin="anonymous">
 	   		$(function(){

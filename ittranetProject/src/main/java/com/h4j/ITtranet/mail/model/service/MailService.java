@@ -2,6 +2,7 @@ package com.h4j.ITtranet.mail.model.service;
 
 import java.util.ArrayList;
 
+import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.mail.model.vo.Mail;
 
@@ -12,10 +13,14 @@ public interface MailService {
 	ArrayList<Mail> selectList(PageInfo pi, String empNo);
 	
 	// 2. 메일쓰기
-	int insertMail(Mail m);
+	int insertMail(Mail m, ArrayList<Attachment> list);
+	
+	
 	
 	// 3. 메일 상세조회
 	Mail selectMail(int sendMailNo);
+	
+
 	
 
 }

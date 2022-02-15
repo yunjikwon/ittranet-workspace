@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.template.Pagination;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.mail.model.service.MailService;
 import com.h4j.ITtranet.mail.model.vo.Mail;
+
 
 @Controller
 public class MailController {
@@ -48,43 +51,38 @@ public class MailController {
 
 	}
 	
-	// 2. 메일쓰기 폼
+	// 2-1. 메일쓰기 폼
 	@RequestMapping("enrollForm.ml")
 	public String enrollForm() {
 		return "mail/mailEnrollForm";
 	}
 	
-	// 3. 새로운 메일 데이터 추가
+	// 2-2. 새로운 메일 데이터 추가 (+첨부파일)
 	@RequestMapping("insert.ml")
-	public void insertMail(Mail m, MultipartFile upfile, HttpSession session, Model model) {
+	public String insertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
 		
 		
-			String changeName = saveFile(upfile, session);
-			
-			model.addAttribute("setOriginName", upfile.getOriginalFilename());
-			model.addAttribute("setChangeName", "resources/uploadFiles/" + changeName);
-
-			
-
-			
-
-			
+		ArrayList<Attachment> list = new ArrayList<>();
 		
-
-		/*
-		int result = mService.insertMail(m);
-		
-		if(result > 0) {
-			session.setAttribute("alertMsg", "성공적으로 메일이 발송되었습니다.");
-			return "redirect:alllist.ml";
-		}else {
-			model.addAttribute("errorMsg", "메일 보내기에 실패하였습니다.");
-			return "common/errer";
+		for(MultipartFile f : upfile) {
+			
+			if(!f.getOriginalFilename().equals("")) {
+				Attachment at = new Attachment();
+				
+				at.setOriginName(f.getOriginalFilename());
+				at.setChangeName(saveFile(f, session));
+				at.setFilePath("resources/uploadFiles/");
+				
+				list.add(at);
+			}
 		}
-		*/
+		
+		int result = mService.insertMail(m, list);
+
+		return "redirect:alllist.ml";
 	}
 	
-	// 4. 상세조회 메일
+	// 3. 상세조회 메일
 	@RequestMapping("detail.ml")
 	public ModelAndView selectMail(int mno, ModelAndView mv) {
 		
@@ -96,16 +94,13 @@ public class MailController {
 	}
 	
 	// 5. 메일 삭제
-	@RequestMapping("delete.ml")
-	public String deleteMail(@RequestParam("delete.ml") <Mail> checkedValue) {
-		for (Mail m : checkedValue) {
-			mService.insertMail(c);
-		}
-	}
+	//@RequestMapping("delete.ml")
+
 	
 	// 넘어온 첨부파일 서버의 폴더에 저장시킴
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 		String originName = upfile.getOriginalFilename();
+		System.out.println(originName);
 		
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int ranNum = (int)(Math.random() * 90000 + 10000);

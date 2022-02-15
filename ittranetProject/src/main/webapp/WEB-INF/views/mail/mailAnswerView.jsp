@@ -75,58 +75,64 @@
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 </head>
 <body>
+	<!-- 공용 -->
     <div class="back">
+    
+    	<!-- 상단 : 페이지헤더, 메뉴바 -->
         <div class="innerBack">
 			<jsp:include page="../common/pageHeader.jsp" />
  			<jsp:include page="../common/userMenu.jsp" />
 
+		<!-- 왼쪽 : 사이드바 -->
  		<br clear="both">
  		<div style="position:relative">
 			<jsp:include page="../mail/mailSideBar.jsp" />
 			
+		<!-- 내용 -->
         <div class="mainOuter" align="center">
         
+        	<form id="enrollForm" method="post" action="insert.ml" enctype="multipart/form-data">
+        
+        	<input type="hidden" name="empNameSd" value="${ loginUser }">
+        
         	<br><br>
+        	
+        	<!-- 버튼바 (내게쓰기, 보내기, 취소) -->
 			<div id="buttonbar">
-            	<button type="button" class="btn btn-secondary"><a href="enrollForm.mlme"></a>내게쓰기</button>
+            	<button type="button" class="btn btn-secondary">내게쓰기</button>
             	<button type="submit" class="btn btn-success">보내기</button>
             	<button type="reset" class="btn btn-light">취소</button>
         	</div>
         	
-        <br><br>
+        	<br><br>
         
-        <form id="enrollForm" method="post" action="insert.ml" enctype="multipart/form-data">
-        
-        <input type="hidden" name="senderNo" value="${ loginUser }">
-        
-        
-
-			
+        	<!-- 입력폼 -->
             <div class="maildetail">
 
-			<input type="hidden" id="sdaccount" name="senderAccount">
-			<table id="mailinsert" align="center" style="font-family: 'Gowun Dodum', sans-serif;">
-				<tr>
-					<th>받는사람</th>
-					<td><input type="text" id="rvaccount" name="receiverAcoount" required></td>
-
-				</tr>
-				<tr>
-					<th>제목</th>
-					<td><input type="text" id="title" name="mailTitle"></td>
-                </tr>
-                <tr>
-					<th>첨부</th>
-					<td><input type="file" multiple="multiple" name="upfile"></td>
-                </tr>
-                <tr>
-                	<td colspan="2"><textarea id="content" name="mailContent" placeholder="내용을 입력해주세요." required></textarea></td>
-
-            </table>
+				<input type="hidden" id="sdaccount" name="senderAccount">
+				<table id="mailinsert" align="center" style="font-family: 'Gowun Dodum', sans-serif;">
+					<tr>
+						<th>받는사람</th>
+						<td><input type="text" id="rvaccount" name="receiverAccount" required></td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td><input type="text" id="title" name="mailTitle"></td>
+    	            </tr>
+        	        <tr>
+						<th>첨부</th>
+						<td><input type="file" multiple="multiple" name="upfile"></td>
+                	</tr>
+            	    <tr>
+        	        	<td colspan="2"><textarea id="content" name="mailContent" placeholder="내용을 입력해주세요." required></textarea></td>
+					</tr>
+            	</table>
             </div>
-		</form>
-	</div>
+            
+			</form>
+		</div>
 	
+	<!-- 푸터바 -->
 	<jsp:include page="../common/footer.jsp" />
 	
 	</div>

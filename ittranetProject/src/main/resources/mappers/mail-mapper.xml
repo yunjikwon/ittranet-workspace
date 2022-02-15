@@ -21,6 +21,15 @@
 		<result column="spam" property="spam" />
 		<result column="status" property="statusRv" />
 	</resultMap>
+	
+	<resultMap id="attachmentResult" type="Attachment">
+		<result column="attachment_no" property="attachmentNo" />
+		<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
+		<result column="file_path" property="filePath" />
+		<result column="ref_code" property="refCode" />
+		<result column="ref_no" property="refNo" />
+	</resultMap>
 
 	
 	<select id="selectListCount" resultType="_int">
@@ -85,7 +94,7 @@
 	</select>
 	
 	
-	<insert id="insertMailSend">
+	<insert id="insertMailSd">
 		insert
 		  into mail_send
 		     (
@@ -94,48 +103,52 @@
 		  	 , sender_account
 		  	 , mail_title
 		  	 , mail_content
-		  	 , send_date
-		  	 , tem_status
-          	 , status
-          	 , wroteme_status
 		  	 )
 		values
 		     (
 		       seq_sdmno.nextval
-		     , #{empName}
+		     , #{empNameSd}
 		  	 , #{senderAccount}
 		  	 , #{mailTitle}
 		  	 , #{mailContent}
-		  	 , #{sendDate}
-          	 , #{temStatus}
-          	 , #{status}
-          	 , #{wrotemeStatus}
 		     )
 	</insert>
-	<insert id="insertMailReceive">
+	<insert id="insertMailRv">
     	insert
           into mail_receive
              (
           	   receive_mail_no
           	 , send_mail_no
-         	 , emp_no
           	 , receiver_account
-          	 , read
-          	 , important
-          	 , spam
-          	 , status
           	 )
         values
           	 (
           	   seq_rvmno.nextval
-          	 , #{send_mail_no}
-          	 , #{emp_no}
-          	 , #{receiver_account}
-          	 , #{read}
-          	 , #{important}
-          	 , #{spam}
-          	 , #{status}
+          	 , seq_sdmno.currval
+          	 , #{receiverAccount}
           	 )
 	</insert>
+	<insert id="insertMailAttachment">
+		insert
+		  into attachment
+		        (
+		           attachment_no
+		         , origin_name
+		         , change_name
+		         , file_path
+		         , ref_code
+		         , ref_no
+		        )
+		values
+		        (
+		          seq_atno.nextval
+		        , #{originName}
+		        , #{changeName}
+		        , #{filePath}
+		        , 'M'
+		        , seq_sdmno.currval
+		        )
+	</insert>
+	
 	
 </mapper>

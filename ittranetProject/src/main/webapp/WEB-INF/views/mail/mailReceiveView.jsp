@@ -64,52 +64,60 @@
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 </head>
 <body>
+	<!-- 공용 -->
     <div class="back">
+    
+    	<!-- 상단: 페이지헤더, 메뉴바 -->
         <div class="innerBack">
 			<jsp:include page="../common/pageHeader.jsp" />
  			<jsp:include page="../common/userMenu.jsp" />
 
+		<!-- 왼쪽 : 사이드바 -->
  		<br clear="both">
  		<div style="position:relative">
 			<jsp:include page="../mail/mailSideBar.jsp" />
 			
+		<!-- 내용 -->
         <div class="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 			
             <br><br>
 
-			<!-- 버튼 2개 (메일쓰기, 삭제) -->
+			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
             	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
                 <button class="w-btn w-btn-gra2" type="submit">삭제</button>
             
             	<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
-        </button>
-      </div>
-      <div class="modal-body">
-정말로 삭제하시겠습니까?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger">네</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
-      </div>
-    </div>
-  </div>
-</div>
-            </div>
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  					<div class="modal-dialog" role="document">
+    				<div class="modal-content">
+    				
+      					<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							</button>
+      					</div>
+      			
+      				<div class="modal-body">
+						정말로 삭제하시겠습니까?
+      				</div>
+      			
+      				<div class="modal-footer">
+        				<button type="button" class="btn btn-danger">네</button>
+        				<button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
+      				</div>
+    			
+    				</div>
+  					</div>
+				</div>
+				
+			</div>
+			
             <form id="postForm" action="alllist.ml" method="post">
 
             
-            
-            
             <br><br><br>
 
+			<!-- 메일 조회 리스트 -->
             <div class="table table-hover" align="center">
                 <table id="mailalllist" style="background-color:white">
                 	<thead>
@@ -122,13 +130,9 @@
                     	</tr>
                     </thead>
                     <tbody>
-                    
-                    
                     	<c:forEach var="m" items="${ list }">
-                    	
-                    		<tr>
-                    			
-                    			<input type="hidden" value=${ m.sendMailNo }>
+	                    	<tr>
+	                    		<input type="hidden" value=${ m.sendMailNo }>
                         		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
                         		<td>★</td>
                         		<td>${ m.empNameSd }</td>
@@ -159,21 +163,21 @@
             			}
             			});
             		})
-
-            	</script>
+				</script>
+				
+			<!-- 내용닫는곳 -->
             </div>
 
           	<div id="pagingArea">
-    	<ul class="pagination justify-content-center">
-	        <c:choose>
-            	<c:when test="${ pi.currentPage eq 1 }">
+    			<ul class="pagination justify-content-center">
+	        		<c:choose>
+            			<c:when test="${ pi.currentPage eq 1 }">
                    			<li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
                     	</c:when>
                     	<c:otherwise>
                     		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage-1 }">&lt;</a></li>
                     	</c:otherwise>
                     </c:choose>
-                    
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
                     	<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ p }">${ p }</a></li>
@@ -189,8 +193,10 @@
                     </c:choose>
                 </ul>
             </div>
-        </div>
+            
+        	</div>
         
+        <!-- 푸터바 -->
         <jsp:include page="../common/footer.jsp" />
 
 

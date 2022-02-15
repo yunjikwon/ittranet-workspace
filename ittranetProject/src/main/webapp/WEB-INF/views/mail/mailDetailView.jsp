@@ -25,7 +25,7 @@
     	float:right;
     	padding-left:5px;
 		width:50px;
-        height:50px;
+        height:40px;
     }      
 	#mailalllist {
 		text-decoration:none;
@@ -60,19 +60,25 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="back">
+	<!-- 공용 -->
+	<div class="back">
+    
+    	<!--  상단 : 페이지헤더, 메뉴바 -->
         <div class="innerBack">
 			<jsp:include page="../common/pageHeader.jsp" />
  			<jsp:include page="../common/userMenu.jsp" />
 
+		<!-- 왼쪽 : 사이드바 -->
  		<br clear="both">
  		<div style="position:relative">
 			<jsp:include page="../mail/mailSideBar.jsp" />
 			
+		<!-- 내용 -->
         <div class="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
-		<br>
+		
+			<br>
 
-			<!-- 버튼 4개 -->
+			<!-- 버튼바 (목록, 삭제, 스팸, 답장) -->
 	        <div id="buttonbar">
 	            <button type="button" class="btn btn-secondary"><a id="mailalllist" href="alllist.ml">목록</a></button>
 	            <button type="button" id="delete" class="btn btn-danger" onclick="deleteMail">삭제</button>
@@ -80,32 +86,31 @@
 	            <button type="button" id="answer" class="btn btn-secondary" onclick="answerMail">답장</button>
 	        </div>
 	        
-	        <!-- 답장, 스팸, 삭제 -->
-	        <script>
-				$(function(){
-					$("#answer").click(function(){
-						location.href="answer.ml";
-					})
-				};
-	        </script>
-	        
-	
-	
-			<!-- 메일 상세 내용 -->
+			<!-- 메일 상세내용 -->
 	        <div class="mailcontent">
+	        
 	        	<input type="hidden" value="${ m.sendMailNo }">
+	        	
 	            <div>${ m.mailTitle }</div>
 	            <div>${ m.sendDate }</div>
 	            <br>
+	            
 	            <div> 보낸사람 : ${ m.empNameSd } &lt; ${ m.senderAccount } &gt;</div>
 	            <div> 받는사람 : ${ m.empNameRv } &lt; ${ m.receiverAccount } &gt;</div>
 	            <br>
+	            
 	            <hr>
+	            
 	            <div>${ m.mailContent }</div>
 	        </div>
+	        
 	        <br><br><br>
 	        
-			</div>
+		</div>
+		
+		<!-- 푸터바 -->
+		<jsp:include page="../common/footer.jsp" />
+		
     </div>
 
 </body>
