@@ -14,7 +14,7 @@ import lombok.ToString;
 
 public class Project {
 	
-	private String prNo;
+	private int prNo;
 	private String empNo;
 	private String prTitle;
 	private Date prStartdate;
