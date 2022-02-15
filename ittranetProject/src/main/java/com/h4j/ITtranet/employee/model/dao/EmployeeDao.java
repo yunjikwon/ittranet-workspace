@@ -23,5 +23,13 @@ public class EmployeeDao {
 	public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
 		return sqlSession.selectOne("memberMapper.idCheck", checkId);
 	}
+	
+	public Employee whosMail(SqlSessionTemplate sqlSession, String accordMail) {
+		return sqlSession.selectOne("memberMapper.whosMail", accordMail);
+	}
+	
+	public int setTempwd(SqlSessionTemplate sqlSession, Employee e) {
+		return sqlSession.update("memberMapper.setTempwd", e);
+	}
 
 }

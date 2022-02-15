@@ -31,6 +31,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public int idCheck(String checkId) {
 		return eDao.idCheck(sqlSession, checkId);
 	}
+	
+	@Override
+	public Employee whosMail(String accordMail) {
+		return eDao.whosMail(sqlSession, accordMail);
+	}
+	
+	@Override
+	public int setTempwd(Employee e) {
+		return eDao.setTempwd(sqlSession, e);
+	}
 
 	@Override
 	public int insertMember(Employee e) {
@@ -47,6 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public int deleteMember(String empId) {
 		return 0;
 	}
+
 
 	
 }

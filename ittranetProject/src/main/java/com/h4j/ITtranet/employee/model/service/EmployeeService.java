@@ -10,9 +10,15 @@ public interface EmployeeService {
 	// 이메일 중복체크(ajax/select)
 	int mailCheck(String checkMail);
 	
-	// 아이디 중복체크 (ajax / select)
+	// 아이디 중복체크 (ajax /select)
 	// 아이디 개수 반환 (이미 있는 아이디면 1, 없는 아이디면 0)
 	int idCheck(String checkId);
+	
+	// 이메일과 일치하는 회원 찾기 (ajax/select)
+	Employee whosMail(String accordMail);
+	
+	// 임시 비밀번호로 변경
+	int setTempwd(Employee e);
 	
 	// 회원가입 (insert)
 	int insertMember(Employee e);
