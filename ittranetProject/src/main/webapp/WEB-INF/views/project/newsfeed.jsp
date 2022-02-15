@@ -9,11 +9,10 @@
 <style>
     
     .wrap{
-        border: 1px solid red;
-        width: 900px;
+       padding: 30px;
     }
+    
    #list{
-       border: 1px solid orange;
        width: 900px;
        height: 160px;
    }
@@ -44,7 +43,6 @@
    }
 
    #newsfeed{
-       border:1px solid blue;
        padding: 15px;
    }
    .feedlist{
@@ -66,14 +64,12 @@
    }
    .projectmem{
        display:inline-block;
-       border: 1px solid;
        width: 500px;
        height: 30px;
        margin-left: 10px;
    }
    .feedcontent{
        width: 680px;
-       border: 1px solid ;
        margin-left: 105px;
        font-size: 13px;
    }
@@ -122,7 +118,7 @@
              </li>
                 <div id="border">
 		               <li class="menu1">
-		                  <a href="#">내 프로젝트</a>
+		                  <a href="list.pr">내 프로젝트</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="#">프로젝트 만들기</a>
@@ -131,7 +127,7 @@
 		                  <a href="#">내 업무</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">뉴스피드</a>
+		                  <a href="news.pr">뉴스피드</a>
 		               </li>
             	</div>
             </ul>
@@ -166,6 +162,8 @@
     
         <br>
         <!--뉴스피드 리스트-->
+        
+        <c:forEach var="n" items="${ list }">
         <div id="newsfeed">
             <div class="feedlist">
                 <div class="profile">
@@ -173,10 +171,10 @@
                 </div>
                 <div class="projectmem">
                     <b>IT!tranet &emsp; > &emsp;이트라 &emsp;&emsp;&emsp;</b>
-                    <h style="font-size: 12px; color: dimgray;">2022-01-10 &emsp; 13:01</h>
+                    <h style="font-size: 12px; color: dimgray;">${ n.nfDate } &emsp; 13:01</h>
                 </div>
                 <div class="feedcontent">
-                    <p>새로운 프로젝트 ! 넘 기대돼요 ㅎㅎ 잘 부탁드립니다</p>
+                    <p>${ n.nfContent }</p>
                 </div>
                 <!--댓글-->
                 <div class="reply">
@@ -185,26 +183,9 @@
                 </div>
             </div>
         </div>
+        </c:forEach>
     
-        <div id="newsfeed">
-            <div class="feedlist">
-                <div class="profile">
-                   <br>사진
-                </div>
-                <div class="projectmem">
-                    <b>IT!tranet &emsp; > &emsp;이트라 &emsp;&emsp;&emsp;</b>
-                    <h style="font-size: 12px; color: dimgray;">2022-01-10 &emsp; 13:01</h>
-                </div>
-                <div class="feedcontent">
-                    <p>새로운 프로젝트 ! 넘 기대돼요 ㅎㅎ 잘 부탁드립니다</p>
-                </div>
-                <!--댓글-->
-                <div class="reply">
-                    <input class="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
-                    <button class="replyok" style="font-size: 13px; color: white;"><b>등록</b></button>
-                </div>
-            </div>
-        </div>
+    
         
         </div>
         </div>

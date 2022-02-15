@@ -76,7 +76,7 @@
 		                  <a href="#">내 업무</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">뉴스피드</a>
+		                  <a href="news.pr">뉴스피드</a>
 		               </li>
             	</div>
             </ul>
