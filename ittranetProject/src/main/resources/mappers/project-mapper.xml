@@ -5,7 +5,7 @@
  
 <mapper namespace="projectMapper">
 
-<resultMap type="project" id="projectList">
+<resultMap type="Project" id="projectList">
 	<result column="pr_no" property="prNo"  />
 	<result column="emp_no" property="empNo"  />
 	<result column="pr_title" property="prTitle"  />
@@ -17,4 +17,18 @@
 	<result column="status" property="status"  />
 </resultMap>
 
+<select id="selectProject" resultMap="projectList">
+	select
+	     p.pr_no
+	    ,pr_title
+	    ,pr_startdate
+	    ,pr_enddate
+	    ,pr_size
+	    ,pr_content
+	    ,pr_logo
+	    ,status
+	from project p
+	join prmember pr on pr.pr_no = p.pr_no
+	where pr.emp_no = #{empNo}
+</select>
 </mapper>

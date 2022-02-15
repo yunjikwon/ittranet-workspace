@@ -1,11 +1,13 @@
 package com.h4j.ITtranet.project.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.project.model.dao.ProjectDao;
 import com.h4j.ITtranet.project.model.vo.Project;
 
@@ -24,8 +26,8 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ArrayList<Project> selectProject(int projectNo) {
-		return null;
+	public ArrayList<Project> selectProject(String empNo){
+		return pDao.selectProject(sqlSession, empNo);
 	}
 
 	@Override
