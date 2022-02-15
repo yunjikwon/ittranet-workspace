@@ -158,7 +158,7 @@
 	                    </c:choose>
 	                    
 	                </ul>
-            </div>
+            	</div>
 		       
 		        <br clear="both"><br>
 		        </form>
@@ -167,6 +167,6 @@
 	    <jsp:include page="../common/footer.jsp"/>
 	    
 	</div>    
-</div>    
+</div>      
 </body>
 </html>

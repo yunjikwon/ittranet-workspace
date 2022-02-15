@@ -125,10 +125,8 @@
 		                </c:forEach>   		                   
 		
 		            </table>
-		
-		            
-		            
-</div>
+		        </div>
+		        
 		        <br><br>
 		        		        
 		        <div id="pagingArea">
