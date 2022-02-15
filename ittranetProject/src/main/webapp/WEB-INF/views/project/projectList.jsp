@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -83,11 +82,7 @@
             </ul>
          </div>
  
-  	
- 	<!-- 날짜 관련 -->
- 	<c:set var="today" value="<%= new java.util.Date() %>"  />
- 	<c:set var="date"><fmt:formatDate value="${today}" pattern="yyy-MM-dd" /></c:set>
- 	
+
     <div class="mainOuter">  
         <div class="wrap">
         <h4 style="font-weight:bold;">내 프로젝트</h4>
