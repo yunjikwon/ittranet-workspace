@@ -2,28 +2,153 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mailMapper">
 
-	<resultMap id="mailSendResult" type="MailSend">
+	<resultMap id="mailResult" type="Mail">
 		<result column="send_mail_no" property="sendMailNo" />
-		<result column="emp_no" property="empNo" />
+		<result column="sdpp" property="empNameSd" />
 		<result column="sender_account" property="senderAccount" />
 		<result column="mail_title" property="mailTitle" />
 		<result column="mail_content" property="mailContent" />
 		<result column="send_date" property="sendDate" />
 		<result column="tem_status" property="temStatus" />
-		<result column="status" property="status" />
+		<result column="status" property="statusSd" />
 		<result column="wroteme_status" property="wrotemeStatus" />
-	</resultMap>
-	
-	
-	<resultMap id="mailReceiveResult" type="MailReceive">
 		<result column="receive_mail_no" property="receiveMailNo" />
 		<result column="send_mail_no" property="sendMailNo" />
-		<result column="emp_no" property="empNo" />
+		<result column="rvpp" property="empNameRv" />
 		<result column="receiver_account" property="receiverAccount" />
 		<result column="read" property="read" />
 		<result column="important" property="important" />
 		<result column="spam" property="spam" />
-		<result column="status" property="status" />
+		<result column="status" property="statusRv" />
 	</resultMap>
+	
+	<resultMap id="attachmentResult" type="Attachment">
+		<result column="attachment_no" property="attachmentNo" />
+		<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
+		<result column="file_path" property="filePath" />
+		<result column="ref_code" property="refCode" />
+		<result column="ref_no" property="refNo" />
+	</resultMap>
+
+	
+	<select id="selectListCount" resultType="_int">
+		select
+			   count(*)
+		  from mail_receive
+		 where status = 'Y'
+		   and emp_no = #{empNo}
+	</select>
+	
+	<select id="selectList" resultMap="mailResult">
+		select 
+               receive_mail_no
+             , send_mail_no
+             , sdpp
+             , mail_title
+             , send_date
+             , wroteme_status
+         from
+         	  (select 
+                      receive_mail_no
+                    , send_mail_no
+                    , emp_name sdpp
+                    , sd.emp_no emp_no
+                    , mail_title
+                    , send_date
+                    , wroteme_status
+                    , sd.status
+                 from mail_receive rv
+                 join mail_send sd using (send_mail_no)
+                 join employee e on (sd.emp_no = e.emp_no)) a
+          
+         where status = 'Y'
+           and emp_no = #{empNo}
+	</select>
+	
+	<select id="selectMail" resultMap="mailResult">
+		select
+			   send_mail_no
+			 , emp_name sdpp
+			 , rvpp
+			 , mail_title
+			 , mail_content
+			 , send_date
+			 , receiver_account
+             , sender_account
+		  from
+		  	   (select
+					   send_mail_no
+					 , sd.emp_no sdpp
+					 , emp_name rvpp
+					 , mail_title
+					 , mail_content
+					 , send_date
+					 , receiver_account
+                     , sender_account
+				  from mail_receive rv
+				  join mail_send sd using (send_mail_no)
+                  join employee e on (rv.emp_no = e.emp_no)) a
+				  join employee e1 on (sdpp = e1.emp_no)
+				 where send_mail_no = #{ sendMailNo }
+	</select>
+	
+	
+	<insert id="insertMailSd">
+		insert
+		  into mail_send
+		     (
+		       send_mail_no
+          	 , emp_no
+		  	 , sender_account
+		  	 , mail_title
+		  	 , mail_content
+		  	 )
+		values
+		     (
+		       seq_sdmno.nextval
+		     , #{empNameSd}
+		  	 , #{senderAccount}
+		  	 , #{mailTitle}
+		  	 , #{mailContent}
+		     )
+	</insert>
+	<insert id="insertMailRv">
+    	insert
+          into mail_receive
+             (
+          	   receive_mail_no
+          	 , send_mail_no
+          	 , receiver_account
+          	 )
+        values
+          	 (
+          	   seq_rvmno.nextval
+          	 , seq_sdmno.currval
+          	 , #{receiverAccount}
+          	 )
+	</insert>
+	<insert id="insertMailAttachment">
+		insert
+		  into attachment
+		        (
+		           attachment_no
+		         , origin_name
+		         , change_name
+		         , file_path
+		         , ref_code
+		         , ref_no
+		        )
+		values
+		        (
+		          seq_atno.nextval
+		        , #{originName}
+		        , #{changeName}
+		        , #{filePath}
+		        , 'M'
+		        , seq_sdmno.currval
+		        )
+	</insert>
+	
 	
 </mapper>
