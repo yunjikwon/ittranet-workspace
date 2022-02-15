@@ -97,7 +97,7 @@
         </div>    
             <!--진행중 프로젝트--> 
 
-            <c:forEach var="p" items="${ list }">
+            <c:forEach var="p" items="${ list1 }">
 	            <div class="proing" style="text-align: center;">
 	                <div class="logo">
 	                    <img class="logoimg" src="${ p.prLogo }"/>
@@ -114,22 +114,16 @@
                 <h6 style="font-weight: bold;">&emsp;종료된 프로젝트</h6>
             </div>
             
-            <div class="proend" style="text-align: center;">
-                <div class="logo">
-                    로고
-                </div>
-                IT!tranet
-                <br>
-                <small>6&emsp;&emsp;&emsp;22-01-10</small>
-            </div>
-            <div class="proend" style="text-align: center;">
-      	                <div class="logo">
-	                    <img class="logoimg" src="${ p.prLogo }"/>
-	                </div>
-	              		${ p.prTitle }
-	                <br>
-	                <small>${ p.prSize }&emsp;&emsp;&emsp;${ p.prStartdate }</small>
-            </div>
+            <c:forEach var="e" items="${ list2 }">
+	            <div class="proend" style="text-align: center;">
+	      	                <div class="logo">
+		                    <img class="logoimg" src="${ e.prLogo }"/>
+		                </div>
+		              		${ e.prTitle }
+		                <br>
+		                <small>${ e.prSize }&emsp;&emsp;&emsp;${ e.prStartdate }</small>
+	            </div>
+            </c:forEach>
         </div>
         </div>
         </div>

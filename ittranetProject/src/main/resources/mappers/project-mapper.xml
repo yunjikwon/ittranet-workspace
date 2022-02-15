@@ -17,6 +17,7 @@
 	<result column="status" property="status"  />
 </resultMap>
 
+
 <select id="selectProject" resultMap="projectList">
 	select
 	     p.pr_no
@@ -30,5 +31,25 @@
 	from project p
 	join prmember pr on pr.pr_no = p.pr_no
 	where pr.emp_no = #{empNo}
+	and pr_enddate >= to_char(sysdate, 'mm/dd/yyyy')
 </select>
+
+<select id="selectEndProject" resultMap="projectList">
+	<![CDATA[
+	select
+	     p.pr_no
+	    ,pr_title
+	    ,pr_startdate
+	    ,pr_enddate
+	    ,pr_size
+	    ,pr_content
+	    ,pr_logo
+	    ,status
+	from project p
+	join prmember pr on pr.pr_no = p.pr_no
+	where pr.emp_no = #{empNo} 
+	      and pr_enddate < to_char(sysdate, 'mm/dd/yyyy')
+	]]>    
+</select>
+
 </mapper>

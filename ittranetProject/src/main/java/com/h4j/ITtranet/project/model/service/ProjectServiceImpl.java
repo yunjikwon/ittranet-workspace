@@ -29,6 +29,11 @@ public class ProjectServiceImpl implements ProjectService{
 	public ArrayList<Project> selectProject(String empNo){
 		return pDao.selectProject(sqlSession, empNo);
 	}
+	
+	@Override
+	public ArrayList<Project> selectEndProject(String empNo){
+		return pDao.selectEndProject(sqlSession, empNo);
+	}
 
 	@Override
 	public int updateProject(Project p) {

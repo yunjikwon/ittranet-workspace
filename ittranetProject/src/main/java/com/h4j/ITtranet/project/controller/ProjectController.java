@@ -27,10 +27,14 @@ public class ProjectController {
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		String empNo = loginUser.getEmpNo();
 		
-		ArrayList<Project> list = pService.selectProject(empNo);
+		ArrayList<Project> list1 = pService.selectProject(empNo);
+		ArrayList<Project> list2 = pService.selectEndProject(empNo);
 		
-		mv.addObject("list", list).setViewName("project/projectList");
-		System.out.println(list);
+		mv.addObject("list1", list1).setViewName("project/projectList");
+		mv.addObject("list2", list2).setViewName("project/projectList");
+		
+		System.out.println("진행중 :" + list1);
+		System.out.println("종료된 : " + list2);
 		return mv ;
 	}
 	
