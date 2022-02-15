@@ -7,6 +7,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
+    	/*메뉴바 픽스 스타일*/
+     	.attendance_mn{
+     		color:#000000;
+     	}
+     	
         #draftTitle{
             font-size: 20px;
             font-weight: 700;
@@ -97,11 +102,18 @@
 				            </select>
 				        </div>
 		            <table id="boardList" class="table table-hover" align="center">		
+		            
 		            	<c:forEach var="d" items="${ list }">
 		                    <tr>
-		                    	<td><input type="hidden" name="empNo" value="${ d.empNo }"></td>
-		                    	
-		                        <th>${ d.drDivision }</th>
+		                    	<td><input type="hidden" name="empNo" value="${ d.empNo }"></td>		                    	
+		                        <th>
+		                        	<c:if test="${ d.drDivision eq 1}">지출결의서</c:if>
+		                        	<c:if test="${ d.drDivision eq 2}">추가예산신청</c:if>
+		                        	<c:if test="${ d.drDivision eq 3}">연장근무신청</c:if>
+		                        	<c:if test="${ d.drDivision eq 4}">회의록</c:if>
+		                        	<c:if test="${ d.drDivision eq 5}">사업계획서</c:if>
+		                        	<c:if test="${ d.drDivision eq 6}">시말서</c:if>
+		                        </th>
 		                        <td>${ d.drTitle }</td>
 		                        <td>${ d.drDate }</td>
 		                        <td>
@@ -110,8 +122,7 @@
 		                        </td>
 		                        <td>${ d.drStatus }</td>
 		                    </tr>
-		                </c:forEach>    
-		                   
+		                </c:forEach>   		                   
 		
 		            </table>
 		            <br>

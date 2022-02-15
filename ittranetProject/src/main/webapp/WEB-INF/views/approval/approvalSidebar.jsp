@@ -134,9 +134,9 @@
 	                  <a href="#">기안함</a>
 	                  <ul class="subMenu">
 	                  	 <li><a href="draftWait.dr?category=1">대기 결재</a></li>
-	                     <li><a href="#">진행중 결재</a></li>
-	                     <li><a href="#">반려 결재</a></li>
-	                     <li><a href="#">완료 결재</a></li>
+	                     <li><a href="draftOngoing.dr?category=2">진행중 결재</a></li>
+	                     <li><a href="draftReject.dr?category=3">반려 결재</a></li>
+	                     <li><a href="draftComplete.dr?category=4">완료 결재</a></li>
 	                  </ul>
 	               </li>
 	               <li class="sideMenu">

@@ -42,7 +42,24 @@
 		select
 		       count(*)
 		  from draft
-		 where dr_status = '결재대기'
+		 where 
+		<choose>
+		 	<when test="category == 1">
+		 		dr_status = '결재대기'
+		 	</when>
+		 	<when test="category == 2">
+		 		dr_status = '진행중'		 		
+		 	</when>
+		 	<when test="category == 3">
+		 		dr_status = '반려'
+		 	and dr_status = '관리자반려'		 		
+		 	</when>
+		 	<when test="category == 4">
+		 		dr_status = '완료'
+		 	and dr_status = '관리자승인'		 		
+		 	</when>
+		 </choose>
+
 	</select>
 	
 	<select id="selectList" resultMap="appResultSet">
@@ -57,7 +74,24 @@
 		  from draft
 		  join employee using (emp_no)
 		  join team using (team_code)
-		 where dr_status = '결재대기'
+		 where
+		 <choose>
+		 	<when test="category == 1">
+		 		dr_status = '결재대기'
+		 	</when>
+		 	<when test="category == 2">
+		 		dr_status = '진행중'		 		
+		 	</when>
+		 	<when test="category == 3">
+		 		dr_status = '반려'
+		 	and dr_status = '관리자반려'		 		
+		 	</when>
+		 	<when test="category == 4">
+		 		dr_status = '완료'
+		 	and dr_status = '관리자승인'		 		
+		 	</when>
+		 </choose>
+				 	
 		 order 
 		    by dr_date
 	</select>
