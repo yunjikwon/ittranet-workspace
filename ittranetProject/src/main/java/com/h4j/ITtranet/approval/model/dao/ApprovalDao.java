@@ -20,17 +20,18 @@ public class ApprovalDao {
 	}
 	
 	// 기안 게시판 paging
-	public int selectListCount(SqlSession sqlSession) {
-		return sqlSession.selectOne("appMapper.selectListCount");
+	public int selectListCount(SqlSession sqlSession, int category) {
+		
+		return sqlSession.selectOne("appMapper.selectListCount", category);
 	}
 	
 	// 기안 게시판 select
-	public ArrayList<Approval> selectList(SqlSession sqlSession, PageInfo pi) {
+	public ArrayList<Approval> selectList(SqlSession sqlSession, PageInfo pi, int category) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		
-		return (ArrayList)sqlSession.selectList("appMapper.selectList", null, rowBounds);
+		System.out.println("category : " + category);
+		return (ArrayList)sqlSession.selectList("appMapper.selectList", category, rowBounds);
 		
 	}
 

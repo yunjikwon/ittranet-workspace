@@ -12,10 +12,10 @@ public interface ApprovalService {
 	ArrayList<AppLine> selectSearchLine(AppLine appLine);
 	
 	// 기안 게시판 listCount
-	int selectListCount();
+	int selectListCount(int category);
 	
 	// 기안 게시판 select
-	ArrayList<Approval> selectList(PageInfo pi);
+	ArrayList<Approval> selectList(PageInfo pi, int category);
 	
 	
 	

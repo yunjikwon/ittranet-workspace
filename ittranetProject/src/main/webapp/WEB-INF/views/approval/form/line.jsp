@@ -131,7 +131,7 @@
             
             <!-- 검색기능 -->
             <div id="searchBox-1">
-            	<form action="search.fo" name="search-form" method="get">
+            	<!--  <form action="search.fo" name="search-form" method="get"> -->
 	                <div style="margin-top:5px;">
 	                    <label class="stitle">팀</label>
 	                    <div class="searchBox">
@@ -147,7 +147,7 @@
 	                        <button type="submit" class="sbtn">검색</button>
 	                    </div>
 	                </div>
-	        	</form>        
+	        	       
             </div>
             
         <br>
@@ -234,13 +234,13 @@
     				$('#boardList > tbody').empty();
     				if(result.length>=1){
     					result.forEach(function(item){
-    						str="<tr>"
-    						   += <"td><input type='checkbox' name='' id=''></td>"
-    						   += <"td>"+ item.team + "</td>"
-    						   += <"td>"+ item.job + "</td>"
-    						   += <"td>"+ item.empCode + "</td>"
-    						   += <"td>"+ item.empName + "</td>"
-    						   += "</tr>"
+    						str +="<tr>"
+    						   + <"td><input type='checkbox' name='' id=''></td>"
+    						   + <"td>"+ item.team + "</td>"
+    						   + <"td>"+ item.job + "</td>"
+    						   + <"td>"+ item.empCode + "</td>"
+    						   + <"td>"+ item.empName + "</td>"
+    						   + "</tr>";
     						$('#boardList').append(str);	   
     					})
     						

@@ -9,8 +9,9 @@
 		<result column="dr_title" property="drTitle" />
 		<result column="dr_date" property="drDate" />
 		<result column="dr_status" property="drStatus" />
+		<result column="dr_division" property="drDivision" />
 		<result column="emp_name" property="empName" />
-		<result column="count" property="count" />
+		<result column="team_name" property="teamName" />
 		
 	</resultMap>
 
@@ -41,7 +42,24 @@
 		select
 		       count(*)
 		  from draft
-		 where dr_status = '결재대기'
+		 where 
+		<choose>
+		 	<when test="category == 1">
+		 		dr_status = '결재대기'
+		 	</when>
+		 	<when test="category == 2">
+		 		dr_status = '진행중'		 		
+		 	</when>
+		 	<when test="category == 3">
+		 		dr_status = '반려'
+		 	and dr_status = '관리자반려'		 		
+		 	</when>
+		 	<when test="category == 4">
+		 		dr_status = '완료'
+		 	and dr_status = '관리자승인'		 		
+		 	</when>
+		 </choose>
+
 	</select>
 	
 	<select id="selectList" resultMap="appResultSet">
@@ -53,13 +71,29 @@
 		     , dr_status
 		     , emp_name
 		     , team_name
-		     , count
 		  from draft
 		  join employee using (emp_no)
 		  join team using (team_code)
-		 where dr_status = '결재대기'
+		 where
+		 <choose>
+		 	<when test="category == 1">
+		 		dr_status = '결재대기'
+		 	</when>
+		 	<when test="category == 2">
+		 		dr_status = '진행중'		 		
+		 	</when>
+		 	<when test="category == 3">
+		 		dr_status = '반려'
+		 	and dr_status = '관리자반려'		 		
+		 	</when>
+		 	<when test="category == 4">
+		 		dr_status = '완료'
+		 	and dr_status = '관리자승인'		 		
+		 	</when>
+		 </choose>
+				 	
 		 order 
-		    by emp_no desc
+		    by dr_date
 	</select>
 
 
