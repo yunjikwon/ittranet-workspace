@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="attendanceMapper">
+	
+	<resultMap id="vacationResult" type="Vacation">
+		<result column="vc_applyno" property="vcApplyNo" />
+		<result column="emp_no" property="empNo" />
+		<result column="vc_type" property="vcType" />
+		<result column="vc_startdate" property="vcStartDate" />
+		<result column="vc_enddate" property="vcEndDate" />
+		<result column="vc_time" property="vcTime" />
+		<result column="vc_sum" property="vcSum" />
+		<result column="vc_content" property="vcContent" />
+		<result column="file_path" property="filePath" />
+		<result column="vc_enrolldate" property="vcEnrollDate" />
+		<result column="apply_yn" property="applyYn" />
+		<result column="vc_status" property="vcStatus" />
+	</resultMap>
+	
+	
+	<select id="selectListCount" resultType="_int">
+		select
+			   count(*)
+		  from vacation_apply
+		 where emp_no = #{empNo}
+		   and apply_yn = 'Y'
+	</select>
+	
+	<select id="selectUpVacationList" resultMap="vacationResult">
+		select
+			   vc_applyno
+			 , emp_no
+			 , vc_type
+			 , vc_startdate
+			 , vc_enddate
+			 , vc_time
+			 , vc_status
+		  from vacation_apply
+		 where emp_no = #{empNo}
+		   and apply_yn = 'Y'
+		   <!-- 휴가 신청 구현 후 수정하기!!! -->
+		   and vc_startdate >= to_char(sysdate, 'MM/DD/YYYY')
+		 order
+		 	by vc_applyno desc
+	</select>
+	
+	<select id="selectLastVacationList" resultMap="vacationResult">
+		select
+			   vc_applyno
+			 , emp_no
+			 , vc_type
+			 , vc_startdate
+			 , vc_enddate
+			 , vc_time
+			 , vc_status
+		  from vacation_apply
+		 where emp_no = #{empNo}
+		   and apply_yn = 'Y'
+		   and vc_startdate &lt; to_char(sysdate, 'MM/DD/YYYY')
+		 order
+		 	by vc_applyno desc
+	</select>
+	
+</mapper>
