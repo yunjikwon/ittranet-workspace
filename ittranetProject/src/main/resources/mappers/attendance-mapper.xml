@@ -62,5 +62,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 order
 		 	by vc_applyno desc
 	</select>
+
+	<select id="selectYetVacationListCount" resultType="_int">
+		select
+			   count(*)
+		  from vacation_apply
+		 where vc_status = '대기'
+	</select>
+
+	
+	<select id="selectYetVacationList" resultMap="vacationResult">
+		select
+			   vc_applyno
+			 , emp_no
+			 , vc_type
+			 , vc_startdate
+			 , vc_enddate
+			 , vc_status
+		  from vacation_apply
+		 where vc_status = '대기'
+		 order
+		 	by vc_applyno desc
+	</select>
+	 
+	<select id="selectFinVacationListCount" resultType="_int">
+		select
+			   count(*)
+		  from vacation_apply
+		 where vc_status in ('승인', '반려')
+	</select>
+	
+	<select id="selectFinVacationList" resultMap="vacationResult">
+		select
+			   vc_applyno
+			 , emp_no
+			 , vc_type
+			 , vc_startdate
+			 , vc_enddate
+			 , vc_status
+		  from vacation_apply
+		 where vc_status in ('승인', '반려')
+		 order
+		 	by vc_applyno desc
+	</select>
+	
 	
 </mapper>

@@ -12,5 +12,13 @@ public interface AttendanceService {
 	// 사용자 지난휴가신청 리스트
 	ArrayList<Vacation> selectLastVacationList(String empNo);
 	
+	// 관리자 미처리 휴가신청 리스트
+	int selectYetVacationListCount();
+	ArrayList<Vacation> selectYetVacationList(PageInfo pi);
 	
+
+	// 관리자 처리완료 휴가신청 리스트
+	int selectFinVacationListCount();
+	ArrayList<Vacation> selectFinVacationList(PageInfo pi);
+
 }
