@@ -14,4 +14,12 @@ public class NewsfeedDao {
 		return (ArrayList)sqlSession.selectList("newsfeedMapper.selectNews", empNo);
 	}
 
+	public ArrayList<Newsfeed> newsProject(SqlSessionTemplate sqlSession, String empNo) {
+		return (ArrayList)sqlSession.selectList("newsfeedMapper.newsProject", empNo);
+	}
+
+	public ArrayList<Newsfeed> prNewsfeed(SqlSessionTemplate sqlSession, String prNo) {
+		return (ArrayList)sqlSession.selectList("newsfeedMapper.prNewsfeed", prNo);
+	}
+
 }

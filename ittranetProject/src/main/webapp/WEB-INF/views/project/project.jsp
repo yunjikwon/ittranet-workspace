@@ -8,9 +8,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+    
     .wrap{
-        border: 1px solid red;
-        width: 900px;
+       padding: 30px;
     }
     .menuname{
         display:inline-block;
@@ -152,10 +152,40 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/header.jsp" />
-	
-    <div class="wrap">  
-        <h4 style="font-weight:bold;">IT!tranet</h4>
+<div class="back">
+ <div class="innerBack">
+ 	<jsp:include page="../common/pageHeader.jsp" />
+ 	<jsp:include page="../common/userMenu.jsp" />
+ 	
+ 	<br clear="both">
+ 	<div style="position:relative">
+ 	<jsp:include page="../common/sidebar.jsp"  />
+ 		<div class="cont">
+          <ul id="ac">
+             <li class="division">
+               <a href="#">프로젝트</a>
+             </li>
+                <div id="border">
+		               <li class="menu1">
+		                  <a href="list.pr">내 프로젝트</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="#">프로젝트 만들기</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="#">내 업무</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="news.pr">뉴스피드</a>
+		               </li>
+            	</div>
+            </ul>
+         </div>
+ 
+
+    <div class="mainOuter"> 
+    <div class="wrap">   
+        <h4 style="font-weight:bold;">프로젝트 명</h4>
         
         <!--담당 업무, 업무 버튼, 리스트-->
         <div class="menuname">
@@ -221,30 +251,35 @@
             
             <br>
             <!-- 게시물 -->
-            <div class="feedlist">
-                <div class="profile">
-                   <br>사진
-                </div>
-                <div class="projectmem">
-                    <b>이트라 &emsp;&emsp;&emsp;</b>
-                    <h style="font-size: 12px; color: dimgray;">2022-01-10 &emsp; 13:01</h>
-                </div>
-                <div class="feedcontent">
-                    <p>새로운 프로젝트 ! 넘 기대돼요 ㅎㅎ 잘 부탁드립니다</p>
-                </div>
-                <!--댓글-->
-                <div class="reply" style="font-size: 13px;">
-                    <div class="replylist">
-                        <b>오트라</b> &emsp;&emsp;&emsp; 
-                        <span class="replycontents">안녕하세요 !</span>
-                        <span class="date">2022-01-10&emsp;11:48</span>
-                    </div>
-                    <input class="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
-                    <button class="replyok" ><b>등록</b></button>
-                </div>
-            </div>
+            <c:forEach var="n" items="${ list }">
+	            <div class="feedlist">
+	                <div class="profile">
+	                   <br>사진
+	                </div>
+	                <div class="projectmem">
+	                    <b>${n.empName } &emsp;&emsp;&emsp;</b>
+	                    <h style="font-size: 12px; color: dimgray;">${n.nfDate } &emsp; 13:01</h>
+	                </div>
+	                <div class="feedcontent">
+	                    <p>${n.nfContent }</p>
+	                </div>
+	                <!--댓글-->
+	                <div class="reply" style="font-size: 13px;">
+	                    <div class="replylist">
+	                        <b>오트라</b> &emsp;&emsp;&emsp; 
+	                        <span class="replycontents">안녕하세요 !</span>
+	                        <span class="date">2022-01-10&emsp;11:48</span>
+	                    </div>
+	                    <input class="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
+	                    <button class="replyok" ><b>등록</b></button>
+	                </div>
+	            </div>
+            </c:forEach>
         </div>
     
+    </div>
+    </div>
+    </div>
     </div>
 </body>
 </html>

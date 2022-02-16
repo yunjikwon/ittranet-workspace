@@ -13,8 +13,9 @@
     }
     
    #list{
-       width: 900px;
-       height: 160px;
+       width: 1000px;
+       height: 200px;
+       border: 1px solid;
    }
    .projectbox{
        border:1px solid rgb(190, 190, 190); 
@@ -41,6 +42,12 @@
        height: 73px;
        margin: 12px;
    }
+   .logoimg{
+   	   width: 60px;
+   	   height: 60px;
+	   margin: 20px;
+	   margin-top: 7px;
+   }
 
    #newsfeed{
        padding: 15px;
@@ -60,6 +67,14 @@
        background-color: white;
        border-radius: 50%;
        border: 1px solid;
+       margin: 10px;
+   }
+   .userProfile{
+       display:inline-block;
+       width: 70px;
+       height: 70px;
+       background-color: white;
+       border-radius: 50%;
        margin: 10px;
    }
    .projectmem{
@@ -142,35 +157,51 @@
         <div id="list">
             <div class="projectbox">
                 <div class="projectlogo">
-                    // 로고
+                    <img class="logoimg" src="resources/images/projectlogo/list.png"  />
                 </div>
                 <p class="projectname" style="font-size: 13px; text-align: center;">전체 소식</p>   
             </div>
             <div class="projectbox">
                 <div class="projectlogo">
-                    // 로고
+                    <img class="logoimg" src="resources/images/projectlogo/bookmark.png"  />
                 </div>
                 <p class="projectname" style="font-size: 13px; text-align: center;">북마크</p>   
             </div>
-            <div class="projectboxes">
-                <div class="projectlogo">
-                    // 로고
-                </div>
-                <p class="projectname" style="font-size: 13px; text-align: center;">IT!tranet</p>   
-            </div>
+            
+            <!-- 진행중인 프로젝트 목록 -->
+            <c:forEach var="p" items="${ list2 }">
+            	<a href="javascript:prNewsfeed('${p.prNo}')">
+            	
+		            <div class="projectboxes">
+		                <div class="projectlogo">
+		                     <img class="logoimg" src="${ p.prLogo }"  />
+		                </div>
+		                <p class="projectname" style="font-size: 13px; text-align: center;">${ p.prTitle }</p>   
+		            </div>
+		            
+	            </a>
+            </c:forEach>
         </div>
     
         <br>
         <!--뉴스피드 리스트-->
         
-        <c:forEach var="n" items="${ list }">
+        <c:forEach var="n" items="${ list1 }">
         <div id="newsfeed">
             <div class="feedlist">
-                <div class="profile">
-                   <br>사진
-                </div>
+                   <br>
+                   <!-- 사용자 프로필 사진 조건 -->
+                   <c:choose>
+	                   <c:when test="${n.profile eq 'null'}">
+	                 	  <img class="userProfile" src="resources/images/userprofile.png"  />
+	                   </c:when>
+	                   <c:otherwise>
+	                   	  <img class="userProfile" src="${ n.profile }"  />
+	                   </c:otherwise>
+                   </c:choose>
+
                 <div class="projectmem">
-                    <b>IT!tranet &emsp; > &emsp;이트라 &emsp;&emsp;&emsp;</b>
+                    <b>${ n.prTitle } &emsp; > &emsp;${ n.empName } &emsp;&emsp;&emsp;</b>
                     <h style="font-size: 12px; color: dimgray;">${ n.nfDate } &emsp; 13:01</h>
                 </div>
                 <div class="feedcontent">
@@ -191,5 +222,26 @@
         </div>
         </div>
     </div>
+    
+    
+      <script>
+
+        function prNewsfeed(prNo){
+        	  let f = document.createElement('form');
+        	    
+        	  let obj;
+        	  obj = document.createElement('input');
+        	  obj.setAttribute('type', 'hidden');
+        	  obj.setAttribute('name', 'prNo');
+        	  obj.setAttribute('value', prNo);
+        	    
+        	  f.appendChild(obj);
+        	  f.setAttribute('method', 'post');
+        	  f.setAttribute('action', 'feed.pr');
+        	  document.body.appendChild(f);
+        	  f.submit();
+        }
+
+      </script>
 </body>
 </html>

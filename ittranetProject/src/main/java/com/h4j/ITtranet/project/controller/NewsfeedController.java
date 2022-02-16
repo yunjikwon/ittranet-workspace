@@ -25,10 +25,24 @@ public class NewsfeedController {
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		String empNo = loginUser.getEmpNo();
 		
-		ArrayList<Newsfeed> list = nService.selectNews(empNo);
-		mv.addObject("list", list).setViewName("project/newsfeed");
-		System.out.println("뉴스피드 db : " + list);
+		ArrayList<Newsfeed> list1 = nService.selectNews(empNo);
+		ArrayList<Newsfeed> list2 = nService.newsProject(empNo);
+		
+		mv.addObject("list1", list1).setViewName("project/newsfeed");
+		mv.addObject("list2", list2).setViewName("project/newsfeed");
+		
+		System.out.println("뉴스피드 db : " + list1);
+		System.out.println("뉴스피드 프로젝트 db : " + list2);
 		return mv;
+	}
+	
+	@RequestMapping("feed.pr")
+	public ModelAndView prNewsfeed(String prNo, ModelAndView mv) {
+		
+		ArrayList<Newsfeed> list = nService.prNewsfeed(prNo);
+		mv.addObject("list", list).setViewName("project/project");
+		System.out.println("프로젝트 뉴스피드 db : " + list);
+		return mv;		
 	}
 	
 

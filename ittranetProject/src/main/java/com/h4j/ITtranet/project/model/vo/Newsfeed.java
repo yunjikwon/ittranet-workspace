@@ -21,4 +21,8 @@ public class Newsfeed {
 	private String nfContent;
 	private Date nfDate;
 	private String status;
+	private String prTitle;
+	private String empName;
+	private String profile;
+	private String prLogo;
 }
