@@ -33,13 +33,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public int selectListCount() {
-		return aDao.selectListCount(sqlSession);
+	public int selectListCount(int category) {
+		return aDao.selectListCount(sqlSession, category);
 	}
 
 	@Override
-	public ArrayList<Approval> selectList(PageInfo pi) {
-		return aDao.selectList(sqlSession, pi);
+	public ArrayList<Approval> selectList(PageInfo pi, int category) {
+		return aDao.selectList(sqlSession, pi, category);
 	}
 	
 	

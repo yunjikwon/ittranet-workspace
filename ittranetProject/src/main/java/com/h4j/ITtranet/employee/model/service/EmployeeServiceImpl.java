@@ -23,8 +23,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
+	public int mailCheck(String checkMail) {
+		return eDao.mailCheck(sqlSession, checkMail);
+	}
+	
+	@Override
 	public int idCheck(String checkId) {
-		return 0;
+		return eDao.idCheck(sqlSession, checkId);
+	}
+	
+	@Override
+	public Employee whosMail(String accordMail) {
+		return eDao.whosMail(sqlSession, accordMail);
+	}
+	
+	@Override
+	public int setTempwd(Employee e) {
+		return eDao.setTempwd(sqlSession, e);
 	}
 
 	@Override
@@ -42,5 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public int deleteMember(String empId) {
 		return 0;
 	}
+
+
 	
 }

@@ -7,6 +7,11 @@
 <title>Insert title here</title>
 </head>
     <style>
+    	/*메뉴바 픽스 스타일*/
+     	.attendance_mn{
+     		color:#000000;
+     	}
+     	
         #formtitle{
             font-size: 20px;
             font-weight: 700;

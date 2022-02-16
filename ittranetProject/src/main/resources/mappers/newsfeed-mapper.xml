@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+ <mapper namespace="newsfeedMapper">
+ 
+ <resultMap type="Newsfeed" id="NewsfeedList">
+ 	<result column="nf_no" property="nfNo"/>
+ 	<result column="pr_no" property="prNo"/>
+ 	<result column="emp_no" property="empNo"/>
+ 	<result column="nf_content" property="nfContent"/>
+ 	<result column="nf_date" property="nfDate"/>
+ 	<result column="status" property="status"/>
+ </resultMap>
+ 
+ <select id="selectNews" resultMap="NewsfeedList">
+	 select
+	    nf_no
+	   ,n.pr_no
+	   ,n.emp_no
+	   ,nf_content
+	   ,nf_date
+	   ,n.status
+	from newsfeed n
+	join project p on p.pr_no = n.pr_no
+	where n.emp_no = #{empNo}
+	and n.status = 'Y'
+ </select>
+ 
+ 
+ 
+ </mapper>

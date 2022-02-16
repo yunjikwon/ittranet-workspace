@@ -135,6 +135,17 @@
         	cursor: pointer;
         	color : black;
         }
+		.loading {
+		    position: fixed;
+		    left:0;
+		    right:0;
+		    top:20%;
+		    bottom:80%;
+		    background: rgba(0,0,0,0.2);
+		}
+    .display-none{
+        display:none;
+    }
     </style>
 </head>
 <body>	
@@ -162,8 +173,13 @@
         <br><br><br><br><br><br>
         <a href='joinForm.me'>회원가입테스트</a>
     </div>
+    
+    <%-- 로딩이미지 div --%>
+    <div class="loading display-none">
+    	<div style="text-align:center;"><img src="resources/images/loadImg.gif"/></div>
+    </div>
 
-    <!-- The Modal -->
+    <%-- 모달창 --%>
     <div class="modal" id="myModal">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -172,24 +188,66 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-            * @포함 이메일 형태로 입력하세요
-            <input type="text" class="form-control form-control">
+            * 가입시 입력한 이메일을 작성하세요 (@포함)
+            <input type="text" id="accordMail" name="accordMail" class="form-control form-control">
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="findIdPwd();">확인</button>
             </div>
         </div>
         </div>
     </div>
     
     <script>
-    	$(document).ready(function(){
+    	// *** 비밀번호 확인 ***
+    	$(function(){
     		$('.content i').hover(function(){
     			$('#empPwd').attr('type','text');
     		}, function(){
     			$('#empPwd').attr('type','password');
     		})
-    	})
+    	});
+    	
+    	// *** ID/PWD찾기 ***
+    	function findIdPwd(){
+    		$.ajax({
+    			url:"findIdPwd.me",
+    			data:{accordMail:$("#accordMail").val()},
+    			success:function(result){
+    				
+    				console.log(result);
+    				
+    				if(result == "yeah") {
+    					Swal.fire(
+    							  'Yeah!',
+    							  'Id와 임시password를 입력한 메일로 발송했습니다!',
+    							  'success'
+    							);
+    				}else if(result == "oops") {
+    					Swal.fire({
+    						  icon: 'error',
+    						  title: 'Something went wrong!',
+    						  text: '아래의 번호로 연락주세요',
+    						  footer: '☎ : 070-1111-1775'
+    						});
+    				}else {
+    					Swal.fire({
+  						  icon: 'question',
+  						  title: '일치하는 메일이 없습니다',
+  						  text: '메일을 다시 입력하거나 아래의 번호로 연락하세요!',
+  						  footer: '☎ : 070-1111-1775'
+  						});
+    				}
+    				
+    			}, beforeSend:function(){
+    				$('.loading').removeClass('display-none');
+    			}, complete:function(){
+    				$('.loading').addClass('display-none');
+    			}, error:function(){
+    				console.log("ajax통신 실패");
+    			}
+    		})
+    	};
     </script>
 	
 </body>

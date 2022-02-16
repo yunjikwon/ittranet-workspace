@@ -7,6 +7,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
+    	/*메뉴바 픽스 스타일*/
+     	.attendance_mn{
+     		color:#000000;
+     	}
+     	
         #draftTitle{
             font-size: 20px;
             font-weight: 700;
@@ -97,46 +102,27 @@
 				            </select>
 				        </div>
 		            <table id="boardList" class="table table-hover" align="center">		
+		            
 		            	<c:forEach var="d" items="${ list }">
 		                    <tr>
-		                    	<input type="hidden" value="${ d.empNo }">
-		                        <th>${ d.drDivision }</th>
+		                    	<td><input type="hidden" name="empNo" value="${ d.empNo }"></td>		                    	
+		                        <th>
+		                        	<c:if test="${ d.drDivision eq 1}">지출결의서</c:if>
+		                        	<c:if test="${ d.drDivision eq 2}">추가예산신청</c:if>
+		                        	<c:if test="${ d.drDivision eq 3}">연장근무신청</c:if>
+		                        	<c:if test="${ d.drDivision eq 4}">회의록</c:if>
+		                        	<c:if test="${ d.drDivision eq 5}">사업계획서</c:if>
+		                        	<c:if test="${ d.drDivision eq 6}">시말서</c:if>
+		                        </th>
 		                        <td>${ d.drTitle }</td>
 		                        <td>${ d.drDate }</td>
 		                        <td>
 		                            <img src="" alt=""> <!--프로필 이미지-->
 		                           	 ${ d.teamName  }${ d.empName }
 		                        </td>
-		                        <td>결재대기</td>
+		                        <td>${ d.drStatus }</td>
 		                    </tr>
-		                    <tr>
-		                        <th>회의록</th>
-		                        <td>IT!tranet 3번째 회의</td>
-		                        <td>22.01.10</td>
-		                        <td>인사팀</td>
-		                        <td>결재대기</td>
-		                    </tr>
-		                    <tr>
-		                        <th>품의서</th>
-		                        <td>개발팀 품의서</td>
-		                        <td>22.01.03</td>
-		                        <td>인사팀</td>
-		                        <td>결재대기</td>
-		                    </tr>
-		                    <tr>
-		                        <th>지출결의서</th>
-		                        <td>12월 지출 결의서</td>
-		                        <td>21.12.30</td>
-		                        <td>김땡땡대리</td>
-		                        <td>결재대기</td>
-		                    </tr>
-		                    <tr>
-		                        <th>사업계획서</th>
-		                        <td>xx프로젝트 제안서 제출합니다.</td>
-		                        <td>21.12.30</td>
-		                        <td>권땡땡 팀장</td>
-		                        <td>결재대기</td>
-		                    </tr>
+		                </c:forEach>   		                   
 		
 		            </table>
 		            <br>
@@ -145,17 +131,36 @@
 		            
 		        </div>
 		        <br><br>
+		        		        
 		        <div id="pagingArea">
-		            <ul class="pagination">
-		                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-		                <li class="page-item"><a class="page-link" href="#">1</a></li>
-		                <li class="page-item"><a class="page-link" href="#">2</a></li>
-		                <li class="page-item"><a class="page-link" href="#">3</a></li>
-		                <li class="page-item"><a class="page-link" href="#">4</a></li>
-		                <li class="page-item"><a class="page-link" href="#">5</a></li>
-		                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-		            </ul>
-		        </div>
+	                <ul class="pagination">
+	                	
+	                	<c:choose>
+	                		<c:when test="${ pi.currentPage eq 1 }">
+	                    		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ pi.currentPage-1 }">Previous</a></li>
+	                    	</c:otherwise>
+	                    </c:choose>
+	                    
+	                    
+	                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+	                    	<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ p }">${ p }</a></li>
+	                    </c:forEach>
+	                    
+	                    
+	                    <c:choose>
+	                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+	                    		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ pi.currentPage+1 }">Next</a></li>
+	                    	</c:otherwise>
+	                    </c:choose>
+	                    
+	                </ul>
+            </div>
 		       
 		        <br clear="both"><br>
 		        </form>
