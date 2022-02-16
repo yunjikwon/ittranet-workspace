@@ -33,7 +33,7 @@
 	#boardDetailTable td, #boardDetailTable th, #replyTable td, #replyTable th{
 		border-bottom: 1px solid rgb(184, 184, 184);
 	}
-	.btnStyle{
+	.btnStyle, .addRereplyBtn{
         border: none;
         margin: 5px;
 		padding:0;
@@ -45,13 +45,24 @@
     }
     .btnStyle:hover{opacity: 50%;}
     .aTag:hover{color: grey;}
-	#updateBtn, #replyInsertBtn, #backBtn, #deleteBtn{
+	#updateBtn, #replyInsertBtn, #backBtn, #deleteBtn, .rereply-area button, .addRereplyBtn{
 		width : 70px;
 		height : 30px;
 	}
-	#replyTable tbody{
-		font-size: 12px;
+	.rBtn{
+		border:none;
+		padding:0;
+        font-size: 12px;
+		font-weight: 900;
+		background-color:transparent;
 	}
+	#replyTable tbody{
+		font-size: 12px;		
+	}
+	.board_mn{
+		color: #000000;
+	}
+	
 </style>
 </head>
 <body>
@@ -201,11 +212,16 @@
 							<table id="replyTable" width="700" >
 								<thead>
 									<tr>
-										<th colspan="5" height="100">
-											<textarea name="" id="" cols="75" rows="5" style="resize:none"></textarea>
+										<td colspan="8" align="left">
+											댓글(<span id="rcount" style="font-weight:700; margin:5px;"></span>)
+										</td>
+									</tr>
+									<tr>
+										<th colspan="6" height="100" align="center">
+											<textarea name="replyContent" id="replyContent" cols="75" rows="5" style="resize:none; margin-top:5px;"></textarea>
 										</th>
 										<td colspan="2">
-											<button id="replyInsertBtn" class="btnStyle">등록</button>
+											<button id="replyInsertBtn" class="btnStyle" onclick="clickAddBtn(1)";>등록</button>
 										</td>
 									</tr>
 									
@@ -232,6 +248,150 @@
 							</table>
 						</div>
 						<br><br>
+						<script>
+							$(function(){
+								selectReplyList();
+							})
+
+							function selectReplyList(){
+								$.ajax({
+									url:"rlist.bo",
+									data:{
+										bno:${b.boardNo},
+									},
+									success:function(list){
+										//console.log(list);
+
+
+										let value = "";
+										// 원본 댓글의 경우 list[i].replyBranch = 1
+										for(let i in list){
+											if(list[i].replyBranch == 1){
+												value += "<tr>"
+													+	"<th colspan='2' width='100' height='50'>" + list[i].empName + "</th>"
+													+ "<td><input type='hidden' class='replyNo' name='replyNo' value='"+list[i].replyNo+"'></td>";
+											}else{
+												value += "<tr>"
+													+	"<th width='20' height='50'>" + "</th>"
+													+ 	"<th width='80'>" + "ㄴ" + list[i].empName + "</th>"
+													+ "<td><input type='hidden' class='replyNo' name='replyNo' value='"+list[i].replyNo+"'></td>";
+											}
+											value += 	"<td width='380'>" + list[i].replyContent+ "</td>"
+													+	"<td width='110'>" + list[i].createDate + "</td>"
+													+	"<th width='40'>" ;
+											if(list[i].empNo =='${loginUser.empNo}'){
+												value += "<button type='button' class='aTag rBtn'>수정</button>" 
+														+ "</th>" ;
+											}
+											if(list[i].empNo =='${loginUser.empNo}' || '${loginUser.admin}' ==='Y'){
+												value += "<th width='30'>" 
+													+ "<button type='button' class='aTag rBtn'>삭제</button>" 
+													+ "</th>";
+											}else{
+												value +=  "</th>" 
+														+ "<th width='30'>"
+														+ "</th>";
+											}
+											if(list[i].replyBranch == 1){
+												value += "<th width='30'>" 
+													+ "<button type='button' class='aTag show addReplyBtn rBtn' >답글</button>" 
+													+ "<button type='button' class='aTag addReplyBtn rBtn' style='display:none'>답글</button>"
+													+ "</th>"
+													+ 	"</tr>"
+													+ "<tr class='rereplyTr' style='display:none'>"
+													+ "<td colspan='6' align='center'>"
+									  				+ 	"<textarea name='rereplyContent' class='rereplyContent' cols='85' rows='3' style='resize:none; margin-top:5px;'></textarea>"	
+									 			 	+"</td>"
+													+ "<td colspan='2'>"
+													+	"<button class='btnStyle addRereplyBtn'>등록</button>"
+													+"</td>"
+													+ "</tr>";
+													
+											}else{
+												value += "<th width='30'></th></tr>";
+											}
+										}
+										
+										$("#reply-area tbody").html(value);
+										$("#rcount").text(list.length);
+										
+
+									},error:function(){
+										console.log("댓글 작성용 ajax 통신 실패");
+									}
+								})
+							}
+							var orgNo = 0;
+							var branch = 0;
+
+							function clickAddBtn(num){
+								if($("#replyContent").val().trim().length != 0){
+									if(num == 1){
+										var orgNo = 0;
+										var branch = 1;
+										insertReply(orgNo, branch);
+									}
+								}
+							}
+
+
+							// 답글 버튼 누를때 입력폼 생기도록 하기
+							$(document).on("click", ".addReplyBtn", function(){
+								
+								let obj = $(this);
+								//console.log(obj);
+								if(obj.hasClass("show")){
+									obj.hide();
+									obj.next().show();
+									obj.parent().parent().next(".rereplyTr").show();
+								}else{
+									obj.hide(); 
+									obj.prev().show();
+									obj.parent().parent().next(".rereplyTr").hide();
+								}
+							});
+
+							// 대댓글 작성 서비스
+							$(document).on("click", ".addRereplyBtn", function(){
+								var $value = $(this).parent().parent().prev().children().children(".replyNo").val();
+								var $content = $(this).parent().siblings().children(".rereplyContent").val();
+								insertReply($value, 2, $content);
+							});		
+							
+
+							function insertReply(orgNo, branch, content){
+								
+								let $replyContent = "";
+								if(branch == 1){
+									$replyContent = $("#replyContent").val();
+								}else{
+									$replyContent = content;
+								}
+								console.log($replyContent);
+								$.ajax({
+									url:"rinsert.bo",
+									data:{
+										refNo:${b.boardNo},
+										empNo:'${loginUser.empNo}',
+										replyContent:$replyContent,
+										replyOriginNo: orgNo,
+										replyBranch: branch
+									},success:function(status){
+
+										if(status == "success"){
+											selectReplyList();
+											$("#replyContent").val("");
+										}
+									},error:function(){
+										console.log("댓글 작성용 ajax 통신 실패");
+
+									}
+								})
+										
+							
+							}
+							
+						</script>
 					</div>
 				
 					

@@ -59,7 +59,9 @@
     .boardTitle{
         cursor: pointer;
     }
-        
+    .board_mn{
+		color: #000000;
+	}   
 </style>
 </head>
 <body>	
@@ -179,7 +181,6 @@
                             </c:choose>
                         </div>
                         <br>
-                        
                         
                         <div id="search-area" align="center">
                             <select name="search" id="">

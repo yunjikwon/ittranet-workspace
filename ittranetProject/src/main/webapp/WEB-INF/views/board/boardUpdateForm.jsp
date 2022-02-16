@@ -78,7 +78,9 @@
         border-radius: 1.5ex;
         background: rgba(195, 200, 247, 0.822);
     }
-    
+    .board_mn{
+		color: #000000;
+	}
 </style>
 </head>
 <body>

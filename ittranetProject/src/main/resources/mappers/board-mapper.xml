@@ -24,6 +24,20 @@
 		<result column="ref_no" property="refNo" />
 	</resultMap>
  
+ 	<resultMap id="replyResult" type="Reply">
+ 		<result column="reply_no" property="replyNo" />
+ 		<result column="emp_no" property="empNo" />
+ 		<result column="ref_code" property="refCode" />
+ 		<result column="ref_no" property="refNo" />
+ 		<result column="reply_content" property="replyContent" />
+ 		<result column="reply_origin_no" property="replyOriginNo" />
+ 		<result column="reply_branch" property="replyBranch" />
+ 		<result column="create_date" property="createDate" />
+ 		<result column="status" property="status" />
+ 		<result column="emp_name" property="empName" />
+ 		<result column="admin" property="admin" />
+ 		
+ 	</resultMap>
  	<select id="selectListCount" resultType="_int">
  		select
  			   count(*) as "count"
@@ -174,4 +188,53 @@
 	        , #{boardNo}
 	        )
 	</insert>
+	
+	<select id="selectReplyList" resultMap="replyResult">
+		select reply_no
+		     , emp_no
+		     , emp_name
+		     , reply_content
+		     , reply_origin_no
+		     , reply_branch
+		     , to_char(create_date, 'YYYY-MM-DD hh:mm') as "create_date"
+		  from reply r
+		  join employee using(emp_no)
+		 where ref_code = 'B'
+		   and r.status = 'Y'
+		   and ref_no = #{refNo}
+		 start
+		  with reply_branch = 1
+		 connect by prior reply_no = reply_origin_no
+	</select>
+	
+	<insert id="insertReply">
+		insert
+		  into reply
+		     (
+		       reply_no
+		     , emp_no
+		     , ref_code
+		     , ref_no
+		     , reply_content
+		     , reply_origin_no
+		     , reply_branch
+		     , create_date
+		     , status
+		     )
+		values
+		     (
+		       seq_reply.nextval
+		     , #{empNo}
+		     , 'B'
+		     , #{refNo}
+		     , #{replyContent}
+		     , #{replyOriginNo}
+		     , #{replyBranch}
+		     , sysdate
+		     , 'Y'
+		     )
+	</insert>
+	
+	
+	
 </mapper>

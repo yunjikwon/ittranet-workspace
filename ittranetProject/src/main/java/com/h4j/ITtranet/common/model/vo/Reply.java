@@ -23,4 +23,7 @@ public class Reply {
 	private int replyBranch;
 	private String createDate;
 	private String status;
+	
+	// 댓글용 변수 추가
+	private String empName;
 }

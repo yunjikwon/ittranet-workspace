@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.h4j.ITtranet.board.model.vo.Board;
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
+import com.h4j.ITtranet.common.model.vo.Reply;
 
 @Repository
 public class BoardDao {
@@ -64,9 +65,13 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertNewAttachment", at);
 	}
 	
+	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int refNo){
+		return (ArrayList)sqlSession.selectList("boardMapper.selectReplyList", refNo);
+	}
 	
-	
-	
+	public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("boardMapper.insertReply", r);
+	}
 	
 	
 }
