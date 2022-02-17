@@ -15,6 +15,13 @@
         width: 300px;
         margin-left: 20px;
         margin-top: 20px;
+        border: 1px solid red;
+    }
+    .menuname2{
+        width: 300px;
+        margin-left: 20px;
+        margin-top: 20px;
+        border: 1px solid purple;
     }
     .proing{
        border: 1px solid rgb(128, 127, 127);
@@ -53,7 +60,10 @@
 	}
 	
 	.projectBox{
-		border:1px solid;
+		border:1px solid orange;
+	}
+	.projectBox2{
+		border:1px solid blue;
 	}
 	
 </style>
@@ -112,9 +122,12 @@
 				</c:forEach>
 		   </div>
 		   
-		   <div class="projectBox">
+		   
+
+        </div>  
+        		   <div class="projectBox2">
         <!-- 종료된 프로젝트 -->
-            <div class="menuname">
+            <div class="menuname2">
                 <br>
                 <h6 style="font-weight: bold;">&emsp;종료된 프로젝트</h6>
             </div>
@@ -131,7 +144,6 @@
             </c:forEach>
           </div>   
         
-        </div>  
         </div>
         </div>
         </div>  

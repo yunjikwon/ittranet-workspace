@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    pageEncoding="UTF-8" import="java.util.ArrayList, com.h4j.ITtranet.project.model.vo.Newsfeed" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	ArrayList<Newsfeed> list = (ArrayList<Newsfeed>)request.getAttribute("list");
+%>
     
 <!DOCTYPE html>
 <html>
@@ -14,15 +17,13 @@
     }
     .menuname{
         display:inline-block;
-        border: 1px solid;
         width: 300px;
         margin-left: 20px;
     }
     
     button{
-        width: 70px;
+        width: 80px;
         height: 35px;
-        border-radius: 1mm;
         border: none;
         font-size: 13px;
         font-weight: bold;
@@ -32,17 +33,20 @@
         background-color: rgb(165, 137, 177); 
         float: right;
         margin: 10px;
+        border-radius: 1mm;
     }
     .button2{
         background-color: rgb(202, 183, 211);       
         float: right;
         margin: 10px;
+        border-radius: 1mm;
     }
     .button3{
         background-color: rgb(160, 156, 163);       
         float: right;
         margin: 10px;
         margin-right: 40px;
+        border-radius: 1mm;
     }
     .todo{
         margin-left: 50px;
@@ -56,7 +60,6 @@
     }
 
     #newsfeed{
-       border:1px solid blue;
        padding: 15px;
        margin-left: 10px;
    }
@@ -86,6 +89,8 @@
    #writeok{
        float: right;
        margin-right: 20px;
+       border-radius: 1mm;
+       width: 70px;
    }
 
    .feedlist{
@@ -94,6 +99,7 @@
        background-color: rgba(224, 224, 224, 0.87);
        width: 830px;
        padding: 10px;
+       margin-top: 20px;
        
    }
    .profile{
@@ -107,20 +113,19 @@
    }
    .projectmem{
        display:inline-block;
-       border: 1px solid;
        width: 500px;
        height: 30px;
        margin-left: 10px;
    }
    .feedcontent{
        width: 680px;
-       border: 1px solid ;
        margin-left: 105px;
        font-size: 13px;
    }
    .reply{
-       background-color: rgb(222, 216, 225);
+       background-color: rgb(227, 210, 235);
        border-radius: 3mm;
+       border: 1px solid rgb(204, 204, 204);
        width: 700px;
        margin-left: 100px;
        margin-top: 15px;
@@ -128,7 +133,6 @@
    }
    .replylist{
        margin-bottom: 15px;
-       border: 1px solid;
    }
    .date{
        float: right;
@@ -143,6 +147,8 @@
    .replyok{
        background-color: rgb(187, 159, 202);   
        margin-left: 8px;
+       border-radius: 1mm;
+       width: 70px;
    }
 
    ::placeholder{
@@ -185,7 +191,7 @@
 
     <div class="mainOuter"> 
     <div class="wrap">   
-        <h4 style="font-weight:bold;">프로젝트 명</h4>
+        <h4 style="font-weight:bold;">${ list.get(0).prTitle }</h4>
         
         <!--담당 업무, 업무 버튼, 리스트-->
         <div class="menuname">
@@ -249,7 +255,7 @@
                 <button id="writeok" name="" style="background-color: rgb(187, 159, 202);">등록</button>
             </div>
             
-            <br>
+            
             <!-- 게시물 -->
             <c:forEach var="n" items="${ list }">
 	            <div class="feedlist">
