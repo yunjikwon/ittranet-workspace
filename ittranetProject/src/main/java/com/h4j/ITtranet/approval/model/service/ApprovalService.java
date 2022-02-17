@@ -9,7 +9,8 @@ import com.h4j.ITtranet.common.model.vo.PageInfo;
 public interface ApprovalService {
 	
 	// 결재선 검색
-	ArrayList<AppLine> selectSearchLine(AppLine appLine);
+	ArrayList<AppLine> selectSearchTeam(String keyword);
+	ArrayList<AppLine> selectSearchName(String keyword);
 	
 	// 기안 게시판 listCount
 	int selectListCount(int category);

@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.h4j.ITtranet.approval.model.service.ApprovalService;
 import com.h4j.ITtranet.approval.model.vo.AppLine;
 
@@ -64,16 +65,18 @@ public class FormController {
 	}
 	
 	// 검색
-	@RequestMapping("search.fo")
-	public ArrayList<AppLine> selectSearchLine(@RequestParam("keywordTeam") String keywordTeam, @RequestParam("keywordName") String keywordName, Model model) {
-		AppLine appLine = new AppLine();
-		appLine.setKeywordName(keywordTeam);
-		appLine.setKeywordName(keywordName);
+	@ResponseBody
+	@RequestMapping(value = "search.fo", produces="application/json; charset=utf-8")
+	public String selectSearchLine(int flag, String keyword) {
+		ArrayList<AppLine> list = new ArrayList<>();
 		
-		//ArrayList<AppLine> FormSearch = aService.selectSearchLine(appLine);	
+		if(flag == 1) { // 팀 검색 요청
+			list = aService.selectSearchTeam(keyword);
+		} else{
+			list = aService.selectSearchName(keyword);
+		}
 		
-		
-		return aService.selectSearchLine(appLine);
+		return new Gson().toJson(list);
 	}
 
 	
