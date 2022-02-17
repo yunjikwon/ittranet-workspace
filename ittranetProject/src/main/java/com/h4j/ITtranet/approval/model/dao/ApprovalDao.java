@@ -15,8 +15,12 @@ import com.h4j.ITtranet.common.model.vo.PageInfo;
 public class ApprovalDao {
 
 	// 결재선 검색
-	public ArrayList<AppLine> selectSearchLine(SqlSessionTemplate sqlSession, AppLine appLine) {
-		return (ArrayList)sqlSession.selectList("appMapper.selectSearchList", appLine);
+	public ArrayList<AppLine> selectSearchTeam(SqlSessionTemplate sqlSession, String keyword) {
+		return (ArrayList)sqlSession.selectList("appMapper.selectSearchTeam", keyword);
+	}
+	
+	public ArrayList<AppLine> selectSearchName(SqlSessionTemplate sqlSession, String keyword) {
+		return (ArrayList)sqlSession.selectList("appMapper.selectSearchName", keyword);
 	}
 	
 	// 기안 게시판 paging
