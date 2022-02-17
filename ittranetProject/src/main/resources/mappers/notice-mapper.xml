@@ -4,11 +4,11 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="noticeMapper">
 
-	<resultMap id="boardResult" type="Board">
-		<result column="board_no" property="boardNo"/>
+	<resultMap id="noticeResult" type="Notice">
+		<result column="notice_no" property="noticeNo"/>
 		<result column="emp_no" property="empNo"/>
-		<result column="board_title" property="boardTitle"/>
-		<result column="board_content" property="boardContent"/>
+		<result column="notice_title" property="noticeTitle"/>
+		<result column="notice_content" property="noticeContent"/>
 		<result column="create_date" property="createDate"/>
 		<result column="count" property="count"/>		
 		<result column="emp_id" property="empId"/>		
@@ -42,47 +42,47 @@
  	<select id="selectListCount" resultType="_int">
  		select
  			   count(*) as "count"
- 		  from board
+ 		  from notice
  		 where status = 'Y'
  	</select>
  	
  	<!-- 게시글 전체 조회 -->
- 	<select id="selectList" resultMap="boardResult">
+ 	<select id="selectList" resultMap="noticeResult">
  		select 
-	        board_no
+	        notice_no
 	      , emp_name
-	      , board_title
+	      , notice_title
 	      , to_char(create_date, 'YYYY-MM-DD') as "create_date"
 	      , count
 	      
-	  from board b
+	  from notice n
 	  join employee using (emp_no)
-	 where b.status = 'Y'
+	 where n.status = 'Y'
 	 order
-	    by board_no desc
+	    by notice_no desc
  	</select>
  	
  	<!-- 조회수 증가 -->
  	<update id="increaseCount">
- 		update board
+ 		update notice
  		   set count = count + 1
- 		 where board_no = #{boardNo}
+ 		 where notice_no = #{noticeNo}
  		   and status = 'Y'
  	</update>
  	
  	<!-- 게시글 상세조회 -->
- 	<select id="selectBoard" resultMap="boardResult">
+ 	<select id="selectNotice" resultMap="noticeResult">
  		select
- 			   board_no 
+ 			   notice_no 
  			 , emp_no
-		     , board_title
+		     , notice_title
 		     , emp_name
 		     , to_char(create_date, 'YYYY-MM-DD') as "create_date"
-		     , board_content
-		  from board b
+		     , notice_content
+		  from notice n
 		  join employee using(emp_no)
-		 where b.status = 'Y'
-		   and board_no = #{boardNo}
+		 where n.status = 'Y'
+		   and notice_no = #{noticeNo}
  	</select>
  	
  	<!-- 첨부파일 조회 -->
@@ -93,20 +93,20 @@
  		     , file_path
  			 , ref_no
 		  from attachment
-		 where ref_Code = 'B'
-		   and ref_no = #{boardNo}
+		 where ref_Code = 'N'
+		   and ref_no = #{noticeNo}
  
  	</select>
 
 	<!-- 새 글 작성 -->
-	<insert id="insertBoard">
+	<insert id="insertNotice">
 		insert 
-		  into board
+		  into notice
 		     (
-		       board_no
+		       notice_no
 		     , emp_no
-		     , board_title
-		     , board_content
+		     , notice_title
+		     , notice_content
 		     , create_date
 		     , count
 		     , status
@@ -115,8 +115,8 @@
 		    (
 		      seq_board.nextval
 		    , #{empNo}
-		    , #{boardTitle}
-		    , #{boardContent}
+		    , #{noticeTitle}
+		    , #{noticeContent}
 		    , sysdate
 		    , 0
 		    , 'Y'
@@ -141,7 +141,7 @@
 	        , #{originName}
 	        , #{changeName}
 	        , #{filePath}
-	        , 'B'
+	        , 'N'
 	        , seq_board.currval
 	        )
 	</insert>
@@ -151,15 +151,15 @@
  		select
  			   count(*) as "count"
  		  from attachment
- 		 where ref_code = 'B'
- 		   and ref_no = #{boardNo}
+ 		 where ref_code = 'N'
+ 		   and ref_no = #{noticeNo}
  	</select>
  	
  	<!-- 게시글 삭제 -->
- 	<update id="deleteBoard">
- 		update board
+ 	<update id="deleteNotice">
+ 		update notice
  		   set status = 'N'
- 		 where board_no = #{ boardNo }
+ 		 where notice_no = #{ noticeNo }
  	</update>
  	
  	<!-- 첨부파일 삭제 -->
@@ -170,12 +170,12 @@
  	</delete>
  	
  	<!-- 게시글 수정 -->
- 	<update id="updateBoard">
+ 	<update id="updateNotice">
  		update 
- 			   board
- 		   set board_title = #{boardTitle}
- 		     , board_content = #{boardContent}
- 		 where board_no = #{boardNo}
+ 			   notice
+ 		   set notice_title = #{noticeTitle}
+ 		     , notice_content = #{noticeContent}
+ 		 where notice_no = #{noticeNo}
  	</update>
  	
  	<!-- 게시글 수정시 첨부파일 추가 -->
@@ -196,8 +196,8 @@
 	        , #{originName}
 	        , #{changeName}
 	        , #{filePath}
-	        , 'B'
-	        , #{boardNo}
+	        , 'N'
+	        , #{noticeNo}
 	        )
 	</insert>
 	
@@ -214,7 +214,7 @@
 		     , to_char(create_date, 'YYYY-MM-DD hh:mm') as "create_date"
 		  from reply r
 		  join employee using(emp_no)
-		 where ref_code = 'B'
+		 where ref_code = 'N'
 		   and r.status = 'Y'
 		   and ref_no = #{refNo}
 		 start
@@ -241,7 +241,7 @@
 		     (
 		       seq_reply.nextval
 		     , #{empNo}
-		     , 'B'
+		     , 'N'
 		     , #{refNo}
 		     , #{replyContent}
 		     , #{replyOriginNo}
@@ -268,16 +268,16 @@
 	</update>
 	
 	<!-- 게시글 검색 -->
-	<select id="searchBoardList" resultMap="boardResult">
+	<select id="searchNoticeList" resultMap="noticeResult">
 		select 
-		        board_no
+		        notice_no
 		      , emp_name
-		      , board_title
+		      , notice_title
 		      , to_char(create_date, 'YYYY-MM-DD') as "create_date"
 		      , count
-		  from board b
+		  from notice n
 		  join employee using (emp_no)
-		 where b.status = 'Y'
+		 where n.status = 'Y'
 			<choose>
 				<when test="type == 'boardTitle'">
 		 			AND board_title LIKE '%' || #{keyword} || '%'
@@ -285,8 +285,8 @@
 				<when test="type == 'empName'">
 		 			AND emp_name LIKE '%' || #{keyword} || '%'
 				</when>
-				<when test="type == 'boardContent'">
-		 			AND board_content LIKE '%' || #{keyword} || '%'
+				<when test="type == 'noticeHeader'">
+		 			AND notice_header LIKE '%' || #{keyword} || '%'
 				</when>
 			</choose>
 

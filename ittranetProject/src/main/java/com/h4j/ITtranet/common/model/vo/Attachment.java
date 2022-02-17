@@ -22,5 +22,6 @@ public class Attachment {
 	
 	//게시판 용 변수
 	private int boardNo;
+	private int noticeNo;
 
 }
