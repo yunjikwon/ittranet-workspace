@@ -38,6 +38,7 @@
  		<result column="admin" property="admin" />
  		
  	</resultMap>
+ 	<!-- 게시글 전체 갯수 조회 -->
  	<select id="selectListCount" resultType="_int">
  		select
  			   count(*) as "count"
@@ -45,6 +46,7 @@
  		 where status = 'Y'
  	</select>
  	
+ 	<!-- 게시글 전체 조회 -->
  	<select id="selectList" resultMap="boardResult">
  		select 
 	        board_no
@@ -60,6 +62,7 @@
 	    by board_no desc
  	</select>
  	
+ 	<!-- 조회수 증가 -->
  	<update id="increaseCount">
  		update board
  		   set count = count + 1
@@ -67,6 +70,7 @@
  		   and status = 'Y'
  	</update>
  	
+ 	<!-- 게시글 상세조회 -->
  	<select id="selectBoard" resultMap="boardResult">
  		select
  			   board_no 
@@ -81,6 +85,7 @@
 		   and board_no = #{boardNo}
  	</select>
  	
+ 	<!-- 첨부파일 조회 -->
  	<select id="selectAttachment" resultMap="attachmentResult">
  		select attachment_no
  		     , origin_name
@@ -93,6 +98,7 @@
  
  	</select>
 
+	<!-- 새 글 작성 -->
 	<insert id="insertBoard">
 		insert 
 		  into board
@@ -117,6 +123,7 @@
 		    )
 	</insert>
 	
+	<!-- 새 첨부파일 등록 -->
 	<insert id="insertAttachment">
 		insert 
 	      into attachment
@@ -139,6 +146,7 @@
 	        )
 	</insert>
 	
+	<!-- 첨부파일 갯수 조회 -->
 	<select id="attachmentCount" resultType="_int">
  		select
  			   count(*) as "count"
@@ -147,18 +155,21 @@
  		   and ref_no = #{boardNo}
  	</select>
  	
+ 	<!-- 게시글 삭제 -->
  	<update id="deleteBoard">
  		update board
  		   set status = 'N'
  		 where board_no = #{ boardNo }
  	</update>
  	
+ 	<!-- 첨부파일 삭제 -->
  	<delete id="deleteAttachment">
  		delete 
  		  from attachment
  		 where attachment_no = #{attachmentNo}
  	</delete>
  	
+ 	<!-- 게시글 수정 -->
  	<update id="updateBoard">
  		update 
  			   board
@@ -167,6 +178,7 @@
  		 where board_no = #{boardNo}
  	</update>
  	
+ 	<!-- 게시글 수정시 첨부파일 추가 -->
  	<insert id="insertNewAttachment">
 		insert 
 	      into attachment
@@ -189,8 +201,11 @@
 	        )
 	</insert>
 	
+	<!-- 댓글 목록 조회 -->
 	<select id="selectReplyList" resultMap="replyResult">
-		select reply_no
+		
+	
+		 select reply_no
 		     , emp_no
 		     , emp_name
 		     , reply_content
@@ -207,6 +222,7 @@
 		 connect by prior reply_no = reply_origin_no
 	</select>
 	
+	<!-- 댓글 입력 -->
 	<insert id="insertReply">
 		insert
 		  into reply
@@ -235,6 +251,46 @@
 		     )
 	</insert>
 	
+	<!-- 댓글 삭제 -->
+	<update id="deleteReply">
+		update
+		       reply
+		   set status = 'N'
+		 where reply_no = #{replyNo}
+	</update>
 	
+	<!-- 댓글 수정 -->
+	<update id="updateReply">
+		update
+			   reply
+		   set reply_content=#{replyContent}
+		 where reply_no = #{replyNo}
+	</update>
 	
+	<!-- 게시글 검색 -->
+	<select id="searchBoardList" resultMap="boardResult">
+		select 
+		        board_no
+		      , emp_name
+		      , board_title
+		      , to_char(create_date, 'YYYY-MM-DD') as "create_date"
+		      , count
+		  from board b
+		  join employee using (emp_no)
+		 where b.status = 'Y'
+			<choose>
+				<when test="type == 'boardTitle'">
+		 			AND board_title LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test="type == 'empName'">
+		 			AND emp_name LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test="type == 'boardContent'">
+		 			AND board_content LIKE '%' || #{keyword} || '%'
+				</when>
+			</choose>
+
+		 order
+		    by board_no desc
+	</select>
 </mapper>

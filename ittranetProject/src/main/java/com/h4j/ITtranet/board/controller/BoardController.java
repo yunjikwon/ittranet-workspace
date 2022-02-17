@@ -216,13 +216,29 @@ public class BoardController {
 		return result>0? "success" : "fail";
 	}
 	
+	// 댓글 삭제하기
+	@ResponseBody
+	@RequestMapping(value="rdelete.bo")
+	public String ajaxDeleteReply(int replyNo) {
+		int result = bService.deleteReply(replyNo);
+		return result>0? "success" : "fail";				
+	}
 	
+	// 댓글 수정하기
+	@ResponseBody
+	@RequestMapping(value="rupdate.bo")
+	public String ajaxUpdateReply(Reply r) {
+		int result = bService.updateReply(r);
+		return result>0? "success" : "fail";	
+	}
 	
-	
-	
-	
-	
-	
+	// 게시글 검색하기
+	@ResponseBody
+	@RequestMapping(value="search.bo", produces="application/json; charset=utf-8")
+	public String ajaxSearchBoard(Board b) {
+		ArrayList<Board> list = bService.searchBoardList(b);
+		return new Gson().toJson(list);
+	}
 	
 	
 	

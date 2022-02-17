@@ -130,7 +130,7 @@
                                     <th width="80px">조회수</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="boardListTbody">
                                 <c:forEach var="b" items="${ list }">
                                     <tr align="center">
                                         <td class="bno">${ b.boardNo }</td>
@@ -144,8 +144,10 @@
                                         <td>${ b.count }</td>
                                     </tr>
                                 </c:forEach>
-                                
-                            </tbody>          
+                            </tbody> 
+                            <tbody id="searchList-area">
+
+                            </tbody>         
                         </table>
                         <br>
                         
@@ -182,15 +184,80 @@
                         </div>
                         <br>
                         
-                        <div id="search-area" align="center">
-                            <select name="search" id="">
-                                <option value="title">글제목</option>
-                                <option value="writer">작성자</option>
-                                <option value="number">글번호</option>
-                            </select>
-                            <input type="text" id="keyword">
-                            <button id="searchBtn" class="btnStyle"><a class="aTag" href="search.bo">검색</a></button>
+                        <div id="search-area" align="center">     
+                        	<form id="searchArea" name="searchArea">
+	                            <select name="search" id="searchSelect">
+	                                <option value="boardTitle">글제목</option>
+	                                <option value="empName">작성자</option>
+	                                <option value="boardContent">글내용</option>
+	                            </select>
+	                            <input type="text" id="keyword" name="keyword">
+	                            <button type="button"id="searchBtn" class="btnStyle" onclick="getSearchList();"><a class="aTag">검색</a></button>
+                        	</form>
                         </div>
+                        
+                        <script>
+                        	function getSearchList(){
+                        		
+                        		var $keyword = $("#keyword").val();
+                        		var $type = $("#searchArea option:selected").val();
+                        		
+                        		if($keyword === ""){
+                        			Swal.fire({
+                        				text: '키워드를 입력해주세요'
+                        			});
+                        			
+                        			return false;
+                        		}
+                                
+                        		$.ajax({
+                        			url : "search.bo",
+                        			data:{
+                        				keyword: $keyword,
+                        				type: $type
+                        			},
+                        			success:function(list){
+                        				
+                        				$("#boardListTbody").empty();
+                        				$("#paging-area").hide();
+                        				
+                                          let value = "";
+                        				if(list.length<1){
+                        					value = "<tr align='center' class='noResult' ><th colspan='5' rowspan='3' height='150'><br><br><br>검색된 글이 없습니다.</th></tr>";
+                        					$("#boardListTbody").html(value);
+                        					
+                        				}else{
+                                            for(let i in list){
+                                            
+                                                value += "<tr align='center'>"
+                                                        + "<td class='bno'>" + list[i].boardNo + "</td>"
+                                                        + "<td class='boardTitle'>" + list[i].boardTitle + "</td>"
+                                                       
+                                                        + "<td>" + list[i].empName + "</td>"
+                                                        + "<td>" + list[i].createDate + "</td>"
+                                                        + "<td>" + list[i].count + "</td>"
+                                                        + "</tr>";
+                                            }
+                                            
+                                            $("#boardListTbody").html(value);
+                        				}
+                        			},error:function(){
+                        				console.log("게시글 검색용 ajax 통신 실패");
+                        			}
+                        		})
+                        	}
+                        	
+                        	$(function(){
+                        	
+                                $(document).on("click", "#boardListTable>tbody>tr", function(){
+                                	if($(this).hasClass("noResult")){
+                                		return false;
+                                	}else{
+                                    	location.href = 'detail.bo?bno=' + $(this).children(".bno").text();
+                                	}
+                                })
+                            })
+                        </script>
                         <br>
                     </div>
 

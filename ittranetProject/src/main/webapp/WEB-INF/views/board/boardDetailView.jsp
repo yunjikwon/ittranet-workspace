@@ -18,7 +18,7 @@
 		width: 700px;
 		border-collapse: collapse;
     }
-	.aTag, .aTag:hover{
+	.aTag, .rBtn {
 		text-decoration: none;
 		color: black;
 		cursor: pointer;
@@ -43,9 +43,9 @@
 		background: rgba(162, 171, 255, 0.822);
         cursor: pointer;
     }
-    .btnStyle:hover{opacity: 50%;}
-    .aTag:hover{color: grey;}
-	#updateBtn, #replyInsertBtn, #backBtn, #deleteBtn, .rereply-area button, .addRereplyBtn{
+    .btnStyle:hover, .rBtn:hover{opacity: 50%;}
+    .aTag:hover{color: grey; cursor: pointer; text-decoration: none;}
+	#updateBtn, #replyInsertBtn, #backBtn, #deleteBtn, .rereply-area button, .addRereplyBtn, .updateBtn{
 		width : 70px;
 		height : 30px;
 	}
@@ -61,6 +61,7 @@
 	}
 	.board_mn{
 		color: #000000;
+		
 	}
 	
 </style>
@@ -227,23 +228,7 @@
 									
 								</thead>
 								<tbody>
-									<tr>
-										<th colspan="2" width="100" height="50">이트라</th>
-										<td width="380">안녕하세요?</td>
-										<td width="110">2020-01-01 10:33</td>
-										<th width="40">수정</th>
-										<th width="30">삭제</th>
-										<th width="30">답글</th>
-									</tr>
-									<tr>
-										<th width="20" height="50"></th>
-										<th width="80">ㄴ관리자</th>
-										<td width="380">안녕하세요?</td>
-										<td width="110">2020-01-01 10:33</td>
-										<th width="40">수정</th>
-										<th width="30">삭제</th>
-										<th width="30">답글</th>
-									</tr>
+									
 								</tbody>
 							</table>
 						</div>
@@ -276,16 +261,17 @@
 													+ 	"<th width='80'>" + "ㄴ" + list[i].empName + "</th>"
 													+ "<td><input type='hidden' class='replyNo' name='replyNo' value='"+list[i].replyNo+"'></td>";
 											}
-											value += 	"<td width='380'>" + list[i].replyContent+ "</td>"
+											value += 	"<td width='380' class='replyContent'>" + list[i].replyContent+ "</td>"
 													+	"<td width='110'>" + list[i].createDate + "</td>"
 													+	"<th width='40'>" ;
 											if(list[i].empNo =='${loginUser.empNo}'){
-												value += "<button type='button' class='aTag rBtn'>수정</button>" 
+												value += "<button type='button' class='showBtn show rBtn upBtn'>수정</button>" 
+														+ "<button type='button' class='showBtn rBtn upBtn' style='display:none'>수정</button>"
 														+ "</th>" ;
 											}
 											if(list[i].empNo =='${loginUser.empNo}' || '${loginUser.admin}' ==='Y'){
 												value += "<th width='30'>" 
-													+ "<button type='button' class='aTag rBtn'>삭제</button>" 
+													+ "<button type='button' class='aTag rBtn delBtn'>삭제</button>" 
 													+ "</th>";
 											}else{
 												value +=  "</th>" 
@@ -294,22 +280,25 @@
 											}
 											if(list[i].replyBranch == 1){
 												value += "<th width='30'>" 
-													+ "<button type='button' class='aTag show addReplyBtn rBtn' >답글</button>" 
-													+ "<button type='button' class='aTag addReplyBtn rBtn' style='display:none'>답글</button>"
+													+ "<button type='button' class='show showBtn addReplyBtn rBtn' >답글</button>" 
+													+ "<button type='button' class='showBtn addReplyBtn rBtn' style='display:none'>답글</button>"
 													+ "</th>"
-													+ 	"</tr>"
-													+ "<tr class='rereplyTr' style='display:none'>"
-													+ "<td colspan='6' align='center'>"
-									  				+ 	"<textarea name='rereplyContent' class='rereplyContent' cols='85' rows='3' style='resize:none; margin-top:5px;'></textarea>"	
-									 			 	+"</td>"
-													+ "<td colspan='2'>"
-													+	"<button class='btnStyle addRereplyBtn'>등록</button>"
-													+"</td>"
-													+ "</tr>";
+													+ 	"</tr>";
+													
 													
 											}else{
 												value += "<th width='30'></th></tr>";
 											}
+
+											value += "<tr class='rereplyTr' style='display:none'>"
+													+ "<td colspan='6' align='center'>"
+									  				+ 	"<textarea name='rereplyContent' class='rereplyContent' cols='85' rows='3' style='resize:none; margin-top:5px;'></textarea>"	
+									 			 	+"</td>"
+													+ "<td colspan='2' class='btn-area'>"
+													+	"<button class='btnStyle updateBtn'>수정</button>"
+													+	"<button class='btnStyle addRereplyBtn'>등록</button>"
+													+"</td>"
+													+ "</tr>";
 										}
 										
 										$("#reply-area tbody").html(value);
@@ -335,10 +324,22 @@
 							}
 
 
-							// 답글 버튼 누를때 입력폼 생기도록 하기
-							$(document).on("click", ".addReplyBtn", function(){
+							// 답글, 수정 버튼 누를때 입력폼 생기도록 하기
+							$(document).on("click", ".showBtn", function(){
 								
 								let obj = $(this);
+								if(obj.hasClass("upBtn")){
+									let content = $(this).parent().siblings(".replyContent").html();
+									//console.log(content);
+									$(".rereplyContent").html(content);
+									$(this).parent().parent().siblings().children(".btn-area").children(".updateBtn").show();
+									$(this).parent().parent().siblings().children(".btn-area").children(".addRereplyBtn").hide();
+								}else{
+									$(".rereplyContent").html("");
+									$(this).parent().parent().siblings().children(".btn-area").children(".updateBtn").hide();
+									$(this).parent().parent().siblings().children(".btn-area").children(".addRereplyBtn").show();
+								}
+								
 								//console.log(obj);
 								if(obj.hasClass("show")){
 									obj.hide();
@@ -355,6 +356,7 @@
 							$(document).on("click", ".addRereplyBtn", function(){
 								var $value = $(this).parent().parent().prev().children().children(".replyNo").val();
 								var $content = $(this).parent().siblings().children(".rereplyContent").val();
+								
 								insertReply($value, 2, $content);
 							});		
 							
@@ -367,7 +369,7 @@
 								}else{
 									$replyContent = content;
 								}
-								console.log($replyContent);
+								
 								$.ajax({
 									url:"rinsert.bo",
 									data:{
@@ -377,7 +379,6 @@
 										replyOriginNo: orgNo,
 										replyBranch: branch
 									},success:function(status){
-
 										if(status == "success"){
 											selectReplyList();
 											$("#replyContent").val("");
@@ -390,7 +391,56 @@
 										
 							
 							}
+
+							// 댓글 삭제 버튼 클릭 시
+							$(document).on("click", ".delBtn", function(){
+								var $value = $(this).parent().siblings().children(".replyNo").val();
+								delReply($value);
+						
+							});
 							
+							// 댓글 삭제 기능
+							function delReply(replyNo){
+								$.ajax({
+									url:"rdelete.bo",
+									data:{
+										replyNo:replyNo
+									},success:function(status){
+										if(status == "success"){
+											selectReplyList();
+										}
+									},error:function(){
+										console.log("댓글 삭제용 ajax 통신 실패");
+
+									}
+								})
+							}
+
+
+							// 댓글 수정 버튼 클릭 시
+							$(document).on("click", ".updateBtn", function(){
+								var $value = $(this).parent().parent().prev().children().children(".replyNo").val();
+								var $content = $(this).parent().siblings().children(".rereplyContent").val();
+								updateReply($value, $content);
+							});
+							// 댓글 수정 기능
+							function updateReply(replyNo, replyContent){
+								$.ajax({
+									url:"rupdate.bo",
+									data:{
+										replyNo:replyNo,
+										replyContent: replyContent
+									},success:function(status){
+										if(status == "success"){
+											selectReplyList();
+										}
+									},error:function(){
+										console.log("댓글 수정용 ajax 통신 실패");
+
+									}
+								})
+							}
+	
 						</script>
 					</div>
 				
