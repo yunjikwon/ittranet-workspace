@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>Insert title here</title>
     <style>
         .contentArea{
@@ -50,7 +52,7 @@
             outline: none;
             float:left;
         }
-        .sbtn{
+        .searchBox button{
             width:50px;
             height:100%;
             border:0px;
@@ -131,20 +133,20 @@
             
             <!-- 검색기능 -->
             <div id="searchBox-1">
-            	<!--  <form action="search.fo" name="search-form" method="get"> -->
+
 	                <div style="margin-top:5px;">
 	                    <label class="stitle">팀</label>
 	                    <div class="searchBox">
-	                        <input type="text" name="keywordTeam" value="" class="sinput" placeholder="검색어 입력">
-	                        <button type="submit" class="sbtn">검색</button>
+	                        <input type="text" id="keywordTeam" value="" class="sinput" placeholder="검색어 입력">
+	                        <button onclick="searchList()" class="sbtnTeam">검색</button>
 	                    </div>
 	
 	                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	
 	                    <label class="stitle">성명</label>
 	                    <div class="searchBox">
-	                        <input type="text" name="keywordName" value="" class="sinput" placeholder="검색어 입력">
-	                        <button type="submit" class="sbtn">검색</button>
+	                        <input type="text" id="keywordName" value="" class="sinput" placeholder="검색어 입력">
+	                        <button onclick="searchList()" class="sbtnName">검색</button>
 	                    </div>
 	                </div>
 	        	       
@@ -164,20 +166,7 @@
 	                  </tr>
 	                </thead>
 	                <tbody>
-	                    <tr>
-	                        <td><input type="checkbox" name="" id=""></tdw>
-	                        <td>개발팀</td>
-	                        <td>팀장</td>
-	                        <td>T004</td>
-	                        <td>김팀장</td>
-	                    </tr>
-	                    <tr>
-	                        <td><input type="checkbox" name="" id=""></td>
-	                        <td>개발팀</td>
-	                        <td>대리</td>
-	                        <td>T003</td>
-	                        <td>최대리</td>
-	                    </tr>
+	                    
 	                    
 	                </tbody>
 	            </table>
@@ -198,20 +187,7 @@
 	                  </tr>
 	                </thead>
 	                <tbody>
-	                    <tr>
-	                        <td><input type="checkbox" name="" id=""></tdw>
-	                        <td>개발팀</td>
-	                        <td>팀장</td>
-	                        <td>T004</td>
-	                        <td>김팀장</td>
-	                    </tr>
-	                    <tr>
-	                        <td><input type="checkbox" name="" id=""></td>
-	                        <td>개발팀</td>
-	                        <td>대리</td>
-	                        <td>T003</td>
-	                        <td>최대리</td>
-	                    </tr>
+	                    
 	
 	                </tbody>
 	            </table>
@@ -225,29 +201,47 @@
        </div>
        
     <script>
-    	function getsearchList(){
-    		$.ajax({
-    			type : 'GET',
-    			url : $("form[name=search-form]").serialize(),
-    			sucess : function(result){
-    				//테이블 초기화
-    				$('#boardList > tbody').empty();
-    				if(result.length>=1){
-    					result.forEach(function(item){
-    						str +="<tr>"
-    						   + <"td><input type='checkbox' name='' id=''></td>"
-    						   + <"td>"+ item.team + "</td>"
-    						   + <"td>"+ item.job + "</td>"
-    						   + <"td>"+ item.empCode + "</td>"
-    						   + <"td>"+ item.empName + "</td>"
-    						   + "</tr>";
-    						$('#boardList').append(str);	   
-    					})
-    						
-    					
-    				}
-    			}
-    		})
+    	function searchList(){
+    		
+    		let keyword="";
+    		let flag="";
+    		if($(".sbtnTeam").click){
+    			keyword = $("#keywordTeam").val();
+    			flag = 1;
+    		} if($(".sbtnName").click) {
+    			keyword = $("#keywordName").val();
+    			flag = 2;
+    		}
+	    			
+	    			
+	    		$.ajax({
+	    			type : 'GET',
+	    			url:"search.fo",
+	    			data:{
+	    				keyword:keyword,
+	    				flag:flag
+	    			}, success : function(list){
+		    				console.log(list);
+		    				//테이블 초기화
+		    				$('#boardList > tbody').empty();
+		    				
+		    				let str="";
+		    					for(let i in list){
+		    						str +="<tr>"
+			    						   + "<td><input type='checkbox' name='' value=''></td>"
+			    						   + "<td>"+ list[i].team + "</td>"
+			    						   + "<td>"+ list[i].job + "</td>"
+			    						   + "<td>"+ list[i].empId + "</td>"
+			    						   + "<td>"+ list[i].empName + "</td>"
+		    						   + "</tr>";
+		    					}
+		   						$('#boardList > tbody').html(str);
+		   						$("#keywordTeam").val('');
+		   						$("#keywordName").val('');
+	    			}, error:function(){
+	    				console.log("ajax 통신 실패");
+	    			}
+	    		})
     	}
     </script> 
        

@@ -16,11 +16,11 @@ public class AppLine {
 	
 	private String team;
 	private String job;
-	private String empCode;
+	private String empId;
 	private String empName;
 	
 	//검색 필터
-	private String keywordTeam; 	//검색타입
-	private String keywordName; //검색내용
+	private String keywordTeam; 	// 팀 이름 검색
+	private String keywordName; 	// 사원명 검색
 
 }

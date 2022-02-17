@@ -12,26 +12,37 @@
 		<result column="dr_division" property="drDivision" />
 		<result column="emp_name" property="empName" />
 		<result column="team_name" property="teamName" />
-		
+	</resultMap>
+	
+	<resultMap id="appLineResultSet" type="AppLine">
+		<result column="team_name" property="team" />
+		<result column="job_name" property="job" />
+		<result column="emp_id" property="empId" />
+		<result column="emp_name" property="empName" />
 	</resultMap>
 
 
 	<!-- 결재선 검색 -->
-	<select id="selectSearchList" resultType="AppLine">
+	<select id="selectSearchTeam" resultMap="appLineResultSet">
 		select
 		       team_name, job_name, emp_id, emp_name 
 		  from employee
 		  join job using(job_code)
 		  join team using(team_code)
 		 where 
-		 <choose>
-		    <when test="keywordName">
-		        and team_name like '%' || #{keywordName} || '%'  
-		    </when>
-		    <when test="keywordTeam">
-		        and emp_name like '%' || #{keywordTeam} || '%' 
-		    </when>
-		 </choose>
+		       team_name like '%' || #{keyword} || '%'  
+		 order
+		    by team_name
+	</select>
+	
+	<select id="selectSearchName" resultMap="appLineResultSet">
+		select
+		       team_name, job_name, emp_id, emp_name 
+		  from employee
+		  join job using(job_code)
+		  join team using(team_code)
+		 where 
+			   emp_name like '%' || #{keyword} || '%' 		    
 		 order
 		    by team_name
 			   

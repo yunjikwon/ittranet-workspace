@@ -12,22 +12,56 @@
  	<result column="nf_content" property="nfContent"/>
  	<result column="nf_date" property="nfDate"/>
  	<result column="status" property="status"/>
+ 	<result column="pr_title" property="prTitle"  />
+ 	<result column="emp_name" property="empName"  />
+ 	<result column="profile"  property="profile"  />
+ 	<result column="pr_logo" property="prLogo"  />
  </resultMap>
  
  <select id="selectNews" resultMap="NewsfeedList">
-	 select
+	select
 	    nf_no
 	   ,n.pr_no
 	   ,n.emp_no
 	   ,nf_content
 	   ,nf_date
 	   ,n.status
+	   ,e.emp_name
+	   ,e.profile
+	   ,p.pr_title
 	from newsfeed n
 	join project p on p.pr_no = n.pr_no
+	join employee e on e.emp_no = n.emp_no
 	where n.emp_no = #{empNo}
 	and n.status = 'Y'
  </select>
  
+ <select id="newsProject" resultMap="NewsfeedList">
+ 	select
+ 		pr_title
+ 	   ,pr_logo	
+ 	   ,p.pr_no
+    from project p
+	join prmember pr on pr.pr_no = p.pr_no
+	where pr.emp_no = #{empNo}
+    and pr_enddate >= to_char(sysdate, 'mm/dd/yyyy')
+ </select>
+ 
+ <select id="prNewsfeed" resultMap="NewsfeedList">
+ 	select
+	    nf_no
+	   ,n.pr_no
+	   ,n.emp_no
+	   ,nf_content
+	   ,nf_date
+	   ,e.emp_name
+	   ,e.profile
+	   ,p.pr_title
+	from newsfeed n
+	join project p on p.pr_no = n.pr_no
+	join employee e on e.emp_no = n.emp_no
+	where p.pr_no = #{prNo}
+ </select>
  
  
  </mapper>

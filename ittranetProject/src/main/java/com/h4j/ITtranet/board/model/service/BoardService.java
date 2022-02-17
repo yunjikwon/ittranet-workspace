@@ -47,7 +47,16 @@ public interface BoardService {
 	// 7. 댓글 작성용 서비스 (ajax) (대댓글)
 	int insertReply(Reply r);
 	
-	// 8. 메인페이지 새글 조회 서비스 
+	// 8. 댓글 삭제용 서비스 (ajax) (대댓글)
+	int deleteReply(int replyNo);
+	
+	// 9. 댓글 수정용 서비스 (ajax) (대댓글)
+	int updateReply(Reply r);
+	
+	// 10. 게시글 검색 서비스 (ajax)
+	ArrayList<Board> searchBoardList(Board b);
+	
+	// 11. 메인페이지 새글 조회 서비스 
 	ArrayList<Board> selectNewBoardList();
 
 }

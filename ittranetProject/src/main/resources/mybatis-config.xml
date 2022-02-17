@@ -21,6 +21,7 @@
 		<typeAlias type="com.h4j.ITtranet.approval.model.vo.Approval" alias="Approval" />
 		<typeAlias type="com.h4j.ITtranet.attendance.model.vo.Vacation" alias="Vacation" />
 		<typeAlias type="com.h4j.ITtranet.attendance.model.vo.Attendance" alias="Attendance" />
+		<typeAlias type="com.h4j.ITtranet.notice.model.vo.Notice" alias="Notice" />
 
 	</typeAliases>
 	
@@ -39,6 +40,7 @@
 		<mapper resource="/mappers/approval-mapper.xml" />
 		
 		<mapper resource="/mappers/attendance-mapper.xml" />
+		<mapper resource="/mappers/notice-mapper.xml" />
 	</mappers>
 
 </configuration>

@@ -20,16 +20,16 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
+	// 결재선 검색 - 팀
 	@Override
-	public ArrayList<AppLine> selectSearchLine(AppLine appLine){
-		/*
-		SqlSession sqlSession = getSqlSession();
-		ArrayList<appLine> list = aDao.selectSearchList();
-		return list;
-		*/
-		
-		return aDao.selectSearchLine(sqlSession, appLine);
-		
+	public ArrayList<AppLine> selectSearchTeam(String keyword) {
+		return aDao.selectSearchTeam(sqlSession, keyword);
+	}
+	
+	// 결재선 검색 - 성명
+	@Override
+	public ArrayList<AppLine> selectSearchName(String keyword) {
+		return aDao.selectSearchName(sqlSession, keyword);
 	}
 
 	@Override
@@ -41,6 +41,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public ArrayList<Approval> selectList(PageInfo pi, int category) {
 		return aDao.selectList(sqlSession, pi, category);
 	}
+
 	
 	
 	

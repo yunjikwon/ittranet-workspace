@@ -85,8 +85,8 @@
 	   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
 	   				let mainOuterTop = $(".mainOuter").offset().top;
 	   				
-	   				console.log("scroll : " + scrollTop);
-	   				console.log("mainOuter : " + mainOuterTop);
+	   				//console.log("scroll : " + scrollTop);
+	   				//console.log("mainOuter : " + mainOuterTop);
 	   				
 	   				if(scrollTop > mainOuterTop - 70){
 	   					$(".cont").addClass("fixed");

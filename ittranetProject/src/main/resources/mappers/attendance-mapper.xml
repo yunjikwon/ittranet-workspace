@@ -19,6 +19,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="vc_status" property="vcStatus" />
 	</resultMap>
 	
+	<resultMap id="attendanceResult" type="Attendance">
+		<result column="att_no" property="attNo" />
+		<result column="emp_no" property="empNo" />
+		<result column="att_date" property="attDate" />
+		<result column="arrive_time" property="arriveTime" />
+		<result column="leave_time" property="leaveTime" />
+		<result column="stepout_time" property="stepoutTime" />
+		<result column="outwork_time" property="outworkTime" />
+		<result column="att_status" property="attStatus" />
+		
+		<result column="late_count" property="lateCount" />
+		<result column="early_count" property="earlyCount" />
+		<result column="day_count" property="dayCount" />
+		<result column="work_sum" property="workSum" />
+		<result column="absence_count" property="absenceCount" />
+		
+	</resultMap>
+	
 	
 	<select id="selectListCount" resultType="_int">
 		select
@@ -62,5 +80,116 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 order
 		 	by vc_applyno desc
 	</select>
+
+	<select id="selectYetVacationListCount" resultType="_int">
+		select
+			   count(*)
+		  from vacation_apply
+		 where vc_status = '대기'
+	</select>
+	
+	<select id="selectYetVacationList" resultMap="vacationResult">
+		select
+			   vc_applyno
+			 , emp_no
+			 , vc_type
+			 , vc_startdate
+			 , vc_enddate
+			 , vc_status
+		  from vacation_apply
+		 where vc_status = '대기'
+		 order
+		 	by vc_applyno desc
+	</select>
+	 
+	<select id="selectFinVacationListCount" resultType="_int">
+		select
+			   count(*)
+		  from vacation_apply
+		 where vc_status in ('승인', '반려')
+	</select>
+	
+	<select id="selectFinVacationList" resultMap="vacationResult">
+		select
+			   vc_applyno
+			 , emp_no
+			 , vc_type
+			 , vc_startdate
+			 , vc_enddate
+			 , vc_status
+		  from vacation_apply
+		 where vc_status in ('승인', '반려')
+		 order
+		 	by vc_applyno desc
+	</select>
+	
+	<select id="selectAdminDayAttendanceCount" resultType="_int">
+		select
+			   count(*)
+		  from attendance
+		 where att_date = to_char(sysdate, 'MM/DD/YYYY')
+	</select>
+	
+	<select id="selectAdminDayAttendance" resultMap="attendanceResult">
+		select
+			   att_no
+			 , emp_no
+			 , att_date
+			 , arrive_time
+			 , leave_time
+			 , stepout_time
+			 , outwork_time
+			 , att_status
+		  from attendance
+		  <!-- insert 구현 후 수정할것!!!! -->
+		 where att_date = to_char(sysdate, 'MM/DD/YYYY')
+		 order
+		 	by att_no desc
+	</select>
+	
+	<!-- 
+	<select id="selectAdminLate" resultMap="attendanceResult">
+		select
+               emp_no
+             , count(*)
+		  from attendance
+		 where att_status = '지각'
+		   and substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
+         group by emp_no
+	</select>
+	
+	<select id="selectAdminEarly" resultMap="attendanceResult">
+		select
+               emp_no
+             , count(*)
+		  from attendance
+		 where att_status = '조퇴'
+		   and substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
+         group by emp_no
+	</select>
+	-->
+	
+	<select id="selectAdminLate" resultMap="attendanceResult">
+		SELECT emp_no
+       , COUNT(CASE WHEN att_status='지각' THEN 1 END) AS "LATE_COUNT"
+        , COUNT(CASE WHEN att_status='조퇴' THEN 1 END) AS "EARLY_COUNT"
+        , 21 - (count(*)) as "ABSENCE_COUNT"
+        , count(*) as "DAY_COUNT"
+        , SUM(ROUND((TO_DATE(LEAVE_TIME, 'HH24:MI') - TO_DATE(ARRIVE_TIME, 'HH24:MI')) * 24, 1)) AS "WORK_SUM"
+        FROM attendance
+        where substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
+        group by emp_no
+        order by emp_no
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </mapper>

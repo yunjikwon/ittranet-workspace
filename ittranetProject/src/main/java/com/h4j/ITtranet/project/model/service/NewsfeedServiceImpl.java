@@ -24,7 +24,16 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	public ArrayList<Newsfeed> selectNews(String empNo) {
 		return nDao.selectNews(sqlSession, empNo);
 	}
-
-
+	@Override
+	public ArrayList<Newsfeed> newsProject(String empNo){
+		return nDao.newsProject(sqlSession, empNo);
+	}
+	
+	
+	// 프로젝트 뉴스피드 조회
+	@Override
+	public ArrayList<Newsfeed> prNewsfeed(String prNo){
+		return nDao.prNewsfeed(sqlSession, prNo);
+	}
 	
 }

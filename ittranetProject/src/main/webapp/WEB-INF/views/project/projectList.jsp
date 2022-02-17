@@ -15,6 +15,13 @@
         width: 300px;
         margin-left: 20px;
         margin-top: 20px;
+        border: 1px solid red;
+    }
+    .menuname2{
+        width: 300px;
+        margin-left: 20px;
+        margin-top: 20px;
+        border: 1px solid purple;
     }
     .proing{
        border: 1px solid rgb(128, 127, 127);
@@ -22,7 +29,8 @@
        width: 200px;
        height: 240px; 
        background-color: rgb(220, 206, 228);
-       margin: 30px;
+       margin-left: 50px;
+       margin-top: 30px;
        float: left;
     }
     
@@ -40,7 +48,8 @@
        width: 200px;
        height: 240px; 
        background-color: rgba(190, 190, 190, 0.86);
-       margin: 30px;
+       margin-left: 50px;
+       margin-top: 30px;
        float: left;
     }
 	.logoimg{
@@ -49,6 +58,14 @@
 		margin: auto;
 		margin-top: 20px;
 	}
+	
+	.projectBox{
+		border:1px solid orange;
+	}
+	.projectBox2{
+		border:1px solid blue;
+	}
+	
 </style>
 </head>
 <body>
@@ -86,32 +103,38 @@
     <div class="mainOuter">  
         <div class="wrap">
         <h4 style="font-weight:bold;">내 프로젝트</h4>
-        <div class="menuname">
-            <br>
-            <h6 style="font-weight: bold;">&emsp;진행중 프로젝트</h6>
-        </div>    
-            <!--진행중 프로젝트--> 
+          <div class="projectBox">
+		        <div class="menuname">
+		            <br>
+		            <h6 style="font-weight: bold;">&emsp;진행중 프로젝트</h6>
+		        </div>    
+	            <!--진행중 프로젝트--> 
+	
+	            <c:forEach var="p" items="${ list1 }">
+		            <div class="proing" style="text-align: center;">
+		                <div class="logo">
+		                    <img class="logoimg" src="${ p.prLogo }"/>
+		                </div>
+		              		${ p.prTitle }
+		                <br>
+		                <small>${ p.prSize }&emsp;&emsp;&emsp;${ p.prStartdate }</small>
+		            </div>
+				</c:forEach>
+		   </div>
+		   
+		   
 
-            <c:forEach var="p" items="${ list1 }">
-	            <div class="proing" style="text-align: center;">
-	                <div class="logo">
-	                    <img class="logoimg" src="${ p.prLogo }"/>
-	                </div>
-	              		${ p.prTitle }
-	                <br>
-	                <small>${ p.prSize }&emsp;&emsp;&emsp;${ p.prStartdate }</small>
-	            </div>
-			</c:forEach>
-            <br><br>
+        </div>  
+        		   <div class="projectBox2">
         <!-- 종료된 프로젝트 -->
-            <div class="menuname">
+            <div class="menuname2">
                 <br>
                 <h6 style="font-weight: bold;">&emsp;종료된 프로젝트</h6>
             </div>
             
             <c:forEach var="e" items="${ list2 }">
 	            <div class="proend" style="text-align: center;">
-	      	                <div class="logo">
+	      	            <div class="logo">
 		                    <img class="logoimg" src="${ e.prLogo }"/>
 		                </div>
 		              		${ e.prTitle }
@@ -119,9 +142,11 @@
 		                <small>${ e.prSize }&emsp;&emsp;&emsp;${ e.prStartdate }</small>
 	            </div>
             </c:forEach>
+          </div>   
+        
         </div>
         </div>
-        </div>
+        </div>  
         </div>
 </body>
 </html>

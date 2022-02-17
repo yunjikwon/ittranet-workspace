@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="noticeMapper">
+
+	<resultMap id="noticeResult" type="Notice">
+		<result column="notice_no" property="noticeNo"/>
+		<result column="emp_no" property="empNo"/>
+		<result column="notice_title" property="noticeTitle"/>
+		<result column="notice_content" property="noticeContent"/>
+		<result column="create_date" property="createDate"/>
+		<result column="count" property="count"/>		
+		<result column="emp_id" property="empId"/>		
+		<result column="emp_name" property="empName"/>		
+	</resultMap>
+	
+	<resultMap id="attachmentResult" type="Attachment">
+		<result column="attachment_no" property="attachmentNo" />
+		<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
+		<result column="file_path" property="filePath" />
+		<result column="ref_code" property="refCode" />
+		<result column="ref_no" property="refNo" />
+	</resultMap>
+ 
+ 	<resultMap id="replyResult" type="Reply">
+ 		<result column="reply_no" property="replyNo" />
+ 		<result column="emp_no" property="empNo" />
+ 		<result column="ref_code" property="refCode" />
+ 		<result column="ref_no" property="refNo" />
+ 		<result column="reply_content" property="replyContent" />
+ 		<result column="reply_origin_no" property="replyOriginNo" />
+ 		<result column="reply_branch" property="replyBranch" />
+ 		<result column="create_date" property="createDate" />
+ 		<result column="status" property="status" />
+ 		<result column="emp_name" property="empName" />
+ 		<result column="admin" property="admin" />
+ 		
+ 	</resultMap>
+ 	<!-- 게시글 전체 갯수 조회 -->
+ 	<select id="selectListCount" resultType="_int">
+ 		select
+ 			   count(*) as "count"
+ 		  from notice
+ 		 where status = 'Y'
+ 	</select>
+ 	
+ 	<!-- 게시글 전체 조회 -->
+ 	<select id="selectList" resultMap="noticeResult">
+ 		select 
+	        notice_no
+	      , emp_name
+	      , notice_title
+	      , to_char(create_date, 'YYYY-MM-DD') as "create_date"
+	      , count
+	      
+	  from notice n
+	  join employee using (emp_no)
+	 where n.status = 'Y'
+	 order
+	    by notice_no desc
+ 	</select>
+ 	
+ 	<!-- 조회수 증가 -->
+ 	<update id="increaseCount">
+ 		update notice
+ 		   set count = count + 1
+ 		 where notice_no = #{noticeNo}
+ 		   and status = 'Y'
+ 	</update>
+ 	
+ 	<!-- 게시글 상세조회 -->
+ 	<select id="selectNotice" resultMap="noticeResult">
+ 		select
+ 			   notice_no 
+ 			 , emp_no
+		     , notice_title
+		     , emp_name
+		     , to_char(create_date, 'YYYY-MM-DD') as "create_date"
+		     , notice_content
+		  from notice n
+		  join employee using(emp_no)
+		 where n.status = 'Y'
+		   and notice_no = #{noticeNo}
+ 	</select>
+ 	
+ 	<!-- 첨부파일 조회 -->
+ 	<select id="selectAttachment" resultMap="attachmentResult">
+ 		select attachment_no
+ 		     , origin_name
+ 		     , change_name
+ 		     , file_path
+ 			 , ref_no
+		  from attachment
+		 where ref_Code = 'N'
+		   and ref_no = #{noticeNo}
+ 
+ 	</select>
+
+	<!-- 새 글 작성 -->
+	<insert id="insertNotice">
+		insert 
+		  into notice
+		     (
+		       notice_no
+		     , emp_no
+		     , notice_title
+		     , notice_content
+		     , create_date
+		     , count
+		     , status
+		     )
+		 values
+		    (
+		      seq_board.nextval
+		    , #{empNo}
+		    , #{noticeTitle}
+		    , #{noticeContent}
+		    , sysdate
+		    , 0
+		    , 'Y'
+		    )
+	</insert>
+	
+	<!-- 새 첨부파일 등록 -->
+	<insert id="insertAttachment">
+		insert 
+	      into attachment
+	         (
+	           attachment_no
+	         , origin_name
+	         , change_name
+	         , file_path
+	         , ref_code
+	         , ref_no
+	         )
+	     values
+	        (
+	          seq_atno.nextval
+	        , #{originName}
+	        , #{changeName}
+	        , #{filePath}
+	        , 'N'
+	        , seq_board.currval
+	        )
+	</insert>
+	
+	<!-- 첨부파일 갯수 조회 -->
+	<select id="attachmentCount" resultType="_int">
+ 		select
+ 			   count(*) as "count"
+ 		  from attachment
+ 		 where ref_code = 'N'
+ 		   and ref_no = #{noticeNo}
+ 	</select>
+ 	
+ 	<!-- 게시글 삭제 -->
+ 	<update id="deleteNotice">
+ 		update notice
+ 		   set status = 'N'
+ 		 where notice_no = #{ noticeNo }
+ 	</update>
+ 	
+ 	<!-- 첨부파일 삭제 -->
+ 	<delete id="deleteAttachment">
+ 		delete 
+ 		  from attachment
+ 		 where attachment_no = #{attachmentNo}
+ 	</delete>
+ 	
+ 	<!-- 게시글 수정 -->
+ 	<update id="updateNotice">
+ 		update 
+ 			   notice
+ 		   set notice_title = #{noticeTitle}
+ 		     , notice_content = #{noticeContent}
+ 		 where notice_no = #{noticeNo}
+ 	</update>
+ 	
+ 	<!-- 게시글 수정시 첨부파일 추가 -->
+ 	<insert id="insertNewAttachment">
+		insert 
+	      into attachment
+	         (
+	           attachment_no
+	         , origin_name
+	         , change_name
+	         , file_path
+	         , ref_code
+	         , ref_no
+	         )
+	     values
+	        (
+	          seq_atno.nextval
+	        , #{originName}
+	        , #{changeName}
+	        , #{filePath}
+	        , 'N'
+	        , #{noticeNo}
+	        )
+	</insert>
+	
+	<!-- 댓글 목록 조회 -->
+	<select id="selectReplyList" resultMap="replyResult">
+		
+	
+		 select reply_no
+		     , emp_no
+		     , emp_name
+		     , reply_content
+		     , reply_origin_no
+		     , reply_branch
+		     , to_char(create_date, 'YYYY-MM-DD hh:mm') as "create_date"
+		  from reply r
+		  join employee using(emp_no)
+		 where ref_code = 'N'
+		   and r.status = 'Y'
+		   and ref_no = #{refNo}
+		 start
+		  with reply_branch = 1
+		 connect by prior reply_no = reply_origin_no
+	</select>
+	
+	<!-- 댓글 입력 -->
+	<insert id="insertReply">
+		insert
+		  into reply
+		     (
+		       reply_no
+		     , emp_no
+		     , ref_code
+		     , ref_no
+		     , reply_content
+		     , reply_origin_no
+		     , reply_branch
+		     , create_date
+		     , status
+		     )
+		values
+		     (
+		       seq_reply.nextval
+		     , #{empNo}
+		     , 'N'
+		     , #{refNo}
+		     , #{replyContent}
+		     , #{replyOriginNo}
+		     , #{replyBranch}
+		     , sysdate
+		     , 'Y'
+		     )
+	</insert>
+	
+	<!-- 댓글 삭제 -->
+	<update id="deleteReply">
+		update
+		       reply
+		   set status = 'N'
+		 where reply_no = #{replyNo}
+	</update>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateReply">
+		update
+			   reply
+		   set reply_content=#{replyContent}
+		 where reply_no = #{replyNo}
+	</update>
+	
+	<!-- 게시글 검색 -->
+	<select id="searchNoticeList" resultMap="noticeResult">
+		select 
+		        notice_no
+		      , emp_name
+		      , notice_title
+		      , to_char(create_date, 'YYYY-MM-DD') as "create_date"
+		      , count
+		  from notice n
+		  join employee using (emp_no)
+		 where n.status = 'Y'
+			<choose>
+				<when test="type == 'boardTitle'">
+		 			AND board_title LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test="type == 'empName'">
+		 			AND emp_name LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test="type == 'noticeHeader'">
+		 			AND notice_header LIKE '%' || #{keyword} || '%'
+				</when>
+			</choose>
+
+		 order
+		    by board_no desc
+	</select>
+</mapper>

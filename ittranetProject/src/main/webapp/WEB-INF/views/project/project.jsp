@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    pageEncoding="UTF-8" import="java.util.ArrayList, com.h4j.ITtranet.project.model.vo.Newsfeed" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	ArrayList<Newsfeed> list = (ArrayList<Newsfeed>)request.getAttribute("list");
+%>
     
 <!DOCTYPE html>
 <html>
@@ -8,21 +11,19 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+    
     .wrap{
-        border: 1px solid red;
-        width: 900px;
+       padding: 30px;
     }
     .menuname{
         display:inline-block;
-        border: 1px solid;
         width: 300px;
         margin-left: 20px;
     }
     
     button{
-        width: 70px;
+        width: 80px;
         height: 35px;
-        border-radius: 1mm;
         border: none;
         font-size: 13px;
         font-weight: bold;
@@ -32,17 +33,20 @@
         background-color: rgb(165, 137, 177); 
         float: right;
         margin: 10px;
+        border-radius: 1mm;
     }
     .button2{
         background-color: rgb(202, 183, 211);       
         float: right;
         margin: 10px;
+        border-radius: 1mm;
     }
     .button3{
         background-color: rgb(160, 156, 163);       
         float: right;
         margin: 10px;
         margin-right: 40px;
+        border-radius: 1mm;
     }
     .todo{
         margin-left: 50px;
@@ -56,7 +60,6 @@
     }
 
     #newsfeed{
-       border:1px solid blue;
        padding: 15px;
        margin-left: 10px;
    }
@@ -86,6 +89,8 @@
    #writeok{
        float: right;
        margin-right: 20px;
+       border-radius: 1mm;
+       width: 70px;
    }
 
    .feedlist{
@@ -94,6 +99,7 @@
        background-color: rgba(224, 224, 224, 0.87);
        width: 830px;
        padding: 10px;
+       margin-top: 20px;
        
    }
    .profile{
@@ -107,20 +113,19 @@
    }
    .projectmem{
        display:inline-block;
-       border: 1px solid;
        width: 500px;
        height: 30px;
        margin-left: 10px;
    }
    .feedcontent{
        width: 680px;
-       border: 1px solid ;
        margin-left: 105px;
        font-size: 13px;
    }
    .reply{
-       background-color: rgb(222, 216, 225);
+       background-color: rgb(227, 210, 235);
        border-radius: 3mm;
+       border: 1px solid rgb(204, 204, 204);
        width: 700px;
        margin-left: 100px;
        margin-top: 15px;
@@ -128,7 +133,6 @@
    }
    .replylist{
        margin-bottom: 15px;
-       border: 1px solid;
    }
    .date{
        float: right;
@@ -143,6 +147,8 @@
    .replyok{
        background-color: rgb(187, 159, 202);   
        margin-left: 8px;
+       border-radius: 1mm;
+       width: 70px;
    }
 
    ::placeholder{
@@ -152,10 +158,40 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/header.jsp" />
-	
-    <div class="wrap">  
-        <h4 style="font-weight:bold;">IT!tranet</h4>
+<div class="back">
+ <div class="innerBack">
+ 	<jsp:include page="../common/pageHeader.jsp" />
+ 	<jsp:include page="../common/userMenu.jsp" />
+ 	
+ 	<br clear="both">
+ 	<div style="position:relative">
+ 	<jsp:include page="../common/sidebar.jsp"  />
+ 		<div class="cont">
+          <ul id="ac">
+             <li class="division">
+               <a href="#">프로젝트</a>
+             </li>
+                <div id="border">
+		               <li class="menu1">
+		                  <a href="list.pr">내 프로젝트</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="#">프로젝트 만들기</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="#">내 업무</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="news.pr">뉴스피드</a>
+		               </li>
+            	</div>
+            </ul>
+         </div>
+ 
+
+    <div class="mainOuter"> 
+    <div class="wrap">   
+        <h4 style="font-weight:bold;">${ list.get(0).prTitle }</h4>
         
         <!--담당 업무, 업무 버튼, 리스트-->
         <div class="menuname">
@@ -219,32 +255,37 @@
                 <button id="writeok" name="" style="background-color: rgb(187, 159, 202);">등록</button>
             </div>
             
-            <br>
+            
             <!-- 게시물 -->
-            <div class="feedlist">
-                <div class="profile">
-                   <br>사진
-                </div>
-                <div class="projectmem">
-                    <b>이트라 &emsp;&emsp;&emsp;</b>
-                    <h style="font-size: 12px; color: dimgray;">2022-01-10 &emsp; 13:01</h>
-                </div>
-                <div class="feedcontent">
-                    <p>새로운 프로젝트 ! 넘 기대돼요 ㅎㅎ 잘 부탁드립니다</p>
-                </div>
-                <!--댓글-->
-                <div class="reply" style="font-size: 13px;">
-                    <div class="replylist">
-                        <b>오트라</b> &emsp;&emsp;&emsp; 
-                        <span class="replycontents">안녕하세요 !</span>
-                        <span class="date">2022-01-10&emsp;11:48</span>
-                    </div>
-                    <input class="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
-                    <button class="replyok" ><b>등록</b></button>
-                </div>
-            </div>
+            <c:forEach var="n" items="${ list }">
+	            <div class="feedlist">
+	                <div class="profile">
+	                   <br>사진
+	                </div>
+	                <div class="projectmem">
+	                    <b>${n.empName } &emsp;&emsp;&emsp;</b>
+	                    <h style="font-size: 12px; color: dimgray;">${n.nfDate } &emsp; 13:01</h>
+	                </div>
+	                <div class="feedcontent">
+	                    <p>${n.nfContent }</p>
+	                </div>
+	                <!--댓글-->
+	                <div class="reply" style="font-size: 13px;">
+	                    <div class="replylist">
+	                        <b>오트라</b> &emsp;&emsp;&emsp; 
+	                        <span class="replycontents">안녕하세요 !</span>
+	                        <span class="date">2022-01-10&emsp;11:48</span>
+	                    </div>
+	                    <input class="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
+	                    <button class="replyok" ><b>등록</b></button>
+	                </div>
+	            </div>
+            </c:forEach>
         </div>
     
+    </div>
+    </div>
+    </div>
     </div>
 </body>
 </html>
