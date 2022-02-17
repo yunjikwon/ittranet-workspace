@@ -147,39 +147,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 	by att_no desc
 	</select>
 	
-	<!-- 
-	<select id="selectAdminLate" resultMap="attendanceResult">
-		select
-               emp_no
-             , count(*)
-		  from attendance
-		 where att_status = '지각'
-		   and substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
+	<select id="selectAdminYear" resultMap="attendanceResult">
+		select emp_no
+       		 , count(case when att_status='지각' then 1 end) AS "LATE_COUNT"
+        	 , count(case when att_status='조퇴' then 1 end) AS "EARLY_COUNT"
+        	 , 21 - (count(*)) as "ABSENCE_COUNT"
+        	 , count(*) as "DAY_COUNT"
+        	 , sum(round((to_date(leave_time, 'HH24:MI') - to_date(arrive_time, 'HH24:MI')) * 24, 1)) AS "WORK_SUM"
+          from attendance
+         where substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
          group by emp_no
-	</select>
-	
-	<select id="selectAdminEarly" resultMap="attendanceResult">
-		select
-               emp_no
-             , count(*)
-		  from attendance
-		 where att_status = '조퇴'
-		   and substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
-         group by emp_no
-	</select>
-	-->
-	
-	<select id="selectAdminLate" resultMap="attendanceResult">
-		SELECT emp_no
-       , COUNT(CASE WHEN att_status='지각' THEN 1 END) AS "LATE_COUNT"
-        , COUNT(CASE WHEN att_status='조퇴' THEN 1 END) AS "EARLY_COUNT"
-        , 21 - (count(*)) as "ABSENCE_COUNT"
-        , count(*) as "DAY_COUNT"
-        , SUM(ROUND((TO_DATE(LEAVE_TIME, 'HH24:MI') - TO_DATE(ARRIVE_TIME, 'HH24:MI')) * 24, 1)) AS "WORK_SUM"
-        FROM attendance
-        where substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
-        group by emp_no
-        order by emp_no
+         order by emp_no
 	</select>
 	
 	

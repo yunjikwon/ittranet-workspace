@@ -102,7 +102,7 @@ public class AttendanceController {
 		
 		String date = new SimpleDateFormat("yyyy").format(new Date());
 		
-		ArrayList<Attendance> list = atService.selectAdminLate(date);
+		ArrayList<Attendance> list = atService.selectAdminYear(date);
 		
 		mv.addObject("list", list).setViewName("attendance/adminAttendanceYear");
 

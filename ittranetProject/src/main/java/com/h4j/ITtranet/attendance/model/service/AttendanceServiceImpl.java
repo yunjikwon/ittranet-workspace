@@ -62,8 +62,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public ArrayList<Attendance> selectAdminLate(String date) {
-		return atDao.selectAdminLate(sqlSession, date);
+	public ArrayList<Attendance> selectAdminYear(String date) {
+		return atDao.selectAdminYear(sqlSession, date);
 	}
 	
 	/*

@@ -25,10 +25,9 @@ public interface AttendanceService {
 	int selectAdminDayAttendanceCount();
 	ArrayList<Attendance> selectAdminDayAttendance(PageInfo pi);
 	
-	// 관리자 지각통계 조회
-	ArrayList<Attendance> selectAdminLate(String date);
-	// 관리자 조퇴통계 조회
-	//ArrayList<Attendance> selectAdminEarly(String date);
+	// 관리자 근무통계 조회
+	ArrayList<Attendance> selectAdminYear(String date);
+
 	
 	
 	

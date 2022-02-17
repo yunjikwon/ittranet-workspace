@@ -70,17 +70,11 @@ public class AttendanceDao {
 		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminDayAttendance", null, rowBounds);
 	}
 	
-	public ArrayList<Attendance> selectAdminLate(SqlSessionTemplate sqlSession, String date){
+	public ArrayList<Attendance> selectAdminYear(SqlSessionTemplate sqlSession, String date){
 		
-		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminLate", date);
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminYear", date);
 	}
 	
-	/*
-	public ArrayList<Attendance> selectAdminEarly(SqlSessionTemplate sqlSession, String date){
-		
-		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminEarly", date);
-	}
-	*/
 	
 	
 	
