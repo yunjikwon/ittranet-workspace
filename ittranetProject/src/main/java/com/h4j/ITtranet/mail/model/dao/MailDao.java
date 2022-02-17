@@ -70,5 +70,19 @@ public class MailDao {
 		
 		return (ArrayList)sqlSession.selectList("mailMapper.selectBinList", email, rowBounds);
 	}
+	
+	// 7-1. [안읽은메일함] 메일 리스트 카운트 조회
+	public int selectUnreadListCount(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.selectOne("mailMapper.selectUnreadListCount", empNo);
+	}
+	
+	// 7-2. [안읽은메일함] 메일 리스트 조회
+	public ArrayList<Mail> selectUnreadList(SqlSessionTemplate sqlSession, PageInfo pi, String email) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("mailMapper.selectUnreadList", email);
+	}
 
 }

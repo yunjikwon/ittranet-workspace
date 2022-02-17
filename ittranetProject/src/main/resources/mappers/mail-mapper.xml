@@ -38,7 +38,6 @@
 		 where status = 'Y'
 		   and emp_no = #{empNo}
 	</select>
-	
 	<select id="selectList" resultMap="mailResult">
     select send_mail_no
       , emp_name
@@ -156,7 +155,6 @@
            and sd.status = 'Y'
 		   and rv.emp_no = #{empNo}
 	</select>
-	
 	<select id="selectBinList" resultMap="mailResult">
     	select send_mail_no
      		 , emp_name
@@ -174,12 +172,46 @@
 		  from mail_send sd
 		  join employee using(emp_no)
 		  join mail_receive rv using (send_mail_no))
-		 where receiver_account = 'user51@ittr.com'
-      	   and rvst = 'N'
+		 where receiver_account = #{receiverAccount}
+      	   and rvst = 'T'
 		 order
 	   	    by send_mail_no desc
 	  </select>
-		
+	  
+	  <select id="selectUnreadListCount" resultType="_int">
+	  	select
+			   count(*)
+		  from mail_receive rv
+          join mail_send sd using(send_mail_no)
+		 where rv.status in ('Y', 'T')
+           and rv.read = 'N'
+		   and rv.emp_no = #{empNo}
+	  </select>
+	  <select id="selectUnreadList" resultMap="mailResult">
+	  	select send_mail_no
+     		 , emp_name
+     		 , mail_title
+      		 , send_date
+     		 , receiver_account
+     		 , rvst
+             , read
+		 from(
+		select send_mail_no
+		      , emp_name
+		      , mail_title
+		      , send_date
+		      , receiver_account
+              , rv.status rvst
+              , read
+		  from mail_send sd
+		  join employee using(emp_no)
+		  join mail_receive rv using (send_mail_no))
+		 where receiver_account = #{receiverAccount}
+      	   and rvst in ('Y', 'T')
+           and read = 'N'
+		 order
+	   	    by send_mail_no desc
+	  </select>
 		
 	
 	

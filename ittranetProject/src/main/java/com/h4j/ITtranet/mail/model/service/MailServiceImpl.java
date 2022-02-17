@@ -50,18 +50,34 @@ public class MailServiceImpl implements MailService{
 	public Mail selectMail(int sendMailNo) {
 		return mDao.selectMail(sqlSession, sendMailNo);
 	}
+	
+	// 5. 삭제
 
+	// 6-1. [휴지통] 메일 리스트 *카운트* 조회
 	@Override
 	public int selectBinListCount(String empNo) {
 		return mDao.selectBinListCount(sqlSession, empNo);
 	}
 
+	// 6-2. [휴지통] 리스트 페이지 (페이징바)
 	@Override
 	public ArrayList<Mail> selectBinList(PageInfo pi, String email) {
 		return mDao.selectBinList(sqlSession, pi, email);
 	}
 
-	// 5. 삭제
+	// 7-1. [안읽은메일함] 메일 리스트 *카운트* 조회
+	@Override
+	public int selectUnreadListCount(String empNo) {
+		return mDao.selectUnreadListCount(sqlSession, empNo);
+	}
+
+	// 7-2. [안읽은메일함] 리스트 페이지 (페이징바)
+	@Override
+	public ArrayList<Mail> selectUnreadList(PageInfo pi, String email) {
+		return mDao.selectUnreadList(sqlSession, pi, email);
+	}
+
+
 	
 	
 

@@ -100,9 +100,14 @@
 	            <br>
 	            
 	            <hr>
-	            
+	            <br>
 	            <div>${ m.mailContent }</div>
+	            <br>
+	            
+	            <hr>
+	            
 	            <div>
+				<c:forEach var="at" items="${ at }">
 	            	<c:choose>
 	            		<c:when test="${ empty at.originName }">
 	            			첨부파일이 없습니다.
@@ -111,6 +116,7 @@
 	            			<a href="${ at.changeName }" download="${at.originName}">${ at.originName }</a>	
 	            		</c:otherwise>
 	            	</c:choose>
+	            </c:forEach>
 	            </div>
 	        </div>
 	        

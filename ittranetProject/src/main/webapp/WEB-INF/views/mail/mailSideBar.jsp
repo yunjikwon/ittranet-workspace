@@ -106,7 +106,7 @@
                 </li>
                 <div id="border">
 		               <li class="menu1">
-		                  <a href="#"><i class="fa-solid fa-envelope"></i>안읽은메일함</a>
+		                  <a href="unreadlist.ml"><i class="fa-solid fa-envelope"></i>안읽은메일함</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="alllist.ml"><i class="fa-solid fa-inbox"></i>받은메일함</a>

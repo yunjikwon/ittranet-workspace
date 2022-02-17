@@ -145,5 +145,24 @@ public class MailController {
 		return "mail/mailBinView";
 
 	}
+	
+	// 7. 안읽은메일 조회
+	@RequestMapping("unreadlist.ml")
+	public String selectUnreadList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
+		
+		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
+		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		
+		int listCount = mService.selectUnreadListCount(empNo);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Mail> unreadlist = mService.selectUnreadList(pi, email);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("unreadlist", unreadlist);
+		
+		return "mail/mailUnreadView";
+	}
 
 }

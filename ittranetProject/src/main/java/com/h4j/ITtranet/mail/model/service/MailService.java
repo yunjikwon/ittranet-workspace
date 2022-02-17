@@ -26,6 +26,10 @@ public interface MailService {
 	int selectBinListCount(String empNo);
 	ArrayList<Mail> selectBinList(PageInfo pi, String email);
 
+	// 7. 안읽은 메일
+	int selectUnreadListCount(String empNo);
+	ArrayList<Mail> selectUnreadList(PageInfo pi, String email);
+	
 	
 
 }
