@@ -25,4 +25,47 @@ public class AttendanceDao {
 		
 		return (ArrayList)sqlSession.selectList("attendanceMapper.selectLastVacationList", empNo);
 	}
+
+	public int selectYetVacationListCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("attendanceMapper.selectYetVacationListCount");
+	}
+
+	public ArrayList<Vacation> selectYetVacationList(SqlSessionTemplate sqlSession, PageInfo pi){
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit(); 
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectYetVacationList", null, rowBounds);
+	}
+	
+
+	public int selectFinVacationListCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("attendanceMapper.selectFinVacationListCount");
+	}
+	
+	public ArrayList<Vacation> selectFinVacationList(SqlSessionTemplate sqlSession, PageInfo pi){
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit(); 
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectFinVacationList", null, rowBounds);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

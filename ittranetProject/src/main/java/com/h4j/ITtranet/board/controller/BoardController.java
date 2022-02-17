@@ -11,16 +11,18 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.h4j.ITtranet.board.model.service.BoardService;
 import com.h4j.ITtranet.board.model.vo.Board;
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
+import com.h4j.ITtranet.common.model.vo.Reply;
 import com.h4j.ITtranet.common.template.Pagination;
 
 @Controller
@@ -197,11 +199,53 @@ public class BoardController {
 		return changeName;
 	}
 	
-	// 첨부파일 삭제하기
-	public int deleteFile(MultipartFile file, HttpSession session) {
+	// 댓글 가져오기
+	@ResponseBody
+	@RequestMapping(value="rlist.bo", produces="application/json; charset=utf-8")
+	public String ajaxSelectReplyList(int bno) {
+		ArrayList<Reply> list = bService.selectReplyList(bno);
 		
-		int result = 0;
-		return result;				
+		return new Gson().toJson(list);
 	}
+	
+	// 댓글 입력하기
+	@ResponseBody
+	@RequestMapping(value="rinsert.bo")
+	public String ajaxInsertReply(Reply r) {
+		int result = bService.insertReply(r);
+		return result>0? "success" : "fail";
+	}
+	
+	// 댓글 삭제하기
+	@ResponseBody
+	@RequestMapping(value="rdelete.bo")
+	public String ajaxDeleteReply(int replyNo) {
+		int result = bService.deleteReply(replyNo);
+		return result>0? "success" : "fail";				
+	}
+	
+	// 댓글 수정하기
+	@ResponseBody
+	@RequestMapping(value="rupdate.bo")
+	public String ajaxUpdateReply(Reply r) {
+		int result = bService.updateReply(r);
+		return result>0? "success" : "fail";	
+	}
+	
+	// 게시글 검색하기
+	@ResponseBody
+	@RequestMapping(value="search.bo", produces="application/json; charset=utf-8")
+	public String ajaxSearchBoard(Board b) {
+		ArrayList<Board> list = bService.searchBoardList(b);
+		return new Gson().toJson(list);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

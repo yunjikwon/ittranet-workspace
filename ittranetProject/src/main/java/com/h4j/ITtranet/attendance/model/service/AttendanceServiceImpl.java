@@ -19,24 +19,48 @@ public class AttendanceServiceImpl implements AttendanceService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-
-	/*
-	@Override
-	public ArrayList<Vacation> selectVacationList(String empNo) {
-		return atDao.selectVacationList(sqlSession, empNo);
-	}
-	*/
 	@Override
 	public ArrayList<Vacation> selectUpVacationList(String empNo) {
 		return atDao.selectUpVacationList(sqlSession, empNo);
 	}
 
-
 	@Override
 	public ArrayList<Vacation> selectLastVacationList(String empNo) {
 		return atDao.selectLastVacationList(sqlSession, empNo);
 	}
+	
+	@Override
+	public int selectYetVacationListCount() {
+		return atDao.selectYetVacationListCount(sqlSession);
+	}
+	
+	@Override
+	public ArrayList<Vacation> selectYetVacationList(PageInfo pi) {
+		return atDao.selectYetVacationList(sqlSession, pi);
+	}
 
 
+	@Override
+	public int selectFinVacationListCount() {
+		return atDao.selectFinVacationListCount(sqlSession);
+	}
 
+	@Override
+	public ArrayList<Vacation> selectFinVacationList(PageInfo pi) {
+		return atDao.selectFinVacationList(sqlSession, pi);
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
