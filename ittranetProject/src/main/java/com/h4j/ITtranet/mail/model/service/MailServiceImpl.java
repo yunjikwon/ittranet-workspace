@@ -20,13 +20,13 @@ public class MailServiceImpl implements MailService{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	// 1-1. 페이징바를 위해 카운트 조회
+	// 1-1. [받은메일함] 메일 리스트 *카운트* 조회
 	@Override
 	public int selectListCount(String empNo) {
 		return mDao.selectListCount(sqlSession, empNo);
 	}
 
-	// 1-2. 받은메일함 리스트 페이지 (페이징바)
+	// 1-2. [받은메일함] 리스트 페이지 (페이징바)
 	@Override
 	public ArrayList<Mail> selectList(PageInfo pi, String email) {
 		return mDao.selectList(sqlSession, pi, email);
@@ -50,5 +50,19 @@ public class MailServiceImpl implements MailService{
 	public Mail selectMail(int sendMailNo) {
 		return mDao.selectMail(sqlSession, sendMailNo);
 	}
+
+	@Override
+	public int selectBinListCount(String empNo) {
+		return mDao.selectBinListCount(sqlSession, empNo);
+	}
+
+	@Override
+	public ArrayList<Mail> selectBinList(PageInfo pi, String email) {
+		return mDao.selectBinList(sqlSession, pi, email);
+	}
+
+	// 5. 삭제
+	
+	
 
 }

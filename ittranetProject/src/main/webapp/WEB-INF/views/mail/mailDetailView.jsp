@@ -102,7 +102,26 @@
 	            <hr>
 	            
 	            <div>${ m.mailContent }</div>
+	            <div>
+	            	<c:choose>
+	            		<c:when test="${ empty at.originName }">
+	            			첨부파일이 없습니다.
+	            		</c:when>
+	            		<c:otherwise>
+	            			<a href="${ at.changeName }" download="${at.originName}">${ at.originName }</a>	
+	            		</c:otherwise>
+	            	</c:choose>
+	            </div>
 	        </div>
+	        
+	        <!-- 
+	        <script>
+	        function fileDownload(fileNameKey, fileName, filePath){
+	            
+	            location.href = "/board/fileDownload?fileNameKey="+fileNameKey+"&fileName="+fileName+"&filePath="+filePath;
+	        }
+	        </script>
+	         -->
 	        
 	        <br><br><br>
 	        

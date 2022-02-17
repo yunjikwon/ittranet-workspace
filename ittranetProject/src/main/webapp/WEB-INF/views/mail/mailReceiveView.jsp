@@ -9,7 +9,7 @@
 	.wrap{
         width: 900px;
     }
-    .outer{
+    #mainOuter{
            width:1200px;
            height:800px;
           }
@@ -26,6 +26,7 @@
             width:880px;
             height:580px;
     }
+
 
     #buttonbar{
     	float:right;
@@ -78,7 +79,7 @@
 			<jsp:include page="../mail/mailSideBar.jsp" />
 			
 		<!-- 내용 -->
-        <div class="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
+        <div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 			
             <br><br>
 

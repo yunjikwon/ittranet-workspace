@@ -45,7 +45,7 @@
       , mail_title
       , send_date
       , receiver_account
-		from(
+	from(
 		select send_mail_no
 		      , emp_name
 		      , mail_title
@@ -54,33 +54,40 @@
 		  from mail_send
 		  join employee using(emp_no)
 		  join mail_receive using(send_mail_no))
-		  where receiver_account = #{email}
+	where receiver_account = #{email}
+	order
+	   by send_mail_no desc
 	</select>
 	
 	<select id="selectMail" resultMap="mailResult">
 		select send_mail_no
-      , sdpp
-      , sender_account
-      , mail_title
-      , mail_content
-      , send_date
-      , wroteme_status
-      , receiver_account
-      , e2.emp_name rvpp
-  from (select
-                send_mail_no
-              , emp_name sdpp
-              , sender_account
-              , mail_title
-              , mail_content
-              , send_date
-              , wroteme_status
-              , receiver_account
-          from mail_send ms
-          join employee e1 on (ms.emp_no = e1.emp_no)
-          join mail_receive using(send_mail_no)) 
-  join employee e2 on(receiver_account = e2.email)
-  
+      		 , sdpp
+      		 , sender_account
+      		 , mail_title
+      		 , mail_content
+      		 , send_date
+      		 , receiver_account
+      		 , e2.emp_name rvpp
+  		  from (
+  		  select
+                 send_mail_no
+               , emp_name sdpp
+               , sender_account
+               , mail_title
+               , mail_content
+               , send_date
+               , receiver_account
+            from mail_send ms
+            join employee e1 on (ms.emp_no = e1.emp_no)
+            join mail_receive using(send_mail_no)) 
+           join employee e2 on(receiver_account = e2.email)
+          where send_mail_no = #{sendMailNo}
+    	<choose>
+    		<when test="read != null and read.equals('N')">and read like #{read}</when>
+    		<when test="status != null and status.equals('Y')">and status like #{status}</when>
+    		<when test="important != null and important.equals('Y')">and important like #{important}</when>
+    		<when test="spam != null and spam.equals('Y')">and spam like #{spam}</when>
+    	</choose>
 	</select>
 	
 	
@@ -139,6 +146,41 @@
 		        , seq_sdmno.currval
 		        )
 	</insert>
+	
+	<select id="selectBinListCount" resultType="_int">
+		select
+			   count(*)
+		  from mail_receive rv
+          join mail_send sd using(send_mail_no)
+		 where rv.status = 'N'
+           and sd.status = 'Y'
+		   and rv.emp_no = #{empNo}
+	</select>
+	
+	<select id="selectBinList" resultMap="mailResult">
+    	select send_mail_no
+     		 , emp_name
+     		 , mail_title
+      		 , send_date
+     		 , receiver_account
+     		 , rvst
+		 from(
+		select send_mail_no
+		      , emp_name
+		      , mail_title
+		      , send_date
+		      , receiver_account
+              , rv.status rvst
+		  from mail_send sd
+		  join employee using(emp_no)
+		  join mail_receive rv using (send_mail_no))
+		 where receiver_account = 'user51@ittr.com'
+      	   and rvst = 'N'
+		 order
+	   	    by send_mail_no desc
+	  </select>
+		
+		
 	
 	
 </mapper>

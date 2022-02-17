@@ -19,7 +19,7 @@ public class MailDao {
 		
 	}
 	
-	// 1-1. 페이징바를 위해 카운트 조회
+	// 1. 받은메일함 조회 (페이징바를 위해 카운트 조회)
 	public ArrayList<Mail>  selectList(SqlSessionTemplate sqlSession, PageInfo pi, String email){
 		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
@@ -50,6 +50,25 @@ public class MailDao {
 	// 3. 메일 상세조회
 	public Mail selectMail(SqlSessionTemplate sqlSession, int sendMailNo) {
 		return sqlSession.selectOne("mailMapper.selectMail", sendMailNo);
+	}
+	
+	// 5. 삭제
+	
+	// 6-1. [휴지통] 메일 리스트 카운트 조회
+	public int selectBinListCount(SqlSessionTemplate sqlSession, String empNo) {
+		
+		return sqlSession.selectOne("mailMapper.selectBinListCount", empNo);
+		
+	}
+	
+	
+	// 6-2. [휴지통] 메일 리스트 조회
+	public ArrayList<Mail>  selectBinList(SqlSessionTemplate sqlSession, PageInfo pi, String email){
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("mailMapper.selectBinList", email, rowBounds);
 	}
 
 }

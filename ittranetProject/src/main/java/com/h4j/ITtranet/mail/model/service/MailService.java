@@ -20,6 +20,11 @@ public interface MailService {
 	// 3. 메일 상세조회
 	Mail selectMail(int sendMailNo);
 	
+	// 5. 메일 삭제
+	
+	// 6. 휴지통 메일
+	int selectBinListCount(String empNo);
+	ArrayList<Mail> selectBinList(PageInfo pi, String email);
 
 	
 

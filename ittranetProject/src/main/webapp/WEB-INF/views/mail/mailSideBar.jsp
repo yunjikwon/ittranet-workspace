@@ -124,7 +124,7 @@
                           <a href="#"><i class="fa-solid fa-ban"></i>스팸메일함</a>
                         </li>
                         <li class="menu1">
-                          <a href="#"><i class="fa-solid fa-trash-can"></i>휴지통</a>
+                          <a href="binlist.ml"><i class="fa-solid fa-trash-can"></i>휴지통</a>
                         </li>
             	</div>
             </ul>
