@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.h4j.ITtranet.attendance.model.dao.AttendanceDao;
+import com.h4j.ITtranet.attendance.model.vo.Attendance;
 import com.h4j.ITtranet.attendance.model.vo.Vacation;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 
@@ -49,6 +50,28 @@ public class AttendanceServiceImpl implements AttendanceService {
 	public ArrayList<Vacation> selectFinVacationList(PageInfo pi) {
 		return atDao.selectFinVacationList(sqlSession, pi);
 	}
+
+	@Override
+	public int selectAdminDayAttendanceCount() {
+		return atDao.selectAdminDayAttendanceCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Attendance> selectAdminDayAttendance(PageInfo pi) {
+		return atDao.selectAdminDayAttendance(sqlSession, pi);
+	}
+
+	@Override
+	public ArrayList<Attendance> selectAdminLate(String date) {
+		return atDao.selectAdminLate(sqlSession, date);
+	}
+	
+	/*
+	@Override
+	public ArrayList<Attendance> selectAdminEarly(String date) {
+		return atDao.selectAdminEarly(sqlSession, date);
+	}
+	*/
 
 
 	

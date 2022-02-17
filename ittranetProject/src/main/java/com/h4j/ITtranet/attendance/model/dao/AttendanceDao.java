@@ -6,6 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.h4j.ITtranet.attendance.model.vo.Attendance;
 import com.h4j.ITtranet.attendance.model.vo.Vacation;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 
@@ -55,8 +56,31 @@ public class AttendanceDao {
 		return (ArrayList)sqlSession.selectList("attendanceMapper.selectFinVacationList", null, rowBounds);
 	}
 	
+	public int selectAdminDayAttendanceCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("attendanceMapper.selectAdminDayAttendanceCount");
+	}
 	
+	public ArrayList<Attendance> selectAdminDayAttendance(SqlSessionTemplate sqlSession, PageInfo pi){
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit(); 
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminDayAttendance", null, rowBounds);
+	}
 	
+	public ArrayList<Attendance> selectAdminLate(SqlSessionTemplate sqlSession, String date){
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminLate", date);
+	}
+	
+	/*
+	public ArrayList<Attendance> selectAdminEarly(SqlSessionTemplate sqlSession, String date){
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminEarly", date);
+	}
+	*/
 	
 	
 	

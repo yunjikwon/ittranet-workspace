@@ -70,6 +70,11 @@
     .page1:hover{
         background: rgba(194, 193, 193, 0.87);
     }
+        
+    /*메뉴바 픽스 스타일*/
+    .attendance_mn{
+    	color: #000000;
+    }
 </style>
 </head>
 <body>
