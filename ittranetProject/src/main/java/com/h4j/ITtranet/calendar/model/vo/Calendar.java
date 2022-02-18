@@ -15,11 +15,11 @@ import lombok.ToString;
 @ToString
 public class Calendar {
 	
-	private String planNo;
+	private String calNo;
 	private String empNo;
-	private String planStart;
-	private String planEnd;
-	private String planContent;
-	private String planColor;
+	private String calStart;
+	private String calEnd;
+	private String calContent;
+	private String calColor;
 
 }

@@ -6,22 +6,22 @@
 
 	<!-- 컬럼명 수정됨 나중에 고치기 -->
 	<resultMap id="calendarResult" type="Calendar">
-		<result column="plan_no" property="planNo"/>
+		<result column="cal_no" property="calNo"/>
 		<result column="emp_no" property="empNo"/>
-		<result column="plan_start" property="planStart"/>
-		<result column="plan_end" property="planEnd"/>
-		<result column="plan_content" property="planContent"/>
-		<result column="plan_color" property="planColor"/>
+		<result column="cal_start" property="calStart"/>
+		<result column="cal_end" property="calEnd"/>
+		<result column="cal_content" property="calContent"/>
+		<result column="cal_color" property="calColor"/>
 	</resultMap>
 	
 	<select id="ajaxSelectCalendar" resultMap="calendarResult">
 		select
-			   plan_no
+			   cal_no
 			 , emp_no
-			 , TO_CHAR(to_date(plan_start, 'MM/DD/YYYY'), 'YYYY-MM-DD') as "plan_start"
-, TO_CHAR(to_date(plan_end, 'MM/DD/YYYY'), 'YYYY-MM-DD') as "plan_end"
-			 , plan_content
-			 , plan_color
+			 , TO_CHAR(to_date(cal_start, 'MM/DD/YYYY'), 'YYYY-MM-DD') as "cal_start"
+			 , TO_CHAR(to_date(cal_end, 'MM/DD/YYYY'), 'YYYY-MM-DD') as "cal_end"
+			 , cal_content
+			 , cal_color
 		  from calendar
 		 where emp_no = 3
 			or emp_no = 1

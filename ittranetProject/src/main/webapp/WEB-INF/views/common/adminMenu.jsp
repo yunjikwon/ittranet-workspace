@@ -119,7 +119,7 @@
             </a>
         </li>
         <li class="menu">
-            <a href="adminCalendar.ca">
+            <a href="viewAdminCal.ca">
                     <div class="circle" style="background: rgb(218, 172, 236)">
                         <i class="fas fa-calendar-alt fa-3x schedule schedule_mn"></i>
                     </div>
