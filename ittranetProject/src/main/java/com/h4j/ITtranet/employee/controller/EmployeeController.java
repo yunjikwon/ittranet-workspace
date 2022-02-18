@@ -25,6 +25,11 @@ public class EmployeeController {
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
+	@RequestMapping("goUserMain.me")
+	public String goUserMain() {
+		return "common/userMain";
+	}
+	
 	/**
 	 * 로그인
 	 * @param e
@@ -37,12 +42,24 @@ public class EmployeeController {
 		
 		Employee loginUser = eService.loginMember(e);
 		
+		if(loginUser != null && (loginUser.getAdmin()).equals("Y") && bcryptPasswordEncoder.matches(e.getEmpPwd(), loginUser.getEmpPwd())) {
+			session.setAttribute("loginUser", loginUser);
+			mv.setViewName("common/adminMain");
+		} else if(loginUser != null && bcryptPasswordEncoder.matches(e.getEmpPwd(), loginUser.getEmpPwd())) {
+			session.setAttribute("loginUser", loginUser);
+			mv.setViewName("common/userMain");
+		} else {
+			mv.setViewName("common/error");
+		}
+		
+		/*
 		if(loginUser != null && bcryptPasswordEncoder.matches(e.getEmpPwd(), loginUser.getEmpPwd())) {
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("common/userMain");
 		}else {
 			mv.setViewName("common/error");
 		}
+		*/
 		
 		return mv;
 	}
