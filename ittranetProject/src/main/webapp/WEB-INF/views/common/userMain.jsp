@@ -103,6 +103,14 @@
         text-align: left;
         font-size: 15px;
     }
+    .newBoardTr:hover {
+    	cursor:pointer;
+    	background-color: rgb(177, 176, 176);
+    }
+    .btnStyle:hover{
+    	cursor:pointer;
+    	text-decoration:none;
+    }
 </style>
 </head>
 <body>
@@ -215,18 +223,64 @@
             <div class="contentbox" style="width: 810px; height: 280px;">
                 <div class="category-title">
                     &nbsp;&nbsp;게시판
-                    <a href="" class="plus-btn">+</a>
+                    <a href="list.no" class="plus-btn btnStyle">+</a>
                 </div>
-                <table>
-                    <tr>
-                        <th width="90">게시판종류</th>
-                        <td>게시글제목</td>
-                        <td width="90">작성일</td>
-                    </tr>
+                <table id="newBoardList">
+                    <tbody>
+                    
+                    </tbody>
                 </table>
+                <script>
+                	$(function(){
+                		selectNewList();
+                		
+                		$(document).on("click", "#newBoardList>tbody>tr", function(){
+                			
+                			var type = $(this).children(".type").text();
+                			console.log(type);
+                			var number = $(this).children(".type").children(".number").val();
+                			console.log(number);
+                			
+                			if(type === '공지사항'){
+                				location.href = "detail.no?nno=" + number;
+                			}else{
+                				location.href = "detail.bo?bno=" + number;
+                			}
+                		})
+                	})
+                	
+                	function selectNewList(){
+                		$.ajax({
+                			url: "newList.no",
+                			success:function(list){
+                				console.log(list);
+                				
+                				let value="";
+                				for(let i in list){
+                					value += "<tr class='newBoardTr'>"
+                							+ 	"<th width='120' class='type' height='30'>";
+                					if(list[i].headerNo == 0){
+                						value += "자유게시판" + "<input type='hidden' name='bno' class='number' value='" + list[i].noticeNo + "'>" + "</th>"
+		                						+ 	"<td class='title' width='500' height='30'>" + list[i].noticeTitle + "</td>"
+		            							+	"<td width='120' height='30'>" + list[i].createDate + "</td>";
+                					}else{
+                						value += "공지사항" + "<input type='hidden' name='nno' class='number' value='" + list[i].noticeNo + "'>" + "</th>"
+	                							+ 	"<td class='title' width='500' height='30'>" + list[i].noticeTitle + "</td>"
+	                							+	"<td width='120' height='30'>" + list[i].createDate + "</td>";
+                					}
+                				}
+                				
+                				$("#newBoardList>tbody").html(value);
+                			},error:function(){
+                				console.log("최신글 ajax 통신 실패");
+                			}
+                		})
+                	}
+                </script>
             </div>
         </div>
     </div>
+    <br clear="both">
     <!-- 푸터바 -->
     <jsp:include page="footer.jsp" />
 </body>

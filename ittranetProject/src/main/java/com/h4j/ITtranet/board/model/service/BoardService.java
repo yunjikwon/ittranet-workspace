@@ -56,7 +56,4 @@ public interface BoardService {
 	// 10. 게시글 검색 서비스 (ajax)
 	ArrayList<Board> searchBoardList(Board b);
 	
-	// 11. 메인페이지 새글 조회 서비스 
-	ArrayList<Board> selectNewBoardList();
-
 }

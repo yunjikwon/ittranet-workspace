@@ -163,10 +163,13 @@
                         
                         <script>
                         	// select값 넣기
-                        	$("#headerTitle").click(function(){
-                       			let $value = $("#headerTitle option:selected").val();
-                       			$("#headerNo").attr("value", $value);
-                        	});
+                        	$(function(){
+                				let $value = $("#headerTitle option:selected").val();
+	                   			let $select = '${n.noticeTitle}'
+	                   			$("#headerNo").attr("value", $value);
+	                   			$("#headerTitle").attr("value", $select);
+                			})
+                        	
 
 
                         	//뒤로가기
