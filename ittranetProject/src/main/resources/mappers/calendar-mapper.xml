@@ -4,4 +4,27 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="calendarMapper">
 
+	<!-- 컬럼명 수정됨 나중에 고치기 -->
+	<resultMap id="calendarResult" type="Calendar">
+		<result column="plan_no" property="planNo"/>
+		<result column="emp_no" property="empNo"/>
+		<result column="plan_start" property="planStart"/>
+		<result column="plan_end" property="planEnd"/>
+		<result column="plan_content" property="planContent"/>
+		<result column="plan_color" property="planColor"/>
+	</resultMap>
+	
+	<select id="ajaxSelectCalendar" resultMap="calendarResult">
+		select
+			   plan_no
+			 , emp_no
+			 , TO_CHAR(to_date(plan_start, 'MM/DD/YYYY'), 'YYYY-MM-DD') as "plan_start"
+, TO_CHAR(to_date(plan_end, 'MM/DD/YYYY'), 'YYYY-MM-DD') as "plan_end"
+			 , plan_content
+			 , plan_color
+		  from calendar
+		 where emp_no = 3
+			or emp_no = 1
+	</select>
+
 </mapper>
