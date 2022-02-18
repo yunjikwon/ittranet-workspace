@@ -12,7 +12,9 @@
 		<result column="create_date" property="createDate"/>
 		<result column="count" property="count"/>		
 		<result column="emp_id" property="empId"/>		
-		<result column="emp_name" property="empName"/>		
+		<result column="emp_name" property="empName"/>
+		<result column="header_no" property="headerNo"/>
+		<result column="header_title" property="headerTitle"/>
 	</resultMap>
 	
 	<resultMap id="attachmentResult" type="Attachment">
@@ -50,6 +52,7 @@
  	<select id="selectList" resultMap="noticeResult">
  		select 
 	        notice_no
+	      , header_title
 	      , emp_name
 	      , notice_title
 	      , to_char(create_date, 'YYYY-MM-DD') as "create_date"
@@ -57,6 +60,7 @@
 	      
 	  from notice n
 	  join employee using (emp_no)
+	  join notice_header using(header_no)
 	 where n.status = 'Y'
 	 order
 	    by notice_no desc
@@ -75,12 +79,14 @@
  		select
  			   notice_no 
  			 , emp_no
+ 			 , header_title
 		     , notice_title
 		     , emp_name
 		     , to_char(create_date, 'YYYY-MM-DD') as "create_date"
 		     , notice_content
 		  from notice n
 		  join employee using(emp_no)
+		  join notice_header using(header_no)
 		 where n.status = 'Y'
 		   and notice_no = #{noticeNo}
  	</select>
@@ -93,7 +99,7 @@
  		     , file_path
  			 , ref_no
 		  from attachment
-		 where ref_Code = 'N'
+		 where ref_Code = 'NO'
 		   and ref_no = #{noticeNo}
  
  	</select>
@@ -104,6 +110,7 @@
 		  into notice
 		     (
 		       notice_no
+		     , header_no
 		     , emp_no
 		     , notice_title
 		     , notice_content
@@ -113,7 +120,8 @@
 		     )
 		 values
 		    (
-		      seq_board.nextval
+		      seq_notice.nextval
+		    , #{headerNo}
 		    , #{empNo}
 		    , #{noticeTitle}
 		    , #{noticeContent}
@@ -141,8 +149,8 @@
 	        , #{originName}
 	        , #{changeName}
 	        , #{filePath}
-	        , 'N'
-	        , seq_board.currval
+	        , 'NO'
+	        , seq_notice.currval
 	        )
 	</insert>
 	
@@ -151,7 +159,7 @@
  		select
  			   count(*) as "count"
  		  from attachment
- 		 where ref_code = 'N'
+ 		 where ref_code = 'NO'
  		   and ref_no = #{noticeNo}
  	</select>
  	
@@ -174,6 +182,7 @@
  		update 
  			   notice
  		   set notice_title = #{noticeTitle}
+ 		   	 , header_no = #{headerNo} 
  		     , notice_content = #{noticeContent}
  		 where notice_no = #{noticeNo}
  	</update>
@@ -196,7 +205,7 @@
 	        , #{originName}
 	        , #{changeName}
 	        , #{filePath}
-	        , 'N'
+	        , 'NO'
 	        , #{noticeNo}
 	        )
 	</insert>
@@ -214,7 +223,7 @@
 		     , to_char(create_date, 'YYYY-MM-DD hh:mm') as "create_date"
 		  from reply r
 		  join employee using(emp_no)
-		 where ref_code = 'N'
+		 where ref_code = 'NO'
 		   and r.status = 'Y'
 		   and ref_no = #{refNo}
 		 start
@@ -241,7 +250,7 @@
 		     (
 		       seq_reply.nextval
 		     , #{empNo}
-		     , 'N'
+		     , 'NO'
 		     , #{refNo}
 		     , #{replyContent}
 		     , #{replyOriginNo}
@@ -271,16 +280,18 @@
 	<select id="searchNoticeList" resultMap="noticeResult">
 		select 
 		        notice_no
+		      , header_title
 		      , emp_name
 		      , notice_title
 		      , to_char(create_date, 'YYYY-MM-DD') as "create_date"
 		      , count
 		  from notice n
 		  join employee using (emp_no)
+		  join notice_header using(header_no)
 		 where n.status = 'Y'
 			<choose>
-				<when test="type == 'boardTitle'">
-		 			AND board_title LIKE '%' || #{keyword} || '%'
+				<when test="type == 'noticeTitle'">
+		 			AND notice_title LIKE '%' || #{keyword} || '%'
 				</when>
 				<when test="type == 'empName'">
 		 			AND emp_name LIKE '%' || #{keyword} || '%'
@@ -291,6 +302,15 @@
 			</choose>
 
 		 order
-		    by board_no desc
+		    by notice_no desc
 	</select>
+	
+	<!-- 말머리 전체조회 -->
+	<select id="selectHeaderList" resultMap="noticeResult">
+		select	
+		       header_no
+		     , header_title
+		  from notice_header
+	</select> 
+	  
 </mapper>
