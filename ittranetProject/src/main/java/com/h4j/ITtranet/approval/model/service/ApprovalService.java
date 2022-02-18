@@ -12,11 +12,15 @@ public interface ApprovalService {
 	ArrayList<AppLine> selectSearchTeam(String keyword);
 	ArrayList<AppLine> selectSearchName(String keyword);
 	
+	// 결재선 insert
+	int insertLine(Approval app);
+	
 	// 기안 게시판 listCount
 	int selectListCount(int category);
 	
 	// 기안 게시판 select
 	ArrayList<Approval> selectList(PageInfo pi, int category);
+	
 	
 	
 	

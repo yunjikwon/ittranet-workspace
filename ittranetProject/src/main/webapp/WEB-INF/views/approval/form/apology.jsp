@@ -54,7 +54,7 @@
             width:80px;
             height:40px;
             font-size:15px;    
-            color:color:rgb(94, 94, 94);        
+            color:rgb(94, 94, 94);        
         }
     </style>
 </head>

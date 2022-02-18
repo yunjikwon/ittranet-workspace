@@ -31,6 +31,12 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public ArrayList<AppLine> selectSearchName(String keyword) {
 		return aDao.selectSearchName(sqlSession, keyword);
 	}
+	
+	// 결재선 insert
+	@Override
+	public int insertLine(Approval app) {
+		return aDao.insertLine(sqlSession, app);
+	}
 
 	@Override
 	public int selectListCount(int category) {
@@ -41,6 +47,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public ArrayList<Approval> selectList(PageInfo pi, int category) {
 		return aDao.selectList(sqlSession, pi, category);
 	}
+
+	
 
 	
 	

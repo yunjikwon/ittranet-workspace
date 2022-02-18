@@ -44,7 +44,7 @@
 		 where 
 			   emp_name like '%' || #{keyword} || '%' 		    
 		 order
-		    by team_name
+		    by emp_name
 			   
 	</select>
 
@@ -106,8 +106,12 @@
 		 order 
 		    by dr_date
 	</select>
-
-
+	
+	<!-- 결재선 insert -->
+	<insert id="insertLine">
+		insert
+		  into approval
+	</insert>
 
 
 

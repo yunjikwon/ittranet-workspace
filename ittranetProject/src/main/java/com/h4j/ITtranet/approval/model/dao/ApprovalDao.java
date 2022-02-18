@@ -23,6 +23,11 @@ public class ApprovalDao {
 		return (ArrayList)sqlSession.selectList("appMapper.selectSearchName", keyword);
 	}
 	
+	// 결재선 insert
+	public int insertLine(SqlSessionTemplate sqlSession, Approval app) {
+		return sqlSession.insert("appMapper.insertLine", app);
+	}
+	
 	// 기안 게시판 paging
 	public int selectListCount(SqlSession sqlSession, int category) {
 		
