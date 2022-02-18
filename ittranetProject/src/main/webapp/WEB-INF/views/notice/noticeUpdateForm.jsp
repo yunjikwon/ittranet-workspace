@@ -194,18 +194,14 @@
                         
                 		<script>
                 		
+	                		// select값 넣기
                 			$(function(){
                 				let $value = $("#headerTitle option:selected").val();
 	                   			let $select = '${n.noticeTitle}'
 	                   			$("#headerNo").attr("value", $value);
 	                   			$("#headerTitle").attr("value", $select);
                 			})
-	                		// select값 넣기
-	                		/*
-	                    	$("#headerTitle").click(function(){
-	                   			
-	                    	});
-                			*/
+	                		
 	                		
                         	//뒤로가기
                             function goBack(){

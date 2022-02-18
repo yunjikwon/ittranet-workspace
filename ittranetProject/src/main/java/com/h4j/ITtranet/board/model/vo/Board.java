@@ -28,5 +28,9 @@ public class Board {
 	// 검색용 변수
 	private String type;
 	private String keyword;
+	
+	// 최신글 조회용 변수
+	private String Notice;
+	private int rnum;
 
 }

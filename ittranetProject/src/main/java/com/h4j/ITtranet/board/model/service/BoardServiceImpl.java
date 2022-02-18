@@ -108,11 +108,6 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.searchBoardList(sqlSession, b);
 	}
 	
-	@Override
-	public ArrayList<Board> selectNewBoardList() {
-		return null;
-	}
-
 
 
 

@@ -90,6 +90,9 @@ public class NoticeDao {
 		return (ArrayList)sqlSession.selectList("noticeMapper.selectHeaderList");
 	}
 	
+	public ArrayList<Notice> selectNewNoticeList(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("noticeMapper.selectTopList");
+	}
 	
 	
 	

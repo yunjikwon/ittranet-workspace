@@ -15,6 +15,12 @@
 		<result column="emp_name" property="empName"/>
 		<result column="header_no" property="headerNo"/>
 		<result column="header_title" property="headerTitle"/>
+		<result column="rnum" property="rnum" />
+ 		<result column="nno" property="noticeNo" />
+ 		<result column="title" property="noticeTitle" />
+ 		<result column="cdate" property="createDate" />
+ 		<result column="hno" property="headerNo" />
+ 		<collection property="Board" resultMap="Board" />
 	</resultMap>
 	
 	<resultMap id="attachmentResult" type="Attachment">
@@ -38,8 +44,15 @@
  		<result column="status" property="status" />
  		<result column="emp_name" property="empName" />
  		<result column="admin" property="admin" />
- 		
  	</resultMap>
+ 	<resultMap id="Board" type="Board">
+ 		<result column="rnum" property="rnum" />
+ 		<result column="bno" property="boardNo" />
+ 		<result column="title" property="boardTitle" />
+ 		<result column="cdate" property="createDate" />
+ 	</resultMap>
+ 	
+ 	
  	<!-- 게시글 전체 갯수 조회 -->
  	<select id="selectListCount" resultType="_int">
  		select
@@ -220,7 +233,7 @@
 		     , reply_content
 		     , reply_origin_no
 		     , reply_branch
-		     , to_char(create_date, 'YYYY-MM-DD hh:mm') as "create_date"
+		     , to_char(create_date, 'YYYY-MM-DD hh24:mm') as "create_date"
 		  from reply r
 		  join employee using(emp_no)
 		 where ref_code = 'NO'
@@ -312,5 +325,16 @@
 		     , header_title
 		  from notice_header
 	</select> 
-	  
+	
+	<!-- 최신글 조회 -->
+	<select id="selectTopList" parameterType="Notice" resultMap="noticeResult">
+		select  rnum, nno, title, cdate, hno
+		  from notice_view 
+		 where rnum <![CDATA[<=]]>  4
+		 union
+		select rnum, bno, title, cdate, 0
+		  from board_view 
+		  where rnum <![CDATA[<=]]>  4
+		 order by cdate desc
+	</select>
 </mapper>

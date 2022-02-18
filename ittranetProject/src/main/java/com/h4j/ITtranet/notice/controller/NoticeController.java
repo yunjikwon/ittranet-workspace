@@ -243,7 +243,14 @@ public class NoticeController {
 		return new Gson().toJson(list);
 	}
 	
-	
+	// 최신글 조회
+	@ResponseBody
+	@RequestMapping(value="newList.no", produces="application/json; charset=utf-8")
+	public String ajaxNewBoardList() {
+		ArrayList<Notice> list = nService.selectNewNoticeList();
+		//System.out.println(list);
+		return new Gson().toJson(list);
+	}
 	
 	
 	

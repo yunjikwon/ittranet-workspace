@@ -211,7 +211,7 @@
 		     , reply_content
 		     , reply_origin_no
 		     , reply_branch
-		     , to_char(create_date, 'YYYY-MM-DD hh:mm') as "create_date"
+		     , to_char(create_date, 'YYYY-MM-DD hh24:mm') as "create_date"
 		  from reply r
 		  join employee using(emp_no)
 		 where ref_code = 'B'
