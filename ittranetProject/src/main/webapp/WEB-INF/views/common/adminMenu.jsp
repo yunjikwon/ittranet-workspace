@@ -8,7 +8,7 @@
 <style>
     /*메뉴바 스타일*/
     .menubar{
-        width: 72%;
+        width: 80%;
         float: right;
         height: 150px;
         list-style: none;
@@ -116,6 +116,14 @@
                         <i class="fas fa-bullhorn fa-3x board_mn"></i> 
                     </div>
                     <p class="board_mn"><b>게시판관리</b></p>
+            </a>
+        </li>
+        <li class="menu">
+            <a href="adminCalendar.ca">
+                    <div class="circle" style="background: rgb(218, 172, 236)">
+                        <i class="fas fa-calendar-alt fa-3x schedule schedule_mn"></i>
+                    </div>
+                    <p class="schedule schedule_mn"><b>일정관리</b></p>
             </a>
         </li>
         <li class="menu">

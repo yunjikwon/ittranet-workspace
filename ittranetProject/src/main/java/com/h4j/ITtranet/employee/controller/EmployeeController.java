@@ -30,6 +30,11 @@ public class EmployeeController {
 		return "common/userMain";
 	}
 	
+	@RequestMapping("goAdminMain.me")
+	public String goAdminMain() {
+		return "common/adminMain";
+	}
+	
 	/**
 	 * 로그인
 	 * @param e
