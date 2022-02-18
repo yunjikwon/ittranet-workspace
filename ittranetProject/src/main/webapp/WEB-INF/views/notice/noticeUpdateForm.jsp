@@ -8,14 +8,14 @@
 <title>Insert title here</title>
 
 <style>
-    .boardDetailOuter{
+    .noticeDetailOuter{
 		width: 900px;
 		box-sizing: border-box;
 		margin:auto;
 		background-color: rgba(211, 211, 211, 0.466);
         font-size: 14px;
     }
-    #boardDetailTable{
+    #noticeDetailTable{
 		width: 700px;
 		border-collapse: collapse;
 		margin: auto;
@@ -32,7 +32,7 @@
 		height:380px;
 		background-color: white;
 	}
-	#boardDetailTable td, #boardDetailTable th{
+	#noticeDetailTable td, #noticeDetailTable th{
 		border-bottom: 1px solid rgb(184, 184, 184);
         border-top: 1px solid rgb(184, 184, 184);
 	}
@@ -81,6 +81,10 @@
     .board_mn{
 		color: #000000;
 	}
+	select{
+		width:90px;
+		height: 30px;
+	}
 </style>
 </head>
 <body>
@@ -118,22 +122,31 @@
                 <div class="mainOuter">
                     <br>
                     <span style="margin: 10px;">
-                        <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.bo">자유게시판</a></h2>
+                        <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.no">공지사항</a></h2>
                     </span>
                     <br clear="both">
-                    <div class="boardDetailOuter" align="center">
+                    <div class="noticeDetailOuter" align="center">
                         
                         <br clear="both"><br>
                         <!-- 게시글 상세내역-->
-                        <form id="updateForm" name="updateForm" method="post" action="update.bo" enctype="multipart/form-data" align="center">
+                        <form id="updateForm" name="updateForm" method="post" action="update.no" enctype="multipart/form-data" align="center">
                         	<input type="hidden" id="empNo" name="empNo" value="${ loginUser.empNo }">
-                            <input type="hidden" id="bno" name="boardNo" value="${ b.boardNo }">
-                            <table id="boardDetailTable" align="center">
+                            <input type="hidden" id="nno" name="noticeNo" value="${ n.noticeNo }">
+                            <table id="noticeDetailTable" align="center">
                                 <tr>
                                     <th height="50" width="100">글제목</th>
-                                    <td colspan="3">
-                                        <input type="text" id="title" name="boardTitle" class="formInput" required value="${ b.boardTitle }">
+                                    <td align="center" width="400">
+                                        <input type="text" id="title" name="noticeTitle" class="formInput" required value="${ n.noticeTitle }">
                                     </td>
+                                    <th width="100">말머리</th>
+									<td width="100">
+										<select name="headerTitle" id="headerTitle" >
+											<c:forEach var="h" items="${ headerList }">
+			                                	<option value="${ h.headerNo }">${ h.headerTitle }</option>
+											</c:forEach>
+		                            	</select>
+		                            	<input type="hidden" id="headerNo" name="headerNo" value="">
+									</td>
                                 </tr>
                                 
                                 <tr>
@@ -167,12 +180,12 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4" height="400px" align="center" ><br>
-                                        <textarea name="boardContent" id="content" cols="80" rows="20" style="resize:none" required>${ b.boardContent }</textarea><br>
+                                        <textarea name="noticeContent" id="content" cols="80" rows="20" style="resize:none" required>${ n.noticeContent }</textarea><br>
                                     </td>
                                 </tr>
                             </table>
                             <div align="center" id="btn-area">
-                                <button type="button" class="btnStyle" onclick="delBoard();">삭제하기</button>
+                                <button type="button" class="btnStyle" onclick="delNotice();">삭제하기</button>
                                 <button type="button" class="btnStyle" onclick="goBack();">뒤로가기</button>
                                 <button class="btnStyle" type="submit">수정하기</button>
                             </div>
@@ -180,9 +193,23 @@
                         </form>
                         
                 		<script>
+                		
+                			$(function(){
+                				let $value = $("#headerTitle option:selected").val();
+	                   			let $select = '${n.noticeTitle}'
+	                   			$("#headerNo").attr("value", $value);
+	                   			$("#headerTitle").attr("value", $select);
+                			})
+	                		// select값 넣기
+	                		/*
+	                    	$("#headerTitle").click(function(){
+	                   			
+	                    	});
+                			*/
+	                		
                         	//뒤로가기
                             function goBack(){
-                                reset();
+                				reset();
                                 window.history.back();
                             }
                         	
@@ -200,7 +227,7 @@
                             })
                         	
                         	// 글 삭제하기
-                        	function delBoard(){
+                        	function delNotice(){
 								
 								Swal.fire({
 								  title: '삭제하시겠습니까?',
@@ -212,7 +239,7 @@
 								  cancelButtonText : '취소'
 								}).then((result) => {
 								  if (result.isConfirmed) {
-									$("#updateForm").attr("action", "delete.bo").submit();  
+									$("#updateForm").attr("action", "delete.no").submit();  
 								   
 								  }
 								})

@@ -25,6 +25,7 @@ public class Notice {
 	// 작성자 조회용 변수
 	private String empName;
 	private String empId;
+	private String headerTitle;
 	
 	// 검색용 변수
 	private String type;

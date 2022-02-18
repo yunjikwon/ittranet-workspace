@@ -12,7 +12,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 -->
 <style>
-    .boardListOuter{
+    .noticeListOuter{
         margin:auto;
         width: 900px;
         box-sizing: border-box;
@@ -56,7 +56,7 @@
         color: black;
         cursor: pointer;
     }
-    .boardTitle{
+    .noticeTitle{
         cursor: pointer;
     }
     .board_mn{
@@ -112,49 +112,50 @@
                 <div class="mainOuter">
                     <br>
                     <span style="margin: 10px;">
-                        <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.bo">자유게시판</a></h2>
+                        <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.no">공지사항</a></h2>
                     </span>
                     <!-- 게시글 전체 영역-->
-                    <div class="boardListOuter" align="center">
-                        
-                        <button id="addBtn" class="btnStyle" style="float:right"><a class="aTag" href="insertForm.bo">새글등록</a></button>
+                    <div class="noticeListOuter" align="center">
+                        <c:if test="${ loginUser.admin eq 'Y' }">
+                        	<button id="addBtn" class="btnStyle" style="float:right"><a class="aTag" href="insertForm.no">새글등록</a></button>
+                        </c:if>
                         <br clear="both">
                         <!-- 게시글 전체보기 리스트 영역-->
-                        <table id="boardListTable" class="table thead-light table-hover">
+                        <table id="noticeListTable" class="table thead-light table-hover">
                             <thead>
                                 <tr align="center">
                                     <th width="50px">No.</th>
-                                    <th width="450px">글제목</th>
-                                    <th width="125px">작성자</th>
-                                    <th width="125px">작성일</th>
+                                    <th width="100px">말머리</th>
+                                    <th width="370px">글제목</th>
+                                    <th width="115px">작성자</th>
+                                    <th width="115px">작성일</th>
                                     <th width="80px">조회수</th>
                                 </tr>
                             </thead>
-                            <tbody id="boardListTbody">
-                                <c:forEach var="b" items="${ list }">
+                            <tbody id="noticeListTbody">
+                                <c:forEach var="n" items="${ list }">
                                     <tr align="center">
-                                        <td class="bno">${ b.boardNo }</td>
-                                        <td class="boardTitle">${ b.boardTitle }
+                                        <td class="nno">${ n.noticeNo }</td>
+                                        <td class="headerTitle">${ n.headerTitle}</td>
+                                        <td class="noticeTitle">${ n.noticeTitle }
                                             <c:if test="${ !empty atList }">
                                             	&nbsp;&nbsp;<i class="fa-solid fa-paperclip"></i>
                                             </c:if>
                                         </td>
-                                        <td>${ b.empName }</td>
-                                        <td>${ b.createDate }</td>
-                                        <td>${ b.count }</td>
+                                        <td>${ n.empName }</td>
+                                        <td>${ n.createDate }</td>
+                                        <td>${ n.count }</td>
                                     </tr>
                                 </c:forEach>
                             </tbody> 
-                            <tbody id="searchList-area">
-
-                            </tbody>         
+                                   
                         </table>
                         <br>
                         
                         <script>
                             $(function(){
-                                $("#boardListTable>tbody>tr").click(function(){
-                                    location.href = 'detail.bo?bno=' + $(this).children(".bno").text();
+                                $("#noticeListTable>tbody>tr").click(function(){
+                                    location.href = 'detail.no?nno=' + $(this).children(".nno").text();
                                 })
                             })
                         </script>
@@ -165,12 +166,12 @@
                                     <button class="pageBtn" disabled>&lt;</button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="pageBtn"><a class="aTag" href="list.bo?cpage=${ pi.currentPage-1 }">&lt;</a></button>
+                                    <button class="pageBtn"><a class="aTag" href="list.no?cpage=${ pi.currentPage-1 }">&lt;</a></button>
                                 </c:otherwise>
                             </c:choose>
                             
                             <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                                <button class="pageBtn"><a class="aTag" href="list.bo?cpage=${ p }">${ p }</a></button>
+                                <button class="pageBtn"><a class="aTag" href="list.no?cpage=${ p }">${ p }</a></button>
                             </c:forEach>
                         
                             <c:choose>
@@ -178,7 +179,7 @@
                                     <button class="pageBtn" disabled>&gt;</button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="pageBtn"><a class="aTag" href="list.bo?cpage=${ pi.currentPage+1 }">&gt;</a></button>
+                                    <button class="pageBtn"><a class="aTag" href="list.no?cpage=${ pi.currentPage+1 }">&gt;</a></button>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -187,9 +188,9 @@
                         <div id="search-area" align="center">     
                         	<form id="searchArea" name="searchArea">
 	                            <select name="search" id="searchSelect">
-	                                <option value="boardTitle">글제목</option>
+	                                <option value="noticeTitle">글제목</option>
 	                                <option value="empName">작성자</option>
-	                                <option value="boardContent">글내용</option>
+	                                <option value="noticeHeader">말머리</option>
 	                            </select>
 	                            <input type="text" id="keyword" name="keyword">
 	                            <button type="button"id="searchBtn" class="btnStyle" onclick="getSearchList();"><a class="aTag">검색</a></button>
@@ -211,27 +212,28 @@
                         		}
                                 
                         		$.ajax({
-                        			url : "search.bo",
+                        			url : "search.no",
                         			data:{
                         				keyword: $keyword,
                         				type: $type
                         			},
                         			success:function(list){
                         				
-                        				$("#boardListTbody").empty();
+                        				$("#noticeListTbody").empty();
                         				$("#paging-area").hide();
                         				
                                           let value = "";
                         				if(list.length<1){
                         					value = "<tr align='center' class='noResult' ><th colspan='5' rowspan='3' height='150'><br><br><br>검색된 글이 없습니다.</th></tr>";
-                        					$("#boardListTbody").html(value);
+                        					$("#noticeListTbody").html(value);
                         					
                         				}else{
                                             for(let i in list){
                                             
                                                 value += "<tr align='center'>"
-                                                        + "<td class='bno'>" + list[i].boardNo + "</td>"
-                                                        + "<td class='boardTitle'>" + list[i].boardTitle + "</td>"
+                                                        + "<td class='nno'>" + list[i].noticeNo + "</td>"
+                                                        + "<td class='headerTitle'>" + list[i].headerTitle + "</td>"
+                                                        + "<td class='noticeTitle'>" + list[i].noticeTitle + "</td>"
                                                        
                                                         + "<td>" + list[i].empName + "</td>"
                                                         + "<td>" + list[i].createDate + "</td>"
@@ -239,7 +241,7 @@
                                                         + "</tr>";
                                             }
                                             
-                                            $("#boardListTbody").html(value);
+                                            $("#noticeListTbody").html(value);
                         				}
                         			},error:function(){
                         				console.log("게시글 검색용 ajax 통신 실패");
@@ -249,11 +251,11 @@
                         	
                         	$(function(){
                         	
-                                $(document).on("click", "#boardListTable>tbody>tr", function(){
+                                $(document).on("click", "#noticeListTable>tbody>tr", function(){
                                 	if($(this).hasClass("noResult")){
                                 		return false;
                                 	}else{
-                                    	location.href = 'detail.bo?bno=' + $(this).children(".bno").text();
+                                    	location.href = 'detail.no?nno=' + $(this).children(".nno").text();
                                 	}
                                 })
                             })

@@ -3,12 +3,11 @@ package com.h4j.ITtranet.notice.model.service;
 
 import java.util.ArrayList;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import com.h4j.ITtranet.notice.model.vo.Notice;
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.model.vo.Reply;
+import com.h4j.ITtranet.notice.model.vo.Notice;
+import com.h4j.ITtranet.notice.model.vo.NoticeHeader;
 
 public interface NoticeService {
 	
@@ -24,8 +23,15 @@ public interface NoticeService {
 	
 	// 3. 게시글 상세조회용 서비스
 	int increaseCount(int noticeNo);
+	
+	// 3-1. 공지사항 특정 글 선택 서비스
 	Notice selectNotice(int noticeNo);
+	
+	// 3-2. 첨부파일 불러오는 서비스
 	ArrayList<Attachment> selectAttachment(int noticeNo);
+	
+	// 3-3. 말머리 리스트 불러오는 서비스
+	ArrayList<NoticeHeader> selectHeaderList();
 	
 	// 4. 게시글 삭제용 서비스
 	int deleteNotice(int noticeNo);
