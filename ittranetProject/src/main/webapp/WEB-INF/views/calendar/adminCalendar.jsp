@@ -78,8 +78,8 @@
       	  $.ajax({
       		  type:"get",
       		  data:{
-      			  calSelector:'${loginUser.empNo}'
-      		  },
+      			calSelector:'${loginUser.empNo}'
+    		  },
       		  url:"calList.ca",
       		  dataType:"json",
       		  success:function(calendarList){
@@ -177,7 +177,7 @@
 	
 		<div class="innerBack">
 			<jsp:include page="../common/pageHeader.jsp"/>
-			<jsp:include page="../common/userMenu.jsp"/>
+			<jsp:include page="../common/adminMenu.jsp"/>
 			
 			<br clear="both">
 			
