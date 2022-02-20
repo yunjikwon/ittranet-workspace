@@ -89,7 +89,7 @@
     <div class="menubar">
         <ul>
             <li class="menu">
-                <a href="vclist.at">
+                <a href="main.at">
                         <div class="circle" style="background: rgb(147, 205, 207)">
                             <i class="fas fa-briefcase attendance_mn"></i> 
                         </div>

@@ -75,9 +75,36 @@ public class AttendanceDao {
 		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminYear", date);
 	}
 	
+	public int insertArrive(SqlSessionTemplate sqlSession, String empNo) {
+		
+		return sqlSession.insert("attendanceMapper.insertArrive", empNo);
+	}
 	
+	public int updateArriveStatus(SqlSessionTemplate sqlSession, String empNo) {
+		
+		return sqlSession.update("attendanceMapper.updateArriveStatus", empNo);
+	}
 	
+	public int updateLeave(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.update("attendanceMapper.updateLeave", empNo);
+	}
 	
+	public int updateLeaveStatus(SqlSessionTemplate sqlSession, String empNo) {
+		
+		return sqlSession.update("attendanceMapper.updateLeaveStatus", empNo);
+	}
+	
+	public int updateStepout(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.update("attendanceMapper.updateStepout", empNo);
+	}
+	
+	public int updateOutwork(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.update("attendanceMapper.updateOutwork", empNo);
+	}
+	
+	public Attendance ajaxSelectAttendance(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.selectOne("attendanceMapper.ajaxSelectAttendance", empNo);
+	}
 	
 	
 	

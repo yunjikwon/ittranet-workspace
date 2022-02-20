@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.h4j.ITtranet.attendance.model.service.AttendanceService;
 import com.h4j.ITtranet.attendance.model.vo.Attendance;
 import com.h4j.ITtranet.attendance.model.vo.Vacation;
@@ -24,11 +26,6 @@ public class AttendanceController {
 	
 	@Autowired
 	private AttendanceService atService;
-	
-	@RequestMapping("main.at")
-	public String selectAttendanceMain() {
-		return "attendance/attendanceMain";
-	}
 	
 	//사용자 휴가신청 리스트 조회
 	@RequestMapping("vclist.at")
@@ -111,6 +108,69 @@ public class AttendanceController {
 	}
 	
 	
+	// 내 근무 페이지
+	@RequestMapping("main.at")
+	public String attendanceMain() {
+		return "attendance/attendanceMain";
+	}
+	
+	// 사용자 출근
+	@ResponseBody
+	@RequestMapping(value="arrive.at")
+	public String insertArrive(String empNo) {
+		
+		int result1 = atService.insertArrive(empNo);
+		int result2 = atService.updateArriveStatus(empNo);
+		
+		return result1>0 && result2>0? "success" : "fail";
+		
+	}
+	
+	// 사용자 퇴근
+	@ResponseBody
+	@RequestMapping(value="leave.at")
+	public String updateLeave(String empNo) {
+		
+		int result1 = atService.updateLeave(empNo);
+		int result2 = atService.updateLeaveStatus(empNo);
+		
+		return result1>0 && result2>0? "success" : "fail";
+		
+	}
+	
+	// 사용자 외출
+	@ResponseBody
+	@RequestMapping(value="stepout.at")
+	public String updateStepout(String empNo) {
+		
+		int result = atService.updateStepout(empNo);
+		
+		return result>0 ? "success" : "fail";
+		
+	}
+	
+	// 사용자 외근
+	@ResponseBody
+	@RequestMapping(value="outwork.at")
+	public String updateOutwork(String empNo) {
+		
+		int result = atService.updateOutwork(empNo);
+		
+		return result>0 ? "success" : "fail";
+		
+	}
+		
+		
+	
+	// 출퇴근기록 조회
+	@ResponseBody
+	@RequestMapping(value="list.at", produces="application/json; charset=UTF-8")
+	public String ajaxSelectAttendance(String empNo, HttpSession session) {
+		
+		Attendance at = atService.ajaxSelectAttendance(empNo);
+		
+		return new Gson().toJson(at);
+	}
 	
 	
 	
