@@ -6,10 +6,11 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.h4j.ITtranet.notice.model.vo.Notice;
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.model.vo.Reply;
+import com.h4j.ITtranet.notice.model.vo.Notice;
+import com.h4j.ITtranet.notice.model.vo.NoticeHeader;
 
 @Repository
 public class NoticeDao {
@@ -30,11 +31,11 @@ public class NoticeDao {
 	}
 	
 	public Notice selectBoard(SqlSessionTemplate sqlSession, int noticeNo ) {
-		return sqlSession.selectOne("noticeMapper.selectBoard", noticeNo);
+		return sqlSession.selectOne("noticeMapper.selectNotice", noticeNo);
 	}
 	
 	public int insertNotice(SqlSessionTemplate sqlSession, Notice n) {
-		return sqlSession.insert("noticeMapper.insertBoard", n);
+		return sqlSession.insert("noticeMapper.insertNotice", n);
 	}
 	
 	public int insertAttachment(SqlSessionTemplate sqlSession, Attachment at) {
@@ -50,7 +51,7 @@ public class NoticeDao {
 	}
 	
 	public int deleteNotice(SqlSessionTemplate sqlSession, int noticeNo) {
-		return sqlSession.update("noticeMapper.deleteBoard", noticeNo);
+		return sqlSession.update("noticeMapper.deleteNotice", noticeNo);
 	}
 	
 	public int deleteAttachment(SqlSessionTemplate sqlSession, int attachmentNo) {
@@ -58,7 +59,7 @@ public class NoticeDao {
 	}
 	
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
-		return sqlSession.update("noticeMapper.updateBoard", n);
+		return sqlSession.update("noticeMapper.updateNotice", n);
 	}
 	
 	public int insertNewAttachment(SqlSessionTemplate sqlSession, Attachment at) {
@@ -82,6 +83,18 @@ public class NoticeDao {
 	}
 	
 	public ArrayList<Notice> searchNoticeList(SqlSessionTemplate sqlSession, Notice n){
-		return (ArrayList)sqlSession.selectList("noticeMapper.searchBoardList", n);
+		return (ArrayList)sqlSession.selectList("noticeMapper.searchNoticeList", n);
 	}
+	
+	public ArrayList<NoticeHeader> selectHeaderList(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("noticeMapper.selectHeaderList");
+	}
+	
+	public ArrayList<Notice> selectNewNoticeList(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("noticeMapper.selectTopList");
+	}
+	
+	
+	
+	
 }

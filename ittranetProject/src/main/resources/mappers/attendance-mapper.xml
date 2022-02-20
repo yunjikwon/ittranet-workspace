@@ -17,6 +17,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="vc_enrolldate" property="vcEnrollDate" />
 		<result column="apply_yn" property="applyYn" />
 		<result column="vc_status" property="vcStatus" />
+		
+		<result column="emp_name" property="empName" />
+		<result column="team_name" property="teamName" />
 	</resultMap>
 	
 	<resultMap id="attendanceResult" type="Attendance">
@@ -96,7 +99,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 , vc_startdate
 			 , vc_enddate
 			 , vc_status
+			 , emp_name
+			 , team_name
 		  from vacation_apply
+		  join employee using(emp_no) 
+		  join team using(team_code)
 		 where vc_status = '대기'
 		 order
 		 	by vc_applyno desc
@@ -117,7 +124,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 , vc_startdate
 			 , vc_enddate
 			 , vc_status
+			 , emp_name
+			 , team_name
 		  from vacation_apply
+		  join employee using(emp_no) 
+		  join team using(team_code)
 		 where vc_status in ('승인', '반려')
 		 order
 		 	by vc_applyno desc
@@ -147,42 +158,93 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 	by att_no desc
 	</select>
 	
-	<!-- 
-	<select id="selectAdminLate" resultMap="attendanceResult">
+	<select id="selectAdminYear" resultMap="attendanceResult">
+		select emp_no
+       		 , count(case when att_status='지각' then 1 end) AS "LATE_COUNT"
+        	 , count(case when att_status='조퇴' then 1 end) AS "EARLY_COUNT"
+        	 <!-- 총근무일수 나중에 수정할것!!!!! -->
+        	 , 21 - (count(*)) as "ABSENCE_COUNT"
+        	 , count(*) as "DAY_COUNT"
+        	 , sum(round((to_date(leave_time, 'HH24:MI') - to_date(arrive_time, 'HH24:MI')) * 24, 1)) AS "WORK_SUM"
+          from attendance
+         where substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
+         group 
+            by emp_no
+         order 
+            by emp_no
+	</select>
+	 
+	<insert id="insertArrive">
+		insert
+		  into attendance
+		  (
+		  	att_no
+		  , emp_no
+		  , att_date
+		  , arrive_time
+		  )
+		  values
+		  (
+		  	seq_attno.nextval
+		  , #{empNo}
+		  , to_char(sysdate, 'MM/DD/YYYY')
+		  , to_char(sysdate, 'HH24:MI')
+		  )
+	</insert>
+	
+	<update id="updateArriveStatus">
+		update attendance
+    	   set att_status =
+          case 
+          when arrive_time &lt;= '09:00' then '정상'
+          else '지각' end
+         where emp_no = #{empNo}
+	       and att_date = to_char(sysdate, 'MM/DD/YYYY')
+	</update>
+	
+	<update id="updateLeave">
+		update attendance
+		   set 
+		   	   leave_time = to_char(sysdate, 'HH24:MI')
+         where emp_no = #{empNo}
+           and att_date = to_char(sysdate, 'MM/DD/YYYY')
+	</update>
+	
+	<update id="updateLeaveStatus">
+		update attendance
+		   set att_status = '조퇴'
+		 where arrive_time &lt;= '18:00'
+           and emp_no = #{empNo}
+	       and att_date = to_char(sysdate, 'MM/DD/YYYY')
+	</update>
+	
+	<update id="updateStepout">
+		update attendance
+		   set 
+		   	   stepout_time = to_char(sysdate, 'HH24:MI')
+         where emp_no = #{empNo}
+           and att_date = to_char(sysdate, 'MM/DD/YYYY')
+	</update>
+	
+	<update id="updateOutwork">
+		update attendance
+		   set 
+		   	   outwork_time = to_char(sysdate, 'HH24:MI')
+         where emp_no = #{empNo}
+           and att_date = to_char(sysdate, 'MM/DD/YYYY')
+	</update>
+	
+	<select id="ajaxSelectAttendance" resultMap="attendanceResult">
 		select
-               emp_no
-             , count(*)
+			   att_no
+			 , arrive_time
+			 , leave_time
+			 , stepout_time
+			 , outwork_time
 		  from attendance
-		 where att_status = '지각'
-		   and substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
-         group by emp_no
+		 where emp_no = #{empNo}
+		   and att_date = to_char(sysdate, 'MM/DD/YYYY')
 	</select>
-	
-	<select id="selectAdminEarly" resultMap="attendanceResult">
-		select
-               emp_no
-             , count(*)
-		  from attendance
-		 where att_status = '조퇴'
-		   and substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
-         group by emp_no
-	</select>
-	-->
-	
-	<select id="selectAdminLate" resultMap="attendanceResult">
-		SELECT emp_no
-       , COUNT(CASE WHEN att_status='지각' THEN 1 END) AS "LATE_COUNT"
-        , COUNT(CASE WHEN att_status='조퇴' THEN 1 END) AS "EARLY_COUNT"
-        , 21 - (count(*)) as "ABSENCE_COUNT"
-        , count(*) as "DAY_COUNT"
-        , SUM(ROUND((TO_DATE(LEAVE_TIME, 'HH24:MI') - TO_DATE(ARRIVE_TIME, 'HH24:MI')) * 24, 1)) AS "WORK_SUM"
-        FROM attendance
-        where substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
-        group by emp_no
-        order by emp_no
-	</select>
-	
-	
 	
 	
 	

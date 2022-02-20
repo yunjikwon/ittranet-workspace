@@ -102,7 +102,7 @@
 		                </li>
 		                <div id="border">
 				               <li class="menu1">
-				                  <a href="#">공지사항</a>
+				                  <a href="list.no">공지사항</a>
 				               </li>
 				               <li class="menu1">
 				                  <a href="list.bo">자유게시판</a>

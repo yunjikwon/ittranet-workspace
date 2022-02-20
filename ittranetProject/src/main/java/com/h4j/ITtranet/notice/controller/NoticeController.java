@@ -18,12 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.h4j.ITtranet.notice.model.service.NoticeService;
-import com.h4j.ITtranet.notice.model.vo.Notice;
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.model.vo.Reply;
 import com.h4j.ITtranet.common.template.Pagination;
+import com.h4j.ITtranet.notice.model.service.NoticeService;
+import com.h4j.ITtranet.notice.model.vo.Notice;
+import com.h4j.ITtranet.notice.model.vo.NoticeHeader;
 
 @Controller
 public class NoticeController {
@@ -72,12 +73,14 @@ public class NoticeController {
 	}
 	// 게시글 작성페이지로 이동
 	@RequestMapping("insertForm.no")
-	public String insertForm() {
+	public String insertForm(Model model) {
+		ArrayList<NoticeHeader> headerList = nService.selectHeaderList();
+		model.addAttribute("headerList", headerList);
 		return "notice/noticeInsertView";
 	}
 	// 게시글 작성하기
 	@RequestMapping("insert.no")
-	public String insertNotice(Notice n, Attachment at, MultipartFile[] upfile, HttpSession session, Model model) {
+	public String insertNotice(Notice n, NoticeHeader h, Attachment at, MultipartFile[] upfile, HttpSession session, Model model) {
 				
 		int result = nService.insertNotice(n);
 		int resultAt = 1;
@@ -95,7 +98,6 @@ public class NoticeController {
 				resultAt = nService.insertAttachment(at);				
 			}			
 		}
-		
 		if(result * resultAt > 0) {
 			session.setAttribute("alertMsg", "게시글이 성공적으로 등록되었습니다.");
 			return "redirect:list.no";
@@ -132,6 +134,7 @@ public class NoticeController {
 	@RequestMapping("updateForm.no")
 	public String updateForm(int nno, Model model) {
 		model.addAttribute("n", nService.selectNotice(nno));
+		model.addAttribute("headerList", nService.selectHeaderList());
 		model.addAttribute("atList", nService.selectAttachment(nno));
 		return "notice/noticeUpdateForm";
 	}
@@ -240,7 +243,14 @@ public class NoticeController {
 		return new Gson().toJson(list);
 	}
 	
-	
+	// 최신글 조회
+	@ResponseBody
+	@RequestMapping(value="newList.no", produces="application/json; charset=utf-8")
+	public String ajaxNewBoardList() {
+		ArrayList<Notice> list = nService.selectNewNoticeList();
+		//System.out.println(list);
+		return new Gson().toJson(list);
+	}
 	
 	
 	

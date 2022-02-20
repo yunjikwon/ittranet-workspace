@@ -153,24 +153,33 @@
         <br><br><br><br><br>
         <div class="anton" style="font-style:italic;" id="hi">IT!tranet</div>
         <br>
+        
         <form action="hi.me" method="post">
+        
             <p class="anton">ID</p>
             <input type="text" class="input-form" id="empId" name="empId" placeholder="아이디를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder='아이디를 입력하세요'" required><br>
             <br>
+            
             <p class="anton">PASSWORD</p>
             &nbsp;&nbsp;<i id="checkPwd" class="fas fa-glasses">비밀번호확인</i>
             <input type="password" class="input-form" id="empPwd" name="empPwd" placeholder="비밀번호를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder='비밀번호를 입력하세요'" required>
             <br><br>
+            
             <div class="form-check-inline">
                 <label class="form-check-label">
                   <input type="checkbox" class="form-check-input" value=""><span>로그인 상태 유지</span>
                 </label>
             </div>
+            
             <div id="modalDiv"><span data-toggle="modal" data-target="#myModal">ID/PWD 찾기</span></div>
             <br><br><br>
+            
             <button id="submitBtn">CLICK!</button>
+            
         </form>
+        
         <br><br><br><br><br><br>
+        
         <a href='joinForm.me'>회원가입테스트</a>
     </div>
     
@@ -179,7 +188,7 @@
     	<div style="text-align:center;"><img src="resources/images/loadImg.gif"/></div>
     </div>
 
-    <%-- 모달창 --%>
+    <%-- ID/PWD찾기 모달창 --%>
     <div class="modal" id="myModal">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -187,10 +196,12 @@
             <h4 class="modal-title">ID/PWD 찾기</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
+            
             <div class="modal-body">
             * 가입시 입력한 이메일을 작성하세요 (@포함)
             <input type="text" id="accordMail" name="accordMail" class="form-control form-control">
             </div>
+            
             <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="findIdPwd();">확인</button>
             </div>
@@ -198,6 +209,7 @@
         </div>
     </div>
     
+    <%-- script --%>
     <script>
     	// *** 비밀번호 확인 ***
     	$(function(){

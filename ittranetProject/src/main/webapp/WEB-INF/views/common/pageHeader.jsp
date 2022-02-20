@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,20 +74,48 @@
         margin-left: 70px;
         display: inline-block;
     }
+    .header-btn:hover {
+    	transform: scale(1.1);
+    	background:lightseagreen;
+    	color:white;
+    }
+    #pageLogo:hover {
+    	transform:scale(1.1);
+    	cursor:pointer;
+    }
 </style>
 </head>
 <body>
     <!--헤더 영역-->
     <div class="header" align="right">
-        <span style="font-size: 16px;">김땡땡</span> <span style="font-size: 16px;">사원</span>
+        <span style="font-size: 16px;">${ loginUser.empName }</span> <span style="font-size: 16px;">사원</span>
         <button class="header-btn" onclick="location.href=''">마이페이지</button>
         <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>
         <!--관리자에게만 보여지도록-->
         <button class="header-btn" onclick="location.href=''">관리자페이지</button>            
     </div>
     <!--로고영역-->
-    <div id="pageLogo">
-        <img src="resources/images/colorLogo.png"/>
-    </div>
+    <c:choose>
+    	<c:when test="${ loginUser.empNo == '1' }">
+    		<div id="pageLogo" onclick="goAdminMain();">
+		        <img src="resources/images/colorLogo.png"/>
+		    </div>
+    	</c:when>
+    	<c:otherwise>
+    		<div id="pageLogo" onclick="goUserMain();">
+		        <img src="resources/images/colorLogo.png"/>
+		    </div>
+    	</c:otherwise>
+    </c:choose>
+    
+    <script>
+     	function goUserMain(){
+     		location.href="goUserMain.me"; 
+     	}
+     	
+     	function goAdminMain(){
+     		location.href="goAdminMain.me"; 
+     	}
+    </script>
 </body>
 </html>

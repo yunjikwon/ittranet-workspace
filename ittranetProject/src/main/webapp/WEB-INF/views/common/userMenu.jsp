@@ -89,7 +89,7 @@
     <div class="menubar">
         <ul>
             <li class="menu">
-                <a href="vclist.at">
+                <a href="main.at">
                         <div class="circle" style="background: rgb(147, 205, 207)">
                             <i class="fas fa-briefcase attendance_mn"></i> 
                         </div>
@@ -137,7 +137,7 @@
                 </a>
             </li>
             <li class="menu">
-                <a href="viewCalendar.ca">
+                <a href="viewUserCal.ca">
                         <div class="circle" style="background: rgb(218, 172, 236)">
                             <i class="fas fa-calendar-alt fa-3x schedule schedule_mn"></i> 
                         </div>

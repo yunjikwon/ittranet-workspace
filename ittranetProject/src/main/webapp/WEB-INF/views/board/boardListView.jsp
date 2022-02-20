@@ -98,7 +98,7 @@
 		                </li>
 		                <div id="border">
 				               <li class="menu1">
-				                  <a href="#">공지사항</a>
+				                  <a href="list.no">공지사항</a>
 				               </li>
 				               <li class="menu1">
 				                  <a href="list.bo">자유게시판</a>
@@ -134,7 +134,7 @@
                                 <c:forEach var="b" items="${ list }">
                                     <tr align="center">
                                         <td class="bno">${ b.boardNo }</td>
-                                        <td  class="boardTitle">${ b.boardTitle }
+                                        <td class="boardTitle">${ b.boardTitle }
                                             <c:if test="${ !empty atList }">
                                             	&nbsp;&nbsp;<i class="fa-solid fa-paperclip"></i>
                                             </c:if>

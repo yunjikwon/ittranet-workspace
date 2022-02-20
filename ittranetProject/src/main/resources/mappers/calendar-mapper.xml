@@ -4,4 +4,60 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="calendarMapper">
 
+	<resultMap id="calendarResult" type="Calendar">
+		<result column="cal_no" property="calNo"/>
+		<result column="emp_no" property="empNo"/>
+		<result column="cal_start" property="calStart"/>
+		<result column="cal_end" property="calEnd"/>
+		<result column="cal_content" property="calContent"/>
+		<result column="cal_color" property="calColor"/>
+	</resultMap>
+	
+	<select id="ajaxSelectCalendar" resultMap="calendarResult">
+		select
+			   cal_no
+			 , emp_no
+			 , TO_CHAR(to_date(cal_start, 'MM/DD/YYYY HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') as "cal_start"
+			 , TO_CHAR(to_date(cal_end, 'MM/DD/YYYY HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') as "cal_end"
+			 , cal_content
+			 , cal_color
+		  from calendar
+		 where emp_no = 3
+			or emp_no = 1
+	</select>
+												
+	<select id="adminSelectCalendar" resultMap="calendarResult">
+		select
+			   cal_no
+			 , emp_no
+			 , TO_CHAR(to_date(cal_start, 'MM/DD/YYYY HH24:MI'), 'YYYY-MM-DD HH24:MI') as "cal_start"
+			 , TO_CHAR(to_date(cal_end, 'MM/DD/YYYY HH24:MI'), 'YYYY-MM-DD HH24:MI') as "cal_end"
+			 , cal_content
+			 , cal_color
+		  from calendar
+		 where emp_no = 1
+	</select>
+	
+	<insert id="ajaxInsertCalendar">
+		insert
+		  into calendar
+		  (
+		    cal_no
+		  , emp_no
+		  , cal_start
+		  , cal_end
+		  , cal_content
+		  , cal_color
+		  )
+		  values
+		  (
+		    seq_cno.nextval
+		  , #{empNo}
+		  , #{calStart}
+		  , #{calEnd}
+		  , #{calContent}
+		  , 'cadetblue'
+		  )
+	</insert>
+
 </mapper>

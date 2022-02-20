@@ -104,7 +104,7 @@
 		                </li>
 		                <div id="border">
 				               <li class="menu1">
-				                  <a href="#">공지사항</a>
+				                  <a href="list.no">공지사항</a>
 				               </li>
 				               <li class="menu1">
 				                  <a href="list.bo">자유게시판</a>
@@ -172,8 +172,8 @@
                                 </tr>
                             </table>
                             <div align="center" id="btn-area">
-                                <button class="btnStyle" onclick="delBoard();">삭제하기</button>
-                                <button class="btnStyle" onclick="goBack();">뒤로가기</button>
+                                <button type="button" class="btnStyle" onclick="delBoard();">삭제하기</button>
+                                <button type="button" class="btnStyle" onclick="goBack();">뒤로가기</button>
                                 <button class="btnStyle" type="submit">수정하기</button>
                             </div>
                             <input type="hidden" id="fileNoDel" name="fileNoDel[]" value=""> 
@@ -212,7 +212,7 @@
 								  cancelButtonText : '취소'
 								}).then((result) => {
 								  if (result.isConfirmed) {
-									$("#postForm").attr("action", "delete.bo").submit();  
+									$("#updateForm").attr("action", "delete.bo").submit();  
 								   
 								  }
 								})

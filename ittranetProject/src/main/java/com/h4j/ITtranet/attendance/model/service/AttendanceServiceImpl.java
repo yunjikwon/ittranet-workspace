@@ -62,16 +62,45 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public ArrayList<Attendance> selectAdminLate(String date) {
-		return atDao.selectAdminLate(sqlSession, date);
+	public ArrayList<Attendance> selectAdminYear(String date) {
+		return atDao.selectAdminYear(sqlSession, date);
 	}
 	
-	/*
 	@Override
-	public ArrayList<Attendance> selectAdminEarly(String date) {
-		return atDao.selectAdminEarly(sqlSession, date);
+	public int insertArrive(String empNo) {
+		return atDao.insertArrive(sqlSession, empNo);
 	}
-	*/
+
+	@Override
+	public int updateArriveStatus(String empNo) {
+		return atDao.updateArriveStatus(sqlSession, empNo);
+	}
+
+	@Override
+	public int updateLeave(String empNo) {
+		return atDao.updateLeave(sqlSession, empNo);
+	}
+
+	@Override
+	public int updateLeaveStatus(String empNo) {
+		return atDao.updateLeaveStatus(sqlSession, empNo);
+	}	
+
+	@Override
+	public int updateStepout(String empNo) {
+		return atDao.updateStepout(sqlSession, empNo);
+	}
+
+	@Override
+	public int updateOutwork(String empNo) {
+		return atDao.updateOutwork(sqlSession, empNo);
+	}
+	
+	@Override
+	public Attendance ajaxSelectAttendance(String empNo) {
+		return atDao.ajaxSelectAttendance(sqlSession, empNo);
+	}
+
 
 
 	

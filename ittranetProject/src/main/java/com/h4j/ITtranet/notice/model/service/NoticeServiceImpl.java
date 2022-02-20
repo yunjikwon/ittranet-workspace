@@ -6,11 +6,12 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.h4j.ITtranet.notice.model.dao.NoticeDao;
-import com.h4j.ITtranet.notice.model.vo.Notice;
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.model.vo.Reply;
+import com.h4j.ITtranet.notice.model.dao.NoticeDao;
+import com.h4j.ITtranet.notice.model.vo.Notice;
+import com.h4j.ITtranet.notice.model.vo.NoticeHeader;
 
 @Service
 public class NoticeServiceImpl implements NoticeService{
@@ -57,6 +58,11 @@ public class NoticeServiceImpl implements NoticeService{
 		return nDao.selectAttachment(sqlSession, noticeNo);
 	}
 
+	@Override
+	public ArrayList<NoticeHeader> selectHeaderList() {
+		return nDao.selectHeaderList(sqlSession);
+	}
+	
 	@Override
 	public int deleteNotice(int noticeNo) {
 		return nDao.deleteNotice(sqlSession, noticeNo);
@@ -110,8 +116,10 @@ public class NoticeServiceImpl implements NoticeService{
 	
 	@Override
 	public ArrayList<Notice> selectNewNoticeList() {
-		return null;
+		return nDao.selectNewNoticeList(sqlSession);
 	}
+
+	
 
 
 
