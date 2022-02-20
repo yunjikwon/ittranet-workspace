@@ -24,4 +24,14 @@ public class CalendarServiceImpl implements CalendarService {
 		return cDao.ajaxSelectCalendar(sqlSession);
 	}
 
+	@Override
+	public ArrayList<Calendar> adminSelectCalendar() {
+		return cDao.adminSelectCalendar(sqlSession);
+	}
+
+	@Override
+	public int ajaxInsertCalendar(Calendar c) {
+		return cDao.ajaxInsertCalendar(sqlSession, c);
+	}
+
 }

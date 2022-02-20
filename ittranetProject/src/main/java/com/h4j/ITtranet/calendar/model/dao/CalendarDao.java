@@ -13,5 +13,13 @@ public class CalendarDao {
 	public ArrayList<Calendar> ajaxSelectCalendar(SqlSessionTemplate sqlSession){
 		return (ArrayList)sqlSession.selectList("calendarMapper.ajaxSelectCalendar");
 	}
+	
+	public ArrayList<Calendar> adminSelectCalendar(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("calendarMapper.adminSelectCalendar");
+	}
+	
+	public int ajaxInsertCalendar(SqlSessionTemplate sqlSession, Calendar c) {
+		return sqlSession.insert("calendarMapper.ajaxInsertCalendar", c);
+	}
 
 }
