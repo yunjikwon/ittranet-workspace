@@ -96,7 +96,7 @@
     </div>
     <!--로고영역-->
     <c:choose>
-    	<c:when test="${ loginUser.empNo = '1' }">
+    	<c:when test="${ loginUser.empNo == '1' }">
     		<div id="pageLogo" onclick="goAdminMain();">
 		        <img src="resources/images/colorLogo.png"/>
 		    </div>
