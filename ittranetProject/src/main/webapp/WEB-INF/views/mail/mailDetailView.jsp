@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,14 +79,24 @@
 		
 			<br>
 
-			<!-- 버튼바 (목록, 삭제, 스팸, 답장) -->
 	        <div id="buttonbar">
+			<!-- 버튼바 (목록, 삭제, 스팸, 답장) -->
+			<c:choose>
+				<c:when test="${temStatus == 'N' && statusRv == 'Y'}">
+					
 	            <button type="button" class="btn btn-secondary"><a id="mailalllist" href="alllist.ml">목록</a></button>
-	            <button type="button" id="delete" class="btn btn-danger" onclick="deleteMail">삭제</button>
+	       
+	        </c:when>
+	        <c:when test="${temStatus == 'N' && statusSd == 'T' && statusRv == 'T'}">
+
+	            <button type="button" class="btn btn-secondary"><a id="mailalllist" href="binlist.ml">목록</a></button>
+
+	        </c:when>
+	        </c:choose>
+	        	<button type="button" id="delete" class="btn btn-danger" onclick="deleteMail">삭제</button>
 	            <button type="button" id="spam" class="btn btn-warning" onclick="spamMail">스팸</button>
 	            <button type="button" id="answer" class="btn btn-secondary" onclick="answerMail">답장</button>
-	        </div>
-	        
+	         </div>
 			<!-- 메일 상세내용 -->
 	        <div class="mailcontent">
 	        
@@ -107,7 +118,7 @@
 	            <hr>
 	            
 	            <div>
-				<c:forEach var="at" items="${ at }">
+				<c:forEach var="at" items="${ list }">
 	            	<c:choose>
 	            		<c:when test="${ empty at.originName }">
 	            			첨부파일이 없습니다.

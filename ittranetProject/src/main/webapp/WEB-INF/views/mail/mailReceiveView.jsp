@@ -58,6 +58,9 @@
 		background: linear-gradient(to top right, #33ccff 0%, #ff0000 100%);
 		color: white;
 	}
+	#myModal{
+		text-align":"
+	}
 
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,25 +88,24 @@
 
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="submit">삭제</button>
+            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
+                <button class="w-btn w-btn-gra2" type="button" data-toggle="modal" data-target="#myModal">삭제</button>
             
             	<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   					<div class="modal-dialog" role="document">
     				<div class="modal-content">
     				
       					<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							</button>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
       					</div>
       			
-      				<div class="modal-body">
+      				<div class="modal-body" text-align="center">
 						정말로 삭제하시겠습니까?
       				</div>
       			
       				<div class="modal-footer">
-        				<button type="button" class="btn btn-danger">네</button>
+        				<button type="button" class="btn btn-danger" id="delete.ml">네</button>
         				<button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
       				</div>
     			
@@ -111,7 +113,12 @@
   					</div>
 				</div>
 				
+				
 			</div>
+			
+			<script>
+				$(document).on("click", "delete.ml")
+			</script>
 			
             <form id="postForm" action="alllist.ml" method="post">
 

@@ -39,23 +39,27 @@
 		   and emp_no = #{empNo}
 	</select>
 	<select id="selectList" resultMap="mailResult">
-    select send_mail_no
-      , emp_name
-      , mail_title
-      , send_date
-      , receiver_account
-	from(
+    	select send_mail_no
+     		 , sdpp
+     		 , mail_title
+      		 , send_date
+     		 , receiver_account
+     		 , rvst
+		 from(
 		select send_mail_no
-		      , emp_name
+		      , emp_name sdpp
 		      , mail_title
 		      , send_date
 		      , receiver_account
-		  from mail_send
+              , rv.status rvst
+		  from mail_send sd
 		  join employee using(emp_no)
-		  join mail_receive using(send_mail_no))
-	where receiver_account = #{email}
-	order
-	   by send_mail_no desc
+		  join mail_receive rv using (send_mail_no)
+		 where tem_status = 'N')
+		 where receiver_account = #{receiveAccount}
+      	   and rvst = 'Y'
+		 order
+	   	    by send_mail_no desc
 	</select>
 	
 	<select id="selectMail" resultMap="mailResult">
@@ -81,12 +85,13 @@
             join mail_receive using(send_mail_no)) 
            join employee e2 on(receiver_account = e2.email)
           where send_mail_no = #{sendMailNo}
-    	<choose>
-    		<when test="read != null and read.equals('N')">and read like #{read}</when>
-    		<when test="status != null and status.equals('Y')">and status like #{status}</when>
-    		<when test="important != null and important.equals('Y')">and important like #{important}</when>
-    		<when test="spam != null and spam.equals('Y')">and spam like #{spam}</when>
-    	</choose>
+	</select>
+	<select id="selectMailAttachment" resultMap="attachmentResult">
+	select
+origin_name
+, change_name
+from attachment
+where ref_code = 'M'
 	</select>
 	
 	
@@ -121,7 +126,14 @@
           	 (
           	   seq_rvmno.nextval
           	 , seq_sdmno.currval
+          	 <choose>
+          	 <when test="receiverAccount != null">
           	 , #{receiverAccount}
+          	 </when>
+          	 <otherwise>
+          	 , #{senderAccount}
+          	 </otherwise>
+          	 </choose>
           	 )
 	</insert>
 	<insert id="insertMailAttachment">
@@ -151,29 +163,37 @@
 			   count(*)
 		  from mail_receive rv
           join mail_send sd using(send_mail_no)
-		 where rv.status = 'N'
-           and sd.status = 'Y'
-		   and rv.emp_no = #{empNo}
+		 where (rv.status = 'T'
+           or sd.status = 'T')
+		   and (rv.receiver_account = #{receiverAccount}
+           or sd.sender_account = #{senderAccount})
 	</select>
 	<select id="selectBinList" resultMap="mailResult">
-    	select send_mail_no
-     		 , emp_name
+		select send_mail_no
+             , sender_account
+     		 , emp_name sdpp
      		 , mail_title
       		 , send_date
      		 , receiver_account
      		 , rvst
+             , sdst
 		 from(
 		select send_mail_no
+              , sender_account
 		      , emp_name
 		      , mail_title
 		      , send_date
 		      , receiver_account
               , rv.status rvst
+              , sd.status sdst
 		  from mail_send sd
 		  join employee using(emp_no)
-		  join mail_receive rv using (send_mail_no))
-		 where receiver_account = #{receiverAccount}
-      	   and rvst = 'T'
+		  join mail_receive rv using (send_mail_no)
+		 where tem_status = 'N')
+		 where (receiver_account = #{receiverAccount}
+            or sender_account = #{senderAccount})
+      	   and (rvst = 'T'
+            or sdst = 'T')
 		 order
 	   	    by send_mail_no desc
 	  </select>
@@ -183,13 +203,13 @@
 			   count(*)
 		  from mail_receive rv
           join mail_send sd using(send_mail_no)
-		 where rv.status in ('Y', 'T')
+		 where rv.status = 'Y'
            and rv.read = 'N'
-		   and rv.emp_no = #{empNo}
+		   and rv.receiver_account = #{receiverAccount}
 	  </select>
 	  <select id="selectUnreadList" resultMap="mailResult">
 	  	select send_mail_no
-     		 , emp_name
+     		 , emp_name sdpp
      		 , mail_title
       		 , send_date
      		 , receiver_account
@@ -205,14 +225,151 @@
               , read
 		  from mail_send sd
 		  join employee using(emp_no)
-		  join mail_receive rv using (send_mail_no))
+		  join mail_receive rv using (send_mail_no)
+		 where tem_status = 'N')
 		 where receiver_account = #{receiverAccount}
-      	   and rvst in ('Y', 'T')
+      	   and rvst = 'Y'
            and read = 'N'
 		 order
 	   	    by send_mail_no desc
 	  </select>
-		
+	  
+	  <select id="selectImpoListCount" resultType="_int">
+	    select
+			   count(*)
+		  from mail_receive rv
+          join mail_send sd using(send_mail_no)
+		 where rv.status in ('Y')
+           and rv.important = 'Y'
+		   and rv.emp_no = #{empNo}
+	  </select>
+	  <select id="selectImpoList" resultMap="mailResult">
+	  	select send_mail_no
+     		 , emp_name sdpp
+     		 , mail_title
+      		 , send_date
+     		 , receiver_account
+     		 , rvst
+             , important
+		 from(
+		select send_mail_no
+		      , emp_name
+		      , mail_title
+		      , send_date
+		      , receiver_account
+              , rv.status rvst
+              , important
+		  from mail_send sd
+		  join employee using(emp_no)
+		  join mail_receive rv using (send_mail_no)
+		 where tem_status = 'N')
+		 where receiver_account = #{receiveAccount}
+      	   and rvst = 'Y'
+           and important = 'Y'
+		 order
+	   	    by send_mail_no desc
+	  </select>
+	  
+	  <select id="selectSpamListCount" resultType="_int">
+		select
+			   count(*)
+		  from mail_receive
+		 where status = 'Y'
+           and spam = 'N'
+		   and receiver_account = #{receiverAccount}
+	  </select>
+	  <select id="selectSpamList" resultMap="mailResult">
+	  	select send_mail_no
+     		 , emp_name sdpp
+     		 , mail_title
+      		 , send_date
+     		 , receiver_account
+     		 , rvst
+             , spam
+		 from(
+		select send_mail_no
+		      , emp_name
+		      , mail_title
+		      , send_date
+		      , receiver_account
+              , rv.status rvst
+              , spam
+		  from mail_send sd
+		  join employee using(emp_no)
+		  join mail_receive rv using (send_mail_no)
+		 where tem_status = 'N')
+		 where receiver_account = #{receiverAccount}
+      	   and rvst = 'Y'
+           and spam = 'Y'
+		 order
+	   	    by send_mail_no desc
+	  </select>
+	  
+	  <select id="selectSendListCount" resultType="_int">
+	  	select
+			   count(*)
+		  from mail_receive rv
+          join mail_send sd using(send_mail_no)
+          join employee e on (sd.sender_account = e.email)
+		 where sd.sender_account = #{senderAccount}
+		   and sd.status = 'Y'
+		   and tem_status = 'N'
+	  </select>
+	  <select id="selectSendList" resultMap="mailResult">
+	  	  select 
+      		     emp_name rvpp
+      		   , mail_title
+      		   , send_date
+     		   , receiver_account
+      	       , send_mail_no
+      		   , msst
+  		   from(select
+                 	   mv.emp_no  rvpp
+                  	 , mail_title
+                  	 , send_date
+                 	 , receiver_account
+                 	 , send_mail_no
+                 	 , ms.status msst
+                  from mail_send ms
+              	  join mail_receive mv using(send_mail_no)
+              	 where ms.sender_account = #{senderAccount}
+                   and ms.status = 'Y'
+                   and tem_status = 'N')
+  	  left join employee on (email = receiver_account)
+	  </select>
+	  
+	  <select id="selectTemListCount" resultType="_int">
+	  	select
+			   count(*)
+		  from mail_receive rv
+          join mail_send sd using(send_mail_no)
+          join employee e on (sd.sender_account = e.email)
+		 where sd.sender_account = #{senderAccount}
+		   and sd.status = 'Y'
+           and sd.tem_status = 'Y'
+	  </select>
+	  <select id="selectTemList" resultMap="mailResult">
+	  	select
+			   emp_name rvpp
+			 , mail_title
+			 , send_date
+			 , receiver_account
+			 , send_mail_no
+			 , msst
+		from(select
+				     mv.emp_no rvpp
+				   , mail_title
+				   , send_date
+				   , receiver_account
+				   , send_mail_no
+				   , ms.status msst
+		  		from mail_send ms
+				join mail_receive mv using(send_mail_no)
+			   where ms.sender_account = #{senderAccount}
+				 and ms.status = 'Y'
+				 and tem_status = 'Y')
+		    left join employee on (email = receiver_account)
+	  </select>
 	
 	
 </mapper>

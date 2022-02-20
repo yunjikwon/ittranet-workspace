@@ -87,8 +87,8 @@
 
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="submit">삭제</button>
+            	<button class="w-btn w-btn-gra1" type="button"><a href="">복원</a></button>
+                <button class="w-btn w-btn-gra2" type="submit">완전삭제</button>
             
             	<!-- Modal -->
 				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -133,7 +133,7 @@
                     	</tr>
                     </thead>
                     <tbody>
-                    	<c:forEach var="m" items="${ rvlist }">
+                    	<c:forEach var="m" items="${ spamlist }">
 	                    	<tr>
 	                    		<input type="hidden" value=${ m.sendMailNo }>
                         		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>

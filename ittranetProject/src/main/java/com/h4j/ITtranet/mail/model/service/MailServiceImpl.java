@@ -44,11 +44,28 @@ public class MailServiceImpl implements MailService{
 		return result1 * result2 * result3;
 		
 	}
+	
+	// 12-1. 내게쓰기
+	@Override
+	public int toMeInsertMail(Mail m, ArrayList<Attachment> list) {
+		
+		int result1 = mDao.insertSendMail(sqlSession, m);
+		int result2 = mDao.insertReceiveMail(sqlSession, m);
+		
+		int result3 = mDao.insertMailAttachment(sqlSession, list);
+		
+		return result1 * result2 * result3;
+		
+	}
 
 	// 3. 메일 상세조회
 	@Override
-	public Mail selectMail(int sendMailNo) {
-		return mDao.selectMail(sqlSession, sendMailNo);
+	public Mail selectMail(int sendMailNo, ArrayList<Attachment> list) {
+		
+		Mail result1 = mDao.selectMail(sqlSession, sendMailNo);
+		ArrayList<Attachment> result2 = mDao.selectMailAttachment(sqlSession, list);
+		
+		return mDao.selectMail(sqlSession, sendMailNo, list);
 	}
 	
 	// 5. 삭제
@@ -77,6 +94,59 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectUnreadList(sqlSession, pi, email);
 	}
 
+	// 8-1. [중요메일함] 메일 리스트 *카운트* 조회
+	@Override
+	public int selectImpoListCount(String empNo) {
+		return mDao.selectImpoListCount(sqlSession, empNo);
+	}
+
+	// 8-2. [중요메일함] 리스트 페이지 (페이징바)
+	@Override
+	public ArrayList<Mail> selectImpoList(PageInfo pi, String email) {
+		return mDao.selectImpoList(sqlSession, pi, email);
+	}
+
+	// 9-1. [스팸메일함] 메일 리스트 *카운트* 조회
+	@Override
+	public int selectSpamListCount(String empNo) {
+		return mDao.selectSpamListCount(sqlSession, empNo);
+	}
+
+	// 9-2. [스팸메일함] 리스트 페이지 (페이징바)
+	@Override
+	public ArrayList<Mail> selectSpamList(PageInfo pi, String email) {
+		return mDao.selectSpamList(sqlSession, pi, email);
+	}
+
+	// 10-1. [보낸메일함] 메일 리스트 *카운트* 조회
+	@Override
+	public int selectSendListCount(String empNo) {
+		return mDao.selectSendListCount(sqlSession, empNo);
+	}
+
+	// 10-2. [보낸메일함] 메일 리스트 (페이징바)
+	@Override
+	public ArrayList<Mail> selectSendList(PageInfo pi, String email) {
+		return mDao.selectSendList(sqlSession, pi, email);
+	}
+	
+	// 11-1. [임시보관함] 메일 리스트 *카운트* 조회
+	@Override
+	public int selectTemListCount(String empNo) {
+		return mDao.selectTemListCount(sqlSession, empNo);
+	}
+
+	// 11-2. [임시보관함] 메일 리스트 (페이징바)
+	@Override
+	public ArrayList<Mail> selectTemList(PageInfo pi, String email) {
+		return mDao.selectTemList(sqlSession, pi, email);
+	}
+	
+
+
+	
+	
+	
 
 	
 	

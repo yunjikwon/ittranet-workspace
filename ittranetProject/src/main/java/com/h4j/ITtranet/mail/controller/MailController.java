@@ -80,6 +80,38 @@ public class MailController {
 			}
 		}
 		
+
+		int result = mService.insertMail(m, list);
+
+		return "redirect:alllist.ml";
+	}
+	
+	// 12-1. 내게쓰기 폼
+	@RequestMapping("enrollForm.mlme")
+	public String toMeEnrollForm() {
+		return "mail/mailTomeEnrollForm";
+	}
+	
+	// 12-2. 새로운 메일 데이터 추가 (+첨부파일)
+	@RequestMapping("tomeinsert.ml")
+	public String toMeInsertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
+		
+		
+		ArrayList<Attachment> list = new ArrayList<>();
+		
+		for(MultipartFile f : upfile) {
+			
+			if(!f.getOriginalFilename().equals("")) {
+				Attachment at = new Attachment();
+				
+				at.setOriginName(f.getOriginalFilename());
+				at.setChangeName(saveFile(f, session));
+				at.setFilePath("resources/uploadFiles/");
+				
+				list.add(at);
+			}
+		}
+
 		int result = mService.insertMail(m, list);
 
 		return "redirect:alllist.ml";
@@ -87,13 +119,19 @@ public class MailController {
 	
 	// 3. 상세조회 메일
 	@RequestMapping("detail.ml")
-	public ModelAndView selectMail(int mno, ModelAndView mv) {
-		
-		Mail m = mService.selectMail(mno);
-		mv.addObject("m", m).setViewName("mail/mailDetailView");
-		
+	public ModelAndView selectMail(int mno, Mail m, MultipartFile[] upfile, HttpSession session, ModelAndView mv) {
 
+		//Mail m = mService.selectMail(mno);
+		//mv.addObject("m", m).setViewName("mail/mailDetailView");
+		//return mv;
+		
+		ArrayList<Attachment> list = mService.selectMail(mno);
+		
+		mv.addObject("m", m);
+		mv.addObject("list", list);
+		
 		return mv;
+
 	}
 	
 	// 5. 메일 삭제
@@ -163,6 +201,82 @@ public class MailController {
 		model.addAttribute("unreadlist", unreadlist);
 		
 		return "mail/mailUnreadView";
+	}
+	
+	// 8. 중요메일 조회
+	@RequestMapping("impolist.ml")
+	public String selectImpoList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
+		
+		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
+		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		
+		int listCount = mService.selectImpoListCount(empNo);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Mail> impolist = mService.selectImpoList(pi, email);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("impolist", impolist);
+		
+		return "mail/mailImpoView";
+	}
+	
+	// 9. 스팸메일 조회
+	@RequestMapping("spamlist.ml")
+	public String selectSpamList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
+		
+		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
+		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		
+		int listCount = mService.selectSpamListCount(empNo);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Mail> spamlist = mService.selectSpamList(pi, email);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("spamlist", spamlist);
+		
+		return "mail/mailSpamView";
+	}
+	
+	// 10. 보낸메일함
+	@RequestMapping("sendlist.ml")
+	public String selectSendList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
+		
+		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
+		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		
+		int listCount = mService.selectSendListCount(empNo);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Mail> sendlist = mService.selectSendList(pi, email);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("sendlist", sendlist);
+		
+		return "mail/mailSendView";
+	}
+	
+	// 11 임시보관함
+	@RequestMapping("temlist.ml")
+	public String selectTemList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
+		
+		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
+		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		
+		int listCount = mService.selectTemListCount(empNo);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<Mail> temlist = mService.selectTemList(pi, email);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("temlist", temlist);
+		
+		return "mail/mailTemView";
 	}
 
 }

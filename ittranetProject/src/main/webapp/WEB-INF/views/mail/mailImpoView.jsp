@@ -122,7 +122,7 @@
 
 			<!-- 메일 조회 리스트 -->
             <div class="table table-hover" align="center">
-                <table id="mailalllist" style="background-color:white">
+                <table id="impolist" style="background-color:white">
                 	<thead>
                     	<tr>
                         	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
@@ -133,7 +133,7 @@
                     	</tr>
                     </thead>
                     <tbody>
-                    	<c:forEach var="m" items="${ rvlist }">
+                    	<c:forEach var="m" items="${ impolist }">
 	                    	<tr>
 	                    		<input type="hidden" value=${ m.sendMailNo }>
                         		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
@@ -150,7 +150,7 @@
 			
                 <script>
             		$(function(){
-            			$("#mailalllist>tbody>tr").click(function(){
+            			$("#impolist>tbody>tr").click(function(){
             				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
             				console.log(mno);
             			});
@@ -178,12 +178,12 @@
                    			<li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage-1 }">&lt;</a></li>
+                    		<li class="page-item"><a class="page-link" href="impolist.ml?cpage=${ pi.currentPage-1 }">&lt;</a></li>
                     	</c:otherwise>
                     </c:choose>
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                    	<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ p }">${ p }</a></li>
+                    	<li class="page-item"><a class="page-link" href="impolist.ml?cpage=${ p }">${ p }</a></li>
                     </c:forEach>
                     
                     <c:choose>
@@ -191,7 +191,7 @@
                     		<li class="page-item disabled"><a class="page-link" href="#">&gt;</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage+1 }">&gt;</a></li>
+                    		<li class="page-item"><a class="page-link" href="impolist.ml?cpage=${ pi.currentPage+1 }">&gt;</a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>

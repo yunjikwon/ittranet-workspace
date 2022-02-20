@@ -112,16 +112,16 @@
 		                  <a href="alllist.ml"><i class="fa-solid fa-inbox"></i>받은메일함</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#"><i class="fa-solid fa-paper-plane"></i>보낸메일함</a>
+		                  <a href="sendlist.ml"><i class="fa-solid fa-paper-plane"></i>보낸메일함</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#"><i class="fa-solid fa-star"></i>중요메일함</a>
+		                  <a href="impolist.ml"><i class="fa-solid fa-star"></i>중요메일함</a>
 		               </li>
                        <li class="menu1">
-                          <a href="#"><i class="fa-solid fa-clock"></i>임시보관함</a>
+                          <a href="temlist.ml"><i class="fa-solid fa-clock"></i>임시보관함</a>
                        </li>
                        <li class="menu1">
-                          <a href="#"><i class="fa-solid fa-ban"></i>스팸메일함</a>
+                          <a href="spamlist.ml"><i class="fa-solid fa-ban"></i>스팸메일함</a>
                         </li>
                         <li class="menu1">
                           <a href="binlist.ml"><i class="fa-solid fa-trash-can"></i>휴지통</a>
