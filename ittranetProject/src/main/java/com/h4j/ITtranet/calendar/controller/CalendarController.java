@@ -19,7 +19,7 @@ public class CalendarController {
 	@Autowired
 	private CalendarService cService;
 	
-	// 사용자
+	// ================ 사용자 ================
 	@RequestMapping("viewUserCal.ca")
 	public String userCalendar() {
 		return "calendar/calendar"; //userCalendar로 수정하기
@@ -33,18 +33,33 @@ public class CalendarController {
 		return new Gson().toJson(calendarList);
 	}
 	
-	// 관리자
+	/**
+	 * 사용자 일정 삽입
+	 * @param c
+	 * @return String 결과값
+	 */
+	@ResponseBody
+	@RequestMapping("insertUserCal.ca")
+	public String ajaxInsertCalendar(Calendar c) {
+		System.out.println(c);
+		int result = cService.ajaxInsertCalendar(c);
+		return result>0 ? "success" : "fail";
+	}
+	
+	// ================ 관리자 ================
 	@RequestMapping("viewAdminCal.ca")
 	public String adminCalendar() {
 		return "calendar/adminCalendar";
 	}
 	
-	/*
-	@RequestMapping("viewCalendar.ca")
-	public String adminCalendar() {
-		return "calendar/calendar";
+	@ResponseBody
+	@RequestMapping(value="adminCalList.ca", produces="application/json; charset=utf-8")
+	public String adminSelectCalendar(String calSelector) {
+		ArrayList<Calendar> calendarList = cService.adminSelectCalendar();
+		return new Gson().toJson(calendarList);
 	}
-	*/
+	
+
 	
 	
 	

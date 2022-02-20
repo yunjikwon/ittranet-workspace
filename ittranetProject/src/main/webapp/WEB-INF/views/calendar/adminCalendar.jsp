@@ -57,10 +57,17 @@
      .slideTogglebox {
      	width:100%;
      	height:300px;
-     	background-color:beige;
+     	font-weight:bold;
+     	background-color:mistyrose;
      	display:none;
      }
-     .dateInput {
+     #insertBox, #updateBox {
+     	height:350px;
+     }
+     #deleteBox {
+     	height:100px;
+     }
+     .calInput {
      	width:100%;
      }
      #inbtn, #upbtn, #delbtn {
@@ -74,13 +81,13 @@
     
       document.addEventListener('DOMContentLoaded', function() {
     	  
-    	  
+    	  // 일정 조회(관리자)
       	  $.ajax({
       		  type:"get",
       		  data:{
       			calSelector:'${loginUser.empNo}'
     		  },
-      		  url:"calList.ca",
+      		  url:"adminCalList.ca",
       		  dataType:"json",
       		  success:function(calendarList){
       			  /*
@@ -101,7 +108,7 @@
       				  )
       			  }
       			  
-      			  console.log(eventArr);
+      			  // console.log(eventArr);
       			  
       			var calendarEl = document.getElementById('calendar');
       	        var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -189,42 +196,47 @@
 		                    <a href="#">일정</a>
 		                </li>
 		                <div id="border">
-				               <li class="menu1">
-				                  <a href="#" onclick="insertCal();">일정 등록</a>
-				                  <div class="slideTogglebox" id="insertBox">
-				                  	시작일
-				                  	<input type="datetime-local" name="planStart" class="dateInput"><br><br>
-				                  	종료일
-				                  	<input type="datetime-local" name="planEnd" class="dateInput"><br><br>
-				                  	일정 내용
-				                  	<input type="text">
-				                  	<button class="btn btn-info" id="inbtn" disabled>등록</button>
-				                  </div>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#" onclick="updateCal();">일정 수정</a>
-				                  <div class="slideTogglebox" id="updateBox">
-				                  	시작일
-				                  	<input type="datetime-local" name="planStart" class="dateInput"><br><br>
-				                  	종료일
-				                  	<input type="datetime-local" name="planEnd" class="dateInput"><br><br>
-				                  	<button class="btn btn-info calbtn" id="upbtn" disabled>수정</button>
-				                  </div>
-				               </li>
-				               <li class="menu1" onclick="deleteCal();">
-				                  <a href="#">일정 삭제</a>
-				                  <div class="slideTogglebox" id="deleteBox">
-				                  	<button class="btn btn-info" id="delbtn" disabled>삭제</button>
-				                  </div>
-				               </li>
+			               <li class="menu1">
+			                  <a href="#" onclick="insertCal();">일정 등록</a>
+			                  <div class="slideTogglebox" id="insertBox">
+			                  	시작일
+			                  	<input type="datetime-local" name="planStart" class="calInput"><br><br>
+			                  	종료일
+			                  	<input type="datetime-local" name="planEnd" class="calInput"><br><br>
+			                  	<input type="checkbox">AllDay(하루종일)<br><br>
+			                  	일정 내용
+			                  	<input type="text" class="calInput"><br><br>
+			                  	<button class="btn btn-light" id="inbtn">등록</button>
+			                  </div>
+			               </li>
+			               <li class="menu1">
+			                  <a href="#" onclick="updateCal();">일정 수정</a>
+			                  <div class="slideTogglebox" id="updateBox">
+			                  	시작일
+			                  	<input type="datetime-local" name="planStart" class="calInput"><br><br>
+			                  	종료일
+			                  	<input type="checkbox">AllDay(하루종일)<br><br>
+			                  	<input type="datetime-local" name="planEnd" class="calInput"><br><br>
+			                  	일정 내용
+			                  	<input type="text" class="calInput"><br><br>
+			                  	<button class="btn btn-light" id="upbtn">수정</button>
+			                  </div>
+			               </li>
+			               <li class="menu1" onclick="deleteCal();">
+			                  <a href="#">일정 삭제</a>
+			                  <div class="slideTogglebox" id="deleteBox">
+			                  	<br>
+			                  	<button class="btn btn-light" id="delbtn">삭제</button>
+			                  </div>
+			               </li>
 		            	</div>
 		            </ul>
 	         	</div>
 									
 				<div class="mainOuter" style="background:white">
-						<div id='calendar-container'>
-	        				<div id='calendar'></div>
-	    				</div>
+					<div id='calendar-container'>
+        				<div id='calendar'></div>
+    				</div>
 				</div><%-- mainOuter --%>
 					
 			</div><%-- relative --%>
