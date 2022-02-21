@@ -199,7 +199,8 @@
 	                   	  <img class="userProfile" src="${ n.profile }"  />
 	                   </c:otherwise>
                    </c:choose>
-
+                   
+				<!-- 게시물 작성 -->
                 <div class="projectmem">
                     <b>${ n.prTitle } &emsp; > &emsp;${ n.empName } &emsp;&emsp;&emsp;</b>
                     <h style="font-size: 12px; color: dimgray;">${ n.nfDate } &emsp; 13:01</h>
@@ -207,6 +208,7 @@
                 <div class="feedcontent">
                     <p>${ n.nfContent }</p>
                 </div>
+                
                 <!--댓글-->
                 <div class="reply">
                     <input class="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
@@ -241,6 +243,8 @@
         	  document.body.appendChild(f);
         	  f.submit();
         }
+        
+ 
 
       </script>
 </body>

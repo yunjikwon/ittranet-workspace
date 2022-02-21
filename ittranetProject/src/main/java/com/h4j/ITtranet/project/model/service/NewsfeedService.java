@@ -13,4 +13,9 @@ public interface NewsfeedService {
 	// 프로젝트 뉴스피드 조회
 	ArrayList<Newsfeed> prNewsfeed(String prNo);
 	
+	// 프로젝트 뉴스피드 게시글 작성
+	int insertFeed(Newsfeed n);
+	
+	// 프로젝트 뉴스피드 게시글 삭제
+	int deleteFeed(int nfNo);
 }

@@ -36,4 +36,16 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 		return nDao.prNewsfeed(sqlSession, prNo);
 	}
 	
+	// 뉴스피드 게시글 작성 
+	@Override
+	public int insertFeed(Newsfeed n) {
+		return nDao.insertFeed(sqlSession, n);
+	}
+	
+	// 뉴스피드 게시글 삭제
+	@Override
+	public int deleteFeed(int nfNo) {
+		return nDao.deleteFeed(sqlSession, nfNo);
+	}
+	
 }
