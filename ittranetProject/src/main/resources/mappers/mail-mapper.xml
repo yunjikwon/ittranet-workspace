@@ -45,6 +45,7 @@
       		 , send_date
      		 , receiver_account
      		 , rvst
+     		 , receive_mail_no
 		 from(
 		select send_mail_no
 		      , emp_name sdpp
@@ -52,6 +53,7 @@
 		      , send_date
 		      , receiver_account
               , rv.status rvst
+              , receive_mail_no 
 		  from mail_send sd
 		  join employee using(emp_no)
 		  join mail_receive rv using (send_mail_no)
@@ -71,6 +73,7 @@
       		 , send_date
       		 , receiver_account
       		 , e2.emp_name rvpp
+      		 , receiveMailNo
   		  from (
   		  select
                  send_mail_no
@@ -80,6 +83,7 @@
                , mail_content
                , send_date
                , receiver_account
+               , receive_mail_no receiveMailNo
             from mail_send ms
             join employee e1 on (ms.emp_no = e1.emp_no)
             join mail_receive using(send_mail_no)) 
@@ -87,11 +91,11 @@
           where send_mail_no = #{sendMailNo}
 	</select>
 	<select id="selectMailAttachment" resultMap="attachmentResult">
-	select
-origin_name
-, change_name
-from attachment
-where ref_code = 'M'
+		select
+			   origin_name
+			 , change_name
+		  from attachment
+		 where ref_code = 'M'
 	</select>
 	
 	
@@ -370,6 +374,12 @@ where ref_code = 'M'
 				 and tem_status = 'Y')
 		    left join employee on (email = receiver_account)
 	  </select>
+	  <update id="deleteMail">
+	  update
+mail_receive
+set status= 'T'
+where receive_mail_no = #{receiveNo}
+	  </update>
 	
 	
 </mapper>

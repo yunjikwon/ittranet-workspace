@@ -89,7 +89,7 @@
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
             	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="button" data-toggle="modal" data-target="#myModal">삭제</button>
+                <button class="w-btn w-btn-gra2" type="button" onclick="deletemail();">삭제</button>
             
             	<!-- Modal -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -116,9 +116,10 @@
 				
 			</div>
 			
-			<script>
-				$(document).on("click", "delete.ml")
-			</script>
+
+			
+			
+			
 			
             <form id="postForm" action="alllist.ml" method="post">
 
@@ -130,7 +131,7 @@
                 <table id="mailalllist" style="background-color:white">
                 	<thead>
                     	<tr>
-                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
+                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
                         	<th style="width:50px;">☆</th>
                         	<th style="width:150px;">보낸사람</th>
                         	<th style="width:500px;">제목</th>
@@ -139,43 +140,92 @@
                     </thead>
                     <tbody>
                     	<c:forEach var="m" items="${ rvlist }">
-	                    	<tr>
-	                    		<input type="hidden" value=${ m.sendMailNo }>
-                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
-                        		<td>★</td>
-                        		<td>${ m.empNameSd }</td>
-                        		<td>${ m.mailTitle }</td>
-                        		<td>${ m.sendDate }</td>
+                    	
+                    			<tr>
+                    				<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
+                    				
+                    				<td><input type="checkbox" name="checked" id="Check" value="${ m.receiveMailNo }"></td>
+                    				<td></td>
+                    				<td>${ m.empNameSd }</td>
+                        			<td>${ m.mailTitle }</td>
+                        			<td>${ m.sendDate }</td>
                     		</tr>
+   
                     	</c:forEach>
                     </tbody>
                 </table>
                 
 			</form>
 			
+				<!-- 상세페이지 조회 -->
                 <script>
             		$(function(){
             			$("#mailalllist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
             				console.log(mno);
-            			});
+            			})
             		})
             	</script>
-            	<script>	
+
+            	
+            	<!-- 체크박스 전체체크/체크해제 -->
+            	<script>
+            		function checkAll(check){
+            			if($("#allCheck").prop("checked")) { 
+        					$("input[name=checked]").prop("checked", true);
+        				}else {
+        					$("input[name=checked]").prop("checked", false);
+        				}
+            		}
+            		/*
             		$(document).ready(function() {
             			$("#allCheck").click(function() {
             				if($("#allCheck").prop("checked")) { 
-            				$("input[name=checked]").prop("checked", true);
-            			}else {
-            				$("input[name=checked]").prop("checked", false);
-            			}
-            			});
-            		})
+            					$("input[name=checked]").prop("checked", true);
+            				}else {
+            					$("input[name=checked]").prop("checked", false);
+            				}
+            			})
+            		})*/
 				</script>
+				
+				
+			<!-- 체크박스 : 삭제 -->
+
+			<script>	
+            	function deletemail() {
+            		var rcArr = [];
+            		$("input[name='checked']:checked").each(function(){
+            			rcArr.push($(this).val());
+            		 })
+            		 console.log(rcArr);
+            		 
+            		 $.ajax({
+            			 url:"delete.ml",
+            			 type:"post",
+            			 data:{receiveMailNo:rcArr},
+            			 success:function(result){
+            				 if(result == 'sucsess'){
+            				 	console.log("게시글 삭제 성공!");
+            				 }else{
+            					 console.log("게시글 삭제실패");
+            				 }
+            			 },error:function(){
+            				 console.log("ajax게시글 삭제 통신 실패!");
+            			 }
+            			 
+            			 
+            		 })
+            	}
+
+            	
+            	</script>
+				
 				
 			<!-- 내용닫는곳 -->
             </div>
 
+			<!-- 페이징바 -->
           	<div id="pagingArea">
     			<ul class="pagination justify-content-center">
 	        		<c:choose>

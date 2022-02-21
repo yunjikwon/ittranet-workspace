@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.mail.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
@@ -19,9 +20,11 @@ public interface MailService {
 	int toMeInsertMail(Mail m, ArrayList<Attachment> list);
 	
 	// 3. 메일 상세조회
-	Mail selectMail(int sendMailNo, ArrayList<Attachment> list);
+	Mail selectMail(int sendMailNo);
 	
 	// 5. 메일 삭제
+	int deleteMail(List<Integer> receiveMailNo);
+	
 	
 	// 6. 휴지통
 	int selectBinListCount(String empNo);

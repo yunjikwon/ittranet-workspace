@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.mail.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +61,12 @@ public class MailServiceImpl implements MailService{
 
 	// 3. 메일 상세조회
 	@Override
-	public Mail selectMail(int sendMailNo, ArrayList<Attachment> list) {
+	public Mail selectMail(int sendMailNo) {
 		
-		Mail result1 = mDao.selectMail(sqlSession, sendMailNo);
-		ArrayList<Attachment> result2 = mDao.selectMailAttachment(sqlSession, list);
+		//Mail result1 = mDao.selectMail(sqlSession, sendMailNo);
+		//ArrayList<Attachment> result2 = mDao.selectMailAttachment(sqlSession);
 		
-		return mDao.selectMail(sqlSession, sendMailNo, list);
+		return mDao.selectMail(sqlSession, sendMailNo);
 	}
 	
 	// 5. 삭제
@@ -140,6 +141,12 @@ public class MailServiceImpl implements MailService{
 	@Override
 	public ArrayList<Mail> selectTemList(PageInfo pi, String email) {
 		return mDao.selectTemList(sqlSession, pi, email);
+	}
+
+	// 삭제
+	@Override
+	public int deleteMail(List<Integer> receiveMailNo) {
+		return mDao.deleteMail(sqlSession, receiveMailNo);
 	}
 	
 

@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -119,24 +120,24 @@ public class MailController {
 	
 	// 3. 상세조회 메일
 	@RequestMapping("detail.ml")
-	public ModelAndView selectMail(int mno, Mail m, MultipartFile[] upfile, HttpSession session, ModelAndView mv) {
+	public ModelAndView selectMail(int mno, ModelAndView mv) {
 
-		//Mail m = mService.selectMail(mno);
-		//mv.addObject("m", m).setViewName("mail/mailDetailView");
-		//return mv;
-		
-		ArrayList<Attachment> list = mService.selectMail(mno);
-		
-		mv.addObject("m", m);
-		mv.addObject("list", list);
-		
+		Mail m = mService.selectMail(mno);
+		mv.addObject("m", m).setViewName("mail/mailDetailView");
 		return mv;
+
 
 	}
 	
 	// 5. 메일 삭제
-	//@RequestMapping("delete.ml")
-
+	@ResponseBody
+	@RequestMapping(value="delete.ml", produces="application/text; charset=UTF-8")
+	public String deletemail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
+		
+		int result = mService.deleteMail(receiveMailNo);
+		
+		return result>0? "success" : "fail";
+	}
 	
 	// 넘어온 첨부파일 서버의 폴더에 저장시킴
 	public String saveFile(MultipartFile upfile, HttpSession session) {

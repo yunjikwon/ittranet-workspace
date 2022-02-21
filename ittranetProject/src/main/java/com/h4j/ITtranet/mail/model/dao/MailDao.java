@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.mail.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -69,11 +70,18 @@ public class MailDao {
 	}
 
 	// 3. 메일 상세조회
-	public Mail selectMail(SqlSessionTemplate sqlSession, int sendMailNo, ArrayList<Attachment> list) {
-		return sqlSession.selectOne("mailMapper.selectMail", sendMailNo, );
+	public Mail selectMail(SqlSessionTemplate sqlSession, int sendMailNo) {
+		return sqlSession.selectOne("mailMapper.selectMail", sendMailNo);
 	}
 	
 	// 5. 삭제
+	public int deleteMail(SqlSessionTemplate sqlSession, List<Integer> receiveMailNo) {
+		int result = 0;
+		for(int i=0; i<receiveMailNo.size(); i++) {
+			result = sqlSession.update("mailMapper.deleteMail",receiveMailNo.get(i));
+		}
+		return result;
+	}
 	
 	// 6-1. [휴지통] 메일 리스트 카운트 조회
 	public int selectBinListCount(SqlSessionTemplate sqlSession, String empNo) {

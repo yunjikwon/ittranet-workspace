@@ -79,28 +79,18 @@
 		
 			<br>
 
-	        <div id="buttonbar">
 			<!-- 버튼바 (목록, 삭제, 스팸, 답장) -->
-			<c:choose>
-				<c:when test="${temStatus == 'N' && statusRv == 'Y'}">
-					
-	            <button type="button" class="btn btn-secondary"><a id="mailalllist" href="alllist.ml">목록</a></button>
-	       
-	        </c:when>
-	        <c:when test="${temStatus == 'N' && statusSd == 'T' && statusRv == 'T'}">
-
-	            <button type="button" class="btn btn-secondary"><a id="mailalllist" href="binlist.ml">목록</a></button>
-
-	        </c:when>
-	        </c:choose>
+	        <div id="buttonbar">
 	        	<button type="button" id="delete" class="btn btn-danger" onclick="deleteMail">삭제</button>
 	            <button type="button" id="spam" class="btn btn-warning" onclick="spamMail">스팸</button>
 	            <button type="button" id="answer" class="btn btn-secondary" onclick="answerMail">답장</button>
-	         </div>
+	         	<button type="button" id="backpage" class="btn btn-secondary" onclick="history.back()">뒤로</button>
+	        </div>
 			<!-- 메일 상세내용 -->
 	        <div class="mailcontent">
 	        
 	        	<input type="hidden" value="${ m.sendMailNo }">
+	        	<input type="hidden" value="${ m.receiveMailNo }">
 	        	
 	            <div>${ m.mailTitle }</div>
 	            <div>${ m.sendDate }</div>
