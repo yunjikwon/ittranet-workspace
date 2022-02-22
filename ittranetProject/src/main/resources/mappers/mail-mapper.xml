@@ -46,6 +46,7 @@
      		 , receiver_account
      		 , rvst
      		 , receive_mail_no
+     		 , important
 		 from(
 		select send_mail_no
 		      , emp_name sdpp
@@ -53,7 +54,8 @@
 		      , send_date
 		      , receiver_account
               , rv.status rvst
-              , receive_mail_no 
+              , receive_mail_no
+              , important
 		  from mail_send sd
 		  join employee using(emp_no)
 		  join mail_receive rv using (send_mail_no)
@@ -219,6 +221,7 @@
      		 , receiver_account
      		 , rvst
              , read
+             , important
 		 from(
 		select send_mail_no
 		      , emp_name
@@ -227,6 +230,7 @@
 		      , receiver_account
               , rv.status rvst
               , read
+              , important
 		  from mail_send sd
 		  join employee using(emp_no)
 		  join mail_receive rv using (send_mail_no)

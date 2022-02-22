@@ -37,6 +37,44 @@
           text-align:center;
     }
     
+    /* 중요메일 : 별표 체크*/
+    label.immail:before{
+    	content:"\f005";
+    	font-family:"Font Awesome 5 free";
+    	vertical-align:middle;
+    }
+    label.moreimmail:checked + label.immail:before {
+    	content:"\f005\f005";
+    	font-family:"Font Awesome 5 free";
+    	color:purple;
+    	text-align:center;
+    }
+    input#oneStar{
+    	display:none;
+    }
+    
+    
+    
+    /* 중요메일 : *전체* 별표 체크 */
+    label.imallmail:before {
+    	content:"\f005";
+    	font-family:"Font Awesome 5 free";
+    	vertical-align:middle;
+    }
+    label.moreimallmail:checked + label.immail:before {
+    	content:"\f005\f005";
+    	font-family:"Font Awesome 5 free";
+    	color:purple;
+    	text-align:center;
+    }
+    input#allStar {
+    	display:none;
+    }
+    
+    
+    
+    
+    
     /* 버튼 그라데이션 존예 */
     .w-btn {
     	position: relative;
@@ -59,13 +97,15 @@
 		color: white;
 	}
 	#myModal{
-		text-align":"
+		text-align:"";
 	}
 
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+
 </head>
 <body>
 	<!-- 공용 -->
@@ -90,8 +130,10 @@
             <div id="buttonbar">
             	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
                 <button class="w-btn w-btn-gra2" type="button" onclick="deletemail();">삭제</button>
-            
+            </div>
+            	
             	<!-- Modal -->
+            	<!-- 
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   					<div class="modal-dialog" role="document">
     				<div class="modal-content">
@@ -111,10 +153,11 @@
     			
     				</div>
   					</div>
-				</div>
+				</div> -->
 				
 				
-			</div>
+				
+			
 			
 
 			
@@ -132,7 +175,13 @@
                 	<thead>
                     	<tr>
                         	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
-                        	<th style="width:50px;">☆</th>
+                        	<th style="width:50px;">
+                        	
+                        	<input type="checkbox" name="checkedAllStar" id="allStar" onclick="checkAllStar(this);">
+                        	<label for="allStar" class="imallmail"></label>
+                        	<label for="allStar" class="moreimallmail"></label>
+                        	
+                        	</th>
                         	<th style="width:150px;">보낸사람</th>
                         	<th style="width:500px;">제목</th>
                         	<th style="width:200px;">날짜</th>
@@ -145,7 +194,13 @@
                     				<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
                     				
                     				<td><input type="checkbox" name="checked" id="Check" value="${ m.receiveMailNo }"></td>
-                    				<td></td>
+                    				<td>
+
+                    				<input type="checkedbox" name="checkedStar" id="oneStar" value="${ m.receiveMailNo }">
+                        			<label for="oneStar" class="immail"></label>
+                        			<label for="oneStar" class="moreimmail"></label>
+
+                    				</td>
                     				<td>${ m.empNameSd }</td>
                         			<td>${ m.mailTitle }</td>
                         			<td>${ m.sendDate }</td>
@@ -167,6 +222,7 @@
             		})
             	</script>
 
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
             	
             	<!-- 체크박스 전체체크/체크해제 -->
             	<script>
@@ -177,21 +233,30 @@
         					$("input[name=checked]").prop("checked", false);
         				}
             		}
-            		/*
-            		$(document).ready(function() {
-            			$("#allCheck").click(function() {
-            				if($("#allCheck").prop("checked")) { 
-            					$("input[name=checked]").prop("checked", true);
-            				}else {
-            					$("input[name=checked]").prop("checked", false);
-            				}
-            			})
-            		})*/
+            		
+            		function checkAllStar(check) {
+   					 if($("#allStar").prop("checked")) {
+						 $("input[name=checkedAllStar]").prop("checked", true);
+					 }else {
+						 $("input[name=checkedAllStar]").prop("checked", false);
+					 }
+            		}
 				</script>
-				
-				
-			<!-- 체크박스 : 삭제 -->
 
+				
+				<!-- 체크박스 : 중요 -->
+				<!-- <script>
+				function checkstarmail() {
+					var starArr = [];
+					$("input[name=checkedStar]:checked").each(function(){
+						starArr.push($(this).val());
+					})
+					console.log(starArr);
+				}
+				</script>
+				 -->
+				
+			<!-- 체크박스 : 삭제 -->			
 			<script>	
             	function deletemail() {
             		var rcArr = [];
@@ -216,9 +281,7 @@
             			 
             			 
             		 })
-            	}
-
-            	
+            	}            	
             	</script>
 				
 				

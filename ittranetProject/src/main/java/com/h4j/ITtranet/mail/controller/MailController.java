@@ -139,6 +139,8 @@ public class MailController {
 		return result>0? "success" : "fail";
 	}
 	
+
+	
 	// 넘어온 첨부파일 서버의 폴더에 저장시킴
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 		String originName = upfile.getOriginalFilename();

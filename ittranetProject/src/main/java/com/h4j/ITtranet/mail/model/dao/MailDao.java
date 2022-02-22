@@ -111,7 +111,7 @@ public class MailDao {
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("mailMapper.selectUnreadList", email);
+		return (ArrayList)sqlSession.selectList("mailMapper.selectUnreadList", email, rowBounds);
 	}
 	
 	// 8-1. [중요메일함] 메일 리스트 카운트 조회
@@ -124,7 +124,7 @@ public class MailDao {
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("mailMapper.selectImpoList", email);
+		return (ArrayList)sqlSession.selectList("mailMapper.selectImpoList", email, rowBounds);
 	}
 	
 	// 9-1. [스팸메일함] 메일 리스트 카운트 조회
@@ -138,7 +138,7 @@ public class MailDao {
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("mailMapper.selectSpamList", email);
+		return (ArrayList)sqlSession.selectList("mailMapper.selectSpamList", email, rowBounds);
 	}
 	
 	// 10-1. [보낸메일함] 메일 리스트 카운트 조회
@@ -152,7 +152,7 @@ public class MailDao {
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("mailMapper.selectSendList", email);
+		return (ArrayList)sqlSession.selectList("mailMapper.selectSendList", email, rowBounds);
 	}
 	
 	// 11-1. [임시보관함] 메일 리스트 카운트 조회
@@ -166,7 +166,7 @@ public class MailDao {
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return (ArrayList)sqlSession.selectList("mailMapper.selectTemList", email);
+		return (ArrayList)sqlSession.selectList("mailMapper.selectTemList", email, rowBounds);
 		
 	}
 	

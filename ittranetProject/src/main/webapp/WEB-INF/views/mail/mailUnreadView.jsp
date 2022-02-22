@@ -86,31 +86,9 @@
 
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
+            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
                 <button class="w-btn w-btn-gra2" type="submit">삭제</button>
             
-            	<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  					<div class="modal-dialog" role="document">
-    				<div class="modal-content">
-    				
-      					<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							</button>
-      					</div>
-      			
-      				<div class="modal-body">
-						정말로 삭제하시겠습니까?
-      				</div>
-      			
-      				<div class="modal-footer">
-        				<button type="button" class="btn btn-danger">네</button>
-        				<button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
-      				</div>
-    			
-    				</div>
-  					</div>
-				</div>
 				
 			</div>
 			
@@ -124,7 +102,7 @@
                 <table id="unreadlist" style="background-color:white">
                 	<thead>
                     	<tr>
-                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
+                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
                         	<th style="width:50px;">☆</th>
                         	<th style="width:150px;">보낸사람</th>
                         	<th style="width:500px;">제목</th>
@@ -134,8 +112,8 @@
                     <tbody>
                     	<c:forEach var="m" items="${ unreadlist }">
 	                    	<tr>
-	                    		<input type="hidden" value=${ m.sendMailNo }>
-                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
+	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
+                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.receiveMailNo }"></td>
                         		<td>★</td>
                         		<td>${ m.empNameSd }</td>
                         		<td>${ m.mailTitle }</td>
@@ -147,25 +125,54 @@
                 
 			</form>
 			
+				<!-- 상세페이지 조회 -->
                 <script>
             		$(function(){
             			$("#unreadlist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
             				console.log(mno);
             			});
             		})
             	</script>
-            	<script>	
-            		$(document).ready(function() {
+            	
+            	<!-- 체크박스 전체체크/체크해제 -->
+            	<script>
             			$("#allCheck").click(function() {
             				if($("#allCheck").prop("checked")) { 
             				$("input[name=checked]").prop("checked", true);
             			}else {
             				$("input[name=checked]").prop("checked", false);
             			}
-            			});
-            		})
+            			})
 				</script>
+				
+				<!-- 체크박스 : 삭제 -->			
+				<script>	
+            	function deletemail() {
+            		var rcArr = [];
+            		$("input[name='checked']:checked").each(function(){
+            			rcArr.push($(this).val());
+            		 })
+            		 console.log(rcArr);
+            		 
+            		 $.ajax({
+            			 url:"delete.ml",
+            			 type:"post",
+            			 data:{receiveMailNo:rcArr},
+            			 success:function(result){
+            				 if(result == 'sucsess'){
+            				 	console.log("게시글 삭제 성공!");
+            				 }else{
+            					 console.log("게시글 삭제실패");
+            				 }
+            			 },error:function(){
+            				 console.log("ajax게시글 삭제 통신 실패!");
+            			 }
+            			 
+            			 
+            		 })
+            	}            	
+            	</script>
 				
 			<!-- 내용닫는곳 -->
             </div>

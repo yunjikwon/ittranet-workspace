@@ -135,7 +135,7 @@
                     <tbody>
                     	<c:forEach var="m" items="${ impolist }">
 	                    	<tr>
-	                    		<input type="hidden" value=${ m.sendMailNo }>
+	                    		<input class="sdNo" type="hidden" value=${ m.sendMailNo }>
                         		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
                         		<td>★</td>
                         		<td>${ m.empNameSd }</td>
