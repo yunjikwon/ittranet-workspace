@@ -139,7 +139,7 @@
 		                  <a href="#">프로젝트 만들기</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">내 업무</a>
+		                  <a href="todo.pr">내 업무</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="news.pr">뉴스피드</a>

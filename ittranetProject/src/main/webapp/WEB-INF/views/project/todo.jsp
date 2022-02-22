@@ -8,27 +8,23 @@
 <title>Insert title here</title>
 <style>
     .wrap{
-        border: 1px solid red;
-        width: 900px;
+       padding: 30px;
     }
+    
     .todostatus{
         border: 1px solid rgb(190, 190, 190);;
         border-radius: 5mm;
         padding: 15px;
-        background-color: rgba(209, 189, 220, 0.5);
+        background-color: rgb(209, 189, 219);
         width: 830px;
-        height: 140px;
+        height: 150px;
         margin: 20px;
     }
-    .percent{
-        display: inline-block;
-        border: 1px solid;
-        width: 150px;
-        height: 70px;
-        margin-left: 90px;
+    .todoTable{
+        margin: auto;
+        margin-bottom: 15px;
     }
     .statusitems{
-        border: 1px solid;
         width: 500px;
         height: 70px;
         float: right;
@@ -51,22 +47,67 @@
         margin-left: 45px;
         margin-top: 50px;
     }
+
+    .todoTabletr{
+        font-size: 15px;
+        border: none;
+    }
 </style>
 </head>
 <body>
-    <div class="wrap">  
+<div class="back">
+ <div class="innerBack">
+ 	<jsp:include page="../common/pageHeader.jsp" />
+ 	<jsp:include page="../common/userMenu.jsp" />
+ 	
+ 	<br clear="both">
+ 	<div style="position:relative">
+ 	<jsp:include page="../common/sidebar.jsp"  />
+ 		<div class="cont">
+          <ul id="ac">
+             <li class="division">
+               <a href="#">프로젝트</a>
+             </li>
+                <div id="border">
+		               <li class="menu1">
+		                  <a href="list.pr">내 프로젝트</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="#">프로젝트 만들기</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="todo.pr">내 업무</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="news.pr">뉴스피드</a>
+		               </li>
+            	</div>
+            </ul>
+         </div>
+ 
+
+    <div class="mainOuter"> 
+    <div class="wrap">    
         <h4 style="font-weight:bold;">내 업무</h4>
         
         <!--업무 현황-->
         <div class="todostatus">
             <h6 class="statusmenu" style="font-weight: bold;">업무 현황</h6>
-            <h1 class="percent" style="font-weight: bold;"><h style="font-size: 60px;">60 </h>%</h1>
-            <div class="statusitems" style="text-align: center;">
-                대기
-                진행중
-                완료
-                지연
-            </div>
+            <table class="todoTable" style="text-align: center;">
+            	<tr class="todoTabletr" style="background-color: transparent;">
+            		<th rowspan="2" style="width: 250px; height: 70px; font-size: 60px;;" > ${(todoO/todoAll)*100}</h>%</h1> </th>
+            		<th style="width: 100px;">대기</th>
+            		<th style="width: 100px;">진행중</th>
+            		<th style="width: 100px;">완료</th>
+            		<th style="width: 100px;">지연</th>
+            	</tr>
+            	<tr class="todoTabletr" style="background-color: transparent;">
+            		<td>${ todoW }</td>
+            		<td>${ todoY }</td>
+            		<td>${ todoO }</td>
+            		<td> ${ todoL }</td>
+            	</tr>
+            </table>
         </div>
    
         <!-- 프로젝트별 현황 -->
@@ -86,35 +127,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>IT!tranet</th>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>57%</td>
-                    </tr>
-                    <tr>
-                        <th>new project</th>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>1</td>
-                        <td>50%</td>
-                    </tr>
-                    <tr>
-                        <th>moa bank</th>
-                        <td>1</td>
-                        <td>0</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>75%</td>
-                    </tr>
+                <!-- 업무 말고 프로젝트로 리스트를 가져와야될듯..? 셀렉문 다시 만들기 ! -->
+              		<c:forEach var="t" items="${ list }">
+                       <tr>
+                        <th>${ t.prTitle }</th>
+                        <td> 대기중인 업무 수 </td>
+                        <td> 진행중인 업무 수</td>
+                        <td> 완료된 업무 수 </td>
+                        <td> 지연된 업무 수 </td>
+                        <td> 업무 진행률 %</td>
+                   	   </tr>
+              		</c:forEach>
                 </tbody>
             </table>
         </div>
 
         <!-- 업무 현황 -->
+        <!-- 후 순위 페이징처리 -->
         <div class="todolist">
             <table>
                 <h6 style="font-weight: bold;">업무</h6>
@@ -130,36 +159,42 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>IT!tranet</td>
-                            <td>DB 수정</td>
-                            <td>대기</td>
-                            <td>22.01.15</td>
-                        </tr>
-                        <tr>
-                            <td>new project</td>
-                            <td>최종 보고서 제출, 발표</td>
-                            <td>진행중</td>
-                            <td>22.01.13</td>
-                        </tr>
-                        <tr>
-                            <td>IT!tranet</td>
-                            <td>프로젝트 멤버 초대</td>
-                            <td>대기</td>
-                            <td>22.01.10</td>
-                        </tr>
-                        <tr>
-                            <td>IT!tranet</td>
-                            <td>기획보고서 제출</td>
-                            <td>완료</td>
-                            <td>22.01.10</td>
-                        </tr>
+          				<c:forEach var="t" items="${ list }">
+	                        <tr>
+	                            <td>${ t.prTitle }</td>
+	                            <td>${ t.todoTitle }</td>
+	                            <td>
+	                            	<c:choose>
+	                            		<c:when test="${ t.status eq 'W'}">
+	                            			대기
+	                            		</c:when>
+	                            		<c:when test="${ t.status eq 'Y'}">
+	                            			진행중
+	                            		</c:when>	                            		
+	                            		<c:when test="${ t.status eq 'O'}">
+	                            			완료
+	                            		</c:when>
+	                            		<c:when test="${ t.status eq 'L'}">
+	                            			지연
+	                            		</c:when>	                            		
+	                            		<c:when test="${ t.status eq 'N'}">
+	                            			삭제
+	                            		</c:when>
+	                            	</c:choose>
+	                            	
+	                            </td>
+	                            <td>${ t.todoEnddate }</td>
+	                        </tr>
+	                    </c:forEach>
                     </tbody>
                 </table>
             </table>
 
         </div>
    
+    </div>
+    </div>
+    </div>
     </div>
 
 </body>
