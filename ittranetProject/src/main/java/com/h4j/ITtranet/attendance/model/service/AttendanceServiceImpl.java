@@ -101,6 +101,22 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return atDao.ajaxSelectAttendance(sqlSession, empNo);
 	}
 
+	@Override
+	public Vacation selectRestVacation(String empNo) {
+		return atDao.selectRestVacation(sqlSession, empNo);
+	}
+
+	@Override
+	public int insertVacation(Vacation vc) {
+		return atDao.insertVacation(sqlSession, vc);
+	}
+
+	@Override
+	public int updateVacationSum(String empNo) {
+		return atDao.updateVacationSum(sqlSession, empNo);
+	}
+
+	
 
 
 	

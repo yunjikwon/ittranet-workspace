@@ -136,8 +136,8 @@
                                 	<c:forEach var="vc" items="${ list }">
 	                                    <tr>
 	                                    <td class="vcno">${ vc.vcApplyNo }</td>
-	                                    <td>${ vc.empNo }</td>
-	                                    <td>소속</td>
+	                                    <td>${ vc.empName }</td>
+	                                    <td>${ vc.teamName }</td>
 	                                    <td>${ vc.vcType }</td>
 	                                    <td>${ vc.vcStartDate } ~ ${ vc.vcEndDate }</td>
 	                                    <td>

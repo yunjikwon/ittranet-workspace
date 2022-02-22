@@ -47,7 +47,13 @@ public interface AttendanceService {
 	// 사용자 출퇴근기록 조회
 	Attendance ajaxSelectAttendance(String empNo);
 	
+	// 사용자 잔여휴가 조회
+	Vacation selectRestVacation(String empNo);
 	
+	// 휴가 신청
+	int insertVacation(Vacation vc);
+	// 휴가 신청 시 총휴가시간 수정
+	int updateVacationSum(String empNo);
 	
 	
 	
