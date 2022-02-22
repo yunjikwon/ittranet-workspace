@@ -91,7 +91,7 @@
 		<!-- 내용 -->
         <div class="mainOuter" align="center">
         
-        	<form id="enrollForm" method="post" action="insert.ml" enctype="multipart/form-data">
+        	<form id="toMeEnrollForm" method="post" action="tomeinsert.ml" enctype="multipart/form-data">
         
         	<input type="hidden" name="empNameSd" value="${ loginUser.empNo }">
         
@@ -100,7 +100,6 @@
         	
         	<!-- 버튼바 (내게쓰기, 보내기, 취소) -->
 			<div id="buttonbar">
-            	<button type="button" class="btn btn-secondary"><a href="enrollForm.mlme">내게쓰기</a></button>
             	<button type="submit" class="btn btn-success">보내기</button>
             	<button type="reset" class="btn btn-light">취소</button>
         	</div>
@@ -112,10 +111,10 @@
 
 				<input type="hidden" id="sdaccount" name="senderAccount" value="${ loginUser.email }">
 			
-				<table id="mailinsert" align="center" style="font-family: 'Gowun Dodum', sans-serif;">
+				<table id="mailtomeinsert" align="center" style="font-family: 'Gowun Dodum', sans-serif;">
 					<tr>
 						<th>받는사람</th>
-						<td colspan="2"><input type="text" class="form-control" id="rvaccount" name="receiverAccount" required></td>
+						<td colspan="2"><input type="text" class="form-control" id="rvaccount" name="receiverAccount" value="${ loginUser.email }" disabled></td>
 					</tr>
 					<tr>
 						<th>제목</th>

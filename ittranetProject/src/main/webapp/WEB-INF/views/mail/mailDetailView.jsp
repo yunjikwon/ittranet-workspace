@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,16 +81,16 @@
 
 			<!-- 버튼바 (목록, 삭제, 스팸, 답장) -->
 	        <div id="buttonbar">
-	            <button type="button" class="btn btn-secondary"><a id="mailalllist" href="alllist.ml">목록</a></button>
-	            <button type="button" id="delete" class="btn btn-danger" onclick="deleteMail">삭제</button>
+	        	<button type="button" id="delete" class="btn btn-danger" onclick="deleteMail">삭제</button>
 	            <button type="button" id="spam" class="btn btn-warning" onclick="spamMail">스팸</button>
 	            <button type="button" id="answer" class="btn btn-secondary" onclick="answerMail">답장</button>
+	         	<button type="button" id="backpage" class="btn btn-secondary" onclick="history.back()">뒤로</button>
 	        </div>
-	        
 			<!-- 메일 상세내용 -->
 	        <div class="mailcontent">
 	        
 	        	<input type="hidden" value="${ m.sendMailNo }">
+	        	<input type="hidden" value="${ m.receiveMailNo }">
 	        	
 	            <div>${ m.mailTitle }</div>
 	            <div>${ m.sendDate }</div>
@@ -100,9 +101,34 @@
 	            <br>
 	            
 	            <hr>
-	            
+	            <br>
 	            <div>${ m.mailContent }</div>
+	            <br>
+	            
+	            <hr>
+	            
+	            <div>
+				<c:forEach var="at" items="${ list }">
+	            	<c:choose>
+	            		<c:when test="${ empty at.originName }">
+	            			첨부파일이 없습니다.
+	            		</c:when>
+	            		<c:otherwise>
+	            			<a href="${ at.changeName }" download="${at.originName}">${ at.originName }</a>	
+	            		</c:otherwise>
+	            	</c:choose>
+	            </c:forEach>
+	            </div>
 	        </div>
+	        
+	        <!-- 
+	        <script>
+	        function fileDownload(fileNameKey, fileName, filePath){
+	            
+	            location.href = "/board/fileDownload?fileNameKey="+fileNameKey+"&fileName="+fileName+"&filePath="+filePath;
+	        }
+	        </script>
+	         -->
 	        
 	        <br><br><br>
 	        
