@@ -9,7 +9,10 @@ public interface CalendarService {
 	// 일정 조회
 	ArrayList<Calendar> ajaxSelectCalendar(); 
 	
+	ArrayList<Calendar> adminSelectCalendar();
+	
 	// 일정 삽입
+	int ajaxInsertCalendar(Calendar c);
 	
 	// 일정 수정
 	

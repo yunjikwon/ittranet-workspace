@@ -24,6 +24,8 @@
 		<typeAlias type="com.h4j.ITtranet.attendance.model.vo.Attendance" alias="Attendance" />
 		<typeAlias type="com.h4j.ITtranet.notice.model.vo.Notice" alias="Notice" />
 		<typeAlias type="com.h4j.ITtranet.notice.model.vo.NoticeHeader" alias="NoticeHeader" />
+		<typeAlias type="com.h4j.ITtranet.company.model.vo.Company" alias="Company" />
+		<typeAlias type="com.h4j.ITtranet.message.model.vo.Message" alias="Message" />
 
 	</typeAliases>
 	
@@ -44,6 +46,8 @@
 		
 		<mapper resource="/mappers/attendance-mapper.xml" />
 		<mapper resource="/mappers/notice-mapper.xml" />
+		<mapper resource="/mappers/message-mapper.xml" />
+		<mapper resource="/mappers/company-mapper.xml" />
 	</mappers>
 
 </configuration>

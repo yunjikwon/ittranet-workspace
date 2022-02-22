@@ -113,7 +113,7 @@
                 </a>
             </li>
             <li class="menu">
-                <a href="">
+                <a href="list.ms">
                         <div class="circle" style="background: rgb(181, 211, 236)">
                             <i class="fas fa-edit fa-3x message_mn"></i> 
                         </div>
@@ -145,7 +145,7 @@
                 </a>
             </li>
             <li class="menu">
-                <a href="">
+                <a href="chartMain.co">
                         <div class="circle" style="background: rgb(205, 186, 241)">
                             <i class="far fa-user fa-3x company_mn"></i> 
                         </div>
