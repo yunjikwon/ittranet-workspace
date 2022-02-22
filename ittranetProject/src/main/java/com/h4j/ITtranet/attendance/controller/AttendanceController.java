@@ -204,7 +204,6 @@ public class AttendanceController {
 		
 		int result1 = atService.insertVacation(vc);
 		int result2 = atService.updateVacationSum(empNo);
-		System.out.println("업데이트 empNo: " + empNo);
 		
 		return result1>0 && result2>0 ? "success" : "fail"; // 삼항연산자
 	}

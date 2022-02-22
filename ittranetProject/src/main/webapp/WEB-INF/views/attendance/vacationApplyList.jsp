@@ -160,25 +160,8 @@
             
             <br clear="both">
             <div style="position:relative">
-                <jsp:include page="../common/sidebar.jsp" />
-                    <div class="cont">
-		            <ul id="ac">
-		                <li class="division">
-		                    <a href="#">근태관리</a>
-		                </li>
-		                <div id="border">
-				               <li class="menu1">
-				                  <a href="#">내 근무</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">근무현황</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">휴가 신청</a>
-				               </li>
-		            	</div>
-		            </ul>
-		         </div>                 
+                <jsp:include page="attendanceSidebar.jsp" />
+                                    
                 <div class="mainOuter">
 
                     <!--제목영역-->
