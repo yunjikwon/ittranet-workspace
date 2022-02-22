@@ -188,7 +188,7 @@
 			
 			<div id="cloneTest"></div>
             <div class="tablelayout">
-            	<form method="post" action="insert.line">
+            	
 		            <table class="boardList" align="center">
 		                <thead>
 		                  <tr>
@@ -204,12 +204,12 @@
 		
 		                </tbody>
 		            </table>
-	            </form>
+	            
 	        </div>
 
             <br><br>
-            <button id="savebtn" type="submit">저장하기</button>
-
+            <button data-dismiss="modal" id="savebtn" type="button" >저장하기</button>
+		
 
         </div>    
        </div>
@@ -243,10 +243,13 @@
 		    					for(let i in list){
 		    						str +="<tr class='rows'>"
 			    						   + "<td><input style='zoom:1.5;' type='checkbox' onclick='changeColor(this)' name='checkPerson'></td>"
-			    						   + "<td>"+ list[i].team + "</td>"
-			    						   + "<td>"+ list[i].job + "</td>"
-			    						   + "<td>"+ list[i].empId + "</td>"
-			    						   + "<td>"+ list[i].empName + "</td>"
+			    						   + "<td name='team'>"+ list[i].team + "</td>"
+			    						   + "<td name='job'>"+ list[i].job + "</td>"
+			    						   + "<td name='empId'>"+ list[i].empId + "</td>"
+			    						   + "<td name='empName'>"+ list[i].empName + "</td>"
+			    						   + "<input type='hidden' name='apempNo' value=" + list[i].empNo + ">"
+			    						   + "<input type='hidden' name='aplineNo' value=''>"
+			    						   + "<input type='hidden' name='aplineOrder' value=''>"			    						   
 		    						   + "</tr>";
 		    					}
 	   						$('#boardList > tbody').html(str);
@@ -258,6 +261,7 @@
 	    		})
     	}
     
+    
     	/*체크박스 클릭시 해당 테이블 td 배경색 변경*/
 		function changeColor(t){
     		td = t.parentNode;
@@ -266,13 +270,14 @@
     		tr.style.backgroundColor = (t.checked)? "rgb(233, 232, 232)" : "white";
     	}
     	
+    	
     	/*선택하여 밑으로 보내기*/
     	$(document).on("click", ".arrowbtn",function(){
     		
     		let checkValue = [];
     		let $downRow;
     		
-    		$("input[name=checkPerson]:checked").each(function(){
+    		$("input[name='checkPerson']:checked").each(function(){
 	    		//downRow = $("input[name=checkPerson]:checked").parent().parent().html(); //체크된행
 	    		downRow = $(this).parent().parent().html(); //체크된행
 	    		checkValue.push(downRow);
@@ -283,10 +288,45 @@
     		for(let i in checkValue){
     			trHtml += '<tr>'+ checkValue[i] +'</tr>';
     		}
-    		$("#boardListTwo").html(trHtml);
+    		$("#boardListTwo").html(trHtml);    		
     	})
     	
+    	
 
+	  /* 저장하기 버튼 클릭 */
+	  $("#savebtn").on('click',function(){
+		  
+		  let value = "";
+		  if($("#boardListTwo input[name=checkPerson]:checked").length==0){
+			  alert("결재자를 선택하여 주세요");
+			  return false;
+		  } else {
+			  $("#boardListTwo tr").each(function(i, tr){
+				  value += "[" + (i+1) + "]"
+				         + "<span>"+ $(tr).find("td[name=empName]").text() + " " + $(tr).find("td[name=job]").text() + "</span>"
+				         + "<input type='hidden' name='appList[" + i + "].empNo' value='" +  $(tr).find("input[name=empNo]").val() + "'>" //name='appList[0,1,...].empNo' value='empNo' 
+				         + "<input type='hidden' name='appList[" + i + "].aplineOrder' value='" +  (i+1) + "'><br>";
+			  })
+			  
+			  value = '<span id="appLineText">결재자 </span> <br>' + value;
+			  
+			  $("#appLine").html(value);
+		  }
+	  })
+	  
+	  
+
+
+
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
     	
     </script> 
        

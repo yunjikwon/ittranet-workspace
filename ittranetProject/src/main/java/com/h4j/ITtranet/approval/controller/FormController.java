@@ -20,38 +20,25 @@ public class FormController {
 	private ApprovalService aService;
 
 	// ----- 양식 ------
-	@RequestMapping("bussiness.fo")
-	public String bussinessPlanForm() {
-		// /WEB-INF/views/approval/form/bussinessPlan.jsp
-		return "approval/form/bussinessPlan";
+	@RequestMapping("form.fo")
+	public String formSelect(int formNo) {
+		String str = "";
+		switch(formNo) {
+			case 1: str = "bussinessPlan";
+					break;
+			case 2: str = "apology";
+					break;		
+			case 3: str = "overtime";
+					break;		
+			case 4: str = "expenditure";
+					break;
+			case 5: str = "budget";
+					break;		
+			case 6: str = "proceedings";
+					break;			
+		}
+		return "approval/form/" + str;
 	}
-	
-	@RequestMapping("apology.fo")
-	public String apologyForm() {
-		return "approval/form/apology";
-	}
-	
-	@RequestMapping("overtime.fo")
-	public String overtimeForm() {
-		return "approval/form/overtime";
-	}
-	
-	@RequestMapping("expenditure.fo")
-	public String expenditureForm() {
-		return "approval/form/expenditure";
-	}
-	
-	@RequestMapping("budget.fo")
-	public String budgetForm() {
-		return "approval/form/budget";
-	}
-	
-	@RequestMapping("proceedings.fo")
-	public String proceedingsForm() {
-		return "approval/form/proceedings";
-	}
-	
-	
 	
 	//새기안 모달창
 	@RequestMapping("newForm.fo")
@@ -64,20 +51,7 @@ public class FormController {
 	public String approvalLine() {
 		return "approval/form/line";
 	}
-	
-    /*결재선 insert*/
-    @RequestMapping("insert.line")
-	public String insertLine(Approval app, Model model){
-		/*
-	List<Map<String,Object>> dataList = new ArrayList<Map<String,Object>>(); //실제 데이터가 담긴 List
-	Map<String,Object> insertMap = new HashMap<String,Object>(); //MyBatis에 던질 Map
-	insertMap.put("list",dataList); //MyBatis의 foreach의 collection이름을 key로 List를 put
-		 */
-		int result = aService.insertLine(app);
-		
-		
-	}
-	
+	  	
 
 	
 	// 검색

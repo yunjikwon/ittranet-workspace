@@ -15,6 +15,7 @@
 	</resultMap>
 	
 	<resultMap id="appLineResultSet" type="AppLine">
+		<result column="emp_no" property="empNo" />
 		<result column="team_name" property="team" />
 		<result column="job_name" property="job" />
 		<result column="emp_id" property="empId" />
@@ -25,7 +26,7 @@
 	<!-- 결재선 검색 -->
 	<select id="selectSearchTeam" resultMap="appLineResultSet">
 		select
-		       team_name, job_name, emp_id, emp_name 
+		       emp_no, team_name, job_name, emp_id, emp_name 
 		  from employee
 		  join job using(job_code)
 		  join team using(team_code)
@@ -107,13 +108,51 @@
 		    by dr_date
 	</select>
 	
-	<!-- 결재선 insert -->
-	<insert id="insertLine">
+	<!-- draft insert -->
+	<insert id="insertDraft">
+		 insert
+		   into draft(dr_no, emp_no, dr_title, dr_status, dr_date, dr_division)
+		   values(seq_drno.nextval, #{empNo}, #{drTitle}, '결재대기', sysdate, #{drDivision})
+	</insert>
+	
+	<insert id="businessplan">
 		insert
-		  into approval
+		  into businessplan(dr_no, business)
+		values (seq_drno.currval, #{drBusiness})
+	</insert>
+	
+	<insert id="apology">
+		insert
+		  into apology(dr_no, apo_content)
+		values(seq_drno.currval, #{drContent})
+	</insert>
+	<insert id="overtime">
+		insert
+		  into overtime(dr_no, overtime, overtime_date)
+		values(seq_drno.currval, #{drOvertime}, #{drOverDate})
+	</insert>
+	<insert id="expenditure">
+		insert
+		  into expenditure(dr_no, ex_content, ex_sum)
+		values(seq_drno.currval, #{drContent}, #{drSum} )
+	</insert>
+	<insert id="budget">
+		insert
+		  into budget(dr_no, bu_reson, bu_money, bu_content)
+		values (seq_drno.currval, #{drReason}, #{drMoney}, #{drContent})
+	</insert>
+	<insert id="proceedings">
+		insert
+		  into proceedings(dr_no, pro_title, pro_date)
+		values (seq_drno.currval, #{drProTitle}, #{drProDate})
 	</insert>
 
-
+	<!-- 결재선 insert -->
+	<insert id="appline">
+		insert
+		  into approval_line(dr_no, apline_no, emp_no, apline_order, ap_division) 
+		values (seq_drno.currval, seq_lino.nextval, #{empNo}, #{aplineOrder}, #{drStatus})
+	</insert>
 
 
 

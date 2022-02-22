@@ -1,11 +1,9 @@
 package com.h4j.ITtranet.approval.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +21,8 @@ import com.h4j.ITtranet.common.template.Pagination;
 public class ApprovalController {
 	@Autowired
 	private ApprovalService aService;
-	
-	// ----- "기안" 게시판 ------
+
+	// ----- "기안" 게시판 select ------
 	@RequestMapping("draftWait.dr")
 	public ModelAndView draftWaitSelect(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv, HttpServletRequest request) throws Exception {
 		//category 추출 : @RequestParam
@@ -142,6 +140,21 @@ public class ApprovalController {
 	}
 	
 	
+	// ----- 기안 insert ------
+	@RequestMapping("insert.dr")
+	public String insertDraft(Approval app, int formNo, HttpSession session, Model model) {
+		
+		int result = aService.insertDraft(app, formNo);
+		
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "기안 작성 완료되었습니다.");
+			return "redirect:draftWait.dr";
+		}else { // 실패 => 에러페이지 포워딩
+			model.addAttribute("errorMsg", "게시글 등록 실패");
+			return "common/error";
+		}
+	}
 	
 	
 	
