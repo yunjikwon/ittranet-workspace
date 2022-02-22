@@ -20,8 +20,8 @@ public class CalendarServiceImpl implements CalendarService {
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public ArrayList<Calendar> ajaxSelectCalendar() {
-		return cDao.ajaxSelectCalendar(sqlSession);
+	public ArrayList<Calendar> ajaxSelectCalendar(String empNo) {
+		return cDao.ajaxSelectCalendar(sqlSession, empNo);
 	}
 
 	@Override
@@ -32,6 +32,21 @@ public class CalendarServiceImpl implements CalendarService {
 	@Override
 	public int ajaxInsertCalendar(Calendar c) {
 		return cDao.ajaxInsertCalendar(sqlSession, c);
+	}
+
+	@Override
+	public int ajaxDeleteCalendar(String calNo) {
+		return cDao.ajaxDeleteCalendar(sqlSession, calNo);
+	}
+
+	@Override
+	public int ajaxUpdateCalendar(Calendar c) {
+		return cDao.ajaxUpdateCalendar(sqlSession, c);
+	}
+
+	@Override
+	public int adminInsertCalendar(Calendar c) {
+		return cDao.adminInsertCalendar(sqlSession, c);
 	}
 
 }
