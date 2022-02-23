@@ -146,7 +146,7 @@
                                                 <a class="fileTag" name="reupfile"> ${ at.originName }
                                                     <button type="button" name="xmarkBtn">x</button> <br>
                                                     <input type="hidden" name="originName" value="${ at.originName }">
-                                                    <input type="hidden" name="filepath" value="${ at.changeName }"> 
+                                                    <input type="hidden" name="filepath" value="${ at.filePath }"> 
                                                     <input type="hidden" class="atNo" name="atNo" value="${ at.attachmentNo }">
                                                 </a>  
                                             </c:forEach>
