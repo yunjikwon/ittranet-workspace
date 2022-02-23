@@ -11,13 +11,13 @@
     .wrap{
        padding: 30px;
     }
-    .menuname{
+    .menunamepro{
         width: 300px;
         margin-left: 20px;
         margin-top: 20px;
         border: 1px solid red;
     }
-    .menuname2{
+    .menunamepro2{
         width: 300px;
         margin-left: 20px;
         margin-top: 20px;
@@ -32,6 +32,7 @@
        margin-left: 50px;
        margin-top: 30px;
        float: left;
+       
     }
     
     .logo{
@@ -104,7 +105,7 @@
         <div class="wrap">
         <h4 style="font-weight:bold;">내 프로젝트</h4>
           <div class="projectBox">
-		        <div class="menuname">
+		        <div class="menunamepro">
 		            <br>
 		            <h6 style="font-weight: bold;">&emsp;진행중 프로젝트</h6>
 		        </div>    
@@ -122,12 +123,9 @@
 				</c:forEach>
 		   </div>
 		   
-		   
-
-        </div>  
-        		   <div class="projectBox2">
+        <div class="projectBox2">
         <!-- 종료된 프로젝트 -->
-            <div class="menuname2">
+            <div class="menunamepro2">
                 <br>
                 <h6 style="font-weight: bold;">&emsp;종료된 프로젝트</h6>
             </div>
@@ -144,6 +142,7 @@
             </c:forEach>
           </div>   
         
+        </div>
         </div>
         </div>
         </div>  

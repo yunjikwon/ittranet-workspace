@@ -1,5 +1,16 @@
 package com.h4j.ITtranet.company.model.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString
+@AllArgsConstructor
 public class Company {
 	
 	private int empNo;
@@ -14,7 +25,11 @@ public class Company {
 	
 	private String phone;
 	private String email;
+	private String profile;
 	
 	private String status;
 
+	// 검색용 변수
+	private String type;
+	private String keyword;
 }

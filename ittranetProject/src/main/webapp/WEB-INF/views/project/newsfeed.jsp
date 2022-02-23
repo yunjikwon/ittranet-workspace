@@ -15,7 +15,6 @@
    #list{
        width: 1000px;
        height: 200px;
-       border: 1px solid;
    }
    .projectbox{
        border:1px solid rgb(190, 190, 190); 
@@ -139,7 +138,7 @@
 		                  <a href="#">프로젝트 만들기</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">내 업무</a>
+		                  <a href="todo.pr">내 업무</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="news.pr">뉴스피드</a>
@@ -155,12 +154,14 @@
         
         <!--프로젝트 리스트-->
         <div id="list">
+           <!--
             <div class="projectbox">
                 <div class="projectlogo">
                     <img class="logoimg" src="resources/images/projectlogo/list.png"  />
                 </div>
                 <p class="projectname" style="font-size: 13px; text-align: center;">전체 소식</p>   
             </div>
+             -->
             <div class="projectbox">
                 <div class="projectlogo">
                     <img class="logoimg" src="resources/images/projectlogo/bookmark.png"  />

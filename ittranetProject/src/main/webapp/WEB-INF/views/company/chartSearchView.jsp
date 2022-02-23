@@ -12,36 +12,28 @@
 		width: 900px;
 		box-sizing: border-box;
 		margin:auto;
-        font-size: 14px;
-        height: 650px;
+        font-size: 15px;
+        margin-bottom: 70px;
     }
-    .chartOuter ul, .chartOuter li{
-        text-decoration: none;
-        list-style: none;
-        padding:0;
-        margin-bottom: 20px;
-    }
-    .liBtn, .noneBtn{
-        font-size: 14px;
-		font-weight: 900;
-        border:none;
+    .search-area{
+        background-color: rgb(211, 208, 208);
+        width:800px;
+        height: 100px;
         border-radius: 1.05ex;
-        width: 100px;
+        padding-top: 30px;
+        padding-left: 10px;
     }
-    .noneBtn{height: 30px; background: rgb(148, 148, 148);}
-    .liBtn{height:40px; background: rgba(134, 131, 131, 0.308);}
-    #department-area>li{
-        float:left;
-        margin-left: 25px;
-        margin-right: 25px;
-        display:block;  
+    .search-area *{margin:10px;}
+    #result-area{
+        width:800px;
+        background-color: rgb(211, 208, 208);
+        border-radius: 1.05ex;
+        padding-top: 30px;
+        padding-left: 10px;
+        padding-bottom: 30px;
     }
-    .liBtn:hover{
-        opacity: 50%;
-        cursor: pointer;
-    }
+    
     /*button효과*/
-    #department-area>li>ul>li+a{display:block;}
 	.aTag, .aTag:hover{
 		text-decoration: none;
 		color: black;
@@ -54,33 +46,26 @@
         font-size: 14px;
 		font-weight: 900;
         border-radius: 1.05ex;
-		background: rgb(228, 227, 227);
+		background: rgba(162, 171, 255, 0.822);
         cursor: pointer;
-        width : 130px;
-		height : 50px;	
+        width : 80px;
+		height : 30px;	
     }
     .btnStyle:hover{opacity: 50%;}
-	#updateBtn, #btn-area>button{
-		width : 70px;
-		height : 30px;		
-	}
-    .formInput{
-        width: 90%;
-        height: 25px;
-    }
-    #addFileBtn, #removeFileBtn{
-    	width: 25px;
-    	height: 25px;
-        font-size: 14px;
+	label{
+        font-size: 20px;
         font-weight: 900;
-        border: none;
-        border-radius: 1.05ex;
-        background: rgba(195, 200, 247, 0.822);
+        margin: 20px;
+        padding: 0;
     }
+    .spanTag{font-weight:900;}
 	.company_mn{
 		color: #000000;
 	}
-	
+	#resultTable tbody{
+        border-top: 1px solid grey;
+        border-bottom: 1px solid grey;
+    }
 </style>
 </head>
 <body>
@@ -120,15 +105,218 @@
                         <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="">조직도 상세조회</a></h2>
                     </span>
                     
-                    <div class="chartOuter" align="center">
+                    <div class="chartOuter" >
                         
                         <br><br>
-                        
+                        <div id="searchTap" align="left">
+                            <input type="radio" name="radio" id="deptNameRadio" class="radio spanTag" checked>
+                            <label for="deptNameRadio">부서명</label>
+                            <input type="radio" name="radio" id="keywordRadio" class="radio spanTag">
+                            <label for="keywordRadio">키워드검색</label>
+                        </div>
+                        <!-- 부서별 전체검색-->
+                        <div id="deptName-area" class="search-area">
+                            <span class="spanTag">
+                                부서명
+                            </span>
+                            <select id="department" onchange="selectChange();">
+                                <c:forEach var="d" items="${dList}">
+                                    <option value="${d.deptCode}" class="deptName">${d.deptName}</option>
+                                </c:forEach>
+                            </select>
+                                <span class="spanTag">
+                                    팀명
+                                </span>
+                            <select name="team" id="team">
+	                                
+                            </select>
+                            <button type="button" class="btnStyle" id="deptSearchBtn">검색</button>
+                        </div>
+                        <script>
+                            $(function(){
+                                selectChange();
+                            })
+                            // 부서 설정 시 팀 자동 설정되는 함수
+                            function selectChange(){
+                                let dCode = $("#department option:selected").val();
+
+                                $.ajax({
+                                    url:"selectTeamCode.co",
+                                    data:{
+                                        deptCode:dCode
+                                    },success:function(list){
+                                        //console.log(list);
+                                        let value="";
+                                        for(let i in list){
+                                        	value += "<option value='"+ list[i].teamCode +"'>" 
+                                        			+ list[i].teamName + "</option>";
+                                        }
+                                        
+                                        $("#team").html(value);
+                                        
+                                    },error:function(){
+                                        console.log("팀명 조회용 ajax 통신 실패");
+                                    }
+                                })
+                            }
+
+                            // 검색 실행
+                            $("#deptSearchBtn").click(function(){
+                                let $deptCode = $("#department option:selected").val();
+                                let $teamCode = $("#team option:selected").val()
+                                
+                                $.ajax({
+                                    url:"selectEmp.co",
+                                    data:{
+                                        teamCode:$teamCode
+                                    },success:function(list){
+                                        let value = "";
+                                        if(list.empty){
+                                            value += "<tr>"
+                                                    +    "<th colspan='5' style='font-size:18px; border-top:1px solid black; padding:50px;'>검색결과 없음</th>"
+                                                    + "</tr>";
+                                        }else{
+                                            for(let i in list){
+                                                value += "<tr>"
+                                                        +    "<th rowspan='3' width='100' height='80'>"; 
+                                                if(!list.profile){
+                                                    console.log('1');
+                                                    value += "<i class='fas fa-solid fa-user fa-4x'></i>";
+                                                }else{
+                                                    console.log('2');
+                                                    value += list.profile;
+                                                }
+                                                value += "</th>"
+                                                        +    "<th width='100'>사원명</th>"
+                                                        +    "<td width='130'>" + list[i].empName + "</td>"
+                                                        +    "<th width='100'>휴대폰번호</th>"
+                                                        +    "<td width='200'>" + list[i].phone + "</td>"
+                                                        +"</tr>"
+                                                        +"<tr>"
+                                                        +    "<th>소속</th>"
+                                                        +    "<td>" + list[i].teamName + "</td>"
+                                                        +    "<th>이메일주소</th>"
+                                                        +    "<td>" + list[i].email + "</td>"
+                                                        +"</tr>"
+                                                        +"<tr style='border-bottom:1px dashed grey; margin-bottom:20px;'>"
+                                                        +    "<th>직급</th>"
+                                                        +    "<td>" + list[i].jobName + "</td>"
+                                                        +"</tr>";
+                                            }
+                                        }
+                                        $("#resultTable tbody").html(value);
+                                    },error:function(){
+                                        console.log("팀별 조회용 ajax 통신 실패");
+                                    }
+                                })
+                            })
+                        </script>
+                       
+
+                        <!-- 키워드 검색-->
+                        <div id="keyword-area" style="display:none" class="search-area">
+                            <select name="" id="keyword">
+                                <option value="empName">사원명</option>
+                                <option value="phone">휴대폰</option>
+                                <option value="email">이메일</option>                                
+                            </select>
+                            <input type="text" id="searchKeyword">
+                            <button type="button" class="btnStyle" id="keywordSearchBtn">검색</button>
+                        </div>
                         <br clear="both"><br>
+                        <script>
+                            // 검색 실행
+                            $("#keywordSearchBtn").click(function(){
+                                let $value = $("#keyword option:selected").val();
+                                let $keyword = $("#searchKeyword").val()
+                                
+                                //console.log($value);
+                                //console.log($keyword);
+                                $.ajax({
+                                    url:"searchEmp.co",
+                                    data:{
+                                        type:$value,
+                                        keyword:$keyword
+                                    },success:function(list){
+                                        let value = "";
+                                        if(list.empty){
+                                            value += "<tr>"
+                                                    +    "<th colspan='5' style='font-size:18px; border-top:1px solid black; padding:50px;'>검색결과 없음</th>"
+                                                    + "</tr>";
+                                        }else{
+                                            for(let i in list){
+                                                value += "<tr>"
+                                                        +    "<th rowspan='3' width='100' height='80'>"; 
+                                                if(!list.profile){
+                                                    value += "<i class='fas fa-solid fa-user fa-4x'></i>";
+                                                }else{
+                                                    value += list.profile;
+                                                }
+                                                value += "</th>"
+                                                        +    "<th width='100'>사원명</th>"
+                                                        +    "<td width='130'>" + list[i].empName + "</td>"
+                                                        +    "<th width='100'>휴대폰번호</th>"
+                                                        +    "<td width='200'>" + list[i].phone + "</td>"
+                                                        +"</tr>"
+                                                        +"<tr>"
+                                                        +    "<th>소속</th>"
+                                                        +    "<td>" + list[i].teamName + "</td>"
+                                                        +    "<th>이메일주소</th>"
+                                                        +    "<td>" + list[i].email + "</td>"
+                                                        +"</tr>"
+                                                        +"<tr style='border-bottom:1px dashed grey; margin-bottom:20px;'>"
+                                                        +    "<th>직급</th>"
+                                                        +    "<td>" + list[i].jobName + "</td>"
+                                                        +"</tr>";
+                                            }
+                                        }
+                                        $("#resultTable tbody").html(value);
+                                    },error:function(){
+                                        console.log("팀별 조회용 ajax 통신 실패");
+                                    }
+                                })
+                            })
+                        </script>
+                        <!-- 검색 결과-->
+                        <div id="result-area">
+                            <table width="780" id="resultTable" >
+                                <thead>
+                                    <tr>
+                                        <td colspan="5" height="70" style="font-size:25px; font-weight: 900;">
+                                            검색결과
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <script>
+                        // select값 넣기
+                        $(function(){
+                            let $value = $("#department option:selected").val();
+                            console.log($value);
+                            let $select = '${d.deptCode}';
+                           $("#deptCode").attr("value", $value);
+                           // $("#headerTitle").attr("value", $select);
+                        })
+
+                        // 라디오 버튼 클릭시 나타나는 div 변경
+                        $("#deptNameRadio").click(function(){
+                            $("#deptName-area").removeAttr("style", "display:none");
+                            $("#keyword-area").attr("style", "display:none");
+                        })
+                        $("#keywordRadio").click(function(){
+                            $("#deptName-area").attr("style", "display:none");
+                            $("#keyword-area").removeAttr("style", "display:none");
+                        })
+
                         
                     </script>
+
+                   
                 </div>
                 
             </div>   

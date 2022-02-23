@@ -12,5 +12,20 @@ import lombok.ToString;
 @ToString
 
 public class Todo {
+	
+	private int todoNo;
+	private String prNo;
+	private String EmpNo;
+	private String todoTitle;
+	private String todoStartdate;
+	private String todoEnddate;
+	private String todoContent;
+	private String status;
+	private String prTitle;
+	private int wait;
+	private int yes;
+	private int ok;
+	private int late;
+	private int no;
 
 }
