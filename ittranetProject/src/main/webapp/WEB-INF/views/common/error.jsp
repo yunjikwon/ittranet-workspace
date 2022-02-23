@@ -5,6 +5,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- alertify -->
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 <style>
 	body {
 		background-image: url('resources/images/backImg.jpg');
@@ -15,20 +24,15 @@
         height: 90vh;
 	}
 </style>
-<!-- sweetalert2 -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
 	
-	
-	<script>
-		Swal.fire({
-			  icon: 'error',
-			  title:'Error!',
-			  text: 'Something went wrong!',
-			  footer: '<a href="#" onClick="history.back()">Back Step</a>'
-			})
-	</script>
+	<c:if test="${ not empty alertMsg }">
+		<script>
+			alertify.alert('Error! 에러입니다!', "${alertMsg}");
+		</script>
+		<c:remove var="alertMsg" scope="session"/>
+	</c:if>
 	
 </body>
 </html>
