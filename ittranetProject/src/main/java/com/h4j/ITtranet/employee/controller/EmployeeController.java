@@ -25,11 +25,19 @@ public class EmployeeController {
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
+	/**
+	 * 사용자 메인 페이지
+	 * @return
+	 */
 	@RequestMapping("goUserMain.me")
 	public String goUserMain() {
 		return "common/userMain";
 	}
 	
+	/**
+	 * 관리자 메인페이지
+	 * @return
+	 */
 	@RequestMapping("goAdminMain.me")
 	public String goAdminMain() {
 		return "common/adminMain";
@@ -46,6 +54,8 @@ public class EmployeeController {
 	public ModelAndView loginMember(Employee e, HttpSession session, ModelAndView mv) {
 		
 		Employee loginUser = eService.loginMember(e);
+		
+		// System.out.println(loginUser);
 		
 		if(loginUser != null && (loginUser.getAdmin()).equals("Y") && bcryptPasswordEncoder.matches(e.getEmpPwd(), loginUser.getEmpPwd())) {
 			session.setAttribute("loginUser", loginUser);
@@ -214,6 +224,77 @@ public class EmployeeController {
 			return "common/error";
 		}	
 	}
+	
+	/**
+	 * 마이페이지 호출
+	 * @return
+	 */
+	@RequestMapping("myPage.me")
+	public String myPage() {
+		return "member/mymyPage";
+	}
+	
+	/**
+	 * 회원 정보 변경
+	 * @param e
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("update.me")
+	public String updateMember(Employee e, HttpSession session) {
+		// System.out.println(e);
+		int result = eService.updateMember(e);
+		if(result>0) {
+			session.setAttribute("loginUser",  eService.loginMember(e));
+			session.setAttribute("alertMsg", "성공적으로 회원정보가 변경되었습니다");
+			return "redirect:myPage.me";
+		}else { 
+			session.setAttribute("fail", "실패");
+			return "redirect:myPage.me";
+		}	
+	}
+	
+	@RequestMapping("setPwdForm.me")
+	public String setPwdForm() {
+		return "member/setPwdForm";
+	}
+
+	// adminJobcode => 사원 정보 
+	// adminJobcodeDetail => 사원 정보 디테일
+	// adminMemberDelete => 사원 ㄱㅖ정 삭제 ★ 체크 표시 있음!! 대박~~ 테이블 짱
+	// adminMemberInsert => 사원 초대
+	/*
+	 * 사원 추가
+	 * 사원 가입 승인
+	 * 직위/직무 관리
+	 * 사원 계정 삭제
+	 */
+	
+	// 정보 수정 update.me
+	
+	// ~~사원 추가
+	// 사원 추가 페이지 호출 addEmpForm.me (사원관리 메뉴를 누르면 제일 처음 보여지는 페이지 - DB연결 x)
+	
+	// 사원 추가 addEmp.me (이메일 주소 작성하고 버튼 누르면 회원가입폼 보내는 메일 발송 - DB연결 x)
+	
+	// ~~가입 승인
+	// 사원 가입 승인 페이지 호출 addEmpAppForm.me
+	
+	// 사원 가입 승인 addEmpApp.me (status를 W에서 Y로 update)
+	
+	// 사원 가입 반려 addEmpCom.me (status를 W에서 N으로 update)
+	
+	// ~~직위,직무 관리
+	// 직위직무관리 페이지 호출 empSetForm.me
+	
+	// 직위 직무 관리 empSet.me (Department, Team, Job 변경 / jsp에서 한 번에 값 담아서 보내고 update시키기)
+	
+	// ~~사원 계정 삭제
+	// 사원 계정 삭제 페이지 호출 delEmpForm.me
+	
+	// 사원 계정 삭제 delEmp.me (status Y에서 N으로 update)
+	
+	
 	
 
 }
