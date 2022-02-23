@@ -128,7 +128,7 @@
 						</c:if>
 						<form id="postForm" action="" method="post">
 							<input type="hidden" name="bno" value="${ b.boardNo }">
-							<input type="hidden" name="filePath" value="${ at.changeName }">
+							<input type="hidden" name="filePath" value="${ at.filePath }">
 						</form>
 						<br><br>
 						<script>
@@ -180,7 +180,7 @@
 										</c:when>
 										<c:otherwise>
 											<c:forEach var="at" items="${ atList }">
-												<a href="${ at.changeName }" download="${ at.originName }" class="aTag">${ at.originName }</a><br>
+												<a href="${ at.filePath }" download="${ at.originName }" class="aTag">${ at.originName }</a><br>
 											</c:forEach>
 										</c:otherwise>
 									</c:choose>

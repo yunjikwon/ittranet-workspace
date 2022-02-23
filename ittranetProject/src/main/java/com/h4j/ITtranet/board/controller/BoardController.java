@@ -87,10 +87,9 @@ public class BoardController {
 			for(MultipartFile file : upfile) {
 				
 				String changeName = saveFile(file, session);
-				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
 				at.setOriginName(file.getOriginalFilename());
-				at.setChangeName("resources/uploadFiles/" + changeName);
-				//at.setFilePath(filePath);
+				at.setChangeName(changeName);
+				at.setFilePath("resources/uploadFiles/" + changeName);
 				
 				resultAt = bService.insertAttachment(at);				
 			}			
@@ -159,10 +158,9 @@ public class BoardController {
 			for(MultipartFile file : reupfile) {
 				
 				String changeName = saveFile(file, session);
-				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
 				at.setOriginName(file.getOriginalFilename());
-				at.setChangeName("resources/uploadFiles/" + changeName);
-				//at.setFilePath(filePath);
+				at.setChangeName(changeName);
+				at.setFilePath("resources/uploadFiles/" + changeName);
 				at.setBoardNo(boardNo);
 				resultAt = bService.insertNewAttachment(at);				
 			}	
