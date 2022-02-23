@@ -3,4 +3,131 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="companyMapper">
+	<resultMap id="chartResult" type="Company">
+		<result column="emp_no" property="empNo"/>		
+		<result column="emp_name" property="empName"/>		
+		<result column="dept_name" property="deptName" />
+		<result column="team_name" property="teamName" />
+		<result column="job_name" property="jobName" />
+		<result column="phone" property="phone" />
+		<result column="email" property="email" />
+		<result column="dept_code" property="deptCode" />
+		<result column="team_code" property="teamCode" />
+		<result column="job_code" property="jobCode" />
+		<result column="status" property="status" />		
+	</resultMap>
+	
+	<!-- 조직도 전체조회 -->
+	<select id="selectChartList" resultMap="chartResult">
+		select distinct
+               dept_name
+		     , d.dept_code
+		     , team_name
+		     , team_code
+		  from department d 
+		  join team t on(d.dept_code = t.dept_code)
+		 where d.dept_code != 'D0'
+           and d.dept_code != 'D1'
+	</select>
+	
+	<!-- 부서명 전체 조회 -->
+	<select id="selectDeptList" resultMap="chartResult">
+		select 
+               dept_name
+		     , dept_code
+		  from department 
+		 where dept_code != 'D0'
+           and dept_code != 'D1'
+	</select>
+	
+	<!-- 조직도 임직원 전체조회 -->
+	<select id="searchChart" resultMap="chartResult">
+		select 
+		       emp_no
+		     , emp_name
+		     , dept_name
+		     , team_name
+		     , job_name
+		     , phone
+		     , email
+		  from employee e
+		  join job j on (e.job_code = j.job_code)
+		  join department d on (e.dept_code = d.dept_code)
+		  join team t on(e.team_code = t.team_code)
+		 where e.dept_code = #{deptCode}
+		   and e.team_code = #{teamCode}
+	</select>
+	
+	<!-- 조직도 팀별 임직원 조회 -->
+	<select id="selectEmpList" resultMap="chartResult">
+		select 
+       		   emp_name
+       		 , emp_no
+       		 , email
+       		 , phone
+       		 , profile
+		     , job_name
+		     , e.job_code
+		     , e.team_code
+		     , team_name
+		  from employee e
+		  join job j on (e.job_code = j.job_code) 
+		  join team t on(e.team_code = t.team_code)
+		 where e.team_code = #{teamCode}
+	</select>
+	
+	<!-- 조직도 부서별 임직원 조회 -->
+	<select id="selectTeamByDept" resultMap="chartResult">
+		select 
+               d.dept_code
+		     , dept_name
+		     , team_code
+		     , team_name
+		  from department d 
+		  join team t on(d.dept_code = t.dept_code)
+		 where d.dept_code = #{deptCode}
+	</select>
+	<!-- 조직도 임직원 개별조회 -->
+	<select id="selectEmployee" resultMap="chartResult">
+		select 
+		       emp_no
+		     , emp_name
+		     , team_name
+		     , job_name
+		     , phone
+		     , email
+		     , profile
+		  from employee e
+		  join job j on(e.job_code = j.job_code)
+		  join team t on(e.team_code = t.team_code)
+		 where e.status = 'Y'
+		   and emp_no = #{empNo}
+	</select>
+	
+	<!-- 사원검색 -->
+	<select id="searchChartList" resultMap="chartResult">
+	select 
+		       emp_no
+		     , emp_name
+		     , team_name
+		     , job_name
+		     , phone
+		     , email
+		     , profile
+		  from employee e
+		  join job j on(e.job_code = j.job_code)
+		  join team t on(e.team_code = t.team_code)
+        where e.status = 'Y'
+        	<choose>
+				<when test="type == 'empName'">
+		 			AND emp_name LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test="type == 'phone'">
+		 			AND phone LIKE '%' || #{keyword} || '%'
+				</when>
+				<when test="type == 'email'">
+		 			AND email LIKE '%' || #{keyword} || '%'
+				</when>
+			</choose>
+	</select>
 </mapper>
