@@ -15,15 +15,6 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- 아이콘 -->
 <script src="https://kit.fontawesome.com/07e0557a32.js" crossorigin="anonymous"></script>
-<!-- alertify -->
-<!-- JavaScript -->
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-<!-- CSS -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-<!-- Default theme -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-<!-- Semantic UI theme -->
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 <style>
     /*헤더 스타일*/
     div{
@@ -61,14 +52,6 @@
 </style>
 </head>
 <body>
-		<!-- alertMsg키값으로 alert메시지가 담겨있을 때에만 이부분 작동 -->
-		<c:if test="${ not empty alertMsg }">
-			<script>
-				alertify.alert('IT!tranet 잇트라넷 메시지', "${alertMsg}");
-			</script>
-			<c:remove var="alertMsg" scope="session"/>
-		</c:if>
-		<!-- 한 번만 출력이 되고 더 이상 출력  x  -->
 
         <!--헤더 영역-->
         <div class="headerOuter" align="right">
