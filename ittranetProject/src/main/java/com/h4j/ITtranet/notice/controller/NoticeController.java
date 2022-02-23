@@ -40,9 +40,11 @@ public class NoticeController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		ArrayList<Notice> list = nService.selectList(pi);
+		ArrayList<NoticeHeader> headerList = nService.selectHeaderList();
 		
 		mv.addObject("pi", pi);
 		mv.addObject("list", list);
+		mv.addObject("headerList", headerList);
 		mv.setViewName("notice/noticeListView");
 		
 		
