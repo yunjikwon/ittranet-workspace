@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,7 +96,8 @@
             <h6 class="statusmenu" style="font-weight: bold;">업무 현황</h6>
             <table class="todoTable" style="text-align: center;">
             	<tr class="todoTabletr" style="background-color: transparent;">
-            		<th rowspan="2" style="width: 250px; height: 70px; font-size: 60px;;" > ${(todoO/todoAll)*100}</h>%</h1> </th>
+            		<th rowspan="2" style="width: 250px; height: 70px; font-size: 60px;" > <fmt:formatNumber value="${(todoO/todoAll)*100}" pattern="#,#0.0" /></h>%</h1> </th>
+					
             		<th style="width: 100px;">대기</th>
             		<th style="width: 100px;">진행중</th>
             		<th style="width: 100px;">완료</th>
@@ -128,14 +130,21 @@
                 </thead>
                 <tbody>
                 <!-- 업무 말고 프로젝트로 리스트를 가져와야될듯..? 셀렉문 다시 만들기 ! -->
-              		<c:forEach var="t" items="${ list }">
+              		<c:forEach var="c" items="${ count }">
                        <tr>
-                        <th>${ t.prTitle }</th>
-                        <td> 대기중인 업무 수 </td>
-                        <td> 진행중인 업무 수</td>
-                        <td> 완료된 업무 수 </td>
-                        <td> 지연된 업무 수 </td>
-                        <td> 업무 진행률 %</td>
+                        <th>${ c.prTitle }</th>
+                        <td>${ c.wait } </td>
+                        <td>${ c.yes }</td>
+                        <td>${ c.ok }</td>
+                        <td>${ c.late }</td>
+                        <td>
+                        <c:if test="${(c.yes+c.ok+c.late+c.wait) == 0}">
+                        	0
+                        </c:if>
+                        <c:if test="${(c.yes+c.ok+c.late+c.wait) != 0}">
+                        	<fmt:formatNumber value="${(c.ok/(c.yes+c.ok+c.late+c.wait))*100}" pattern="#,#0.0" /> %
+                        </c:if>
+                        </td>
                    	   </tr>
               		</c:forEach>
                 </tbody>

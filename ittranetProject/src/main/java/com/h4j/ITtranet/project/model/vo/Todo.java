@@ -22,5 +22,10 @@ public class Todo {
 	private String todoContent;
 	private String status;
 	private String prTitle;
+	private int wait;
+	private int yes;
+	private int ok;
+	private int late;
+	private int no;
 
 }

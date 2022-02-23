@@ -10,6 +10,6 @@ public interface TodoService {
 	ArrayList<Todo> selectTodo(String empNo);
 
 	// 업무 갯수 조회
-	ArrayList<Todo> countTodo(String empNo, String prNo);
+	ArrayList<Todo> countTodo(String empNo);
 
 }

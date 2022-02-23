@@ -26,8 +26,8 @@ public class TodoServiceImpl implements TodoService {
 	
 	// 업무 갯수 조회
 	@Override
-	public ArrayList<Todo> countTodo(String empNo, String prNo) {
-		return tDao.countTodo(sqlSession, empNo, prNo);
+	public ArrayList<Todo> countTodo(String empNo) {
+		return tDao.countTodo(sqlSession, empNo);
 	}
 
 }

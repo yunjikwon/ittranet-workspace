@@ -15,8 +15,8 @@ public class TodoDao {
 		
 	}
 
-	public ArrayList<Todo> countTodo(SqlSessionTemplate sqlSession, String empNo, String prNo) {
-		return null;
+	public ArrayList<Todo> countTodo(SqlSessionTemplate sqlSession, String empNo) {
+		return (ArrayList)sqlSession.selectList("todoMapper.countTodo", empNo);
 	}
 
 }

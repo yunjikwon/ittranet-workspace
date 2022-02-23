@@ -34,6 +34,7 @@ public class TodoController {
 
 	
 		ArrayList<Todo> list = tService.selectTodo(empNo);
+		ArrayList<Todo> count = tService.countTodo(empNo);
 		// 업무 갯수 구하는 반복문
 			for(Todo td : list) {
 				if(td.getStatus().equals("W")) {
@@ -51,6 +52,9 @@ public class TodoController {
 			System.out.println("대기 : " + todoW + ", 진행중 : " + todoY + ", 완료 : " + todoO + ", 지연 : " + todoL + ", 삭제 : " + todoN);
 			int todoAll = todoW + todoY + todoO + todoL;
 			
+			System.out.println("업무 리스트 : " + list );
+			System.out.println("프로젝트별 대기중 업무수  : " + count);
+
 			// 지금 진행중인 프로젝트 중에서 업무를 갖고와야함
 		mv.addObject("list", list)
 		.addObject("todoW", todoW)
@@ -58,14 +62,13 @@ public class TodoController {
 		.addObject("todoO", todoO)
 		.addObject("todoL", todoL)
 		.addObject("todoN", todoN)
-		.addObject("todoAll", todoAll).setViewName("project/todo");
+		.addObject("todoAll", todoAll)
+		.addObject("count", count).setViewName("project/todo");
 		
-		System.out.println("업무 리스트 : " + list );
+
 		return mv;
 
 	}
-	
-	// 업무 갯수 구하는 controller
-	
+
 
 }
