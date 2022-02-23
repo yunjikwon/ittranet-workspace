@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.approval.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.h4j.ITtranet.approval.model.vo.AppLine;
 import com.h4j.ITtranet.approval.model.vo.Approval;
@@ -13,7 +14,7 @@ public interface ApprovalService {
 	ArrayList<AppLine> selectSearchName(String keyword);
 	
 	// 기안 insert
-	int insertDraft(Approval app, int formNo);
+	int insertDraft(Approval app, int formNo, ArrayList<AppLine> appList);
 	
 	// 기안 게시판 listCount
 	int selectListCount(int category);
@@ -21,7 +22,9 @@ public interface ApprovalService {
 	// 기안 게시판 select
 	ArrayList<Approval> selectList(PageInfo pi, int category);
 	
-	
+	// 기안 게시판 검색
+	ArrayList<Approval> selectSearchForm(HashMap<String, Integer> map);
+	ArrayList<Approval> selectSearchDate(HashMap<String, Integer> map);
 	
 	
 	

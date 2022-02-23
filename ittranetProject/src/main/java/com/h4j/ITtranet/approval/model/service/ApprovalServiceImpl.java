@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.approval.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	// 기안 insert
 	@Override
-	public int insertDraft(Approval app, int formNo) {
+	public int insertDraft(Approval app, int formNo, ArrayList<AppLine> appList) {
 		int result1 = aDao.insertDraft(sqlSession, app);
 		
 		int result2 = 0;
@@ -53,7 +54,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 					break;
 		}
 		
-		int result3 = aDao.insertAppLine(sqlSession, app);
+		int result3 = aDao.insertAppLine(sqlSession, app, appList);
 		return result1 * result2 * result3;
 		
 	}
@@ -70,6 +71,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	
+	// 기안게시판 검색
+	public ArrayList<Approval> selectSearchForm(HashMap<String, Integer> map) {
+		return aDao.selectSearchForm(sqlSession, map);
+	}
+	public ArrayList<Approval> selectSearchDate(HashMap<String, Integer> map) {
+		return aDao.selectSearchDate(sqlSession, map);
+	}
 
 	
 

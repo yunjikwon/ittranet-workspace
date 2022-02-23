@@ -76,43 +76,37 @@
 		        <div id="draftTitle">
 		           	 기안함 > 대기 결재
 		        </div>
-		        
-		        <form action="" method="post" onsubmit="">
-		            <div id="innerouter" style="padding:5% 10%;">
-			            <div class="search" id="search1">
-				           	 결재분류
-				            <select class="divisionSelect" name="" id="">
-				                <option value="">(결재분류)</option>
-				                <option value="">사업계획서</option>
-				                <option value="">시말서</option>
-				                <option value="">연장근무신청</option>
-				                <option value="">지출결의서</option>
-				                <option value="">추가예산신청</option>
-				                <option value="">회의록</option>
-				            </select>
-				        </div>
-				        <div class="search" id="search2">
-				           	 기안일
-				            <select class="divisionSelect" name="" id="">
-				                <option value="">(기안일)</option>
-				                <option value="">1주일</option>
-				                <option value="">1개월</option>
-				                <option value="">3개월</option>
-				
-				            </select>
-				        </div>
+
+	            <div id="innerouter" style="padding:5% 10%;">
+		            <div class="search" id="search1">
+			           	 결재분류
+			            <select class="divisionSelect" name="boardSearch" id="boardSearch">
+			                <option value="">(결재분류)</option>
+			                <option value=1>사업계획서</option>
+			                <option value=2>시말서</option>
+			                <option value=3>연장근무신청</option>
+			                <option value=4>지출결의서</option>
+			                <option value=5>추가예산신청</option>
+			                <option value=6>회의록</option>
+			            </select>
+			        </div>
+			        <div class="search" id="search2">
+			           	 기안일
+			            <select class="divisionSelect" name="boardSearch" id="boardSearch">
+			                <option value="">(기안일)</option>
+			                <option value=7>1주일</option>
+			                <option value=8>1개월</option>
+			                <option value=9>3개월</option>
+			
+			            </select>
+			        </div>
 		            <table id="boardList" class="table table-hover" align="center">		
 		            
 		            	<c:forEach var="d" items="${ list }">
 		                    <tr>
 		                    	<td><input type="hidden" name="empNo" value="${ d.empNo }"></td>		                    	
 		                        <th>
-		                        	<c:if test="${ d.drDivision eq 1}">지출결의서</c:if>
-		                        	<c:if test="${ d.drDivision eq 2}">추가예산신청</c:if>
-		                        	<c:if test="${ d.drDivision eq 3}">연장근무신청</c:if>
-		                        	<c:if test="${ d.drDivision eq 4}">회의록</c:if>
-		                        	<c:if test="${ d.drDivision eq 5}">사업계획서</c:if>
-		                        	<c:if test="${ d.drDivision eq 6}">시말서</c:if>
+		                        	${ d.drDivision }
 		                        </th>
 		                        <td>${ d.drTitle }</td>
 		                        <td>${ d.drDate }</td>
@@ -122,15 +116,10 @@
 		                        </td>
 		                        <td>${ d.drStatus }</td>
 		                    </tr>
-		                </c:forEach>   		                   
-		
-		            </table>
-		            <br>
-		
-		            
-		            
-		        </div>
-		        <br><br>
+		                </c:forEach>  
+		                 		 
+		            </table>    <br>
+		        </div>    <br><br>
 		        		        
 		        <div id="pagingArea">
 	                <ul class="pagination">
@@ -160,11 +149,44 @@
 	                    </c:choose>
 	                    
 	                </ul>
-            </div>
-		       
+            	</div>
 		        <br clear="both"><br>
-		        </form>
 		    </div>
+		<script>
+			$('.divisionSelect').change(function(){
+				let searchType = $("select[name=boardSearch]").val();
+				
+				console.log(searchType);
+				
+					$.ajax({
+						type : 'GET',
+						url : "search.board",
+						data : {
+							searchType : searchType
+						} , success : function(list){
+							console.log(boardSearch);
+							//테이블 초기화
+		    				$('#boardList').empty();
+							
+		    				let str="";
+							for(let i in list){
+								str += "<tr>"
+									    	+ "<td><input type='hidden' name='empNo' value='" + list[i].empNo + "'></td>"		                    	
+					                        + "<th>"+ list[i].drDivision +"</th>"
+					                        + "<td>"+ list[i].drTitle + "</td>"
+					                        + "<td>"+ list[i].drDate + "</td>"
+					                        + "<td>"+ list[i].drStatus + "</td>"
+				                        + "</tr>";
+							}
+							$("#boardList").html(str);
+						} , error : function(){
+							console.log("ajax 통신 실패 ");
+						}
+					});
+			})
+				
+		</script>		    
+		    
 	    <!-- 푸터 -->
 	    <jsp:include page="../common/footer.jsp"/>
 	    

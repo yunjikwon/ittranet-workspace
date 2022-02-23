@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.approval.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -42,35 +43,45 @@ public class ApprovalDao {
 
 	// draft insert
 	public int insertDraft(SqlSession sqlSession, Approval app) {		
-		return sqlSession.selectOne("appMapper.insertDraft", app);
+		return sqlSession.insert("appMapper.insertDraft", app);
 	}
 	
 	// 문서별 insert
 	public int insertBussinessPlan(SqlSession sqlSession, Approval app) {		
-		return sqlSession.selectOne("appMapper.businessplan", app);
+		return sqlSession.insert("appMapper.businessplan", app);
 	}
 	public int insertApology(SqlSession sqlSession, Approval app) {		
-		return sqlSession.selectOne("appMapper.apology", app);
+		return sqlSession.insert("appMapper.apology", app);
 	}
 	public int insertOvertime(SqlSession sqlSession, Approval app) {		
-		return sqlSession.selectOne("appMapper.overtime", app);
+		return sqlSession.insert("appMapper.overtime", app);
 	}
 	public int insertExpenditure(SqlSession sqlSession, Approval app) {		
-		return sqlSession.selectOne("appMapper.expenditure", app);
+		return sqlSession.insert("appMapper.expenditure", app);
 	}
 	public int insertBudget(SqlSession sqlSession, Approval app) {		
-		return sqlSession.selectOne("appMapper.budget", app);
+		return sqlSession.insert("appMapper.budget", app);
 	}
 	public int insertProceedings(SqlSession sqlSession, Approval app) {		
-		return sqlSession.selectOne("appMapper.proceedings", app);
+		return sqlSession.insert("appMapper.proceedings", app);
 	}
 	
 	// 결재선 insert
-	public int insertAppLine(SqlSession sqlSession, Approval app) {		
-		return sqlSession.selectOne("appMapper.insertAppLine", app);
+	public int insertAppLine(SqlSession sqlSession, Approval app, ArrayList<AppLine> appList) {		
+		int result = 0;
+		for(AppLine ap : appList) {
+			result = sqlSession.insert("appMapper.appline", ap);
+		}
+		return result;
 	}
 	
-	
+	// 기안게시판 검색
+	public ArrayList<Approval> selectSearchForm(SqlSession sqlSession, HashMap<String, Integer> map) {
+		return (ArrayList)sqlSession.selectList("appMapper.selectSearchForm",map);
+	}
+	public ArrayList<Approval> selectSearchDate(SqlSession sqlSession, HashMap<String, Integer> map) {
+		return (ArrayList)sqlSession.selectList("appMapper.selectSearchDate",map);
+	}
 	
 	
 	

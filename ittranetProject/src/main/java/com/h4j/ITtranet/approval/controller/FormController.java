@@ -62,7 +62,7 @@ public class FormController {
 		
 		if(flag == 1) { // 팀 검색 요청
 			list = aService.selectSearchTeam(keyword);
-		} else{
+		} else{ // 성명 검색 요청
 			list = aService.selectSearchName(keyword);
 		}
 		

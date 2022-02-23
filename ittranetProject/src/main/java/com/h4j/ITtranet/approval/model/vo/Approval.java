@@ -20,7 +20,7 @@ public class Approval {
 	private String drTitle;
 	private Date drDate;
 	private String drStatus; // 결재 상태
-	private int drDivision;  //양식 종류
+	private String drDivision;  //양식 종류 - sql문에서 decode함수 이용하여 이름으로 출력
 	private int empNo;
 	private String empName;
 	private String teamName;

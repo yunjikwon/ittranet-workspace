@@ -12,6 +12,7 @@
 		<result column="dr_division" property="drDivision" />
 		<result column="emp_name" property="empName" />
 		<result column="team_name" property="teamName" />
+		<result column="emp_no" property="empNo" />
 	</resultMap>
 	
 	<resultMap id="appLineResultSet" type="AppLine">
@@ -77,12 +78,13 @@
 	<select id="selectList" resultMap="appResultSet">
 		select 
 		       dr_no
-		     , dr_division  
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"   
 		     , dr_title
 		     , dr_date
 		     , dr_status
 		     , emp_name
 		     , team_name
+		     , emp_no
 		  from draft
 		  join employee using (emp_no)
 		  join team using (team_code)
@@ -150,10 +152,82 @@
 	<!-- 결재선 insert -->
 	<insert id="appline">
 		insert
-		  into approval_line(dr_no, apline_no, emp_no, apline_order, ap_division) 
-		values (seq_drno.currval, seq_lino.nextval, #{empNo}, #{aplineOrder}, #{drStatus})
+		  into approval_line(dr_no, apline_no, emp_no, apline_order) 
+		values (seq_drno.currval, seq_lino.nextval, #{empNo}, #{aplineOrder})
 	</insert>
 
+	<!-- 기안 게시판 검색 -->
+	<select id="selectSearchForm" resultMap="appResultSet">
+		select
+		        dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division" 
+		     , dr_title
+		     , dr_date
+		     , dr_status
+		     , emp_name
+		     , team_name
+		     , emp_no
+		  from draft
+		  join employee using (emp_no)
+		  join team using (team_code)
+		 where 
+		 	<choose>
+		 		<when test="boardSearch == 1">
+		        	dr_division = 5  
+		        </when>
+		        <when test="boardSearch == 2">
+		        	dr_division =  6
+		        </when>
+		         <when test="boardSearch == 3">
+		        	dr_division =  3
+		        </when>
+		         <when test="boardSearch == 4">
+		        	dr_division =  1
+		        </when>
+		         <when test="boardSearch == 5">
+		        	dr_division =  2
+		        </when>
+		         <when test="boardSearch == 6">
+		        	dr_division =  4
+		        </when>
+		    </choose>    	 
+		 order
+		    by team_name
+	</select>
+	
+	<select id="selectSearchDate" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"   
+		     , dr_title
+		     , dr_date
+		     , dr_status
+		     , emp_name
+		     , team_name
+		     , emp_no
+		  from draft
+		  join employee using (emp_no)
+		  join team using (team_code)
+		 where 
+		 	<choose>
+		 		<when test="boardSearch == 7">
+		        	dr_date  
+		        </when>
+		        <when test="boardSearch == 8">
+		        	dr_date
+		        </when>
+		    </choose>    	 
+		 order
+		    by dr_date
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 </mapper>

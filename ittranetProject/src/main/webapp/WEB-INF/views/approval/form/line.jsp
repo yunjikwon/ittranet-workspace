@@ -189,21 +189,21 @@
 			<div id="cloneTest"></div>
             <div class="tablelayout">
             	
-		            <table class="boardList" align="center">
-		                <thead>
-		                  <tr>
-		                    <th width="10%"></th>
-		                    <th>팀</th>
-		                    <th>직급</th>
-		                    <th>직원ID</th>
-		                    <th>직원명</th>
-		                  </tr>
-		                </thead>
-		                <tbody id="boardListTwo">
-		                    
-		
-		                </tbody>
-		            </table>
+	            <table class="boardList" align="center">
+	                <thead>
+	                  <tr>
+	                    <th width="10%"></th>
+	                    <th>팀</th>
+	                    <th>직급</th>
+	                    <th>직원ID</th>
+	                    <th>직원명</th>
+	                  </tr>
+	                </thead>
+	                <tbody id="boardListTwo">
+	                    
+	
+	                </tbody>
+	            </table>
 	            
 	        </div>
 
@@ -247,7 +247,7 @@
 			    						   + "<td name='job'>"+ list[i].job + "</td>"
 			    						   + "<td name='empId'>"+ list[i].empId + "</td>"
 			    						   + "<td name='empName'>"+ list[i].empName + "</td>"
-			    						   + "<input type='hidden' name='apempNo' value=" + list[i].empNo + ">"
+			    						   + "<input type='hidden' name='apempNo' value='" + list[i].empNo + "'>"
 			    						   + "<input type='hidden' name='aplineNo' value=''>"
 			    						   + "<input type='hidden' name='aplineOrder' value=''>"			    						   
 		    						   + "</tr>";
@@ -304,14 +304,16 @@
 			  $("#boardListTwo tr").each(function(i, tr){
 				  value += "[" + (i+1) + "]"
 				         + "<span>"+ $(tr).find("td[name=empName]").text() + " " + $(tr).find("td[name=job]").text() + "</span>"
-				         + "<input type='hidden' name='appList[" + i + "].empNo' value='" +  $(tr).find("input[name=empNo]").val() + "'>" //name='appList[0,1,...].empNo' value='empNo' 
+				         + "<input type='hidden' name='appList[" + i + "].empNo' value='" +  $(tr).find("input[name=apempNo]").val() + "'>" //name='appList[0,1,...].empNo' value='empNo' 
 				         + "<input type='hidden' name='appList[" + i + "].aplineOrder' value='" +  (i+1) + "'><br>";
 			  })
+			   console.log(value);
 			  
 			  value = '<span id="appLineText">결재자 </span> <br>' + value;
 			  
 			  $("#appLine").html(value);
 		  }
+			  
 	  })
 	  
 	  

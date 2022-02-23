@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.approval.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,9 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.h4j.ITtranet.approval.model.service.ApprovalService;
+import com.h4j.ITtranet.approval.model.vo.AppLine;
 import com.h4j.ITtranet.approval.model.vo.Approval;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.template.Pagination;
@@ -143,8 +147,8 @@ public class ApprovalController {
 	// ----- 기안 insert ------
 	@RequestMapping("insert.dr")
 	public String insertDraft(Approval app, int formNo, HttpSession session, Model model) {
-		
-		int result = aService.insertDraft(app, formNo);
+		ArrayList<AppLine> appList = app.getAppList();
+		int result = aService.insertDraft(app, formNo, appList);
 		
 		
 		if(result>0) {
@@ -157,7 +161,26 @@ public class ApprovalController {
 	}
 	
 	
-	
+	// ------- 기안게시판 검색 ---------
+	@ResponseBody
+	@RequestMapping(value = "search.board" , produces="application/json; charset=utf-8")
+	public String selectSearchBoard(Integer searchType) {
+
+		ArrayList<Approval> list = new ArrayList<>();
+		String boardSearch = "boardSearch";
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		
+		map.put("boardSearch", searchType);
+		
+		if(searchType <= 6) {
+			list = aService.selectSearchForm(map);
+		} else {
+			list = aService.selectSearchDate(map);
+		}
+		
+		
+		return new Gson().toJson(list);
+	}
 	
 	
 	
