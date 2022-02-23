@@ -40,16 +40,16 @@
                 </li>
                 <div id="border">
 		               <li class="menu1">
-		                  <a href="#">사원 추가</a>
+		                  <a href="#">사원 초대</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">사원 가입승인</a>
+		                  <a href="#">가입 승인</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">직위/직무 관리</a>
+		                  <a href="#">직위 직무 관리</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">사원 계정삭제</a>
+		                  <a href="#">계정 삭제</a>
 		               </li>
             	</div>
             </ul>

@@ -22,7 +22,7 @@ public class CalendarController {
 	// ================ 사용자 ================
 	@RequestMapping("viewUserCal.ca")
 	public String userCalendar() {
-		return "calendar/calendar"; //userCalendar로 수정하기
+		return "calendar/userCalendar"; //userCalendar로 수정하기
 	}
 	
 	/**
