@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.h4j.ITtranet.project.model.vo.Newsfeed;
+import com.h4j.ITtranet.project.model.vo.Todo;
 
 @Repository
 public class NewsfeedDao {
@@ -28,6 +29,10 @@ public class NewsfeedDao {
 
 	public int deleteFeed(SqlSessionTemplate sqlSession, int nfNo) {
 		return sqlSession.update("newsfeedMapper.deleteFeed", nfNo);
+	}
+
+	public ArrayList<Todo> prTodo(SqlSessionTemplate sqlSession, String prNo) {
+		return (ArrayList)sqlSession.selectList("todoMapper.projectTodo", prNo);
 	}
 
 

@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.project.model.service.NewsfeedService;
 import com.h4j.ITtranet.project.model.vo.Newsfeed;
+import com.h4j.ITtranet.project.model.vo.Todo;
 
 @Controller
 public class NewsfeedController {
@@ -42,8 +43,11 @@ public class NewsfeedController {
 	public ModelAndView prNewsfeed(String prNo, ModelAndView mv) {
 		
 		ArrayList<Newsfeed> list = nService.prNewsfeed(prNo);
-		mv.addObject("list", list).setViewName("project/project");
+		ArrayList<Todo> todo = nService.prTodo(prNo);
+		
+		mv.addObject("list", list).addObject("todo", todo).setViewName("project/project");
 		System.out.println("프로젝트 뉴스피드 db : " + list);
+		System.out.println("프로젝트 업무 db : " + todo);
 		return mv;		
 	}
 	

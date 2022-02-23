@@ -223,34 +223,42 @@
             <thead>
                 <tr style="background-color: rgba(209, 189, 220, 0.7); border: none; font-size: 14px; ">
                     <th width="50"></th>
-                    <th width="100">no</th>
-                    <th width="350px">업무</th>
-                    <th width="140">상태</th>
-                    <th width="140">만료일</th>
+                    <th width="50">no</th>
+                    <th width="340px">업무</th>
+                    <th width="115">담당자</th>
+                    <th width="115">상태</th>
+                    <th width="115">만료일</th>
                 </tr>
             </thead>
             <tbody>
+            	<c:forEach var="t" items="${ todo }">
                 <tr>
                     <td>&emsp;<input type="checkbox"></td>
                     <td>1</td>
-                    <td>DB 수정</td>
-                    <td>대기</td>
-                    <td>22.01.15</td>
+                    <td>${ t.todoTitle }</td>
+                    <td>${ t.empName }</td>
+                    <td>
+	                   <c:choose>
+	                       <c:when test="${ t.status eq 'W'}">
+	                        	대기
+	                       </c:when>
+	                       <c:when test="${ t.status eq 'Y'}">
+	                           	진행중
+	                       </c:when>	                            		
+	                       <c:when test="${ t.status eq 'O'}">
+	                                                              완료
+	                       </c:when>
+	                       <c:when test="${ t.status eq 'L'}">
+	                           	지연
+	                        </c:when>	                            		
+	                        <c:when test="${ t.status eq 'N'}">
+	                           	삭제
+	                        </c:when>
+	                      </c:choose>    
+                    </td>
+                    <td>${ t.todoEnddate }</td>
                 </tr>
-                <tr>
-                    <td>&emsp;<input type="checkbox"></td>
-                    <td>2</td>
-                    <td>최종보고서 제출, 발표</td>
-                    <td>진행중</td>
-                    <td>22.01.13</td>
-                </tr>
-                <tr>
-                    <td>&emsp;<input type="checkbox"></td>
-                    <td>3</td>
-                    <td>프로젝트 멤버 초대</td>
-                    <td>대기</td>
-                    <td>22.01.10</td>
-                </tr>
+                </c:forEach>
             </tbody>
         </table>
 

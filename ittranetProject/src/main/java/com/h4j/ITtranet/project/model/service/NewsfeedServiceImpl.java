@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.h4j.ITtranet.project.model.dao.NewsfeedDao;
 import com.h4j.ITtranet.project.model.vo.Newsfeed;
+import com.h4j.ITtranet.project.model.vo.Todo;
 
 @Service
 public class NewsfeedServiceImpl implements NewsfeedService {
@@ -46,6 +47,12 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	@Override
 	public int deleteFeed(int nfNo) {
 		return nDao.deleteFeed(sqlSession, nfNo);
+	}
+	
+	// 프로젝트 업무 조회
+	@Override
+	public ArrayList<Todo> prTodo(String prNo) {
+		return nDao.prTodo(sqlSession, prNo);
 	}
 	
 }

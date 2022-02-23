@@ -3,6 +3,7 @@ package com.h4j.ITtranet.project.model.service;
 import java.util.ArrayList;
 
 import com.h4j.ITtranet.project.model.vo.Newsfeed;
+import com.h4j.ITtranet.project.model.vo.Todo;
 
 public interface NewsfeedService {
 
@@ -18,4 +19,7 @@ public interface NewsfeedService {
 	
 	// 프로젝트 뉴스피드 게시글 삭제
 	int deleteFeed(int nfNo);
+	
+	// 프로젝트 업무 조회 
+	ArrayList<Todo> prTodo(String prNo);
 }

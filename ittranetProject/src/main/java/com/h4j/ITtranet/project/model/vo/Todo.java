@@ -16,6 +16,7 @@ public class Todo {
 	private int todoNo;
 	private String prNo;
 	private String EmpNo;
+	private String empName;
 	private String todoTitle;
 	private String todoStartdate;
 	private String todoEnddate;
