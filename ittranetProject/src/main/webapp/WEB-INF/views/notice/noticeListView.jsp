@@ -38,7 +38,9 @@
     #paging-area{
         text-align: center;
     }
-    
+    #searchType-area, #header-area, #input-area{
+        display: inline-block;
+    }
     .pageBtn{
         width : 25px;
         height : 30px;
@@ -187,23 +189,63 @@
                         
                         <div id="search-area" align="center">     
                         	<form id="searchArea" name="searchArea">
-	                            <select name="search" id="searchSelect">
+	                            <select name="search" id="searchSelect" onchange="changeSelect();">
 	                                <option value="noticeTitle">글제목</option>
-	                                <option value="empName">작성자</option>
+	                                <option value="noticeContent">글내용</option>
 	                                <option value="noticeHeader">말머리</option>
 	                            </select>
-	                            <input type="text" id="keyword" name="keyword">
+                               
+                                <div id="searchType-area">
+                                    <div id="input-area">
+                                        <input type="text" id="keyword" class="keyword" name="keyword">
+                                    </div>
+                                    <div id="header-area" style="display:none">
+                                        <select name="headerType" id="headerType" onchange="changeHeader();">
+                                            <c:forEach var="h" items="${headerList}">
+                                                <option value="${h.headerNo}" class="keyword">${h.headerTitle}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <input type="hidden" id="headerNo" name="headerNo" value="">
+                                    </div>
+                                </div>
+                               
+                                
 	                            <button type="button"id="searchBtn" class="btnStyle" onclick="getSearchList();"><a class="aTag">검색</a></button>
                         	</form>
                         </div>
                         
                         <script>
+                            $(function(){
+                                changeSelect();
+
+                                changeHeader();
+                                
+                			
+                            })
+                            function changeHeader(){
+                                // select값 넣기
+                				let $type = $("#headerType option:selected").val();
+	                   			$("#headerNo").attr("value", $type);
+                                console.log("1 : " + $type);
+                            }
+                            function changeSelect(){
+                                let value = $("#searchSelect option:selected").val();
+                                //console.log(value);
+                                if(value === 'noticeHeader'){
+                                    $("#header-area").removeAttr("style", "display:none");
+                                    $("#input-area").attr("style", "display:none");
+                                }else{
+                                    $("#header-area").attr("style", "display:none");
+                                    $("#input-area").removeAttr("style", "display:none");
+                                }
+                            }
                         	function getSearchList(){
                         		
-                        		var $keyword = $("#keyword").val();
-                        		var $type = $("#searchArea option:selected").val();
-                        		
-                        		if($keyword === ""){
+                                let $headerNo = $("#headerNo").val();
+                        		let $keyword = $("#keyword").val();
+                        		let $type = $("#searchArea option:selected").val();
+
+                        		if($type != 'noticeHeader' && $keyword === ""){
                         			Swal.fire({
                         				text: '키워드를 입력해주세요'
                         			});
@@ -215,6 +257,7 @@
                         			url : "search.no",
                         			data:{
                         				keyword: $keyword,
+                                        headerNo:$headerNo,
                         				type: $type
                         			},
                         			success:function(list){
