@@ -121,6 +121,16 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return atDao.selectVacationDetail(sqlSession, vcno);
 	}
 
+	@Override
+	public int updateVcRefuse(int vcno) {
+		return atDao.updateVcRefuse(sqlSession, vcno);
+	}
+
+	@Override
+	public int updateVcApproval(int vcno) {
+		return atDao.updateVcApproval(sqlSession, vcno);
+	}
+
 	
 
 

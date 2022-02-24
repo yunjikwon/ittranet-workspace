@@ -58,6 +58,10 @@ public interface AttendanceService {
 	// 관리자 휴가신청 상세조회
 	Vacation selectVacationDetail(int vcno);
 	
+	// 관리자 휴가신청 거절
+	int updateVcRefuse(int vcno);
+	// 관리자 휴가신청 승인
+	int updateVcApproval(int vcno);
 	
 	
 	

@@ -123,5 +123,14 @@ public class AttendanceDao {
 		return sqlSession.selectOne("attendanceMapper.selectVacationDetail", vcno);
 	}
 	
+	public int updateVcRefuse(SqlSessionTemplate sqlSession, int vcno) {
+		return sqlSession.update("attendanceMapper.updateVcRefuse", vcno);
+	}
+	
+	public int updateVcApproval(SqlSessionTemplate sqlSession, int vcno) {
+		return sqlSession.update("attendanceMapper.updateVcApproval", vcno);
+	}
+	
+	
 	
 }

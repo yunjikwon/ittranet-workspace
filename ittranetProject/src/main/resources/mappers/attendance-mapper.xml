@@ -344,6 +344,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          where vc_applyno = #{vcno}
 	</select>
 	
+	<update id="updateVcRefuse">
+		update vacation_apply
+		   set vc_status = '반려'
+		 where vc_applyno = #{vcno}
+	</update>
+	
+	<update id="updateVcApproval">
+		update vacation_apply
+		   set vc_status = '승인'
+		 where vc_applyno = #{vcno}
+	</update>
 	
 	
 	

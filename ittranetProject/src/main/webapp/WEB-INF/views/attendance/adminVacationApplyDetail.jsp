@@ -84,11 +84,26 @@
                         <div class="vc-box">
                             <!--휴가종류에 따라 제목 달라지게-->
                             ${ vc.vcType } 휴가 신청
-
-                            <div id="app-btn">
-                                <button style="background: #e6a4e0; color: red;">거절</button>
-                                <button style="background: rgb(119, 194, 135); color: white;">승인</button>
-                            </div>
+                            <c:choose>
+	                            <c:when test="${ vc.vcStatus eq '대기' }">
+	                            <div id="app-btn">
+	                                <button onclick="vcFormSubmit(1);" style="background: #e6a4e0; color: red;">거절</button>
+	                                <button onclick="vcFormSubmit(2);" style="background: rgb(119, 194, 135); color: white;">승인</button>
+	                            </div>
+	                            </c:when>
+                            </c:choose>
+                            <form id="vcForm" action="" method="post">
+				            	<input type="hidden" name="vcno" value="${ vc.vcApplyNo }">
+				            </form>
+                            <script>
+				            	function vcFormSubmit(num){
+				            		if(num == 1){ // 거절
+				            			$("#vcForm").attr("action", "vcrefuse.at").submit();
+				            		}else{ // 승인
+				            			$("#vcForm").attr("action", "vcapproval.at").submit();
+				            		}
+				            	}
+				            </script>
                             <br><br><br>
                             <div>
                                	<table border="1">

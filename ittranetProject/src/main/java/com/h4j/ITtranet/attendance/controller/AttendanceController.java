@@ -183,8 +183,6 @@ public class AttendanceController {
 	@RequestMapping("vcinsert.at")
 	public String insertVacation(Vacation vc, String empNo, MultipartFile upfile, HttpSession session, Model model) {
 		
-		System.out.println(upfile);
-		
 		if(!upfile.getOriginalFilename().equals("")) {
 			String changeName = saveFile(upfile, session);
 			
@@ -235,7 +233,36 @@ public class AttendanceController {
 		
 		return mv;
 	}
+	
+	// 관리자 휴가 거절
+	@RequestMapping("vcrefuse.at")
+	public String updateVcRefuse(int vcno, HttpSession session, Model model) {
+		int result = atService.updateVcRefuse(vcno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "휴가신청이 거절됐습니다.");
+			return "redirect:yvclist.ad";
+			
+		}else {
+			model.addAttribute("errorMsg", "휴가신청 거절 실패");
+			return "common/errorPage";
+		}
+	}
 
+	// 관리자 휴가 승인
+	@RequestMapping("vcapproval.at")
+	public String updateVcApproval(int vcno, HttpSession session, Model model) {
+		int result = atService.updateVcApproval(vcno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "휴가신청이 승인됐습니다.");
+			return "redirect:yvclist.ad";
+			
+		}else {
+			model.addAttribute("errorMsg", "휴가신청 승인 실패");
+			return "common/errorPage";
+		}
+	}
 	
 	
 	
