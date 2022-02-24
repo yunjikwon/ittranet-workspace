@@ -36,5 +36,13 @@ public class EmployeeDao {
 		return sqlSession.update("memberMapper.updateMember", e);
 	}
 	
+	public int deleteMember(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.update("memberMapper.deleteMember", empNo);
+	}
+	
+	public int updatePwd(SqlSessionTemplate sqlSession, Employee e) {
+		return sqlSession.update("memberMapper.updatePwd", e);
+	}
+	
 
 }

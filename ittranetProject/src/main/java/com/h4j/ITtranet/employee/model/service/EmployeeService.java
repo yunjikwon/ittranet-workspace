@@ -23,15 +23,14 @@ public interface EmployeeService {
 	// 회원가입 (insert)
 	int insertMember(Employee e);
 	
-	// ~~~~~~~~~~~~~~ 여기서부터 해야하는 부분~~~~~~~~~~~~~
 	// 정보수정 (update)
 	int updateMember(Employee e);
 	
 	// 회원탈퇴 (update)
-	int deleteMember(String empId);
+	int deleteMember(String empNo);
 		
 	// 비밀번호 변경
-	int updatePwd(String empPwd);
+	int updatePwd(Employee e);
 	
 	// ~~사원 추가
 	// 사원 추가 페이지 호출 addEmpForm.me
