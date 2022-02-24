@@ -1,5 +1,7 @@
 package com.h4j.ITtranet.approval.model.vo;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,13 @@ public class AppLine {
 	private String job;
 	private String empId;
 	private String empName;
+	
+	private int aplineNo; 			// 결재선 번호 (seq_lino)
+	private int drNo;				// 기안문서번호(seq_drno)
+	private int empNo;				// 결재자 사원번호
+	private String aplineOrder;		// 결재순번(결재순서1순위 2순위)
+	private String apDivision;		// 결재상태 (대기/진행중/반려/완료)
+	private Date apDate;			// 결재일
 	
 	//검색 필터
 	private String keywordTeam; 	// 팀 이름 검색

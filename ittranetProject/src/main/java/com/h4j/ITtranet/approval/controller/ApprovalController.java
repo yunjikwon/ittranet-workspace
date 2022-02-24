@@ -1,16 +1,22 @@
 package com.h4j.ITtranet.approval.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.h4j.ITtranet.approval.model.service.ApprovalService;
+import com.h4j.ITtranet.approval.model.vo.AppLine;
 import com.h4j.ITtranet.approval.model.vo.Approval;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.template.Pagination;
@@ -19,8 +25,8 @@ import com.h4j.ITtranet.common.template.Pagination;
 public class ApprovalController {
 	@Autowired
 	private ApprovalService aService;
-	
-	// ----- "기안" 게시판 ------
+
+	// ----- "기안" 게시판 select ------
 	@RequestMapping("draftWait.dr")
 	public ModelAndView draftWaitSelect(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv, HttpServletRequest request) throws Exception {
 		//category 추출 : @RequestParam
@@ -38,15 +44,16 @@ public class ApprovalController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
-		
-		
+		// 결재자 list 출력
+		ArrayList<AppLine> linePerson = aService.selectAppName();
 		
 		// list 출력
 		ArrayList<Approval> list = aService.selectList(pi, category);
-
+		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("category", category)
+		  .addObject("linePerson", linePerson)
 		  .setViewName("approval/draftWait");
 		
 		return mv;
@@ -138,10 +145,53 @@ public class ApprovalController {
 	}
 	
 	
+	// ----- 기안 insert ------
+	@RequestMapping("insert.dr")
+	public String insertDraft(Approval app, int formNo, HttpSession session, Model model) {
+		ArrayList<AppLine> appList = app.getAppList();
+		int result = aService.insertDraft(app, formNo, appList);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "기안 작성 완료되었습니다.");
+			return "redirect:draftWait.dr";
+		}else { // 실패 => 에러페이지 포워딩
+			model.addAttribute("errorMsg", "게시글 등록 실패");
+			return "common/error";
+		}
+	}
 	
+	// ----- 기안 상세페이지 ------
+	@RequestMapping("detail.dr")
+	public ModelAndView selectDetail(int drNo, ModelAndView mv) {
+		Approval b = aService.selectDetail(drNo);
+		mv.addObject("b", b).setViewName("approval/drDetailView");
+		return mv;
+	}
 	
-	
-	
+	// ------- 기안게시판 검색 ---------
+	@ResponseBody
+	@RequestMapping(value = "search.board" , produces="application/json; charset=utf-8")
+	public String selectSearchBoard(Integer searchType, Integer searchDate) {
+
+		ArrayList<Approval> list = new ArrayList<>();
+		String boardSearch = "boardSearch";
+		
+		if(searchType != 0 || searchDate == null) {
+			HashMap<String, Integer> map = new HashMap<String, Integer>();		
+			map.put("boardSearch", searchType);
+			System.out.println("searchType map : " + map);
+			list = aService.selectSearchForm(map);
+		}	
+		else if(searchType == null || searchDate != 0) {
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("boardSearch", searchDate);
+			System.out.println("searchDate map : " + map);
+			list = aService.selectSearchDate(map);
+		}
+		
+		
+		return new Gson().toJson(list);
+	}
 	
 	
 	
