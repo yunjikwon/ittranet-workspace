@@ -44,6 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="work_sum" property="workSum" />
 		<result column="absence_count" property="absenceCount" />
 		
+		<result column="emp_name" property="empName" />
+		<result column="team_name" property="teamName" />
 	</resultMap>
 	
 	
@@ -151,6 +153,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select
 			   att_no
 			 , emp_no
+			 , emp_name
+			 , team_name
 			 , att_date
 			 , arrive_time
 			 , leave_time
@@ -158,6 +162,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 , outwork_time
 			 , att_status
 		  from attendance
+		  join employee using(emp_no)
+		  join team using(team_code)
 		  <!-- insert 구현 후 수정할것!!!! -->
 		 where att_date = to_char(sysdate, 'MM/DD/YYYY')
 		 order
@@ -166,6 +172,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectAdminYear" resultMap="attendanceResult">
 		select emp_no
+			 , emp_name
+			 , team_name
        		 , count(case when att_status='지각' then 1 end) AS "LATE_COUNT"
         	 , count(case when att_status='조퇴' then 1 end) AS "EARLY_COUNT"
         	 <!-- 총근무일수 나중에 수정할것!!!!! -->
@@ -173,9 +181,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         	 , count(*) as "DAY_COUNT"
         	 , sum(round((to_date(leave_time, 'HH24:MI') - to_date(arrive_time, 'HH24:MI')) * 24, 1)) AS "WORK_SUM"
           from attendance
+          join employee using(emp_no)
+          join team using(team_code)
          where substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
          group 
-            by emp_no
+            by emp_no, emp_name, team_name
          order 
             by emp_no
 	</select>

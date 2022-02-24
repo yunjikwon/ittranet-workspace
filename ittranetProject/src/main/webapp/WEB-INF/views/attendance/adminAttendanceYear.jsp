@@ -59,6 +59,10 @@
         width: 30px;
         border-radius: 9px;
     }
+    /*메뉴바 픽스 스타일*/
+    .attendance_mn{
+    	color: #000000;
+    }
 </style>
 </head>
 <body>
@@ -84,8 +88,7 @@
                     <div class="content-area">
                         &lt; YYYY년 &gt;
                         <br><br>
-                        <c:if test="${ not empty list }">
-	                        <div class="vc-box">
+                        <div class="vc-box">
 	                            <select name="" id="">
 	                                <option value="">무슨팀</option>
 	                                <option value="">무슨팀</option>
@@ -96,6 +99,7 @@
 	                                <button><i class="fas fa-search"></i></button>
 	                            </div>
 	                            <br><br><br>
+                        		<c:if test="${ not empty list }">
 	                            <table border="1">
 	                                <thead>
 	                                    <tr>
@@ -111,8 +115,8 @@
 	                                <tbody>
 		                                <c:forEach var="at" items="${ list }">
 		                                    <tr>
-			                                    <td>${ at.empNo }</td>
-			                                    <td>무슨팀</td>
+			                                    <td>${ at.empName }</td>
+			                                    <td>${ at.teamName }</td>
 			                                    <td>${ at.lateCount }</td>
 			                                    <td>${ at.earlyCount }</td>
 			                                    <td>${ at.absenceCount }</td>
@@ -130,8 +134,8 @@
 	                                <button class="page">&gt;</button>
 	                                
 	                            </div>
-	                        </div>
-                        </c:if>
+                        	</c:if>
+                        </div>
                     </div>
                 </div>
             </div>
