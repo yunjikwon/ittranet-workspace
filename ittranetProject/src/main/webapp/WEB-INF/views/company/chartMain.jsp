@@ -295,14 +295,14 @@
                                 },success:function(list){
                                     //console.log(list.profile);
                                    
-                                    if(!list.profile){
-                                        console.log('1');
-                                        let img = list.profile;
-                                        $("#profile-div").html(img);
-                                    }else{
+                                    if(list.profile === "NULL"){
+                                        //console.log('1');
                                         let img = "<i class='fas fa-solid fa-user fa-4x'></i>";
                                         $("#profile-div").html(img);
-                                        console.log('2');
+                                    }else{
+                                        let img =  "<img width='90' height='90' src='" + list.profile + "'/>";
+                                        $("#profile-div").html(img);
+                                        //console.log('2');
                                     }
 
                                     let value = "";

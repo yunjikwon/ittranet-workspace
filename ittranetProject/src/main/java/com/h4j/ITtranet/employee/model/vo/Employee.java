@@ -31,6 +31,9 @@ public class Employee {
 	private String status;
 	private String admin;
 	private String profile;
+	private String deptName;
+	private String teamName;
+	private String jobName;
 
 
 }

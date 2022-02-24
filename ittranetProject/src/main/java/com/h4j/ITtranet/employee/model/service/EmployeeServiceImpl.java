@@ -50,11 +50,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public int updateMember(Employee e) {
-		return 0;
+		return eDao.updateMember(sqlSession, e);
 	}
 
 	@Override
 	public int deleteMember(String empId) {
+		return 0;
+	}
+
+	@Override
+	public int updatePwd(String empPwd) {
 		return 0;
 	}
 

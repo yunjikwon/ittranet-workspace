@@ -179,12 +179,12 @@
                                             for(let i in list){
                                                 value += "<tr>"
                                                         +    "<th rowspan='3' width='100' height='80'>"; 
-                                                if(!list.profile){
-                                                    console.log('1');
+                                                if(list[i].profile === "NULL"){
+                                                    //console.log('1');
                                                     value += "<i class='fas fa-solid fa-user fa-4x'></i>";
                                                 }else{
-                                                    console.log('2');
-                                                    value += list.profile;
+                                                    //console.log('2');
+                                                    value += "<img width='90' height='90' src='" + list[i].profile + "'/>";
                                                 }
                                                 value += "</th>"
                                                         +    "<th width='100'>사원명</th>"
@@ -247,10 +247,13 @@
                                             for(let i in list){
                                                 value += "<tr>"
                                                         +    "<th rowspan='3' width='100' height='80'>"; 
-                                                if(!list.profile){
+                                                if(list[i].profile === "NULL"){
+                                                	//console.log('1');
                                                     value += "<i class='fas fa-solid fa-user fa-4x'></i>";
                                                 }else{
-                                                    value += list.profile;
+                                                	console.log('2');
+                                                	//console.log(list[i].profile);
+                                                    value += "<img width='90' height='90' src='" + list[i].profile + "'>";
                                                 }
                                                 value += "</th>"
                                                         +    "<th width='100'>사원명</th>"
