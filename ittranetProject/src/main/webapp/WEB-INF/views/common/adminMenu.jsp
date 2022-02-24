@@ -8,11 +8,12 @@
 <style>
     /*메뉴바 스타일*/
     .menubar{
-        width: 80%;
+        width: 1000px;
         float: right;
         height: 150px;
         list-style: none;
         margin-bottom: 30px;
+        margin-right: 10%;
     }
     .menu{
         width: 120px;
@@ -85,9 +86,10 @@
 </head>
 <body>
     <!--메뉴바 영역-->
-    <ul class="menubar">
+    <div class="menubar">
+    <ul>
         <li class="menu">
-            <a href="">
+            <a href="dayat.ad">
                     <div class="circle" style="background: rgb(147, 205, 207)">
                         <i class="fas fa-briefcase fa-3x attendance_mn"></i> 
                     </div>
@@ -143,5 +145,6 @@
             </a>
         </li>
     </ul>
+</div>
 </body>
 </html>
