@@ -15,13 +15,11 @@
         width: 300px;
         margin-left: 20px;
         margin-top: 20px;
-        border: 1px solid red;
     }
     .menunamepro2{
         width: 300px;
         margin-left: 20px;
         margin-top: 20px;
-        border: 1px solid purple;
     }
     .proing{
        border: 1px solid rgb(128, 127, 127);
@@ -61,10 +59,8 @@
 	}
 	
 	.projectBox{
-		border:1px solid orange;
 	}
 	.projectBox2{
-		border:1px solid blue;
 	}
 	
 </style>
@@ -122,6 +118,8 @@
 		            </div>
 				</c:forEach>
 		   </div>
+		   
+		   <br clear="both">
 		   
         <div class="projectBox2">
         <!-- 종료된 프로젝트 -->
