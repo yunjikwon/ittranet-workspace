@@ -20,7 +20,10 @@
            width:1200px;
            height:auto;
           }
-    /*여기부터*/
+    #delClick{
+    	background:plum;
+    	color:rgb(240, 195, 237);
+    }
     #hi{
         font-size:45px;
         text-align: center;
@@ -189,10 +192,10 @@
 			        <br>
 			        <div class="btns" style="margin-left:500px;">
 			        	<div style="float:left; margin-right:30px;">
-				        	<button class="clickHere" style="width:100px;" id="updClick" type="submit" onclick="updateMe();">수정</button>			        	
+				        	<button class="clickHere" style="width:100px;" id="updClick" type="submit">수정</button>			        	
 			        	</div>
 			        	<div style="float:left; margin:auto;">
-				        	<button class="clickHere" style="width:100px; " id="delClick" type="button" onclick="deleteMe();">탈퇴</button> 
+				        	<button class="clickHere" style="width:100px; " id="delClick" type="button" data-toggle="modal" data-target="#deleteForm">탈퇴</button> 
 			        	</div>
        				</div>
        				<br><br><br><br><br>
@@ -208,15 +211,50 @@
 				        <input class="input-form" placeholder="상세주소" name="addr3" id="addr3" type="text"/><br><br>
 				        <button class="clickHere" type="button" style="font-size: 30px;" onclick="updateAddress();">CLICK!</button>
 		        	</div> 
-		        </div>
-
-		        
+		        </div>  
 		        
         	  </div> <%-- mainOuter --%>
 			
 		</div> <%-- innerBack --%>
 	
 	</div> <%-- back --%>
+	
+	<%-- 모달창을 위해 중복추가 --%>
+	<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<%-- 회원 탈퇴 버튼 모달창 --%>
+	<div class="modal" id="deleteForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">회원탈퇴</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+            
+                <!-- Modal body -->
+                <div class="modal-body" align="center">            
+                    <b>
+			             <br>탈퇴 후 복구가 불가능합니다.<br>   
+			                        정말로 탈퇴 하시겠습니까?<br>
+                    </b>
+                    <form action="delete.me" method="post">
+                        <input type="password" name="empPwd" required placeholder="비밀번호 입력"> 
+                        <input type="hidden" name="empNo" value="${ loginUser.empNo }"><br>
+                        <button type="submit" class="btn btn-danger">탈퇴하기</button><br>
+                    </form>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+	
+	
+	
 	
 	<script>
 	    const body = document.querySelector('body');
@@ -288,8 +326,6 @@
 	   		body.style.overflow = 'auto';
 	   		
 	   	};
-	   	
-	   	
 	</script>
 
 </body>

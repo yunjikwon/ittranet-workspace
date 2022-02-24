@@ -51,7 +51,7 @@
 	<div class="FormcontentArea">
 
         <br>
-        <div class="content" onclick="location.href='expenditure.fo'">
+        <div class="content" onclick="location.href='form.fo?formNo=4'">
             <div id="cTitle">지출결의서</div>
             <hr>		        
             <div id="cEx">
@@ -59,35 +59,35 @@
             </div>
         </div>
 
-        <div class="content" onclick="location.href='budget.fo'">
+        <div class="content" onclick="location.href='form.fo?formNo=5'">
             <div id="cTitle">추가예산신청</div>
             <hr>
             <div id="cEx">
                 	프로젝트 비용<br> 추가 신청
             </div>
         </div>
-        <div class="content" onclick="location.href='overtime.fo'">
+        <div class="content" onclick="location.href='form.fo?formNo=3'">
             <div id="cTitle">연장근무신청</div>
             <hr>
             <div id="cEx">
                 	연장 근무 신청 양식
             </div>
         </div>
-        <div class="content" onclick="location.href='proceedings.fo'">
+        <div class="content" onclick="location.href='form.fo?formNo=6'">
             <div id="cTitle">회의록</div>
             <hr>
             <div id="cEx">
                 	회의록 양식
             </div>
         </div>
-        <div class="content" onclick="location.href='bussiness.fo'">
+        <div class="content" onclick="location.href='form.fo?formNo=1'">
             <div id="cTitle">사업계획서</div>
             <hr>
             <div id="cEx">
               	 새로운 프로젝트/사업시<br>계획서 양식
             </div>
         </div>
-        <div class="content" onclick="location.href='apology.fo'">
+        <div class="content" onclick="location.href='form.fo?formNo=2'">
             <div id="cTitle">시말서</div>
             <hr>
             <div id="cEx">

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.h4j.ITtranet.approval.model.service.ApprovalService;
 import com.h4j.ITtranet.approval.model.vo.AppLine;
+import com.h4j.ITtranet.approval.model.vo.Approval;
 
 @Controller
 public class FormController {
@@ -19,38 +20,25 @@ public class FormController {
 	private ApprovalService aService;
 
 	// ----- 양식 ------
-	@RequestMapping("bussiness.fo")
-	public String bussinessPlanForm() {
-		// /WEB-INF/views/approval/form/bussinessPlan.jsp
-		return "approval/form/bussinessPlan";
+	@RequestMapping("form.fo")
+	public String formSelect(int formNo) {
+		String str = "";
+		switch(formNo) {
+			case 1: str = "bussinessPlan";
+					break;
+			case 2: str = "apology";
+					break;		
+			case 3: str = "overtime";
+					break;		
+			case 4: str = "expenditure";
+					break;
+			case 5: str = "budget";
+					break;		
+			case 6: str = "proceedings";
+					break;			
+		}
+		return "approval/form/" + str;
 	}
-	
-	@RequestMapping("apology.fo")
-	public String apologyForm() {
-		return "approval/form/apology";
-	}
-	
-	@RequestMapping("overtime.fo")
-	public String overtimeForm() {
-		return "approval/form/overtime";
-	}
-	
-	@RequestMapping("expenditure.fo")
-	public String expenditureForm() {
-		return "approval/form/expenditure";
-	}
-	
-	@RequestMapping("budget.fo")
-	public String budgetForm() {
-		return "approval/form/budget";
-	}
-	
-	@RequestMapping("proceedings.fo")
-	public String proceedingsForm() {
-		return "approval/form/proceedings";
-	}
-	
-	
 	
 	//새기안 모달창
 	@RequestMapping("newForm.fo")
@@ -63,6 +51,8 @@ public class FormController {
 	public String approvalLine() {
 		return "approval/form/line";
 	}
+	  	
+
 	
 	// 검색
 	@ResponseBody
@@ -72,7 +62,7 @@ public class FormController {
 		
 		if(flag == 1) { // 팀 검색 요청
 			list = aService.selectSearchTeam(keyword);
-		} else{
+		} else{ // 성명 검색 요청
 			list = aService.selectSearchName(keyword);
 		}
 		
