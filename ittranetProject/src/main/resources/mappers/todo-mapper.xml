@@ -83,4 +83,55 @@
 	   join employee e on e.emp_no = t.emp_no
 	   where pr_no = #{prNo}
 </select>
+
+<insert id="insertTodo">
+	insert 
+	      into todo
+	         (
+	           todo_no
+	         , pr_no
+	         , emp_no
+	         , todo_title
+	         , todo_enddate
+	         , todo_content
+	         , status
+	         )
+	     values
+	        (
+	          seq_todono.nextval
+	        , #{prNo}
+	        , #{empNo}
+	        , #{todoTitle}
+	        , todoEnddate
+	        , todoContent
+	        , status
+	        )
+</insert>
+
+<insert id="insertReply">
+	insert
+	   into reply
+	   (
+	   	   reply_no
+	   	  ,reply_content
+	   	  ,emp_no
+	   	  ,ref_code
+	   	  ,ref_no
+	   	  ,create_date
+	   	  ,status
+	   )
+	   values
+	   (
+	   	   seq_reply.nextval
+	   	  ,#{replyContent}
+	   	  ,#{empNo}
+	   	  ,'NF'
+	   	  ,#{refNo}
+	   	  ,sysdate
+	   	  ,'Y'
+	   )
+</insert>
+
+
+
 </mapper>

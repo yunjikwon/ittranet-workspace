@@ -16,8 +16,19 @@
  	<result column="emp_name" property="empName"  />
  	<result column="profile"  property="profile"  />
  	<result column="pr_logo" property="prLogo"  />
+ 	<result column="origin_name" property="originName" />
+	<result column="change_name" property="changeName" />
  </resultMap>
  
+ 	<resultMap id="attachment" type="Attachment">
+		<result column="attachment_no" property="attachmentNo" />
+		<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
+		<result column="file_path" property="filePath" />
+		<result column="ref_code" property="refCode" />
+		<result column="ref_no" property="refNo" />
+	</resultMap>
+	
  <select id="selectNews" resultMap="NewsfeedList">
 	select
 	    nf_no
@@ -61,10 +72,27 @@
 	join project p on p.pr_no = n.pr_no
 	join employee e on e.emp_no = n.emp_no
 	where p.pr_no = #{prNo}
+	and n.status = 'Y'
+ </select>
+ 
+ <select id="nfNo" resultMap="NewsfeedList">
+ 	select
+	    nf_no
+	   ,n.pr_no
+	   ,n.emp_no
+	   ,nf_content
+	   ,nf_date
+	   ,e.emp_name
+	   ,e.profile
+	   ,p.pr_title
+	from newsfeed n
+	join project p on p.pr_no = n.pr_no
+	join employee e on e.emp_no = n.emp_no
+	where n.nf_no = #{nfNo}
  </select>
  
  <insert id="insertFeed">
- 		insert
+ 	insert
 		  into NEWSFEED
 		  (
 		    nf_no
@@ -83,6 +111,40 @@
 		  )
  </insert>
 
+<insert id="insertAttachment">
+	insert 
+	      into attachment
+	         (
+	           attachment_no
+	         , file_path
+	         , origin_name
+	         , change_name
+	         , ref_code
+	         , ref_no
+	         )
+	     values
+	        (
+	          seq_atno.nextval
+	        , #{filePath}
+	        , #{originName}
+	        , #{changeName}
+	        , 'NF'
+	        , seq_nfno.currval
+	        )
+</insert>
+
+<select id="prAttachment" resultMap="attachment">
+ 		select attachment_no
+ 		     , origin_name
+ 		     , change_name
+ 		     , file_path
+ 			 , ref_no
+		  from attachment
+		 where ref_Code = 'B'
+		   and ref_no = #{boardNo}
+
+
+</select>
  
  <update id="deleteFeed">
 		 update

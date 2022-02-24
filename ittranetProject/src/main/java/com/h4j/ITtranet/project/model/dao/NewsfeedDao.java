@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.h4j.ITtranet.common.model.vo.Attachment;
+import com.h4j.ITtranet.common.model.vo.Reply;
 import com.h4j.ITtranet.project.model.vo.Newsfeed;
 import com.h4j.ITtranet.project.model.vo.Todo;
 
@@ -33,6 +35,18 @@ public class NewsfeedDao {
 
 	public ArrayList<Todo> prTodo(SqlSessionTemplate sqlSession, String prNo) {
 		return (ArrayList)sqlSession.selectList("todoMapper.projectTodo", prNo);
+	}
+
+	public int insertAttachment(SqlSessionTemplate sqlSession, Attachment a) {
+		return sqlSession.insert("newsfeedMapper.insertAttachment", a);
+	}
+
+	public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("newsfeedMapper.insertReply", r);
+	}
+
+	public Newsfeed nfNo(SqlSessionTemplate sqlSession, String prNo) {
+		return sqlSession.selectOne("newsfeedMapper.nfNo", prNo);
 	}
 
 

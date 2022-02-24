@@ -65,7 +65,7 @@
        border:1px solid rgb(190, 190, 190);
        border-radius: 5mm;
        width: 830px;
-       height: 150px;
+       height: 200px;
        padding: 10px;
        background-color: rgba(211, 196, 220, 0.47);
    }
@@ -75,6 +75,7 @@
        height: 80px;
        border-radius: 2mm;
        border:1px solid rgb(190, 190, 190);
+       margin-left:100px;
    }
 
    #file{
@@ -217,7 +218,8 @@
             <button class="button3">삭제</button>
             <button class="button2">상태 변경</button>
             <button class="button1">새 업무</button>
-        
+            <!-- <a data-toggle="modal" data-id="${ list.get(0).prNo }" class="button1" href="#modalid">새 업무</a> -->
+
             <br><br>
         <table class="todo" width="780" style="text-align: center;" >
             <thead>
@@ -234,7 +236,9 @@
             	<c:forEach var="t" items="${ todo }">
                 <tr>
                     <td>&emsp;<input type="checkbox"></td>
-                    <td>1</td>
+                    <td>
+                  	 1
+                    </td>
                     <td>${ t.todoTitle }</td>
                     <td>${ t.empName }</td>
                     <td>
@@ -274,39 +278,49 @@
                 <div class="profile">
                     <br>사진
                 </div>
-	                <input id="write" name="feedwrite" type="text" name="write" placeholder="&emsp;내용을 입력해주세요">
-	                <input id="file" type="file" name="file">
-	                <button id="writeok"  style="background-color: rgb(187, 159, 202);">등록</button>
-	            </div>
+                 <form id="ttt" action="ninsert.pr" method="post" enctype="multipart/form-data">
+				   <input type="hidden" name="prNo" value="${list.get(0).prNo}">
+				   <input type="hidden" name="empNo" value="${ loginUser.empNo }">
+				   <input id="write" name="nfContent" type="text" name="write" placeholder="&emsp;내용을 입력해주세요">
+          		   <input id="file" type="file" name="file">
+           		   <button type="submit" id="writeok"  style="background-color: rgb(187, 159, 202);">등록</button>
+	  			 </form>
+		        </div>
         
         <script>        
+     
         
-       	// 게시글 작성용 ajax		
-       	$("#writeok").click(function(){
- 	  		if($("#write").val().trim().length != 0){	// 유효한 게시글 작성시 insertWrite요청
- 	  			$.ajax({
- 	  				if(list.size()!=0){
-	 	  				url:"ninsert.pr",
-	 	  				data:{
-	 	  					prNo : ${list.get(0).prNo},
-	 	  					empNo : ${ loginUser.empNo },
-	 	  					nfContent : $("#write").val(),
-	 	  					// 파일을 어떻게 넘길 것인가..
-	 	  				}, success: function(status){
-	 	  					 console.log("뉴스피드 게시글 작성용 ajax통신 성공");
-	 	  					 console.log(status);
-	 	  					location.reload();
-	 	  					
-	 	  				}, error:function(){
-	 	  					console.log("뉴스피드 게시글 작성용 ajax통신 실패");
-	 	  				}
-	 	  			})			
-	 	  		}else{
-	 	  			alertify.alert("게시글 작성 후 등록 요청 해주세요 !");
-	 	  		}
- 	  		}
-       	});	       	
+          // 게시글 작성용 ajax                
+          /*
+        $("#writeok").click(function(){
+           
+            if($("#write").val().trim().length != 0){   
+               
+               let data = new FormData($("#ttt")[0]); // 해당 아이디를 가진 form요소의 요청시 전달값들을 FormData객체 형태로 만드는 과정 
+                 
+               $.ajax({
+                     url:"ninsert.pr",
+                     data: data  // 아까 위에서 만든 data 전달
+                     , processData: false
+                     , contentType: false // formData를 써서 ajax로 값을 넘기기위해 processData, contentType 속성
+                     , enctype:"multipart/form-data" // 파일 넘기려면 무조건 작성해야되는 옵션
+                     , success: function(status){
+                         console.log("뉴스피드 게시글 작성용 ajax통신 성공");
+                         console.log(status);
+                         location.reload();
+                     }, error:function(){
+                        console.log("뉴스피드 게시글 작성용 ajax통신 실패");
+                     } 
+                })
+            }else{
+              alertify.alert("게시글 작성 후 등록 요청 해주세요 !");
+            }
+
+      })
+      */
+        
         </script>
+        
            
             
             <!-- 게시물 -->
@@ -319,30 +333,36 @@
 	                    <b>${n.empName } &emsp;&emsp;&emsp;</b>
 	                    <h style="font-size: 12px; color: dimgray;">${n.nfDate } &emsp; 13:01</h>
 	                </div>
+	                
+	                <!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
 	                	<c:if test="${ loginUser.empNo eq n.empNo }">
                             <div class="buttons">
-                                <!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
-                                <button class="btn1" onclick="postFormSubmit(1);">수정</button>
-                                <button class="btn2" onclick="postFormSubmit(2);">삭제</button>
+                                <button id="updateFeed" class="btn1" onclick="postFormSubmit(1);">수정</button>
+                                <button id="deleteFeed" class="btn2" onclick="postFormSubmit(2);">삭제</button>
                             </div>
-                            
+	               		</c:if>                     
+	           
                             <form id="postForm" action="" method="post">
                                 <input type="hidden" name="nfNo" value="${ n.nfNo }">
-                            </form>
-                            
+                             <!--<input type="hidden" name="filePath" value="${ n.changeName }" >--> 
+                            </form>	               		
+	                   
                             <script>
                                 function postFormSubmit(num){
                                     if(num == 1){ // 수정하기
-                                        $("#postForm").attr("action", "nupdateForm.pr").submit();
+                                        $("#postForm").attr("action", "updateForm.pr").submit();
                                     }else{ // 삭제하기
-                                        $("#postForm").attr("action", "ndelete.pr").submit();
+                                        $("#postForm").attr("action", "delete.pr").submit();
                                     }
                                 }
                             </script>
-	                </c:if>
+
 
 	                <div class="feedcontent">
-	                    <p>${n.nfContent }</p>
+	                    <p>${n.nfContent}</p>
+	                    <p></p>
+	                    
+	                
 	                </div>
 	                
 		
@@ -360,35 +380,15 @@
 	                    <input id="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
 	                    <button id="replyok" onclick="addReply"><b>등록</b></button>
 	                </div>
-	                
-	                <script>
-	            	
-	        		if($("#replycontent").val().trim().length != 0){ // 유효한 댓글 작성시 => insert ajax요청
-	        			$.ajax({
-	        				url:"rinsert.pr",
-	        				data:{
-	     	  					prNo : ${list.get(0).prNo},
-	     	  					empNo : ${ loginUser.empNo },
-	     	  					nfContent : $("#write").val()
-	        				},success:function(status){
-	        					if(status == "success"){
-	        						selectReplyList();
-	        						$("#content").val("");
-	        					}
-	        				},error:function(){
-	        					console.log("댓글작성용 ajax 통신실패");
-	        				}
-	        			})
-	        		}else{
-	        			alertify.alert("댓글 작성후 등록 요청해주세요!");
-	        		}
-	        	
-	        	}
-	                </script>
+	            
+	          
 	            </div>
-            </c:forEach>
+            </c:forEach> 
         </div>
+        
     
+
+
     </div>
     </div>
     </div>
@@ -396,4 +396,33 @@
     
 
 </body>
+
+<!-- 새 업무 생성 모달 -->
+<div class="modal hide" id="modalid">
+
+
+ <div class="modal-header">
+  <h5 class="modal-title">새 업무</h5>
+
+   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+   </button>
+  </div>
+
+  <div class="modal-body">
+    <input type="text" name="bookId" id="bookId" value="어케 나오나"/> 
+  </div>
+</div>
+
+<script>
+$(document).on("click", ".open-modalid", function () { // 클릭하면 id가 modalid인 모달을 연다는 의미이다.
+    var myBookId = $(this).data('id'); // a태그에서 data-'id'(''는 강조의 의미)가 정의하고 있는 값을 가져와서 myBoodId에 넣는다.
+                                       // 예를 들어, a태그에서 data-title="제목"이라고 되어있다면
+                                       // 이 코드는 var myBookId = $(this).data('title')이 될 것이다.
+    $(".modal-body #bookId").val( myBookId ); // modal의 body에 있는,
+                                              // name과 id가 bookId인 태그의 value를(현재는 value="") myBookId로 바꿔준다.
+});
+</script>
+
+
 </html>

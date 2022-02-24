@@ -15,7 +15,7 @@ import lombok.ToString;
 
 public class Newsfeed {
 
-	private String nfNo;
+	private int nfNo;
 	private String prNo;
 	private String empNo;
 	private String nfContent;
@@ -25,4 +25,6 @@ public class Newsfeed {
 	private String empName;
 	private String profile;
 	private String prLogo;
+	private String originName;
+	private String changeName;
 }
