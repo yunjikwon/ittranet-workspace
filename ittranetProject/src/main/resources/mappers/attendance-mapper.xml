@@ -20,6 +20,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		<result column="emp_name" property="empName" />
 		<result column="team_name" property="teamName" />
+		<result column="rest_year" property="restYear" />
+		<result column="rest_sick" property="restSick" />
+		<result column="rest_month" property="restMonth" />
+		
+		<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
 	</resultMap>
 	
 	<resultMap id="attendanceResult" type="Attendance">
@@ -246,9 +252,63 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   and att_date = to_char(sysdate, 'MM/DD/YYYY')
 	</select>
 	
+	<select id="selectRestVacation" resultMap = "vacationResult">
+		select emp_no
+		     , nvl((select 15-sum(vc_sum)/8 
+		          from vacation_apply
+		         where vc_type = '연차'
+		           and emp_no = #{empNo}),15) as "REST_YEAR"
+		     , nvl((select 10-sum(vc_sum)/8 
+		          from vacation_apply
+		         where vc_type = '병가'
+		           and emp_no = #{empNo}),10) as "REST_SICK"
+		     , nvl((select 1-sum(vc_sum)/8 
+		          from vacation_apply
+		         where vc_type = '생리'
+		           and emp_no = #{empNo}
+		           and substr(vc_startdate, 1, 2) = to_char(sysdate, 'MM')),1) as "REST_MONTH"
+		  from vacation_apply
+		 where emp_no = #{empNo}
+		   and substr(vc_startdate, 7, 4) = to_char(sysdate, 'YYYY')
+		 group 
+		    by emp_no	
+	</select>
 	
+	<insert id="insertVacation">
+		insert
+		  into vacation_apply
+		  (
+		  	vc_applyno
+		  , emp_no
+		  , vc_type
+		  , vc_startdate
+		  , vc_enddate
+		  , vc_time
+		  , vc_content
+		  , file_path
+		  )
+		  values
+		  (
+		  	seq_vcno.nextval
+		  , #{empNo}
+		  , #{vcType}
+		  , #{vcStartDate}
+		  , #{vcEndDate}
+		  , #{vcTime}
+		  , #{vcContent}
+		  , #{filePath}
+		  )
+	</insert>
 	
-	
+	<update id="updateVacationSum">
+		update vacation_apply
+		   set vc_sum =
+          case when vc_time='오전' then 4
+           	   when vc_time='오후' then 4
+           	   when vc_time='종일' then 8*(to_date(vc_enddate,'yyyy-mm-dd')-to_date(vc_startdate,'yyyy-mm-dd')) end
+		 where emp_no = #{empNo}
+           and vc_enrolldate = to_char(sysdate, 'yy/mm/dd')
+	</update>
 	
 	
 	

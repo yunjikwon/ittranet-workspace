@@ -67,6 +67,8 @@
             height:200px;
             margin:auto;
             border-bottom: 2px solid rgba(94, 94, 94, 0.6);
+            overflow-y:auto;
+            position:relative;
         }
         .boardList{
             width:100%;
@@ -80,10 +82,14 @@
             height:30px;
         }
         .boardList th{
-            background-color: rgba(94, 94, 94, 0.8);
+            background-color: #6C6C6C;
             color:white;
             padding:8px;
         }
+        .boardList thead{
+        	position:sticky; top:0px;
+        }
+        
 
         .arrowbtn{
             background-color: white;
@@ -100,7 +106,7 @@
             margin:auto;
         }        
         #savebtn{
-            background-color: rgba(94, 94, 94, 0.8);
+            background-color: #6C6C6C;
             color:white;
             width:80px;
             height: 40px;
@@ -113,6 +119,11 @@
             background-color: gray;
         }
         
+        input[type="checkbox"]:checked {
+	        background-color: red;
+	        border-color: rgba(255, 255, 255, 0.3);
+	        color: white;
+	    }
 
         
     </style>
@@ -138,7 +149,7 @@
 	                    <label class="stitle">팀</label>
 	                    <div class="searchBox">
 	                        <input type="text" id="keywordTeam" value="" class="sinput" placeholder="검색어 입력">
-	                        <button onclick="searchList()" class="sbtnTeam">검색</button>
+	                        <button onclick="searchList(1)" class="sbtnTeam">검색</button>
 	                    </div>
 	
 	                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -146,7 +157,7 @@
 	                    <label class="stitle">성명</label>
 	                    <div class="searchBox">
 	                        <input type="text" id="keywordName" value="" class="sinput" placeholder="검색어 입력">
-	                        <button onclick="searchList()" class="sbtnName">검색</button>
+	                        <button onclick="searchList(2)" class="sbtnName">검색</button>
 	                    </div>
 	                </div>
 	        	       
@@ -174,8 +185,10 @@
 
             <button class="arrowbtn"><img src="resources/images/approval/down-arrow.png" alt=""></button>
             <button class="arrowbtn"><img src="resources/images/approval/up-arrow.png" alt=""></button>
-
+			
+			<div id="cloneTest"></div>
             <div class="tablelayout">
+            	
 	            <table class="boardList" align="center">
 	                <thead>
 	                  <tr>
@@ -186,33 +199,31 @@
 	                    <th>직원명</th>
 	                  </tr>
 	                </thead>
-	                <tbody>
+	                <tbody id="boardListTwo">
 	                    
 	
 	                </tbody>
 	            </table>
+	            
 	        </div>
 
             <br><br>
-            <button id="savebtn" type="submit">저장하기</button>
-
+            <button data-dismiss="modal" id="savebtn" type="button" >저장하기</button>
+		
 
         </div>    
        </div>
        
     <script>
-    	function searchList(){
+    /*검색기능*/
+    	function searchList(flag){
     		
     		let keyword="";
-    		let flag="";
-    		if($(".sbtnTeam").click){
+    		if(flag == 1 ){
     			keyword = $("#keywordTeam").val();
-    			flag = 1;
-    		} if($(".sbtnName").click) {
+    		} else {
     			keyword = $("#keywordName").val();
-    			flag = 2;
     		}
-	    			
 	    			
 	    		$.ajax({
 	    			type : 'GET',
@@ -221,28 +232,104 @@
 	    				keyword:keyword,
 	    				flag:flag
 	    			}, success : function(list){
+	    				
+				    		console.log(keyword);	
 		    				console.log(list);
+		    				
 		    				//테이블 초기화
 		    				$('#boardList > tbody').empty();
 		    				
 		    				let str="";
 		    					for(let i in list){
-		    						str +="<tr>"
-			    						   + "<td><input type='checkbox' name='' value=''></td>"
-			    						   + "<td>"+ list[i].team + "</td>"
-			    						   + "<td>"+ list[i].job + "</td>"
-			    						   + "<td>"+ list[i].empId + "</td>"
-			    						   + "<td>"+ list[i].empName + "</td>"
+		    						str +="<tr class='rows'>"
+			    						   + "<td><input style='zoom:1.5;' type='checkbox' onclick='changeColor(this)' name='checkPerson'></td>"
+			    						   + "<td name='team'>"+ list[i].team + "</td>"
+			    						   + "<td name='job'>"+ list[i].job + "</td>"
+			    						   + "<td name='empId'>"+ list[i].empId + "</td>"
+			    						   + "<td name='empName'>"+ list[i].empName + "</td>"
+			    						   + "<input type='hidden' name='apempNo' value='" + list[i].empNo + "'>"
+			    						   + "<input type='hidden' name='aplineNo' value=''>"
+			    						   + "<input type='hidden' name='aplineOrder' value=''>"			    						   
 		    						   + "</tr>";
 		    					}
-		   						$('#boardList > tbody').html(str);
-		   						$("#keywordTeam").val('');
-		   						$("#keywordName").val('');
+	   						$('#boardList > tbody').html(str);
+	   						$("#keywordTeam").val('');
+	   						$("#keywordName").val('');
 	    			}, error:function(){
 	    				console.log("ajax 통신 실패");
 	    			}
 	    		})
     	}
+    
+    
+    	/*체크박스 클릭시 해당 테이블 td 배경색 변경*/
+		function changeColor(t){
+    		td = t.parentNode;
+    		td.style.backgroundColor = (t.checked)? "rgb(233, 232, 232)" : "white";
+    		tr = t.parentNode.parentNode;
+    		tr.style.backgroundColor = (t.checked)? "rgb(233, 232, 232)" : "white";
+    	}
+    	
+    	
+    	/*선택하여 밑으로 보내기*/
+    	$(document).on("click", ".arrowbtn",function(){
+    		
+    		let checkValue = [];
+    		let $downRow;
+    		
+    		$("input[name='checkPerson']:checked").each(function(){
+	    		//downRow = $("input[name=checkPerson]:checked").parent().parent().html(); //체크된행
+	    		downRow = $(this).parent().parent().html(); //체크된행
+	    		checkValue.push(downRow);
+	    		console.log(downRow);
+    		});
+    		
+    		let trHtml = '';
+    		for(let i in checkValue){
+    			trHtml += '<tr>'+ checkValue[i] +'</tr>';
+    		}
+    		$("#boardListTwo").html(trHtml);    		
+    	})
+    	
+    	
+
+	  /* 저장하기 버튼 클릭 */
+	  $("#savebtn").on('click',function(){
+		  
+		  let value = "";
+		  if($("#boardListTwo input[name=checkPerson]:checked").length==0){
+			  alert("결재자를 선택하여 주세요");
+			  return false;
+		  } else {
+			  $("#boardListTwo tr").each(function(i, tr){
+				  value += "[" + (i+1) + "]"
+				         + "<span>"+ $(tr).find("td[name=empName]").text() + " " + $(tr).find("td[name=job]").text() + "</span>"
+				         + "<input type='hidden' name='appList[" + i + "].empNo' value='" +  $(tr).find("input[name=apempNo]").val() + "'>" //name='appList[0,1,...].empNo' value='empNo' 
+				         + "<input type='hidden' name='appList[" + i + "].aplineOrder' value='" +  (i+1) + "'><br>";
+			  })
+			   console.log(value);
+			  
+			  value = '<span id="appLineText">결재자 </span> <br>' + value;
+			  
+			  $("#appLine").html(value);
+		  }
+			  
+	  })
+	  
+	  
+
+
+
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+    	
     </script> 
        
     </body>

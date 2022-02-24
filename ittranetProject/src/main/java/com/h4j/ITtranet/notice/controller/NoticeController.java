@@ -40,9 +40,11 @@ public class NoticeController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		ArrayList<Notice> list = nService.selectList(pi);
+		ArrayList<NoticeHeader> headerList = nService.selectHeaderList();
 		
 		mv.addObject("pi", pi);
 		mv.addObject("list", list);
+		mv.addObject("headerList", headerList);
 		mv.setViewName("notice/noticeListView");
 		
 		
@@ -90,10 +92,9 @@ public class NoticeController {
 			for(MultipartFile file : upfile) {
 				
 				String changeName = saveFile(file, session);
-				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
 				at.setOriginName(file.getOriginalFilename());
-				at.setChangeName("resources/uploadFiles/" + changeName);
-				//at.setFilePath(filePath);
+				at.setChangeName(changeName);
+				at.setFilePath("resources/uploadFiles/" + changeName);
 				
 				resultAt = nService.insertAttachment(at);				
 			}			
@@ -109,22 +110,28 @@ public class NoticeController {
 	
 	// 게시글 삭제
 	@RequestMapping("delete.no")
-	public String delectBoard(int nno, String filePath, HttpSession session, Model model) {
+	public String delectBoard( @RequestParam(value="noticeNoDel[]") int[] checkArr, String filePath, HttpSession session, Model model) {
 		
-		int result = nService.deleteNotice(nno);
+		int result = 0;
 		int resultAt = 1;
-		ArrayList<Attachment> atList = new ArrayList<Attachment>();
-		atList = nService.selectAttachment(nno);
-		if(result > 0) {	
+		
+		for(int nno : checkArr) {
+			
+			result = nService.deleteNotice(nno);
+		
+			if(result > 0) {	
+				ArrayList<Attachment> atList = new ArrayList<Attachment>();
+				atList = nService.selectAttachment(nno);
 
-			for(int i=0; i<atList.size(); i++) {
-				int atNo = atList.get(i).getAttachmentNo();
-				resultAt = nService.deleteAttachment(atNo);
+				for(int i=0; i<atList.size(); i++) {
+					int atNo = atList.get(i).getAttachmentNo();
+					resultAt = nService.deleteAttachment(atNo);
+				}
 			}
-			
-			
+		}
+		if(result + resultAt > 1) {
 			session.setAttribute("alertMsg", "게시글이 성공적으로 삭제되었습니다.");
-			return "redirect:list.no";
+			return "redirect:listAdmin.no";
 		}else {
 			return "common/error";
 		}
@@ -162,12 +169,12 @@ public class NoticeController {
 			for(MultipartFile file : reupfile) {
 				
 				String changeName = saveFile(file, session);
-				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
 				at.setOriginName(file.getOriginalFilename());
-				at.setChangeName("resources/uploadFiles/" + changeName);
-				//at.setFilePath(filePath);
+				at.setChangeName(changeName);
+				at.setFilePath("resources/uploadFiles/" + changeName);
 				at.setNoticeNo(noticeNo);
-				resultAt = nService.insertNewAttachment(at);				
+				resultAt = nService.insertNewAttachment(at);	
+				
 			}	
 			
 		}
@@ -252,7 +259,24 @@ public class NoticeController {
 		return new Gson().toJson(list);
 	}
 	
-	
+	// 게시글 전체 페이지 조회
+	@RequestMapping("listAdmin.no")
+	public ModelAndView selectAdminList(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
+		
+		int listCount = nService.selectListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<Notice> list = nService.selectList(pi);
+		ArrayList<NoticeHeader> headerList = nService.selectHeaderList();
+		
+		mv.addObject("pi", pi);
+		mv.addObject("list", list);
+		mv.addObject("headerList", headerList);
+		mv.setViewName("notice/adminNoticeListView");
+		
+		
+		return mv;
+	}
 	
 	
 	

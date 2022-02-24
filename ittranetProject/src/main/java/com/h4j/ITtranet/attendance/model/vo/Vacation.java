@@ -22,4 +22,14 @@ public class Vacation {
 	 private String vcEnrollDate;
 	 private String applyYn;
 	 private String vcStatus;
+	 
+	 private String empName;
+	 private String teamName;
+	 
+	 private int restYear;
+	 private int restSick;
+	 private int restMonth;
+	 
+	 private String originName;
+	 private String changeName;
 }

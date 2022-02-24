@@ -11,6 +11,13 @@
      	.attendance_mn{
      		color:#000000;
      	}
+     	 #innerouter{
+            width:90%;
+            height:90%;
+            background-color: white;
+            margin:auto;
+            margin-top: 10px;
+        }
      	
         #draftTitle{
             font-size: 20px;
@@ -39,13 +46,7 @@
             padding: 0 5px;
             z-index: -3; 
         }
-        #innerouter{
-            width:90%;
-            height:90%;
-            background-color: white;
-            margin:auto;
-            margin-top: 10px;
-        }
+       
         #boardList{
             text-align: center;
             margin: auto;
@@ -75,62 +76,65 @@
 		        <br>
 		        <div id="draftTitle">
 		           	 기안함 > 대기 결재
-		        </div>
-		        
-		        <form action="" method="post" onsubmit="">
-		            <div id="innerouter" style="padding:5% 10%;">
-			            <div class="search" id="search1">
-				           	 결재분류
-				            <select class="divisionSelect" name="" id="">
-				                <option value="">(결재분류)</option>
-				                <option value="">사업계획서</option>
-				                <option value="">시말서</option>
-				                <option value="">연장근무신청</option>
-				                <option value="">지출결의서</option>
-				                <option value="">추가예산신청</option>
-				                <option value="">회의록</option>
-				            </select>
-				        </div>
-				        <div class="search" id="search2">
-				           	 기안일
-				            <select class="divisionSelect" name="" id="">
-				                <option value="">(기안일)</option>
-				                <option value="">1주일</option>
-				                <option value="">1개월</option>
-				                <option value="">3개월</option>
-				
-				            </select>
-				        </div>
+		        </div> <br>
+	
+	            <div id="innerouter" style="padding:5% 10%;">
+		            <div class="search" id="search1">
+			           	 결재분류
+			            <select class="divisionSelect" name="boardSearch" id="boardSearch">
+			                <option value="">(결재분류)</option>
+			                <option value=1>사업계획서</option>
+			                <option value=2>시말서</option>
+			                <option value=3>연장근무신청</option>
+			                <option value=4>지출결의서</option>
+			                <option value=5>추가예산신청</option>
+			                <option value=6>회의록</option>
+			            </select>
+			        </div>
+			        <div class="search" id="search2">
+			           	 기안일
+			            <select class="divisionSelect" name="boardDate" id="boardSearch">
+			                <option value="">(기안일)</option>
+			                <option value=7>1주일</option>
+			                <option value=8>1개월</option>
+			                <option value=9>3개월</option>
+			
+			            </select>
+			        </div>
 		            <table id="boardList" class="table table-hover" align="center">		
-		            
-		            	<c:forEach var="d" items="${ list }">
+		            	<thead>
 		                    <tr>
-		                    	<td><input type="hidden" name="empNo" value="${ d.empNo }"></td>		                    	
-		                        <th>
-		                        	<c:if test="${ d.drDivision eq 1}">지출결의서</c:if>
-		                        	<c:if test="${ d.drDivision eq 2}">추가예산신청</c:if>
-		                        	<c:if test="${ d.drDivision eq 3}">연장근무신청</c:if>
-		                        	<c:if test="${ d.drDivision eq 4}">회의록</c:if>
-		                        	<c:if test="${ d.drDivision eq 5}">사업계획서</c:if>
-		                        	<c:if test="${ d.drDivision eq 6}">시말서</c:if>
-		                        </th>
-		                        <td>${ d.drTitle }</td>
-		                        <td>${ d.drDate }</td>
-		                        <td>
-		                            <img src="" alt=""> <!--프로필 이미지-->
-		                           	 ${ d.teamName  }${ d.empName }
-		                        </td>
-		                        <td>${ d.drStatus }</td>
+		                    	<th>결재분류</th>
+		                    	<th>제목</th>
+		                    	<th>등록일</th>
+		                    	<th>결재자</th>
+		                    	<th>결재상태</th>
 		                    </tr>
-		                </c:forEach>   		                   
-		
-		            </table>
-		            <br>
-		
-		            
-		            
-		        </div>
-		        <br><br>
+		                </thead>    
+		                <tbody>    
+			            	<c:forEach var="d" items="${ list }">
+			                    <tr>
+			                    	<input type="hidden" class="drNo" value="${ d.drNo }">
+			                    	<input type="hidden" name="empNo" value="${ d.empNo }">		                    	
+			                        <th>
+			                        	${ d.drDivision }
+			                        </th>
+			                        <td>${ d.drTitle }</td>
+			                        <td>${ d.drDate }</td>
+			                        <td>
+			                        	<c:forEach var="l" items="${ linePerson }">
+				                        	<c:if test="${ l.drNo eq d.drNo }">
+					                            <img src="" alt=""> <!--프로필 이미지-->
+					                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
+				                           	 </c:if>
+				                        </c:forEach>
+			                        </td>
+			                        <td>${ d.drStatus }</td>
+			                    </tr>
+			                </c:forEach>  
+		                </tbody> 		 
+		            </table>    <br>
+		        </div>    <br><br>
 		        		        
 		        <div id="pagingArea">
 	                <ul class="pagination">
@@ -160,11 +164,59 @@
 	                    </c:choose>
 	                    
 	                </ul>
-            </div>
-		       
+            	</div>
 		        <br clear="both"><br>
-		        </form>
 		    </div>
+		    
+		<!-- 분류별 검색 -->    
+		<script>
+			$('.divisionSelect').change(function(){
+				let searchType = $("select[name=boardSearch]").val();
+				let searchDate = $("select[name=boardDate]").val()
+				
+				console.log("searchType:"+searchType);
+				console.log("searchDate:"+searchDate);
+				
+					$.ajax({
+						type : 'GET',
+						url : "search.board",
+						data : {
+							searchType : searchType,
+							searchDate : searchDate
+						} , success : function(list){
+							console.log(boardSearch);
+							//테이블 초기화
+		    				$('#boardList').empty();
+							
+		    				
+							for(let i in list){
+								str += "<tr>"
+									    	+ "<td><input type='hidden' name='empNo' value='" + list[i].empNo + "'></td>"		                    	
+					                        + "<th>"+ list[i].drDivision +"</th>"
+					                        + "<td>"+ list[i].drTitle + "</td>"
+					                        + "<td>"+ list[i].drDate + "</td>"
+					                        + "<td>"+ list[i].empName + "</td>"
+					                        + "<td>"+ list[i].drStatus + "</td>"
+				                        + "</tr>";
+							}
+							$("#boardList tbody").html(str);
+							$("#boardSearch option:eq(0)").prop("selected", true); //select(셀렉트) 원위치
+						} , error : function(){
+							console.log("ajax 통신 실패 ");
+						}
+					});
+			})
+			
+			// 상세페이지 이동
+			$(function(){
+            		$("#boardList>tbody>tr").click(function(){
+            			console.log($(this).children(".drNo").val());
+            			location.href = 'detail.dr?drNo=' + $(this).children(".drNo").val();            			
+            		});
+            	})
+				
+		</script>		    
+		    
 	    <!-- 푸터 -->
 	    <jsp:include page="../common/footer.jsp"/>
 	    

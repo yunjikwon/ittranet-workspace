@@ -1,5 +1,7 @@
 package com.h4j.ITtranet.mail.model.vo;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,7 @@ public class Mail {
 	private String temStatus;
 	private String statusSd;
 	private String wrotemeStatus;
-
+	
+	private ArrayList<Mail> mailNo;
 
 }

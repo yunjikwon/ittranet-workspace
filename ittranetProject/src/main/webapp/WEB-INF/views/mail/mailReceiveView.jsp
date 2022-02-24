@@ -9,7 +9,7 @@
 	.wrap{
         width: 900px;
     }
-    .outer{
+    #mainOuter{
            width:1200px;
            height:800px;
           }
@@ -27,6 +27,7 @@
             height:580px;
     }
 
+
     #buttonbar{
     	float:right;
     	padding-left:5px;        
@@ -35,6 +36,44 @@
     table{
           text-align:center;
     }
+    
+    /* 중요메일 : 별표 체크*/
+    label.immail:before{
+    	content:"\f005";
+    	font-family:"Font Awesome 5 free";
+    	vertical-align:middle;
+    }
+    label.moreimmail:checked + label.immail:before {
+    	content:"\f005\f005";
+    	font-family:"Font Awesome 5 free";
+    	color:purple;
+    	text-align:center;
+    }
+    input#oneStar{
+    	display:none;
+    }
+    
+    
+    
+    /* 중요메일 : *전체* 별표 체크 */
+    label.imallmail:before {
+    	content:"\f005";
+    	font-family:"Font Awesome 5 free";
+    	vertical-align:middle;
+    }
+    label.moreimallmail:checked + label.immail:before {
+    	content:"\f005\f005";
+    	font-family:"Font Awesome 5 free";
+    	color:purple;
+    	text-align:center;
+    }
+    input#allStar {
+    	display:none;
+    }
+    
+    
+    
+    
     
     /* 버튼 그라데이션 존예 */
     .w-btn {
@@ -57,11 +96,16 @@
 		background: linear-gradient(to top right, #33ccff 0%, #ff0000 100%);
 		color: white;
 	}
+	#myModal{
+		text-align:"";
+	}
 
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+
 </head>
 <body>
 	<!-- 공용 -->
@@ -78,39 +122,47 @@
 			<jsp:include page="../mail/mailSideBar.jsp" />
 			
 		<!-- 내용 -->
-        <div class="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
+        <div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 			
             <br><br>
 
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="submit">삭제</button>
-            
+            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
+                <button class="w-btn w-btn-gra2" type="button" onclick="deletemail();">삭제</button>
+            </div>
+            	
             	<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            	<!-- 
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   					<div class="modal-dialog" role="document">
     				<div class="modal-content">
     				
       					<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							</button>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
       					</div>
       			
-      				<div class="modal-body">
+      				<div class="modal-body" text-align="center">
 						정말로 삭제하시겠습니까?
       				</div>
       			
       				<div class="modal-footer">
-        				<button type="button" class="btn btn-danger">네</button>
+        				<button type="button" class="btn btn-danger" id="delete.ml">네</button>
         				<button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
       				</div>
     			
     				</div>
   					</div>
-				</div>
+				</div> -->
 				
-			</div>
+				
+				
+			
+			
+
+			
+			
+			
 			
             <form id="postForm" action="alllist.ml" method="post">
 
@@ -122,52 +174,121 @@
                 <table id="mailalllist" style="background-color:white">
                 	<thead>
                     	<tr>
-                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
-                        	<th style="width:50px;">☆</th>
+                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
+                        	<th style="width:50px;">
+                        	
+                        	<input type="checkbox" name="checkedAllStar" id="allStar" onclick="checkAllStar(this);">
+                        	<label for="allStar" class="imallmail"></label>
+                        	<label for="allStar" class="moreimallmail"></label>
+                        	
+                        	</th>
                         	<th style="width:150px;">보낸사람</th>
                         	<th style="width:500px;">제목</th>
                         	<th style="width:200px;">날짜</th>
                     	</tr>
                     </thead>
                     <tbody>
-                    	<c:forEach var="m" items="${ list }">
-	                    	<tr>
-	                    		<input type="hidden" value=${ m.sendMailNo }>
-                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
-                        		<td>★</td>
-                        		<td>${ m.empNameSd }</td>
-                        		<td>${ m.mailTitle }</td>
-                        		<td>${ m.sendDate }</td>
+                    	<c:forEach var="m" items="${ rvlist }">
+                    	
+                    			<tr>
+                    				<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
+                    				
+                    				<td><input type="checkbox" name="checked" id="Check" value="${ m.receiveMailNo }"></td>
+                    				<td>
+
+                    				<input type="checkedbox" name="checkedStar" id="oneStar" value="${ m.receiveMailNo }">
+                        			<label for="oneStar" class="immail"></label>
+                        			<label for="oneStar" class="moreimmail"></label>
+
+                    				</td>
+                    				<td>${ m.empNameSd }</td>
+                        			<td>${ m.mailTitle }</td>
+                        			<td>${ m.sendDate }</td>
                     		</tr>
+   
                     	</c:forEach>
                     </tbody>
                 </table>
                 
 			</form>
 			
+				<!-- 상세페이지 조회 -->
                 <script>
             		$(function(){
             			$("#mailalllist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
             				console.log(mno);
-            			});
+            			})
             		})
             	</script>
-            	<script>	
-            		$(document).ready(function() {
-            			$("#allCheck").click(function() {
-            				if($("#allCheck").prop("checked")) { 
-            				$("input[name=checked]").prop("checked", true);
-            			}else {
-            				$("input[name=checked]").prop("checked", false);
-            			}
-            			});
-            		})
+
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            	
+            	<!-- 체크박스 전체체크/체크해제 -->
+            	<script>
+            		function checkAll(check){
+            			if($("#allCheck").prop("checked")) { 
+        					$("input[name=checked]").prop("checked", true);
+        				}else {
+        					$("input[name=checked]").prop("checked", false);
+        				}
+            		}
+            		
+            		function checkAllStar(check) {
+   					 if($("#allStar").prop("checked")) {
+						 $("input[name=checkedAllStar]").prop("checked", true);
+					 }else {
+						 $("input[name=checkedAllStar]").prop("checked", false);
+					 }
+            		}
 				</script>
+
+				
+				<!-- 체크박스 : 중요 -->
+				<!-- <script>
+				function checkstarmail() {
+					var starArr = [];
+					$("input[name=checkedStar]:checked").each(function(){
+						starArr.push($(this).val());
+					})
+					console.log(starArr);
+				}
+				</script>
+				 -->
+				
+			<!-- 체크박스 : 삭제 -->			
+			<script>	
+            	function deletemail() {
+            		var rcArr = [];
+            		$("input[name='checked']:checked").each(function(){
+            			rcArr.push($(this).val());
+            		 })
+            		 console.log(rcArr);
+            		 
+            		 $.ajax({
+            			 url:"delete.ml",
+            			 type:"post",
+            			 data:{receiveMailNo:rcArr},
+            			 success:function(result){
+            				 if(result == 'sucsess'){
+            				 	console.log("게시글 삭제 성공!");
+            				 }else{
+            					 console.log("게시글 삭제실패");
+            				 }
+            			 },error:function(){
+            				 console.log("ajax게시글 삭제 통신 실패!");
+            			 }
+            			 
+            			 
+            		 })
+            	}            	
+            	</script>
+				
 				
 			<!-- 내용닫는곳 -->
             </div>
 
+			<!-- 페이징바 -->
           	<div id="pagingArea">
     			<ul class="pagination justify-content-center">
 	        		<c:choose>

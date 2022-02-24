@@ -106,9 +106,18 @@ public class AttendanceDao {
 		return sqlSession.selectOne("attendanceMapper.ajaxSelectAttendance", empNo);
 	}
 	
+	public Vacation selectRestVacation(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.selectOne("attendanceMapper.selectRestVacation", empNo);
+	}
 	
 	
+	public int insertVacation(SqlSessionTemplate sqlSession, Vacation vc) {
+		return sqlSession.insert("attendanceMapper.insertVacation",vc);
+	}
 	
+	public int updateVacationSum(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.update("attendanceMapper.updateVacationSum", empNo);
+	}
 	
 	
 	

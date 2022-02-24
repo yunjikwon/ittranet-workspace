@@ -306,11 +306,11 @@
 				<when test="type == 'noticeTitle'">
 		 			AND notice_title LIKE '%' || #{keyword} || '%'
 				</when>
-				<when test="type == 'empName'">
-		 			AND emp_name LIKE '%' || #{keyword} || '%'
+				<when test="type == 'noticeContent'">
+		 			AND notice_content LIKE '%' || #{keyword} || '%'
 				</when>
 				<when test="type == 'noticeHeader'">
-		 			AND notice_header LIKE '%' || #{keyword} || '%'
+		 			AND header_no = #{headerNo}
 				</when>
 			</choose>
 

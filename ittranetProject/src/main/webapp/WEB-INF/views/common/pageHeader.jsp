@@ -16,6 +16,15 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- 아이콘 -->
 <script src="https://kit.fontawesome.com/07e0557a32.js" crossorigin="anonymous"></script>
+<!-- alertify -->
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 <style>
     /*헤더 스타일*/
     div{
@@ -86,10 +95,19 @@
 </style>
 </head>
 <body>
+	<!-- alertMsg키값으로 alert메시지가 담겨있을 때에만 이부분 작동 -->
+	<c:if test="${ not empty alertifyMsg }">
+		<script>
+			alertify.alert('IT!tranet 잇트라넷 메시지', "${alertifyMsg}");
+		</script>
+		<c:remove var="alertifyMsg" scope="session"/>
+	</c:if>
+	<!-- 한 번만 출력이 되고 더 이상 출력  x  -->
+
     <!--헤더 영역-->
     <div class="header" align="right">
-        <span style="font-size: 16px;">${ loginUser.empName }</span> <span style="font-size: 16px;">사원</span>
-        <button class="header-btn" onclick="location.href=''">마이페이지</button>
+        <span style="font-size: 16px;">${ loginUser.empName }</span> <span style="font-size: 16px;">님 환영합니다</span>
+        <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
         <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>
         <!--관리자에게만 보여지도록-->
         <button class="header-btn" onclick="location.href=''">관리자페이지</button>            

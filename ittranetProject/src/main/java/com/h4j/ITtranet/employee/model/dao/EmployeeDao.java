@@ -31,5 +31,18 @@ public class EmployeeDao {
 	public int setTempwd(SqlSessionTemplate sqlSession, Employee e) {
 		return sqlSession.update("memberMapper.setTempwd", e);
 	}
+	
+	public int updateMember(SqlSessionTemplate sqlSession, Employee e) {
+		return sqlSession.update("memberMapper.updateMember", e);
+	}
+	
+	public int deleteMember(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.update("memberMapper.deleteMember", empNo);
+	}
+	
+	public int updatePwd(SqlSessionTemplate sqlSession, Employee e) {
+		return sqlSession.update("memberMapper.updatePwd", e);
+	}
+	
 
 }

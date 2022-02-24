@@ -52,10 +52,11 @@
 </style>
 </head>
 <body>
+
         <!--헤더 영역-->
         <div class="headerOuter" align="right">
-            <span style="font-size: 16px;">${ loginUser.empName }</span> <span style="font-size: 16px;">사원</span>
-            <button class="header-btn" onclick="location.href=''">마이페이지</button>
+            <span style="font-size: 16px;">${ loginUser.empName }</span> <span style="font-size: 16px;">님 환영합니다</span>
+            <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
             <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>
             <!--관리자에게만 보여지도록-->
             <button class="header-btn" onclick="location.href=''">페이지이동</button>            

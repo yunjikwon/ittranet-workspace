@@ -21,6 +21,9 @@
 		<result column="status" property="status"/>
 		<result column="admin" property="admin"/>
 		<result column="profile" property="profile"/>
+		<result column="dept_name" property="deptName"/>
+		<result column="team_name" property="teamName"/>
+		<result column="job_name" property="jobName"/>
 	</resultMap>
 
 	<select id="loginMember" resultMap="memberResult">
@@ -32,17 +35,23 @@
 		    , phone
 		    , email
 		    , address
-		    , dept_code
-		    , team_code
-		    , job_code
+		    , e.dept_code
+		    , e.team_code
+		    , e.job_code
 		    , hire_date
 		    , ent_date
 		    , join_date
 		    , status
 		    , admin
 		    , profile
-		 from employee
+		    , d.dept_name
+		    , t.team_name
+		    , j.job_name
+		 from employee e,department d,team t,job j
 		where status = 'Y'
+		  and e.dept_code = d.dept_code
+		  and e.team_code = t.team_code
+		  and e.job_code = j.job_code
 		  and emp_id = #{empId}
 	</select>
 	
@@ -75,7 +84,6 @@
   			   count(*)
   		  from employee
   		 where email = #{checkMail}
-  		   and status = 'Y'
   	</select>
   	
   	<select id="idCheck" resultType="_int">
@@ -83,7 +91,6 @@
   			   count(*)
   		  from employee
   		 where emp_id = #{checkId}
-  		   and status = 'Y'
   	</select>
   	
   	<select id="whosMail" resultMap="memberResult">
@@ -102,5 +109,29 @@
   		   set emp_pwd = #{empPwd}
   		 where emp_id = #{empId}
   	</update>
+  	
+  	<update id="updateMember">
+  		update
+  		       employee
+  		   set emp_name = #{empName}
+  		     , email = #{email}
+  		     , phone = #{phone}
+  		     , address = #{address}
+  		 where emp_id = #{empId}
+  	</update>
+  	
+  	<update id="deleteMember">
+		update
+		       employee
+		   set status = 'N'
+		 where emp_no = #{empNo}
+	</update>
+	
+	<update id="updatePwd">
+		update
+		       employee
+		   set emp_pwd = #{empPwd}
+		 where emp_no = #{empNo}
+	</update>
 
 </mapper>

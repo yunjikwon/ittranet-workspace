@@ -1,5 +1,7 @@
 package com.h4j.ITtranet.attendance.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,9 +10,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -33,9 +37,14 @@ public class AttendanceController {
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		String empNo = loginUser.getEmpNo();
 		
+		// 휴가신청 리스트
 		ArrayList<Vacation> ulist = atService.selectUpVacationList(empNo);
 		ArrayList<Vacation> llist = atService.selectLastVacationList(empNo);
 		
+		// 잔여휴가
+		Vacation rest = atService.selectRestVacation(empNo);
+		
+		mv.addObject("rest", rest).setViewName("attendance/vacationApplyList");
 		mv.addObject("ulist", ulist).setViewName("attendance/vacationApplyList");
 		mv.addObject("llist", llist).setViewName("attendance/vacationApplyList");
 
@@ -159,9 +168,7 @@ public class AttendanceController {
 		return result>0 ? "success" : "fail";
 		
 	}
-		
-		
-	
+
 	// 출퇴근기록 조회
 	@ResponseBody
 	@RequestMapping(value="list.at", produces="application/json; charset=UTF-8")
@@ -171,6 +178,37 @@ public class AttendanceController {
 		
 		return new Gson().toJson(at);
 	}
+	
+	/*
+	@RequestMapping("restvc.at")
+	public ModelAndView selectRestVacation(ModelAndView mv, HttpSession session) {
+		
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String empNo = loginUser.getEmpNo();
+		
+		Vacation rest = atService.selectRestVacation(empNo);
+		
+		mv.addObject("rest", rest).setViewName("attendance/vacationRest");
+		
+		System.out.println("잔여휴가: " + rest);
+		
+		return mv;
+			
+	}
+	*/
+	
+	// 휴가 신청
+	@ResponseBody
+	@RequestMapping(value="vcinsert.at")
+	public String insertVacation(Vacation vc, String empNo) {
+		
+		int result1 = atService.insertVacation(vc);
+		int result2 = atService.updateVacationSum(empNo);
+		
+		return result1>0 && result2>0 ? "success" : "fail"; // 삼항연산자
+	}
+	
+
 	
 	
 	

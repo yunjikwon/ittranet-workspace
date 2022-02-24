@@ -100,7 +100,7 @@
         	
         	<!-- 버튼바 (내게쓰기, 보내기, 취소) -->
 			<div id="buttonbar">
-            	<button type="button" class="btn btn-secondary"><a href="enrollForm.mlme"></a>내게쓰기</button>
+            	<button type="button" class="btn btn-secondary"><a href="enrollForm.mlme">내게쓰기</a></button>
             	<button type="submit" class="btn btn-success">보내기</button>
             	<button type="reset" class="btn btn-light">취소</button>
         	</div>
@@ -116,7 +116,6 @@
 					<tr>
 						<th>받는사람</th>
 						<td colspan="2"><input type="text" class="form-control" id="rvaccount" name="receiverAccount" required></td>
-
 					</tr>
 					<tr>
 						<th>제목</th>

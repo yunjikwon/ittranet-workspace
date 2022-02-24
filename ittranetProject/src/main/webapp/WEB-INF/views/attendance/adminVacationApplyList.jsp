@@ -86,25 +86,7 @@
             
             <br clear="both">
             <div style="position:relative">
-                <jsp:include page="../common/sidebar.jsp" />
-                    <div class="cont">
-		            <ul id="ac">
-		                <li class="division">
-		                    <a href="#">근태관리</a>
-		                </li>
-		                <div id="border">
-				               <li class="menu1">
-				                  <a href="#">근무 통계</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">일일근태 관리</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">휴가 관리</a>
-				               </li>
-		            	</div>
-		            </ul>
-		         </div>                
+                <jsp:include page="adminAttendanceSidebar.jsp" />            
                 <div class="mainOuter">
                     <!--제목영역-->
                     <div style="width:100%; height:200px; float:right; padding:40px; font-size: 22px; font-weight: 600;">
@@ -136,8 +118,8 @@
                                 	<c:forEach var="vc" items="${ list }">
 	                                    <tr>
 	                                    <td class="vcno">${ vc.vcApplyNo }</td>
-	                                    <td>${ vc.empNo }</td>
-	                                    <td>소속</td>
+	                                    <td>${ vc.empName }</td>
+	                                    <td>${ vc.teamName }</td>
 	                                    <td>${ vc.vcType }</td>
 	                                    <td>${ vc.vcStartDate } ~ ${ vc.vcEndDate }</td>
 	                                    <td>
