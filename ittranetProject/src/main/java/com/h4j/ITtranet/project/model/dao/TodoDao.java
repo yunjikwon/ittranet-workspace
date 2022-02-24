@@ -19,4 +19,8 @@ public class TodoDao {
 		return (ArrayList)sqlSession.selectList("todoMapper.countTodo", empNo);
 	}
 
+	public int newTodo(SqlSessionTemplate sqlSession, Todo td) {
+		return sqlSession.insert("todoMapper.newTodo", td);
+	}
+
 }

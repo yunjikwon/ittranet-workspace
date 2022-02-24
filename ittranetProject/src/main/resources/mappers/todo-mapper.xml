@@ -84,7 +84,7 @@
 	   where pr_no = #{prNo}
 </select>
 
-<insert id="insertTodo">
+<insert id="newTodo">
 	insert 
 	      into todo
 	         (
@@ -92,6 +92,7 @@
 	         , pr_no
 	         , emp_no
 	         , todo_title
+	         , todo_startdate
 	         , todo_enddate
 	         , todo_content
 	         , status
@@ -102,35 +103,13 @@
 	        , #{prNo}
 	        , #{empNo}
 	        , #{todoTitle}
-	        , todoEnddate
-	        , todoContent
-	        , status
+	        , sysdate
+	        , #{todoEnddate}
+	        , #{todoContent}
+	        , 'W'
 	        )
 </insert>
 
-<insert id="insertReply">
-	insert
-	   into reply
-	   (
-	   	   reply_no
-	   	  ,reply_content
-	   	  ,emp_no
-	   	  ,ref_code
-	   	  ,ref_no
-	   	  ,create_date
-	   	  ,status
-	   )
-	   values
-	   (
-	   	   seq_reply.nextval
-	   	  ,#{replyContent}
-	   	  ,#{empNo}
-	   	  ,'NF'
-	   	  ,#{refNo}
-	   	  ,sysdate
-	   	  ,'Y'
-	   )
-</insert>
 
 
 

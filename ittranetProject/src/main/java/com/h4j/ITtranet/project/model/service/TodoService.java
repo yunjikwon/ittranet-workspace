@@ -12,4 +12,7 @@ public interface TodoService {
 	// 업무 갯수 조회
 	ArrayList<Todo> countTodo(String empNo);
 
+	// 업무 생성
+	int newTodo(Todo td);
+
 }

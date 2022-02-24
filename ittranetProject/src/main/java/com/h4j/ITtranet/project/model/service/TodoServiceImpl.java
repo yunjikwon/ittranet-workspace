@@ -30,4 +30,10 @@ public class TodoServiceImpl implements TodoService {
 		return tDao.countTodo(sqlSession, empNo);
 	}
 
+	// 업무 생성
+	@Override
+	public int newTodo(Todo td) {
+		return tDao.newTodo(sqlSession, td);
+	}
+
 }

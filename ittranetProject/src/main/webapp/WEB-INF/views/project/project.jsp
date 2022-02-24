@@ -22,6 +22,7 @@
         width: 80px;
         height: 35px;
         border: none;
+        border-radius: 1mm;
         font-size: 13px;
         font-weight: bold;
         color: white;
@@ -172,6 +173,27 @@
        font-size: 13px;
    }
 
+   .modal-overlay{
+        width: 300px;
+        height: 300px;
+        padding: 15px;
+        background-color :rgb(244, 240, 245);
+        border: 1px solid rgb(199, 198, 198);
+        border-radius: 2mm;
+   }
+
+   .todoButtons{
+        margin-left: 120px;
+        margin-top: 10px;
+   }
+   
+   #modalid{
+        width: 300px;
+        height: 260px;
+        position: absolute;
+        margin: auto;
+   }
+
 </style>
 </head>
 <body>
@@ -217,9 +239,8 @@
         </div>
             <button class="button3">삭제</button>
             <button class="button2">상태 변경</button>
-            <button class="button1">새 업무</button>
-            <!-- <a data-toggle="modal" data-id="${ list.get(0).prNo }" class="button1" href="#modalid">새 업무</a> -->
-
+            <button id="newTodo" class="button1" onclick="openNew();">새 업무</button>
+          
             <br><br>
         <table class="todo" width="780" style="text-align: center;" >
             <thead>
@@ -393,36 +414,73 @@
     </div>
     </div>
     </div>
-    
+   <!-- 새 업무 생성 모달 -->
+<div class="modal-overlay" id="modalid">
+    <div class="modal-window">
+        <h6 class="modal-title">새 업무</h6>
+            <div class="modal-body">
+                <table class="makeTodo">
+                    <tr style="background-color: transparent;">
+                        <th><label for="tdTitle">업무명</th>
+                        <td><textarea name="tdTitle" id="tdTitle" rows="1" cols="30"></textarea></td>
+                    </tr>
+                    <tr style="background-color: transparent;">
+                        <th><label for="tdEnddate">만료일</label></th>
+                        <td><textarea name="tdEnddate" id="tdEnddate" rows="1" cols="30"></textarea></td>
+                    </tr>
+                    <tr style="background-color: transparent;">
+                        <th><label for="todoContent">메모</label></th>
+                        <td><textarea name="todoContent" id="todoContent" rows="4" cols="30" ></textarea></td>
+                    </tr>
+                </table>
+                    <div class="todoButtons">
+                        <button type="button" onclick="closeTodo();" style="background-color: rgb(190, 190, 190);">취소</button>
+                        <button type="button" onclick="insertTodo();" style="background: rgba(207, 168, 241, 0.45);">완료</button>
+                    </div>   
+                </div>
+                
+                <script>
+              	
+            	    closeTodo()
+                
+                	function openNew(){
+                		$('#modalid').show();
+                	}
+                	
+                	function closeTodo(){
+                		$('#modalid').hide();
+                	}
+                	
+                    function insertTodo(){
+                        $.ajax({
+                            url:"tdinsert.pr",
+                            data:{
+                                prNo:'${ list.get(0).prNo }',
+	                			empNo:'${loginUser.empNo}',
+	                			todoTitle:$("#tdTitle").val(),
+	                			todoEnddate:$("#tdEnddate").val(),
+	                			todoContent:$("#todoContent").val()
+	                		}, success:function(status){
+	                			if(status == "success"){
+								    console.log("새 업무 ajax 통신 성공")
+	                			    close();
+                                    location.reload();
+	                			}
+	                		}, error:function(){
+	                			console.log("새 업무 ajax 통신 실패")
+                            }
+                        })
+                    }
+
+                </script>
+  
+        </div>
+
+
+ 
 
 </body>
 
-<!-- 새 업무 생성 모달 -->
-<div class="modal hide" id="modalid">
-
-
- <div class="modal-header">
-  <h5 class="modal-title">새 업무</h5>
-
-   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-   </button>
-  </div>
-
-  <div class="modal-body">
-    <input type="text" name="bookId" id="bookId" value="어케 나오나"/> 
-  </div>
-</div>
-
-<script>
-$(document).on("click", ".open-modalid", function () { // 클릭하면 id가 modalid인 모달을 연다는 의미이다.
-    var myBookId = $(this).data('id'); // a태그에서 data-'id'(''는 강조의 의미)가 정의하고 있는 값을 가져와서 myBoodId에 넣는다.
-                                       // 예를 들어, a태그에서 data-title="제목"이라고 되어있다면
-                                       // 이 코드는 var myBookId = $(this).data('title')이 될 것이다.
-    $(".modal-body #bookId").val( myBookId ); // modal의 body에 있는,
-                                              // name과 id가 bookId인 태그의 value를(현재는 value="") myBookId로 바꿔준다.
-});
-</script>
 
 
 </html>

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.h4j.ITtranet.employee.model.vo.Employee;
@@ -68,6 +69,16 @@ public class TodoController {
 
 		return mv;
 
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="tdinsert.pr")
+	public String newTodo(Todo td, String empNo, String prNo) {
+		
+		System.out.println("여기까지는 되나? " + td);
+		int result = tService.newTodo(td);
+		
+		return result>0 ? "success" : "fail";
 	}
 
 
