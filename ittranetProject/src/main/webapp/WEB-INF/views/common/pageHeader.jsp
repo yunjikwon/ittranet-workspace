@@ -96,11 +96,11 @@
 </head>
 <body>
 	<!-- alertMsg키값으로 alert메시지가 담겨있을 때에만 이부분 작동 -->
-	<c:if test="${ not empty alertMsg }">
+	<c:if test="${ not empty alertifyMsg }">
 		<script>
-			alertify.alert('IT!tranet 잇트라넷 메시지', "${alertMsg}");
+			alertify.alert('IT!tranet 잇트라넷 메시지', "${alertifyMsg}");
 		</script>
-		<c:remove var="alertMsg" scope="session"/>
+		<c:remove var="alertifyMsg" scope="session"/>
 	</c:if>
 	<!-- 한 번만 출력이 되고 더 이상 출력  x  -->
 

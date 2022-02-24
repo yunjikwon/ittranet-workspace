@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -139,11 +140,20 @@
                 </div>
                 <div class="profile">
                     <!--사용자 이름, 부서명 연결-->
-                    <p style="font-weight: 900;">김땡땡 사원</p>
-                    개발팀
+                    <p style="font-weight: 900;">${ loginUser.empName } 사원</p>
+                    
+                    <c:choose>
+                    	<c:when test="${ loginUser.teamCode eq 'T0' }">
+                    		<p style="font-weight: 900;">${ loginUser.deptName }</p>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<p style="font-weight: 900;">${ loginUser.deptName } ${ loginUser.teamName }</p>
+                    	</c:otherwise>
+                    </c:choose>
+                    
                 </div>
                 <div align="center">
-                    <button class="header-btn" onclick="location.href=''">마이페이지</button>
+                    <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
                     <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>   
                 </div>
             </div>

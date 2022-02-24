@@ -84,7 +84,6 @@
   			   count(*)
   		  from employee
   		 where email = #{checkMail}
-  		   and status = 'Y'
   	</select>
   	
   	<select id="idCheck" resultType="_int">
@@ -92,7 +91,6 @@
   			   count(*)
   		  from employee
   		 where emp_id = #{checkId}
-  		   and status = 'Y'
   	</select>
   	
   	<select id="whosMail" resultMap="memberResult">
@@ -121,5 +119,19 @@
   		     , address = #{address}
   		 where emp_id = #{empId}
   	</update>
+  	
+  	<update id="deleteMember">
+		update
+		       employee
+		   set status = 'N'
+		 where emp_no = #{empNo}
+	</update>
+	
+	<update id="updatePwd">
+		update
+		       employee
+		   set emp_pwd = #{empPwd}
+		 where emp_no = #{empNo}
+	</update>
 
 </mapper>

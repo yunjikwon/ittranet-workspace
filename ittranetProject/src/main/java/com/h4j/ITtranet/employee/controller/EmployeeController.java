@@ -51,7 +51,7 @@ public class EmployeeController {
 	 * @return ModelAndView mv
 	 */
 	@RequestMapping("hi.me")
-	public ModelAndView loginMember(Employee e, HttpSession session, ModelAndView mv) {
+	public ModelAndView loginMember(Employee e, HttpSession session, ModelAndView mv, Model model) {
 		
 		Employee loginUser = eService.loginMember(e);
 		
@@ -64,6 +64,7 @@ public class EmployeeController {
 			session.setAttribute("loginUser", loginUser);
 			mv.setViewName("common/userMain");
 		} else {
+			model.addAttribute("errorMsg", "아이디 혹은 비밀번호를 다시 확인해주세요!");
 			mv.setViewName("common/error");
 		}
 		
@@ -179,19 +180,26 @@ public class EmployeeController {
 	@ResponseBody
 	@RequestMapping("mailCheck.me")
 	public String mailCheck(String checkMail) {
-		int count = 0;
-		return eService.mailCheck(checkMail) > 0 ? "FAIL" : "PASS";
+		// System.out.println(checkMail);
+		int count = eService.mailCheck(checkMail);
+		// System.out.println(count);
+		return count>0 ? "FAIL" : "PASS";
+		
+		/*
+		 * where조건문 수정으로 오류 해결 
+		 * => 이메일,아이디 상태값이 Y인 회원들만 중복 확인해서 생긴 문제
+		 *    DB에는 모든 상태값의 회원 정보가 있음
+		 */
 	}
 	
 	/**
 	 * 회원가입 아이디 중복 확인
 	 * @param checkId
-	 * @return int count(중복 o => 1 | 중복 x => 0)
+	 * @return (중복 o => 1 => FAIL | 중복 x => 0 => PASS)
 	 */
 	@ResponseBody
 	@RequestMapping("idCheck.me")
 	public String idCheck(String checkId) {
-		int count = 0;
 		return eService.idCheck(checkId) > 0 ? "FAIL" : "PASS";
 	}
 	
@@ -218,9 +226,10 @@ public class EmployeeController {
 		int result = eService.insertMember(e);
 		
 		if(result>0) {
-			session.setAttribute("success", "성공");
+			session.setAttribute("alertMsg", "승인 후 가입시 작성한 이메일로 링크가 발송됩니다");
 			return "redirect:joinForm.me";
-		}else { 
+		}else {
+			model.addAttribute("errorMsg", "회원 가입에 실패하셨습니다");
 			return "common/error";
 		}	
 	}
@@ -246,7 +255,7 @@ public class EmployeeController {
 		int result = eService.updateMember(e);
 		if(result>0) {
 			session.setAttribute("loginUser",  eService.loginMember(e));
-			session.setAttribute("alertMsg", "성공적으로 회원정보가 변경되었습니다");
+			session.setAttribute("alertifyMsg", "성공적으로 회원정보가 변경되었습니다");
 			return "redirect:myPage.me";
 		}else { 
 			session.setAttribute("fail", "실패");
@@ -254,10 +263,102 @@ public class EmployeeController {
 		}	
 	}
 	
+	/**
+	 * 회원 탈퇴
+	 * @param empPwd
+	 * @param empNo
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("delete.me")
+	public String deleteMember(String empPwd, String empNo, HttpSession session, Model model) {
+		
+		// empPwd 매개변수(요청시 전달값이 담긴 매개변수) == 회원탈퇴요청시 사용자가 입력한 비밀번호 평문
+		// session에 loginUser Employee객체 empPwd필드 == db로부터 조회된 비번 (암호문)
+		// 평문과 암호문을 내부적으로 비교할 것임 =>  session객체 필요 => 매개변수로 추가
+		
+		String encPwd = ((Employee)session.getAttribute("loginUser")).getEmpPwd();
+		
+		if(bcryptPasswordEncoder.matches(empPwd, encPwd)) { 
+			// matches => 비번 맞음 => 탈퇴 처리
+			int result = eService.deleteMember(empNo);
+			
+			// 탈퇴 처리 실패할 일은 없을 것이지만~ 그래도 조건문 처리
+			// 탈퇴 처리 성공 => session에 loginUser지움, alert문구 담기 =>메인페이지 url 재요청
+			if(result > 0) {
+				session.removeAttribute("loginUser");
+				session.setAttribute("alertMsg", "성공적으로 탈퇴되었습니다. 그동안 이용해주셔서 감사합니다.");
+				return "redirect:/";
+			}else {
+				model.addAttribute("errorMsg", "회원 탈퇴에 실패하셨습니다");
+				return "common/error";
+			}
+			
+		}else { 
+			// 비번 틀림 => 비밀번호 틀림을 알리고
+			session.setAttribute("alertifyMsg", "비밀번호를 잘못 입력하셨습니다. 다시 확인해주세요!");
+			// => 마이페이지 보여지게
+			return "redirect:myPage.me";
+		}
+		
+	} 
+	
+	/**
+	 * 비밀번호 변경 페이지 호출
+	 * @return
+	 */
 	@RequestMapping("setPwdForm.me")
 	public String setPwdForm() {
 		return "member/setPwdForm";
 	}
+	
+	/**
+	 * ajax현재 비밀번호 체크
+	 * @param checkPwd
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("nowPwdCheck.me")
+	public String nowPwdCheck(String checkPwd, HttpSession session) {
+		
+		String encPwd = ((Employee)session.getAttribute("loginUser")).getEmpPwd();
+
+		if(bcryptPasswordEncoder.matches(checkPwd, encPwd)) {
+			return "PASS";
+		}else {
+			return "FAIL";
+		}
+
+	}
+	
+	/**
+	 * 비밀번호 변경
+	 * @param e
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("setPwd.me")
+	public String setPwd(Employee e, Model model, HttpSession session) {
+		
+		String encPwd = bcryptPasswordEncoder.encode(e.getEmpPwd());
+		
+		e.setEmpPwd(encPwd);
+		
+		int result = eService.updatePwd(e);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "비밀번호 변경 성공! 새 비밀번호로 로그인하세요!");
+			return "redirect:/";
+		}else { 
+			model.addAttribute("errorMsg", "비밀번호 변경에 실패하셨습니다");
+			return "common/error";
+		}	
+		
+	}
+	
 
 	// adminJobcode => 사원 정보 
 	// adminJobcodeDetail => 사원 정보 디테일
@@ -269,9 +370,7 @@ public class EmployeeController {
 	 * 직위/직무 관리
 	 * 사원 계정 삭제
 	 */
-	
-	// 정보 수정 update.me
-	
+
 	// ~~사원 추가
 	// 사원 추가 페이지 호출 addEmpForm.me (사원관리 메뉴를 누르면 제일 처음 보여지는 페이지 - DB연결 x)
 	
