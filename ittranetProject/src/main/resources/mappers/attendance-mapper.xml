@@ -317,7 +317,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   set vc_sum =
           case when vc_time='오전' then 4
            	   when vc_time='오후' then 4
-           	   when vc_time='종일' then 8*(to_date(vc_enddate,'yyyy-mm-dd')-to_date(vc_startdate,'yyyy-mm-dd')) end
+           	   when vc_time='종일' then 8*((to_date(vc_enddate,'yyyy-mm-dd')-to_date(vc_startdate,'yyyy-mm-dd'))+1) end
 		 where emp_no = #{empNo}
            and vc_enrolldate = to_char(sysdate, 'yy/mm/dd')
 	</update>

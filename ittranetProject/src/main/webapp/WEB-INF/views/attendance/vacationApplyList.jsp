@@ -327,7 +327,7 @@
                         </table>
                         <div class="mbtn-area">
                             <button type="button" onclick="closePop();">닫기</button>
-                            <button type="submit" onclick="closePop(); style="background: rgb(210, 163, 238);">신청</button>
+                            <button type="submit" style="background: rgb(210, 163, 238);">신청</button>
                         </div>
                         </form>
                     </div>
@@ -346,7 +346,6 @@
 	                function closePop() {
 	                     $('#modal').hide();
 	                };
-	                
 	            </script>
 	            <!--모달 스크립트 끝-->
 	            </div>
