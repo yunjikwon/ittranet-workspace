@@ -32,11 +32,13 @@ public class ApprovalDao {
 	}
 	
 	// 기안 게시판 select
+	public ArrayList<AppLine> selectAppName(SqlSession sqlSession){
+		return (ArrayList)sqlSession.selectList("appMapper.selectAppName");
+	}
 	public ArrayList<Approval> selectList(SqlSession sqlSession, PageInfo pi, int category) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		System.out.println("category : " + category);
 		return (ArrayList)sqlSession.selectList("appMapper.selectList", category, rowBounds);
 		
 	}
@@ -70,6 +72,7 @@ public class ApprovalDao {
 	public int insertAppLine(SqlSession sqlSession, Approval app, ArrayList<AppLine> appList) {		
 		int result = 0;
 		for(AppLine ap : appList) {
+			System.out.println("결재선insert appList : " + ap);
 			result = sqlSession.insert("appMapper.appline", ap);
 		}
 		return result;
@@ -84,7 +87,10 @@ public class ApprovalDao {
 	}
 	
 	
-	
+	// 기안게시판 상세페이지
+	public Approval apoDetail(SqlSession sqlSession, int drNo){
+		return sqlSession.selectOne("appMapper.apoDetail", drNo);
+	}
 	
 	
 	

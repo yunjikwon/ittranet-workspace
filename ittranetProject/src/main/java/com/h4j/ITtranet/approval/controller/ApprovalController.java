@@ -44,15 +44,16 @@ public class ApprovalController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
-		
-		
+		// 결재자 list 출력
+		ArrayList<AppLine> linePerson = aService.selectAppName();
 		
 		// list 출력
 		ArrayList<Approval> list = aService.selectList(pi, category);
-
+		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("category", category)
+		  .addObject("linePerson", linePerson)
 		  .setViewName("approval/draftWait");
 		
 		return mv;
@@ -150,7 +151,6 @@ public class ApprovalController {
 		ArrayList<AppLine> appList = app.getAppList();
 		int result = aService.insertDraft(app, formNo, appList);
 		
-		
 		if(result>0) {
 			session.setAttribute("alertMsg", "기안 작성 완료되었습니다.");
 			return "redirect:draftWait.dr";
@@ -160,21 +160,32 @@ public class ApprovalController {
 		}
 	}
 	
+	// ----- 기안 상세페이지 ------
+	@RequestMapping("detail.dr")
+	public ModelAndView selectDetail(int drNo, ModelAndView mv) {
+		Approval b = aService.selectDetail(drNo);
+		mv.addObject("b", b).setViewName("approval/drDetailView");
+		return mv;
+	}
 	
 	// ------- 기안게시판 검색 ---------
 	@ResponseBody
 	@RequestMapping(value = "search.board" , produces="application/json; charset=utf-8")
-	public String selectSearchBoard(Integer searchType) {
+	public String selectSearchBoard(Integer searchType, Integer searchDate) {
 
 		ArrayList<Approval> list = new ArrayList<>();
 		String boardSearch = "boardSearch";
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		
-		map.put("boardSearch", searchType);
-		
-		if(searchType <= 6) {
+		if(searchType != 0 || searchDate == null) {
+			HashMap<String, Integer> map = new HashMap<String, Integer>();		
+			map.put("boardSearch", searchType);
+			System.out.println("searchType map : " + map);
 			list = aService.selectSearchForm(map);
-		} else {
+		}	
+		else if(searchType == null || searchDate != 0) {
+			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			map.put("boardSearch", searchDate);
+			System.out.println("searchDate map : " + map);
 			list = aService.selectSearchDate(map);
 		}
 		

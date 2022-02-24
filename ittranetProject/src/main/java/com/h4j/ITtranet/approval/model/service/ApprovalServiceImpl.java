@@ -66,6 +66,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
+	public ArrayList<AppLine> selectAppName() {
+		return aDao.selectAppName(sqlSession);
+	}
+	
+	@Override
 	public ArrayList<Approval> selectList(PageInfo pi, int category) {
 		return aDao.selectList(sqlSession, pi, category);
 	}
@@ -77,6 +82,12 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 	public ArrayList<Approval> selectSearchDate(HashMap<String, Integer> map) {
 		return aDao.selectSearchDate(sqlSession, map);
+	}
+
+	// 기안게시판 상세조회
+	@Override
+	public Approval selectDetail(int drNo) {
+		return aDao.apoDetail(sqlSession, drNo);
 	}
 
 	

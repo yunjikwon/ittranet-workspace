@@ -20,11 +20,15 @@ public interface ApprovalService {
 	int selectListCount(int category);
 	
 	// 기안 게시판 select
+	ArrayList<AppLine> selectAppName();
 	ArrayList<Approval> selectList(PageInfo pi, int category);
 	
 	// 기안 게시판 검색
 	ArrayList<Approval> selectSearchForm(HashMap<String, Integer> map);
 	ArrayList<Approval> selectSearchDate(HashMap<String, Integer> map);
+	
+	// 기안 게시판 상세조회
+	Approval selectDetail(int drNo);
 	
 	
 	

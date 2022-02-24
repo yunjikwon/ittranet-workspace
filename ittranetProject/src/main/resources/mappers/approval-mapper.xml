@@ -13,14 +13,17 @@
 		<result column="emp_name" property="empName" />
 		<result column="team_name" property="teamName" />
 		<result column="emp_no" property="empNo" />
+		
+		<result column="apo_content" property="drContent" />
 	</resultMap>
 	
 	<resultMap id="appLineResultSet" type="AppLine">
 		<result column="emp_no" property="empNo" />
+		<result column="emp_name" property="empName" />
+		<result column="dr_no" property="drNo" />
+		<result column="apline_order" property="aplineOrder" />
 		<result column="team_name" property="team" />
 		<result column="job_name" property="job" />
-		<result column="emp_id" property="empId" />
-		<result column="emp_name" property="empName" />
 	</resultMap>
 
 
@@ -109,6 +112,14 @@
 		 order 
 		    by dr_date
 	</select>
+	<!-- 결재자 리스트 출력 -->
+	<select id="selectAppName" resultMap="appLineResultSet">
+		select dr_no, emp_no, emp_name, apline_order, job_name 
+		  from approval_line
+		  join employee using (emp_no)
+		  join job using(job_code)
+	</select>
+	
 	
 	<!-- draft insert -->
 	<insert id="insertDraft">
@@ -192,7 +203,7 @@
 		        </when>
 		    </choose>    	 
 		 order
-		    by team_name
+		    by dr_date
 	</select>
 	
 	<select id="selectSearchDate" resultMap="appResultSet">
@@ -211,17 +222,34 @@
 		 where 
 		 	<choose>
 		 		<when test="boardSearch == 7">
-		        	dr_date  
+		        	dr_date BETWEEN TO_CHAR(SYSDATE-7 ,'YYYY-MM-DD')
+							    AND TO_CHAR(SYSDATE , 'YYYY-MM-DD')  
 		        </when>
 		        <when test="boardSearch == 8">
-		        	dr_date
+		        	dr_date BETWEEN TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM-DD')
+					            AND TO_CHAR(SYSDATE ,'YYYY-MM-DD')
+		        </when>
+		        <when test="boardSearch == 8">
+		        	dr_date BETWEEN TO_CHAR(ADD_MONTHS(SYSDATE, -3), 'YYYY-MM-DD')
+					            AND TO_CHAR(SYSDATE ,'YYYY-MM-DD')
 		        </when>
 		    </choose>    	 
 		 order
 		    by dr_date
 	</select>
 	
-	
+	<select id="apoDetail" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division" 
+		     , emp_name
+		     , dr_title
+		     , apo_content
+		  from draft
+		  join employee using(emp_no)
+		  join apology using(dr_no)
+		 where dr_no = #{drNo}
+	</select>
 	
 	
 	
