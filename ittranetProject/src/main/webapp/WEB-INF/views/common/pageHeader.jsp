@@ -100,7 +100,7 @@
 		<script>
 			alertify.alert('IT!tranet 잇트라넷 메시지', "${alertifyMsg}");
 		</script>
-		<c:remove var="alertMsg" scope="session"/>
+		<c:remove var="alertifyMsg" scope="session"/>
 	</c:if>
 	<!-- 한 번만 출력이 되고 더 이상 출력  x  -->
 

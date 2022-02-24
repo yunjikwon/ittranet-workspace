@@ -124,49 +124,58 @@
 </style>
 </head>
 <body>
-	
-	<c:if test="${ not empty success }">
-		<script>
-			Swal.fire({
-				icon: 'success',
-				title: '회원 가입 요청 완료!',
-				text: '승인 후 가입시 작성한 이메일로 링크가 발송됩니다',
-			})
-		</script>
-		<c:remove var="success" scope="session"/>
-	</c:if>
     
     <div class="content">
+	    <c:if test="${ not empty alertMsg }">
+			<script>
+				Swal.fire({
+					icon: 'success',
+					title: 'Success!',
+					text: '${ alertMsg }',
+				})
+			</script>
+			<c:remove var="alertMsg" scope="session"/>
+		</c:if>
+		
         <br><br><br>
+        
         <p class="anton" style="font-style:italic;" id="hi">JOIN IT!tranet</p>
         <br>
         <form name="joinForm" id="joinForm" action="join.me" method="post">
+        
 	        <p class="anton">NAME</p>
 	        <input type="text" class="input-form" id="empName" name="empName" placeholder="한글 성명 2자 이상 15자 이하" onfocus="this.placeholder = ''" onblur="this.placeholder='한글 성명 2자 이상 15자 이하'"><br>
 	        <br>
+	        
 	        <p class="anton">E-MAIL</p>
 	        <input type="text" class="input-form" id="email" name="email" placeholder="가입 링크를 받은 메일 주소 입력(@포함)" onfocus="this.placeholder = ''" onblur="this.placeholder='가입 링크를 받은 메일 주소 입력(@포함)'"><br>
 	        <div id="checkMail" style="font-size:0.8em; display:none"></div>
 	        <br>
+	        
 	        <p class="anton">ID</p>
 	        <input type="text" disabled class="input-form" id="empId" name="empId" placeholder="영소문자, 숫자 조합 4~12글자" onfocus="this.placeholder = ''" onblur="this.placeholder='영소문자, 숫자 조합 4~12글자'"><br>
 	        <div id="checkId" style="font-size:0.8em; display:none"></div>
 	        <br>
+	        
 	        <p class="anton">PASSWORD</p>
 	        &nbsp;<i id="checkPwd" class="fas fa-check">비밀번호확인</i>
-	        <input type="text" disabled class="input-form" id="empPwd" name="empPwd" placeholder="4~16글자 (영문,숫자,특문(!@#$%^&*)사용가능)" onfocus="this.placeholder = ''" onblur="this.placeholder='영문,숫자,특문(!@#$%^&*)조합 8~16글자'"><br>
+	        <input type="password" disabled class="input-form" id="empPwd" name="empPwd" placeholder="4~16글자 (영문,숫자,특문(!@#$%^&*)사용가능)" onfocus="this.placeholder = ''" onblur="this.placeholder='영문,숫자,특문(!@#$%^&*)조합 8~16글자'"><br>
 	        <br>
+	        
 	        <p class="anton">PHONE</p>
 	        <input type="text" disabled class="input-form" id="phone" name="phone" placeholder="-포함 13자리 핸드폰 번호 입력(000-0000-0000)" onfocus="this.placeholder = ''" onblur="this.placeholder='-포함 13자리 핸드폰 번호 입력(000-0000-0000)'"><br>
 	        <br>
+	        
 	        <p class="anton">ADDRESS</p>                  
 	        <input class="input-form" style="width: 60%; display: inline;" placeholder="우편번호" name="addr1" id="addr1" type="text" readonly="readonly">&nbsp;
 	        <button type="button" class="btn btn-info" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button><br><br>
 	        <input class="input-form" style="top: 5px;" placeholder="도로명 주소" name="addr2" id="addr2" type="text" readonly="readonly"/><br><br>
 	        <input class="input-form" placeholder="상세주소" name="addr3" id="addr3" type="text"/><br>
 	        <input type="hidden" name="address"/>
+	        
 	        <br>
-	        <button id="click" type="button" onclick="joinSubmit();">CLICK!</button>         
+	        <button id="click" type="button" onclick="joinSubmit();">CLICK!</button>  
+	               
         </form>
         <br><br><br><br><br><br><br>
     </div>
@@ -179,7 +188,7 @@
 			const $mailInput = $("#joinForm input[name=email]");
 			$mailInput.keyup(function(){
 				
-				// console.log($mailInput.val());
+				console.log($mailInput.val());
 					
 				$.ajax({
 					url:"mailCheck.me",

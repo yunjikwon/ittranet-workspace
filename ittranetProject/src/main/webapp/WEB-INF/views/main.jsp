@@ -148,7 +148,19 @@
     }
     </style>
 </head>
-<body>	
+<body>
+	
+	<c:if test="${ not empty alertMsg }">
+		<script>
+			Swal.fire({
+				icon: 'success',
+				title: 'Success!',
+				text: '${ alertMsg }',
+			})
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+	</c:if>
+	
 	<div class="content">
         <br><br><br><br><br>
         <div class="anton" style="font-style:italic;" id="hi">IT!tranet</div>
