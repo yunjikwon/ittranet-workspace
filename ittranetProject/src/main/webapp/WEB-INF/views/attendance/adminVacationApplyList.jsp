@@ -136,7 +136,7 @@
                             <script>
 	                            $(function(){
 	                        		$("#yetVcList>tbody>tr").click(function(){
-	                        			location.href='detail.vcno?vcno=' + $(this).children(".vcno").text();
+	                        			location.href='vcdetail.at?vcno=' + $(this).children(".vcno").text();
 	                        		})
 	                        	})
 							</script>

@@ -55,6 +55,8 @@ public interface AttendanceService {
 	// 휴가 신청 시 총휴가시간 수정
 	int updateVacationSum(String empNo);
 	
+	// 관리자 휴가신청 상세조회
+	Vacation selectVacationDetail(int vcno);
 	
 	
 	

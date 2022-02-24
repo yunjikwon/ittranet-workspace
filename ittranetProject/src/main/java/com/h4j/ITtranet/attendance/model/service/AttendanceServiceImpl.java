@@ -116,6 +116,11 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return atDao.updateVacationSum(sqlSession, empNo);
 	}
 
+	@Override
+	public Vacation selectVacationDetail(int vcno) {
+		return atDao.selectVacationDetail(sqlSession, vcno);
+	}
+
 	
 
 

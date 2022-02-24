@@ -295,7 +295,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  , vc_enddate
 		  , vc_time
 		  , vc_content
-		  , file_path
+		  , origin_name
+		  , change_name
 		  )
 		  values
 		  (
@@ -306,7 +307,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  , #{vcEndDate}
 		  , #{vcTime}
 		  , #{vcContent}
-		  , #{filePath}
+		  , #{originName}
+		  , #{changeName}
 		  )
 	</insert>
 	
@@ -319,6 +321,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where emp_no = #{empNo}
            and vc_enrolldate = to_char(sysdate, 'yy/mm/dd')
 	</update>
+	
+	<select id="selectVacationDetail" resultMap="vacationResult">
+		select
+			   vc_applyno
+			 , vc_type
+			 , emp_no
+			 , vc_startdate
+			 , vc_enddate
+			 , vc_time
+			 , vc_content
+			 , origin_name
+			 , change_name
+			 , vc_enrolldate
+			 , apply_yn
+			 , vc_status
+			 , emp_name
+			 , team_name
+		  from vacation_apply
+		  join employee using(emp_no)
+          join team using(team_code) 
+         where vc_applyno = #{vcno}
+	</select>
 	
 	
 	

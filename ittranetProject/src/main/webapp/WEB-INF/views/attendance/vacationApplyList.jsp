@@ -209,7 +209,7 @@
                         <script>
                         	$(function(){
                         		$("#upVacationList>tbody>tr").click(function(){
-                        			location.href='detail.vcno?vcno=' + $(this).children(".vcno").text();
+                        			location.href='vcdetail.at?vcno=' + $(this).children(".vcno").text();
                         		})
                         	})
                         </script>
@@ -275,6 +275,8 @@
                     </div>
                        <!--잔여휴가 0개일 시 보여질 문구-->
                        <div id="warning">! 사용가능한 휴가가 없습니다.</div>
+                       <form action="vcinsert.at" method="post" enctype="multipart/form-data">
+                       <input type="hidden" value="${ loginUser.empNo }" name="empNo">
                         <table id="vc-tb" align="center">
                         	<tr>
                         		<th><label for="vc-type">휴가종류</label></th>
@@ -316,7 +318,7 @@
                             </tr>
                             <tr>
                                 <th><label for="upfile">증명서제출</label></th>
-                                <td colspan="3"><input type="file" id="upfile" name="upfile"></td>
+                                <td colspan="3"><input type="file" name="upfile" id="upfile"></td>
                             </tr>
                             <tr>
                                 <th><label for="vc-content">비고</label></th>
@@ -325,8 +327,9 @@
                         </table>
                         <div class="mbtn-area">
                             <button type="button" onclick="closePop();">닫기</button>
-                            <button type="button" onclick="insertVacation();" style="background: rgb(210, 163, 238);">신청</button>
+                            <button type="submit" onclick="closePop(); style="background: rgb(210, 163, 238);">신청</button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -343,31 +346,6 @@
 	                function closePop() {
 	                     $('#modal').hide();
 	                };
-	                
-	                function insertVacation(){ // 휴가 신청용
-	                	
-	                	$.ajax({
-	                		url:"vcinsert.at",
-	                		data:{
-	                			empNo:'${loginUser.empNo}',
-	                			vcType:$("#vc-type").val(),
-	                			vcStartDate:$("#start-date").val(),
-	                			vcEndDate:$("#end-date").val(),
-	                			vcTime:$("#vc-time").val(),
-	                			filePath:$("#upfile").val(),
-	                			vcContent:$("#vc-content").val()
-	                		}, success:function(status){
-	                			if(status == "success"){
-	                				closePop();
-	                				alert("휴가 신청 완료!");
-	                				console.log("휴가신청 ajax 통신 성공")
-	                			}
-	                		}, error:function(){
-	                			console.log("휴가신청 ajax 통신 실패")
-	                		}
-	                	})
-	                }
-	                
 	                
 	            </script>
 	            <!--모달 스크립트 끝-->

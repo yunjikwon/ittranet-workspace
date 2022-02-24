@@ -119,7 +119,9 @@ public class AttendanceDao {
 		return sqlSession.update("attendanceMapper.updateVacationSum", empNo);
 	}
 	
-	
+	public Vacation selectVacationDetail(SqlSessionTemplate sqlSession, int vcno) {
+		return sqlSession.selectOne("attendanceMapper.selectVacationDetail", vcno);
+	}
 	
 	
 }

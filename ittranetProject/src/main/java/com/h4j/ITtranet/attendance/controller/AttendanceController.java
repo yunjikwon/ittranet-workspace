@@ -179,35 +179,62 @@ public class AttendanceController {
 		return new Gson().toJson(at);
 	}
 	
-	/*
-	@RequestMapping("restvc.at")
-	public ModelAndView selectRestVacation(ModelAndView mv, HttpSession session) {
-		
-		Employee loginUser = (Employee)session.getAttribute("loginUser");
-		String empNo = loginUser.getEmpNo();
-		
-		Vacation rest = atService.selectRestVacation(empNo);
-		
-		mv.addObject("rest", rest).setViewName("attendance/vacationRest");
-		
-		System.out.println("잔여휴가: " + rest);
-		
-		return mv;
-			
-	}
-	*/
-	
 	// 휴가 신청
-	@ResponseBody
-	@RequestMapping(value="vcinsert.at")
-	public String insertVacation(Vacation vc, String empNo) {
+	@RequestMapping("vcinsert.at")
+	public String insertVacation(Vacation vc, String empNo, MultipartFile upfile, HttpSession session, Model model) {
+		
+		System.out.println(upfile);
+		
+		if(!upfile.getOriginalFilename().equals("")) {
+			String changeName = saveFile(upfile, session);
+			
+			// 원본명, 서버업로드된 경로를 Board b에 이어서 담기
+			vc.setOriginName(upfile.getOriginalFilename());
+			vc.setChangeName("resources/uploadFiles/" + changeName);
+		}
 		
 		int result1 = atService.insertVacation(vc);
 		int result2 = atService.updateVacationSum(empNo);
 		
-		return result1>0 && result2>0 ? "success" : "fail"; // 삼항연산자
+		if(result1 > 0 && result2 > 0) { // 성공
+			session.setAttribute("alertMsg", "휴가신청 완료!");
+			return "redirect:vclist.at";
+		}else { // 실패
+			model.addAttribute("errorMsg", "휴가 신청 실패");
+			return "common/errorPage";
+		}
 	}
 	
+	// 첨부파일 저장
+	public String saveFile(MultipartFile upfile, HttpSession session) {
+		String originName = upfile.getOriginalFilename();
+		
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		String changeName = currentTime + ranNum + ext;
+		
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
+	}
+	
+	// 관리자 휴가신청 디테일
+	@RequestMapping("vcdetail.at")
+	public ModelAndView selectVacationDetail(int vcno, ModelAndView mv) {
+		
+		Vacation vc = atService.selectVacationDetail(vcno);
+		mv.addObject("vc", vc).setViewName("attendance/adminVacationApplyDetail");
+		
+		return mv;
+	}
 
 	
 	
