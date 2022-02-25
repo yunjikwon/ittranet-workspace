@@ -23,5 +23,9 @@ public class Attachment {
 	//게시판 용 변수
 	private int boardNo;
 	private int noticeNo;
+	
+	//뉴스피드용 변수
+	private String prNo;
+	private int nfNo;
 
 }
