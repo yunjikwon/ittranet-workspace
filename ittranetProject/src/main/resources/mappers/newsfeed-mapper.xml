@@ -58,7 +58,6 @@
     and pr_enddate >= to_char(sysdate, 'mm/dd/yyyy')
  </select>
  
- <!-- 프로젝트 내 뉴스피드 조회 -->
  <select id="prNewsfeed" resultMap="NewsfeedList">
  	select
 	    nf_no
@@ -141,8 +140,10 @@
  		     , file_path
  			 , ref_no
 		  from attachment
-		 where ref_Code = 'NF'
-		   and ref_no = #{nfNo}
+		 where ref_Code = 'B'
+		   and ref_no = #{boardNo}
+
+
 </select>
  
  <update id="deleteFeed">

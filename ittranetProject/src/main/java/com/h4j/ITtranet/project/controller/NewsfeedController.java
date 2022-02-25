@@ -41,54 +41,46 @@ public class NewsfeedController {
 		
 		mv.addObject("list1", list1).addObject("list2", list2).setViewName("project/newsfeed");
 		
-		//System.out.println("뉴스피드 db : " + list1);
-		//System.out.println("뉴스피드 프로젝트 db : " + list2);
+		System.out.println("뉴스피드 db : " + list1);
+		System.out.println("뉴스피드 프로젝트 db : " + list2);
 		return mv;
 	}
 	
 	// 게시글 조회, 첨부파일 조회
 	@RequestMapping("feed.pr")
-	public ModelAndView prNewsfeed(String nfNo, Newsfeed n, String prNo, ModelAndView mv) {
+	public ModelAndView prNewsfeed(Newsfeed n, String prNo, ModelAndView mv) {
 		
 		ArrayList<Newsfeed> list = nService.prNewsfeed(prNo);
 		ArrayList<Todo> todo = nService.prTodo(prNo);
-		ArrayList<Attachment> pra = nService.prAttachment(nfNo);
 		Newsfeed nf = nService.nfNo(prNo);
+
 		
-		mv.addObject("list", list)
-		.addObject("todo", todo)
-		.addObject("nf",nf)
-		.addObject("pra",pra)
-		.setViewName("project/project");
-		
+		mv.addObject("list", list).addObject("todo", todo).addObject("nf",nf).setViewName("project/project");
 		System.out.println("프로젝트 뉴스피드 db : " + list);
 		System.out.println("프로젝트 업무 db : " + todo);
 		System.out.println("nf : " + nf);
-		System.out.println("pra : " + pra);
 		return mv;		
 	}
 	
 	// 게시글 등록, 첨부파일 추가
 	
 	//@ResponseBody
-	@RequestMapping("ninsert.pr")
-	public String InsertNews(Newsfeed n, Attachment a, MultipartFile upfile, HttpSession session) {
+	@RequestMapping(value="ninsert.pr")
+	public String ajaxInsertNews(Newsfeed n, Attachment a, MultipartFile file, HttpSession session) {
 		
-		System.out.println("n : " + n);
-		System.out.println("upfile : " + upfile);
+		System.out.println(n);
+		System.out.println(file);
 		
-			if(!upfile.getOriginalFilename().equals("")) {
-				String changeName = saveFile(upfile, session);
-				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
-				n.setOriginName(upfile.getOriginalFilename());
-				n.setChangeName("resources/uploadFiles/" + changeName);	
-				n.setFilePath("resources/uploadFiles/" + changeName);
-					
-			}
-			int result = nService.insertFeed(n);
-			int insertFile = nService.insertFile(n);
-			return result>0 ? "redirect:feed.pr?prNo=" + n.getPrNo() : "fail";
-			
+		if(!file.getOriginalFilename().equals("")) {
+			String changeName = saveFile(file, session);
+			String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
+			a.setOriginName(file.getOriginalFilename());
+			a.setChangeName("resources/uploadFiles/" + changeName);
+		}
+		
+		
+		int result = nService.insertFeed(n);
+		return result>0 ? "redirect:feed.pr?prNo=" + n.getPrNo() : "fail";
 	}
 		
 	// 첨부파일 저장
@@ -100,28 +92,31 @@ public class NewsfeedController {
 			String ext = originName.substring(originName.lastIndexOf("."));
 			
 			String changeName = currentTime + ranNum + ext;		
+			
 			String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
 			
 			try {
 				upfile.transferTo(new File(savePath + changeName));
-			} catch (IllegalStateException | IOException e) {
+			} catch (IllegalStateException e) {
 				e.printStackTrace();
-			} 
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 			return changeName;
 		
 	}	
 	
 	@RequestMapping("delete.pr")
-	public String deleteFeed(int nfNo, String prNo, HttpSession session, Model model) {
+	public String deleteFeed(int nfNo, HttpSession session, Model model) {
 		
 		int result = nService.deleteFeed(nfNo);
 		System.out.println("여기 되나?" + nfNo);
 		if(result > 0) {
 			// 삭제 성공 
-			// 리스트페이지   feed.pr  url재요청 (여기서 "redirect:feed.pr?prNo=" 넘겨야 하는데 prNo은 어떻게 구하지?)
+			// 게시판 리스트페이지   feed.pr  url재요청
 			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
-			return "redirect:feed.pr?prNo=" + prNo;
+			return "project/project";
 			
 		}else {
 			// 삭제 실패
@@ -131,12 +126,12 @@ public class NewsfeedController {
 		
 	}
 	
-	// 업데이트 폼 필요 !
+	
 	@RequestMapping("updateForm.pr")
-	public String updateForm(String prNo, String nfNo, Model model) {
+	public String updateForm(String nfNo, Model model) {
 		model.addAttribute("n", nService.prNewsfeed(nfNo));
 		System.out.println("수정하기 클릭");
-		return "redirect:feed.pr?prNo=" + prNo;
+		return "redirect:feed.pr";
 	}
 	
 	/*

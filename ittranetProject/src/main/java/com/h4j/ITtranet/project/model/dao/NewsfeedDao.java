@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.Reply;
@@ -29,9 +28,6 @@ public class NewsfeedDao {
 	public int insertFeed(SqlSessionTemplate sqlSession, Newsfeed n) {
 		return sqlSession.insert("newsfeedMapper.insertFeed", n);
 	}
-	public int insertAttachment(SqlSessionTemplate sqlSession, Newsfeed n) {
-		return sqlSession.insert("newsfeedMapper.insertAttachment", n);
-	}
 
 	public int deleteFeed(SqlSessionTemplate sqlSession, int nfNo) {
 		return sqlSession.update("newsfeedMapper.deleteFeed", nfNo);
@@ -41,22 +37,16 @@ public class NewsfeedDao {
 		return (ArrayList)sqlSession.selectList("todoMapper.projectTodo", prNo);
 	}
 
-	/*
 	public int insertAttachment(SqlSessionTemplate sqlSession, Attachment a) {
 		return sqlSession.insert("newsfeedMapper.insertAttachment", a);
 	}
-	*/
-	
+
 	public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
 		return sqlSession.insert("newsfeedMapper.insertReply", r);
 	}
 
 	public Newsfeed nfNo(SqlSessionTemplate sqlSession, String prNo) {
 		return sqlSession.selectOne("newsfeedMapper.nfNo", prNo);
-	}
-
-	public ArrayList<Attachment> prAttachment(SqlSessionTemplate sqlSession, String nfNo) {
-		return (ArrayList)sqlSession.selectList("newsfeedMapper.prAttachment", nfNo);
 	}
 
 

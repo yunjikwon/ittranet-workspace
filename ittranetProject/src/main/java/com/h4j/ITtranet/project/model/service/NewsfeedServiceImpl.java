@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.Reply;
@@ -39,11 +38,7 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	public ArrayList<Newsfeed> prNewsfeed(String prNo){
 		return nDao.prNewsfeed(sqlSession, prNo);
 	}
-	// 프로젝트 첨부파일 조회
-	@Override
-	public ArrayList<Attachment> prAttachment(String nfNo) {
-		return nDao.prAttachment(sqlSession, nfNo);
-	}
+	
 	@Override
 	public Newsfeed nfNo(String prNo) {
 		return nDao.nfNo(sqlSession, prNo);
@@ -54,11 +49,6 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	@Override
 	public int insertFeed(Newsfeed n) {
 		return nDao.insertFeed(sqlSession, n);
-	}
-	// 첨부파일 추가하기 2번째
-	@Override
-	public int insertFile(Newsfeed n) {
-		return nDao.insertAttachment(sqlSession, n);
 	}
 	
 	// 뉴스피드 게시글 삭제
@@ -73,13 +63,11 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 		return nDao.prTodo(sqlSession, prNo);
 	}
 	
-	/*
 	// 뉴스피드 게시글 첨부파일
 	@Override
 	public int insertAttachment(Attachment a) {
 		return nDao.insertAttachment(sqlSession, a);
 	}
-	*/
 	
 	// 댓글 달기
 	@Override
@@ -90,9 +78,6 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	public ArrayList<Attachment> selectAttachment(Newsfeed n) {
 		return null;
 	}
-
-	
-
 
 
 	
