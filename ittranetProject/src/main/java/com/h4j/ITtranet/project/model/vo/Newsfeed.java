@@ -27,4 +27,9 @@ public class Newsfeed {
 	private String prLogo;
 	private String originName;
 	private String changeName;
+	private String filePath;
+	private String refConde;
+	private String refNo;
+	private String attachNo;
+	
 }
