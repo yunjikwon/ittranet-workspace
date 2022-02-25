@@ -188,27 +188,32 @@
 			const $mailInput = $("#joinForm input[name=email]");
 			$mailInput.keyup(function(){
 				
-				console.log($mailInput.val());
+				// console.log($mailInput.val());
+				
+				if($mailInput.val().length >= 8){
 					
-				$.ajax({
-					url:"mailCheck.me",
-					data:{checkMail:$mailInput.val()},
-					success:function(result){
-						
-						if(result == "PASS") {
-							$("#checkMail").show();
-							$("#checkMail").css("color", "green").text("멋진 이메일이네요!");
-							$("#empId").removeAttr("disabled");
-						}else {
-							$("#checkMail").show();
-							$("#checkMail").css("color", "red").text("중복된 이메일이 존재합니다. 다시 입력해주세요.");
+					$.ajax({
+						url:"mailCheck.me",
+						data:{checkMail:$mailInput.val()},
+						success:function(result){
+							
+							if(result == "PASS") {
+								$("#checkMail").show();
+								$("#checkMail").css("color", "green").text("멋진 이메일이네요!");
+								$("#empId").removeAttr("disabled");
+							}else {
+								$("#checkMail").show();
+								$("#checkMail").css("color", "red").text("중복된 이메일이 존재합니다. 다시 입력해주세요.");
+							}
+							
+						},error:function(){
+							console.log("메일 중복체크용 ajax통신 실패")
 						}
 						
-					},error:function(){
-						console.log("메일 중복체크용 ajax통신 실패")
-					}
+					})			
 					
-				})				
+				}
+					
 			});
 			
 			// * 아이디 확인 *
@@ -216,27 +221,31 @@
 			$idInput.keyup(function(){
 				
 				// console.log($idInput.val());
+				
+				if($idInput.val().length >= 4){
 					
-				$.ajax({
-					url:"idCheck.me",
-					data:{checkId:$idInput.val()},
-					success:function(result){
-						
-						if(result == "PASS") {
-							$("#checkId").show();
-							$("#checkId").css("color", "green").text("멋진 아이디네요!");
-							$("#empPwd").removeAttr("disabled");
-							$("#phone").removeAttr("disabled");
-						}else {
-							$("#checkId").show();
-							$("#checkId").css("color", "red").text("중복된 아이디가 존재합니다. 다시 입력해주세요.");
+					$.ajax({
+						url:"idCheck.me",
+						data:{checkId:$idInput.val()},
+						success:function(result){
+							
+							if(result == "PASS") {
+								$("#checkId").show();
+								$("#checkId").css("color", "green").text("멋진 아이디네요!");
+								$("#empPwd").removeAttr("disabled");
+								$("#phone").removeAttr("disabled");
+							}else {
+								$("#checkId").show();
+								$("#checkId").css("color", "red").text("중복된 아이디가 존재합니다. 다시 입력해주세요.");
+							}
+							
+						},error:function(){
+							console.log("아이디 중복체크용 ajax통신 실패")
 						}
 						
-					},error:function(){
-						console.log("아이디 중복체크용 ajax통신 실패")
-					}
-					
-				})				
+					})				
+				}				
+				
 			});
 			
 			// *** 비밀번호 확인 ***

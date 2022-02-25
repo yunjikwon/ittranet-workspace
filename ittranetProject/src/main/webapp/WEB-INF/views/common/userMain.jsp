@@ -14,7 +14,7 @@
 	}
     .profile-area{
         width: 400px;
-        height: 100%;
+        height: 100vh;
         background: rgb(142,207,246);
         background: linear-gradient(157deg, rgba(142,207,246,1) 0%
         , rgba(134,189,251,1) 15%, rgba(169,160,255,1) 52%, rgba(237,198,241,1) 87%
@@ -35,7 +35,7 @@
     /*프로필 스타일*/
     .profile-box{
         width: 300px;
-        height: 300px;
+        height: 350px;
         margin: auto;
         background: lightgray;
         border-radius: 20px;
@@ -112,6 +112,12 @@
     	cursor:pointer;
     	text-decoration:none;
     }
+    /*프로필 사진 영역*/
+    .profileZone {
+    	width:150px;
+    	height:150px;
+    	border-radius:50%;	
+    }
 </style>
 </head>
 <body>
@@ -128,19 +134,21 @@
             </div>
             <div class="profile-box">
                 <div class="photo" align="center">
-                    <!--case1:프로필사진 미등록 시-->
-                    <span class="fa-stack fa-3x"> 
-                        <i class="fas fa-circle fa-stack-2x" style="color:white"></i>
-                        <i class="far fa-user fa-stack-1x"></i>  
-                    </span>
-                    <!--case2:프로필사진 등록 시 등록된 이미지-->
-                    <!--
-                        <img src=""/>
-                    -->
+                	<%-- 여기 복붙하면 됨!!! (style 가서 .profileZone 스타일 => 크기는 각자 화면에 맞춰서) --%>
+                   	<c:choose>
+                		<c:when test="${ loginUser.profile eq 'NULL'}">
+		                	<img class="profileZone" src="resources/images/userprofile.png">
+                		</c:when>
+                		<c:otherwise>
+		                	<img class="profileZone" src="${ loginUser.profile }">
+                		</c:otherwise>
+                	</c:choose>
+                	<%--여기까지 프로필 사진 동그라미 영역 (마이페이지에서 사진 등록) --%>
                 </div>
+                <br><br><br>
                 <div class="profile">
                     <!--사용자 이름, 부서명 연결-->
-                    <p style="font-weight: 900;">${ loginUser.empName } 사원</p>
+                    <p style="font-weight: 900;">${ loginUser.empName } ${ loginUser.jobName }</p>
                     
                     <c:choose>
                     	<c:when test="${ loginUser.teamCode eq 'T0' }">
@@ -290,7 +298,7 @@
             </div>
         </div>
     </div>
-    <br clear="both">
+    <!-- <br clear="both"> -->
     <!-- 푸터바 -->
     <jsp:include page="footer.jsp" />
 </body>
