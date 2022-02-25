@@ -291,20 +291,27 @@
 								}, success: function(at){
 									let value = "";
 									console.log(at);
+									if(at.arriveTime != null){
 										value	+= "<tr>"
 											  		+ "<td class='td1'> <div class='att-circle'></div> </td>"
 											  		+ "<td class='td2'>" + at.arriveTime + "&nbsp;&nbsp;출근 </td>" 		
-											  	+ "</tr><tr>"
+											  	+ "</tr>"
+									}if(at.stepoutTime != null){
+										value += "<tr>"
 											  		+ "<td> <div class='att-circle c2'></div> </td>"
 											  		+ "<td>" + at.stepoutTime + "&nbsp;&nbsp;외출 </td>"
-											  	+ "</tr><tr>"
+											  	+ "</tr>"
+									}if(at.outworkTime != null){
+										value += "<tr>"
 											  		+ "<td> <div class='att-circle c3'></div> </td>"
 											  		+ "<td>" + at.outworkTime + "&nbsp;&nbsp;외근 </td>"
-											  	+ "</tr><tr>"
+											  	+ "</tr>"
+									}if(at.leaveTime != null){
+										value += "<tr>"
 											  		+ "<td> <div class='att-circle c4'></div> </td>"
 											  		+ "<td>" + at.leaveTime + "&nbsp;&nbsp;퇴근 </td>"
-											  + "</tr>";		  
-									
+											  + "</tr>"
+									}		  
 									$("#att-status tbody").html(value);
 								}, error:function(){
 									console.log("출퇴근리스트 통신실패");
