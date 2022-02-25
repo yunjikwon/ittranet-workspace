@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.ArrayList, com.h4j.ITtranet.project.model.vo.Newsfeed" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -238,7 +239,7 @@
             <h6 style="font-weight: bold;">&emsp;담당 업무</h6>
         </div>
             <button class="button3">삭제</button>
-            <button class="button2">상태 변경</button>
+            <button id="updateTodo" class="button2" onclick="updateTodo();">상태 변경</button>
             <button id="newTodo" class="button1" onclick="openNew();">새 업무</button>
           
             <br><br>
@@ -256,7 +257,7 @@
             <tbody>
             	<c:forEach var="t" items="${ todo }">
                 <tr>
-                    <td>&emsp;<input type="checkbox"></td>
+                    <td>&emsp;<input type="checkbox" class="selectTodo" name="checkNo" value="${ t.todoNo }"></td>
                     <td>
                   	 1
                     </td>
@@ -302,11 +303,11 @@
                  <form id="ttt" action="ninsert.pr" method="post" enctype="multipart/form-data">
 				   <input type="hidden" name="prNo" value="${list.get(0).prNo}">
 				   <input type="hidden" name="empNo" value="${ loginUser.empNo }">
-				   <input id="write" name="nfContent" type="text" name="write" placeholder="&emsp;내용을 입력해주세요">
-          		   <input id="file" type="file" name="file">
+				   <input id="write" name="nfContent" type="text" placeholder="&emsp;내용을 입력해주세요">
+          		   <input id="upfile" type="file" name="upfile">
            		   <button type="submit" id="writeok"  style="background-color: rgb(187, 159, 202);">등록</button>
 	  			 </form>
-		        </div>
+		    </div>
         
         <script>        
      
@@ -365,7 +366,7 @@
 	           
                             <form id="postForm" action="" method="post">
                                 <input type="hidden" name="nfNo" value="${ n.nfNo }">
-                             <!--<input type="hidden" name="filePath" value="${ n.changeName }" >--> 
+                                <input type="hidden" name="prNo" value="${ n.prNo }">
                             </form>	               		
 	                   
                             <script>
@@ -381,9 +382,19 @@
 
 	                <div class="feedcontent">
 	                    <p>${n.nfContent}</p>
-	                    <p></p>
-	                    
-	                
+	                    <form id="postForm" action="" method="post">
+                                <input type="hidden" name="nfNo" value="${ n.nfNo }">
+                        </form>
+	                    <c:choose>
+							<c:when test="${ empty pra }">
+								 첨부파일이 없습니다.
+							</c:when>
+							<c:otherwise>
+								<c:forEach var="pra" items="${ pra }">
+									<a href="${ pra.filePath }" download="${ pra.originName }" class="aTag">${ at.originName }</a><br>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>	                    	       
 	                </div>
 	                
 		
