@@ -94,7 +94,15 @@ public class NoticeDao {
 		return (ArrayList)sqlSession.selectList("noticeMapper.selectTopList");
 	}
 	
+	public int insertHeader(SqlSessionTemplate sqlSession, String headerTitle) {
+		return sqlSession.insert("noticeMapper.addNewHeader", headerTitle);
+	}
 	
+	public int updateHeader(SqlSessionTemplate sqlSession, NoticeHeader nh) {
+		return sqlSession.update("noticeMapper.updateHeader", nh);
+	}
 	
-	
+	public int deleteHeader(SqlSessionTemplate sqlSession, int headerNo) {
+		return sqlSession.delete("noticeMapper.deleteHeader", headerNo);
+	}
 }

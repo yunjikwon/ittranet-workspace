@@ -93,12 +93,15 @@
 		                    <a href="#">게시판 관리</a>
 		                </li>
 		                <div id="border">
-				               <li class="menu1">
-				                  <a href="listAdmin.no">공지사항 관리</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="listAdmin.bo">자유게시판 관리</a>
-				               </li>
+				                <li class="menu1">
+				                    <a href="listAdmin.no">공지사항 관리</a>
+				                </li>
+                                <li class="menu1">
+                                    <a href="headerAdmin.no">공지사항 말머리 관리</a>
+                                </li>
+				                <li class="menu1">
+				                    <a href="listAdmin.bo">자유게시판 관리</a>
+				                </li>
 				              
 		            	</div>
 		            </ul>

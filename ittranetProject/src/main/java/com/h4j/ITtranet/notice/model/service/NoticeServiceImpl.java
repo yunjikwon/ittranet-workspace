@@ -119,6 +119,21 @@ public class NoticeServiceImpl implements NoticeService{
 		return nDao.selectNewNoticeList(sqlSession);
 	}
 
+	@Override
+	public int insertHeader(String headerTitle) {
+		return nDao.insertHeader(sqlSession, headerTitle);
+	}
+
+	@Override
+	public int updateHeader(NoticeHeader nh) {
+		return nDao.updateHeader(sqlSession, nh);
+	}
+
+	@Override
+	public int deleteHeader(int headerNo) {
+		return nDao.deleteHeader(sqlSession, headerNo);
+	}
+
 	
 
 

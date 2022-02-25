@@ -7,14 +7,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	.noticeDetailOuter{
+	.boardDetailOuter{
 		width: 900px;
 		box-sizing: border-box;
 		margin:auto;
 		background-color: rgba(211, 211, 211, 0.466);
 		font-size: 14px;
     }
-    #noticeDetailTable, #replyTable{
+    #boardDetailTable, #replyTable{
 		width: 700px;
 		border-collapse: collapse;
     }
@@ -30,7 +30,7 @@
 		height:380px;
 		background-color: white;
 	}
-	#noticeDetailTable td, #noticeDetailTable th, #replyTable td, #replyTable th{
+	#boardDetailTable td, #boardDetailTable th, #replyTable td, #replyTable th{
 		border-bottom: 1px solid rgb(184, 184, 184);
 	}
 	.btnStyle, .addRereplyBtn{
@@ -87,7 +87,7 @@
 				
 			</c:if>
 			<!-- 메뉴바-->
-			<jsp:include page="../common/userMenu.jsp" />
+			<jsp:include page="../common/adminMenu.jsp" />
 
 			<br clear="both">
 
@@ -98,14 +98,17 @@
 		        <div class="cont">
 		            <ul id="ac">
 		                <li class="division">
-		                    <a href="#">게시판</a>
+		                    <a href="#">게시판 관리</a>
 		                </li>
 		                <div id="border">
 				               <li class="menu1">
-				                  <a href="list.no">공지사항</a>
+				                  <a href="listAdmin.no">공지사항 관리</a>
 				               </li>
+                               <li class="menu1">
+                                    <a href="headerAdmin.no">공지사항 말머리 관리</a>
+                                </li>
 				               <li class="menu1">
-				                  <a href="list.bo">자유게시판</a>
+				                  <a href="listAdmin.bo">자유게시판 관리</a>
 				               </li>
 				              
 		            	</div>
@@ -115,19 +118,19 @@
 				<div class="mainOuter">
 					<br>
 					<span style="margin: 10px;">
-						<h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.no">공지사항</a></h2>
+						<h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.bo">자유게시판 관리</a></h2>
 					</span>
 					<br clear="both">
-					<div class="noticeDetailOuter" align="center">
+					<div class="boardDetailOuter" align="center">
 						
 						<br><br>
 						<button id="backBtn" class="btnStyle" style="float:right; margin-right:50px;" onclick="goBack();"><a class="aTag">목록으로</a></button>
-						<c:if test="${ n.empNo eq loginUser.empNo }">
+						<button id="deleteBtn" class="btnStyle" style="float:right; margin-right:5px;" onclick="delBoard();">삭제하기</button>
+						<c:if test="${ b.empNo eq loginUser.empNo }">
 							<button id="updateBtn" class="btnStyle" style="float:right; margin-right:5px;" onclick="postFormSubmit(1);">수정하기</button>
-							<button id="deleteBtn" class="btnStyle" style="float:right; margin-right:5px;" onclick="delBoard();">삭제하기</button>
 						</c:if>
 						<form id="postForm" action="" method="post">
-							<input type="hidden" name="nno" value="${ n.noticeNo }">
+							<input type="hidden" name="bno" value="${ b.boardNo }">
 							<input type="hidden" name="admin" value="${ loginUser.admin }">
 							<input type="hidden" name="filePath" value="${ at.filePath }">
 						</form>
@@ -146,7 +149,7 @@
 								  cancelButtonText : '취소'
 								}).then((result) => {
 								  if (result.isConfirmed) {
-									$("#postForm").attr("action", "delete.no").submit();  
+									$("#postForm").attr("action", "delete.bo").submit();  
 								   
 								  }
 								})
@@ -154,24 +157,22 @@
 							
 							function postFormSubmit(num){
 								if(num == 1){
-									$("#postForm").attr("action", "updateForm.no").submit();
+									$("#postForm").attr("action", "updateForm.bo").submit();
 								
 								}
 							}
 						</script>
 						<!-- 게시글 상세내역-->
-						<table id="noticeDetailTable" align="center">
+						<table id="boardDetailTable" align="center">
 							<tr>
-								<th width="100" height="50">글제목</th>
-								<td align="center" width="400">${ n.noticeTitle }</td>
-								<th width="100">말머리</th>
-								<td width="100">${ n.headerTitle }</td>
+								<th height="50">글제목</th>
+								<td colspan="3" align="center">${ b.boardTitle }</td>
 							</tr>
 							<tr>
 								<th width="100" height="50">작성자</th>
-								<td width="250">${ n.empName }</td>
+								<td width="250">${ b.empName }</td>
 								<th width="100">작성일</th>
-								<td width="250">${ n.createDate }</td>
+								<td width="250">${ b.createDate }</td>
 							</tr>
 							<tr>
 								<th height="120">첨부파일</th>
@@ -198,14 +199,14 @@
 							<tr>
 								<td colspan="4" height="400px" >
 									<p id="content-area">
-										${ n.noticeContent }
+										${ b.boardContent }
 									</p>
 								</td>
 							</tr>
 						</table>
 						<script>
 							 function goBack(){
-								location.href="list.no";
+								location.href="listAdmin.bo";
 							 }
 
 						</script>
@@ -243,9 +244,9 @@
 
 							function selectReplyList(){
 								$.ajax({
-									url:"rlist.no",
+									url:"rlist.bo",
 									data:{
-										nno:${n.noticeNo},
+										bno:${b.boardNo},
 									},
 									success:function(list){
 										//console.log(list);
@@ -262,8 +263,7 @@
 												value += "<tr>"
 													+	"<th width='20' height='50'>" + "</th>"
 													+ 	"<th width='80'>" + "ㄴ" + list[i].empName + "</th>"
-													+ "<td><input type='hidden' class='replyNo' name='replyNo' value='"+list[i].replyNo+"'>" 
-													+ "<input type='hidden' class='replyOriginNo' name='replyOriginNo' value='" + list[i].replyOriginNo + "'</td>";
+													+ "<td><input type='hidden' class='replyNo' name='replyNo' value='"+list[i].replyNo+"'></td>";
 											}
 											value += 	"<td width='380' class='replyContent'>" + list[i].replyContent+ "</td>"
 													+	"<td width='110'>" + list[i].createDate + "</td>"
@@ -375,9 +375,9 @@
 								}
 								
 								$.ajax({
-									url:"rinsert.no",
+									url:"rinsert.bo",
 									data:{
-										refNo:${n.noticeNo},
+										refNo:${b.boardNo},
 										empNo:'${loginUser.empNo}',
 										replyContent:$replyContent,
 										replyOriginNo: orgNo,
@@ -399,20 +399,14 @@
 							// 댓글 삭제 버튼 클릭 시
 							$(document).on("click", ".delBtn", function(){
 								var $value = $(this).parent().siblings().children(".replyNo").val();
-								var $originNo = $(this).parent().siblings().children(".replyOriginNo").val();
-								
-								
-								
-								delReply($value, $originNo);
+								delReply($value);
 						
 							});
 							
 							// 댓글 삭제 기능
-							function delReply(replyNo, replyOriginNo){
-								
-								
+							function delReply(replyNo){
 								$.ajax({
-									url:"rdelete.no",
+									url:"rdelete.bo",
 									data:{
 										replyNo:replyNo
 									},success:function(status){
@@ -436,7 +430,7 @@
 							// 댓글 수정 기능
 							function updateReply(replyNo, replyContent){
 								$.ajax({
-									url:"rupdate.no",
+									url:"rupdate.bo",
 									data:{
 										replyNo:replyNo,
 										replyContent: replyContent

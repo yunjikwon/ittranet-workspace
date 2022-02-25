@@ -65,5 +65,14 @@ public interface NoticeService {
 	
 	// 11. 메인페이지 새글 조회 서비스 
 	ArrayList<Notice> selectNewNoticeList();
+	
+	// 12. 말머리 추가 서비스
+	int insertHeader(String headerTitle);
+	
+	// 13. 말머리 수정 서비스
+	int updateHeader(NoticeHeader nh);
+	
+	// 14. 말머리 삭제 서비스
+	int deleteHeader(int headerNo);
 
 }

@@ -87,7 +87,7 @@
 				
 			</c:if>
 			<!-- 메뉴바-->
-			<jsp:include page="../common/userMenu.jsp" />
+			<jsp:include page="../common/adminMenu.jsp" />
 
 			<br clear="both">
 
@@ -98,15 +98,18 @@
 		        <div class="cont">
 		            <ul id="ac">
 		                <li class="division">
-		                    <a href="#">게시판</a>
+		                    <a href="#">게시판 관리</a>
 		                </li>
 		                <div id="border">
-				               <li class="menu1">
-				                  <a href="list.no">공지사항</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="list.bo">자유게시판</a>
-				               </li>
+				                <li class="menu1">
+				                    <a href="listAdmin.no">공지사항 관리</a>
+				                </li>
+                                <li class="menu1">
+                                    <a href="headerAdmin.no">공지사항 말머리 관리</a>
+                                </li>
+				                <li class="menu1">
+				                    <a href="listAdmin.bo">자유게시판 관리</a>
+				                </li>
 				              
 		            	</div>
 		            </ul>
@@ -115,7 +118,7 @@
 				<div class="mainOuter">
 					<br>
 					<span style="margin: 10px;">
-						<h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.no">공지사항</a></h2>
+						<h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="listAdmin.no">공지사항 관리</a></h2>
 					</span>
 					<br clear="both">
 					<div class="noticeDetailOuter" align="center">
@@ -129,6 +132,7 @@
 						<form id="postForm" action="" method="post">
 							<input type="hidden" name="nno" value="${ n.noticeNo }">
 							<input type="hidden" name="admin" value="${ loginUser.admin }">
+							<input type="hidden" name="adminPage" value="Y">
 							<input type="hidden" name="filePath" value="${ at.filePath }">
 						</form>
 						<br><br>
@@ -146,6 +150,7 @@
 								  cancelButtonText : '취소'
 								}).then((result) => {
 								  if (result.isConfirmed) {
+									
 									$("#postForm").attr("action", "delete.no").submit();  
 								   
 								  }
@@ -205,7 +210,7 @@
 						</table>
 						<script>
 							 function goBack(){
-								location.href="list.no";
+								location.href="listAdmin.no";
 							 }
 
 						</script>
