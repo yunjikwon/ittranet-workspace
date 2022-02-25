@@ -44,31 +44,33 @@
                 </li>
                 <div id="border">
 		               <li class="menu1">
-		                  <a href="#">사원 추가</a>
+		                  <a href="addEmpForm.me">사원 추가</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">사원 가입승인</a>
+		                  <a href="empSetForm.me">가입 승인</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">직위/직무 관리</a>
+		                  <a href="empSetForm.me">직위/직무 관리</a>
 		               </li>
-		               <li class="menu1">
-		                  <a href="#">사원 계정삭제</a>
+		               <li class="menu1" style="background:rgb(147, 205, 207);">
+		                  <a href="delEmpForm.me"  style="color:white;">사원 계정 삭제</a>
 		               </li>
             	</div>
             </ul>
          	</div>
-		</div>
-		
-		   <div class="middle">
-
-        <br><br>
-        <div class="input-group mb-3" id="searchbar">
-            <input class="form-control mr-sm-2" type="text" placeholder="이름을 입력하세요" style="width:10px">
-            <button class="btn btn-success" type="submit">검색</button>
-        </div>
-
-        <div class="buttonbar">
+         	
+         	
+         	<div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif; background:whitesmoke;">
+			  	<br><br>
+			  	
+        	    <p class="anton" style="font-style:italic;" id="hi">Envite Employee</p>
+        	    
+        	    <div class="input-group mb-3" id="searchbar">
+		            <input class="form-control mr-sm-2" type="text" placeholder="이름을 입력하세요" style="width:10px">
+		            <button class="btn btn-success" type="submit">검색</button>
+		        </div>
+		        
+		        <div class="buttonbar">
             <button type="button" class="btn btn-danger">계정삭제</button>
         </div>
 
@@ -97,8 +99,13 @@
         </div>
 		
 		</div>
-	</div>
-	</div>
+        	    
+			        
+        	  </div> <%-- mainOuter --%>         
+
+        </div><%-- innerback --%>
+
+    </div><%-- back --%>
 
 </body>
 </html>

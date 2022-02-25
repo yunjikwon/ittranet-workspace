@@ -162,8 +162,8 @@
                 </div>
 
                 <div>
-                    <button class="profilebtn">마이페이지</button>
-                    <button class="profilebtn">로그아웃</button>
+                    <button class="profilebtn" onclick="location.href='myPage.me'">마이페이지</button>
+                    <button class="profilebtn" onclick="location.href='bye.me'">로그아웃</button>
                 </div>
             </div>
             <br><br><br>
