@@ -31,7 +31,7 @@
     cursor: pointer;
     }
     .btnStyle:hover{opacity: 50%;}
-    #addBtn, #searchBtn{
+    #addBtn, #searchBtn, #delBtn{
         width : 70px;
         height : 30px;
     }
@@ -100,6 +100,9 @@
 				               <li class="menu1">
 				                  <a href="listAdmin.no">공지사항 관리</a>
 				               </li>
+                               <li class="menu1">
+                                    <a href="headerAdmin.no">공지사항 말머리 관리</a>
+                                </li>
 				               <li class="menu1">
 				                  <a href="listAdmin.bo">자유게시판 관리</a>
 				               </li>
@@ -112,12 +115,13 @@
                 <div class="mainOuter">
                     <br>
                     <span style="margin: 10px;">
-                        <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.bo">자유게시판 관리</a></h2>
+                        <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="listAdmin.bo">자유게시판 관리</a></h2>
                     </span>
                     <!-- 게시글 전체 영역-->
                     <div class="boardListOuter" align="center">
                         
                         <button id="addBtn" class="btnStyle" style="float:right"><a class="aTag" href="insertForm.bo">새글등록</a></button>
+                        <button id="delBtn" class="btnStyle" style="float:right"><a class="aTag" onclick="delBoard();">글 삭제</a></button>
                         <br clear="both">
                         <!-- 게시글 전체보기 리스트 영역-->
                         <table id="boardListTable" class="table thead-light table-hover">
@@ -159,13 +163,7 @@
                         <br>
                         
                         <script>
-                            $(function(){
-                                $("#boardListTable>tbody>tr").click(function(){
-                                    location.href = 'detail.bo?bno=' + $(this).children(".bno").text();
-                                })
-                            })
-
-                             // 전체 체크버튼 클릭시 전체 체크박스 선택
+                                // 전체 체크버튼 클릭시 전체 체크박스 선택
                                 // 전체선택 클릭시 전부 선택
                                 $("#checkAll").on('click', function(){
                                     
@@ -214,7 +212,7 @@
                                     let count = $("input[name='check']:checked").length;
                                     let checkArr = new Array();
                                     $("input[name='check']:checked").each(function(){
-                                        checkArr.push($(this).parent().siblings(".nno").text())
+                                        checkArr.push($(this).parent().siblings(".bno").text())
                                         
                                     }); 
                                     $("#boardNoDel").attr("value", checkArr);
@@ -233,12 +231,12 @@
                                     <button class="pageBtn" disabled>&lt;</button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="pageBtn"><a class="aTag" href="list.bo?cpage=${ pi.currentPage-1 }">&lt;</a></button>
+                                    <button class="pageBtn"><a class="aTag" href="listAdmin.bo?cpage=${ pi.currentPage-1 }">&lt;</a></button>
                                 </c:otherwise>
                             </c:choose>
                             
                             <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                                <button class="pageBtn"><a class="aTag" href="list.bo?cpage=${ p }">${ p }</a></button>
+                                <button class="pageBtn"><a class="aTag" href="listAdmin.bo?cpage=${ p }">${ p }</a></button>
                             </c:forEach>
                         
                             <c:choose>
@@ -246,7 +244,7 @@
                                     <button class="pageBtn" disabled>&gt;</button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="pageBtn"><a class="aTag" href="list.bo?cpage=${ pi.currentPage+1 }">&gt;</a></button>
+                                    <button class="pageBtn"><a class="aTag" href="listAdmin.bo?cpage=${ pi.currentPage+1 }">&gt;</a></button>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -321,7 +319,7 @@
                                 	if($(this).hasClass("noResult")){
                                 		return false;
                                 	}else{
-                                    	location.href = 'detail.bo?bno=' + $(this).siblings(".bno").text();
+                                    	location.href = 'detailAdmin.bo?bno=' + $(this).siblings(".bno").text();
                                 	}
                                 })
                             })
