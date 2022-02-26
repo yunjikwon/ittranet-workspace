@@ -65,11 +65,31 @@
         height: 120px;
         width: 149px;
         font-size: 14px;
+        border: none;
+        background: none;
+    }
+    .commute-btn i{
+    	font-size: 45px;
     }
     .content-area{
         width: 1500px;
         float: right;
         padding: 0px 100px;
+    }
+    #cdiv1{
+    	height: 40%;
+    }
+    #cdiv2{
+    	height: 20%;
+    }
+    #cdiv3{
+    	height: 30%;
+    }
+    .now span{
+    	width: 50px;
+    	height: 20px;
+    	float: left;
+    	border: solid 1px red;
     }
     /*게시판 연결*/
     .contentbox{
@@ -166,30 +186,124 @@
                 </div>
             </div>
             <div class="commute-box">
-                <div style="height: 50px; font-size: 18px; margin: 20px; padding-top: 20px;">
+                <div id="now" style="height: 50px; font-size: 18px; margin: 20px; padding-top: 20px;">
                     <!--오늘날짜-->
-                    xxxx년 xx월 xx일 <br>
+					<span id="nowYear"></span><span>년</span>
+                    <span id="nowMonth"></span><span>월</span>
+					<span id="nowDay"></span><span>일</span>
                     <!--현재시간-->
-                    12:00:00
-                </div>
-                <div class="commute-btn" style="border-right: 0.1px solid rgb(156, 156, 156);">
-                    <i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(163, 100, 223);"></i>
                     <br>
-                    <p>
-                        출근하기 <br>
-                        00:00:00
-                    </p>   
+                    <span id="nowTimes"></span>
                 </div>
-                <div class="commute-btn">
-                    <i class="far fa-arrow-alt-circle-right fa-4x" style="color: rgb(163, 100, 223);"></i>
+                <button class="commute-btn" onclick="insertArrive();" style="border-right: 0.1px solid rgb(156, 156, 156);">
+                	<div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(163, 100, 223);"></i></div>
                     <br>
-                    <p>
-                        퇴근하기 <br>
-                        00:00:00
-                    </p>   
-                </div>
+                    <div id="cdiv2">
+                        출근하기
+                    </div>
+                    <div id="cdiv3"><span id="arr-time"></span></div>
+                        
+                </button>
+                <button class="commute-btn" onclick="updateLeave();">
+                    <div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x" style="color: rgb(163, 100, 223);"></i></div>
+                    <br>
+                    <div id="cdiv2">
+                        퇴근하기 
+                    </div>
+                    <div id="cdiv3"><span id="lev-time"></span></div>
+                </button>
             </div>
         </div>
+        <!-- 출퇴근기록용 스크립트 -->
+        <script>
+			$(function(){
+				selectAttStatus();
+				setInterval(selectAttStatus, 1000);
+				
+		        clock();
+		        setInterval(clock, 500);
+			})
+			
+			function insertArrive(){ // 출근기록용
+				$.ajax({
+					url: "arrive.at",
+					data:{
+						empNo: '${loginUser.empNo}'
+					}, success:function(arstatus){
+						if(arstatus == "success"){
+							console.log("출근 통신 성공")
+						}
+					}, error:function(){
+						console.log("출근 통신 실패")
+					}
+				})
+			}
+			
+			function updateLeave(){ // 퇴근기록용
+				$.ajax({
+					url: "leave.at",
+					data:{
+						empNo: '${loginUser.empNo}'
+					}, success:function(arstatus){
+						if(arstatus == "success"){
+							console.log("퇴근 통신 성공")
+						}
+					}, error:function(){
+						console.log("퇴근 통신 실패")
+					}
+				})
+			}
+			
+			function selectAttStatus(){ // 출퇴근기록 조회용
+				$.ajax({
+					url:"list.at",
+					type: "post",
+					data:{
+						empNo: '${loginUser.empNo}'
+					}, success: function(at){
+						let arr = "";
+						let lev = "";
+						console.log(at);
+						if(at.arriveTime != null){
+							
+							arr = at.arriveTime;
+							
+						}if(at.leaveTime != null){
+							
+							lev = at.leaveTime;
+							
+						}		  
+						$("#arr-time").html(arr);
+						$("#lev-time").html(lev);
+					}, error:function(){
+						console.log("출퇴근리스트 통신실패");
+					}
+				})
+			}
+			
+		    function clock() { // 날짜 및 시간 조회
+				const nowTime = new Date();
+				const hour = nowTime.getHours();
+				const min = nowTime.getMinutes();
+				const sec = nowTime.getSeconds();
+				
+				
+				let month = nowTime.getMonth();
+				let day =  nowTime.getDate();
+				let year = nowTime.getFullYear();
+				let value = hour + ":" + addzero(min) + ":" + addzero(sec);
+				
+				$("#nowMonth").html(month);
+				$("#nowDay").html(day);
+				$("#nowYear").html(year);
+				$("#nowTimes").html(value);
+			}
+		        // 1자리수의 숫자인 경우 앞에 0을 붙이도록
+			function addzero(num) {
+				if(num < 10) { num = "0" + num; }
+		 		return num;
+			}
+		</script>
 
         <!--각 메뉴 연결할 영역-->
         <div class="content-area">
