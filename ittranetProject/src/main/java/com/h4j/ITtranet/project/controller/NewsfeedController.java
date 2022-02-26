@@ -83,10 +83,10 @@ public class NewsfeedController {
 				n.setOriginName(upfile.getOriginalFilename());
 				n.setChangeName("resources/uploadFiles/" + changeName);	
 				n.setFilePath("resources/uploadFiles/" + changeName);
-					
+				int insertFile = nService.insertFile(n);	
 			}
 			int result = nService.insertFeed(n);
-			int insertFile = nService.insertFile(n);
+
 			return result>0 ? "redirect:feed.pr?prNo=" + n.getPrNo() : "fail";
 			
 	}
@@ -119,7 +119,6 @@ public class NewsfeedController {
 		System.out.println("여기 되나?" + nfNo);
 		if(result > 0) {
 			// 삭제 성공 
-			// 리스트페이지   feed.pr  url재요청 (여기서 "redirect:feed.pr?prNo=" 넘겨야 하는데 prNo은 어떻게 구하지?)
 			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
 			return "redirect:feed.pr?prNo=" + prNo;
 			
@@ -139,13 +138,5 @@ public class NewsfeedController {
 		return "redirect:feed.pr?prNo=" + prNo;
 	}
 	
-	/*
-	@ResponseBody
-	@RequestMapping(value="rinsert.pr")
-	public String ajaxInsertReply(Reply r) {
-		int result = nService.insertReply(r);
-		return result>0 ? "success" : "fail";
-	}
-	*/
 
 }

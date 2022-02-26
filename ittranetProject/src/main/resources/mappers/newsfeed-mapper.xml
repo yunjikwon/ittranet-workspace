@@ -3,7 +3,7 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
  
- <mapper namespace="newsfeedMapper">
+<mapper namespace="newsfeedMapper">
  
 <resultMap id="NewsfeedList" type="Newsfeed">
 	<result property="nfNo" column="nf_no"/>
@@ -156,4 +156,4 @@
  
 
  
- </mapper>
+</mapper>

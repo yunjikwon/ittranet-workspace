@@ -110,7 +110,11 @@
 	        )
 </insert>
 
-
+<delete id="deleteTodo">
+	delete
+	    from todo
+	    where todo_no = #{tdNo}
+</delete>
 
 
 </mapper>

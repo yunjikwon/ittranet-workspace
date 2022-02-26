@@ -3,6 +3,7 @@ package com.h4j.ITtranet.project.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,15 +72,39 @@ public class TodoController {
 
 	}
 	
+	// 새 업무 추가하기
 	@ResponseBody
 	@RequestMapping(value="tdinsert.pr")
 	public String newTodo(Todo td, String empNo, String prNo) {
 		
-		System.out.println("여기까지는 되나? " + td);
+		//System.out.println("여기까지는 되나? " + td);
 		int result = tService.newTodo(td);
 		
 		return result>0 ? "success" : "fail";
 	}
 
-
+	// 업무 수정하기
+	@ResponseBody
+	@RequestMapping(value="tdupdate.pr")
+	public String updateTodo(Todo td, String empNo, String prNo) {
+		
+		int result = tService.updateTodo(td);
+		
+		return result>0 ? "success" : "fail";
+	}
+	
+	// 업무 선택 삭제
+	@RequestMapping(value = "/delete")
+	public String deleteTodo(HttpServletRequest request) {
+		
+		String[] ajaxMsg = request.getParameterValues("valueArr");
+		int size = ajaxMsg.length;
+		System.out.println(ajaxMsg);
+		
+		for( int i=0; i<size; i++) {
+			tService.deleteTodo(ajaxMsg[i]);
+		}
+		
+		return "project/todo";
+	}
 }

@@ -15,4 +15,10 @@ public interface TodoService {
 	// 업무 생성
 	int newTodo(Todo td);
 
+	// 업무 수정
+	int updateTodo(Todo td);
+	
+	// 업무 삭제	
+	String deleteTodo(String tdNo);
+
 }

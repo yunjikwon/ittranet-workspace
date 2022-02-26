@@ -23,4 +23,13 @@ public class TodoDao {
 		return sqlSession.insert("todoMapper.newTodo", td);
 	}
 
+	public int updateTodo(SqlSessionTemplate sqlSession, Todo td) {
+		return sqlSession.update("todoMapper.updateTodo", td);
+	}
+
+	public Object deleteTodo(SqlSessionTemplate sqlSession, String tdNo) {
+		return sqlSession.delete("todoMapper.deleteTodo", tdNo);
+	}
+	
+
 }

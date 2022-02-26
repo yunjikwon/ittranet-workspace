@@ -238,7 +238,7 @@
             <br>
             <h6 style="font-weight: bold;">&emsp;담당 업무</h6>
         </div>
-            <button class="button3">삭제</button>
+            <button id="deleteTd" class="button3" onclick="deleteTodo();">삭제</button>
             <button id="updateTodo" class="button2" onclick="updateTodo();">상태 변경</button>
             <button id="newTodo" class="button1" onclick="openNew();">새 업무</button>
           
@@ -246,7 +246,7 @@
         <table class="todo" width="780" style="text-align: center;" >
             <thead>
                 <tr style="background-color: rgba(209, 189, 220, 0.7); border: none; font-size: 14px; ">
-                    <th width="50"></th>
+                    <th width="50"><input name="allCheck" id="allCheck" type="checkbox" /></th>
                     <th width="50">no</th>
                     <th width="340px">업무</th>
                     <th width="115">담당자</th>
@@ -257,7 +257,7 @@
             <tbody>
             	<c:forEach var="t" items="${ todo }">
                 <tr>
-                    <td>&emsp;<input type="checkbox" class="selectTodo" name="checkNo" value="${ t.todoNo }"></td>
+                    <td>&emsp;<input type="checkbox" class="selectTodo" name="RowCheck" value="${ t.todoNo }" /></td>
                     <td>
                   	 1
                     </td>
@@ -287,7 +287,7 @@
                 </c:forEach>
             </tbody>
         </table>
-
+ 
         <!-- 소식 뉴스피드 -->
         <div class="menuname">
             <br><br>
@@ -487,6 +487,92 @@
   
         </div>
 
+ <!-- 업무 수정 모달 -->
+<div class="modal-overlay" id="modalupdate">
+    <div class="modal-window">
+        <h6 class="modal-title">업무 수정</h6>
+            <div class="modal-body">
+                <table class="makeTodo">
+                    <tr style="background-color: transparent;">
+                        <th><label for="tdTitle">업무명</th>
+                        <td><textarea name="tdTitle" id="tdTitle" rows="1" cols="30"></textarea></td>
+                    </tr>
+                    <tr style="background-color: transparent;">
+                        <th><label for="tdEnddate">만료일</label></th>
+                        <td><textarea name="tdEnddate" id="tdEnddate" rows="1" cols="30"></textarea></td>
+                    </tr>
+                    <tr style="background-color: transparent;">
+                        <th><label for="todoContent">메모</label></th>
+                        <td><textarea name="todoContent" id="todoContent" rows="4" cols="30" ></textarea></td>
+                    </tr>
+                </table>
+                    <div class="todoButtons">
+                        <button type="button" onclick="closeTodo();" style="background-color: rgb(190, 190, 190);">취소</button>
+                        <button type="button" onclick="insertTodo();" style="background: rgba(207, 168, 241, 0.45);">완료</button>
+                    </div>   
+                </div>
+
+  
+        </div>
+	
+
+       
+<script>
+	$(function(){
+		var chkObj = document.getElementsByName("RowCheck");
+		var rowCnt = chkObj.length;
+		
+		$("input[name='RowCheck']").click(function(){
+			if($("input[name='RowCheck']:checked").length == rowCnt){
+				$("input[name='allCheck']")[0].checked = true;
+			}
+			else{
+				$("input[name='allCheck']")[0].checked = false;
+			}
+		});
+	});
+	
+
+	
+	function deleteTodo(){
+		
+		console.log("클릭은 됨");
+		var url = "deletetd.pr";
+		var valueArr = new Array();
+		var list = $("input[name='RowCheck']");
+		for(var i = 0; i < list.length; i++){
+			if(list[i].checked){
+				valueArr.push(list[i].value);
+			}
+		}
+		if (valueArr.length == 0){
+			alert("선택된 글이 없습니다.");
+		}
+		else {
+			var chk = confirm("정말 삭제하시겠습니까?");
+			$.ajax({
+				url : url,
+				type : 'POST',
+				traditional : true,
+				data : {
+					valueArr : valueArr
+				},
+				success : function(jdata){
+					if(jdata = 1){
+						alert("삭제 성공");
+						location.reload();
+					}
+					else{
+						alert("삭제 실패")
+					}
+				}
+			})
+		}
+	}
+	}
+	
+	
+</script>
 
  
 

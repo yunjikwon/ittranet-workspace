@@ -36,4 +36,19 @@ public class TodoServiceImpl implements TodoService {
 		return tDao.newTodo(sqlSession, td);
 	}
 
+	// 업무 수정
+	@Override
+	public int updateTodo(Todo td) {
+		return tDao.updateTodo(sqlSession, td);
+	}
+	
+	// 업무 삭제
+	@Override
+	public String deleteTodo(String tdNo) {
+		return (String) tDao.deleteTodo(sqlSession, tdNo);
+	}
+
+
+
+
 }
