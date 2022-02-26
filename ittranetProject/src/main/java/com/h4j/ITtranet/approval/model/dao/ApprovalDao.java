@@ -125,21 +125,21 @@ public class ApprovalDao {
 
 	//-------------------------------------------------------------------------------
 	// 결재 게시판 select
-	public int selectApListCount(SqlSession sqlSession, int category, int apNo) {
+	public int selectApListCount(SqlSession sqlSession, int category, int empNo) {
 		HashMap<String, Integer> map = new HashMap<>();
 		map.put("category",category);
-		map.put("apNo", apNo);
+		map.put("empNo", empNo);
 		return sqlSession.selectOne("appMapper.selectApListCount", map);
 	}
 
-	public ArrayList<Approval> selectApList(SqlSession sqlSession, PageInfo pi, int category, int apNo) {
+	public ArrayList<Approval> selectApList(SqlSession sqlSession, PageInfo pi, int category, int empNo) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
 		HashMap<String, Integer> map = new HashMap<>();
 		map.put("category",category);
-		map.put("apNo", apNo);
+		map.put("empNo", empNo);
 		
 		return (ArrayList)sqlSession.selectList("appMapper.selectApList", map, rowBounds);
 	}

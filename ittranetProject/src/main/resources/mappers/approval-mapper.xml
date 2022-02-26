@@ -407,11 +407,10 @@
 
 	
 	<!-- 결재 게시판 select -->
-	<select id="selectApListCount">
+	<select id="selectApListCount" resultMap="appResultSet">
 		select
 		       count(*)
 		  from approval_line
-		  join employee using(emp_no)
   		 where 
 		<choose>
 		 	<when test="category == 5">
@@ -426,11 +425,11 @@
 		 	and ap_status = '관리자승인'		 		
 		 	</when>
 		 </choose>
-		    and emp_no = {#apNo}
+		    and emp_no = #{empNo}
 	</select>
 	
 	
-	<select id="selectApList" >
+	<select id="selectApList" resultMap="appResultSet">
 		 select 
 		       d.dr_no
 		     , d.dr_division  
@@ -445,7 +444,7 @@
 		  join approval_line a on(d.dr_no = a.dr_no)
 		 where ap_status = '미처리'
 		   and apline_order = 1
-		   and a.emp_no = #{apNo}
+		   and a.emp_no = #{empNo}
 		 order 
 		    by dr_date desc
 	</select>

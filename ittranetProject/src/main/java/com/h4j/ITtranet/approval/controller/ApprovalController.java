@@ -266,7 +266,7 @@ public class ApprovalController {
 	
 	// ----- "결재" 게시판 select ------
 		@RequestMapping("approvalWait.ap")
-		public ModelAndView approvalWait(@RequestParam(value="cpage", defaultValue="1") int currentPage, int apNo, ModelAndView mv, HttpServletRequest request) throws Exception {
+		public ModelAndView approvalWait(@RequestParam(value="cpage", defaultValue="1") int currentPage, int appersonNo, ModelAndView mv, HttpServletRequest request) throws Exception {
 			//category 추출 : @RequestParam
 			int c = 5; // 미처리 게시판
 			int category;
@@ -278,7 +278,7 @@ public class ApprovalController {
 			}
 			
 			//paging
-			int listCount = aService.selectApListCount(category, apNo);
+			int listCount = aService.selectApListCount(category, appersonNo);
 			
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 			
@@ -286,7 +286,7 @@ public class ApprovalController {
 			//ArrayList<AppLine> linePerson = aService.selectAppName();
 			
 			// list 출력
-			ArrayList<Approval> list = aService.selectApList(pi, category, apNo);
+			ArrayList<Approval> list = aService.selectApList(pi, category, appersonNo);
 			
 			mv.addObject("pi", pi)
 			  .addObject("list", list)

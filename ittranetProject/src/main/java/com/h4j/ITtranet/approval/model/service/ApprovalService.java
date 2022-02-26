@@ -35,8 +35,8 @@ public interface ApprovalService {
 	
 	//---------------------------------------------------------------------
 	// 결재 게시판 select
-	int selectApListCount(int category, int apNo);
-	ArrayList<Approval> selectApList(PageInfo pi, int category, int apNo);
+	int selectApListCount(int category, int empNo);
+	ArrayList<Approval> selectApList(PageInfo pi, int category, int empNo);
 	
 	
 	

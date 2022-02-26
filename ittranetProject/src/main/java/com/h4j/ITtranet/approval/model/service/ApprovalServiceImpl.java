@@ -120,13 +120,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 	//---------------------------------------------------------------------------------------
 	// 결재 게시판 select
 	@Override
-	public int selectApListCount(int category, int apNo) {
-		return aDao.selectApListCount(sqlSession, category, apNo);
+	public int selectApListCount(int category, int empNo) {
+		return aDao.selectApListCount(sqlSession, category, empNo);
 	}
 
 	@Override
-	public ArrayList<Approval> selectApList(PageInfo pi, int category, int apNo) {
-		return aDao.selectApList(sqlSession,pi, category, apNo);
+	public ArrayList<Approval> selectApList(PageInfo pi, int category, int empNo) {
+		return aDao.selectApList(sqlSession,pi, category, empNo);
 	}
 
 

@@ -133,10 +133,10 @@
 	               <li class="sideMenu">
 	                  <a href="#">기안함</a>
 	                  <ul class="subMenu">
-	                  	 <li><a href="postFormSubmit(4);">대기 결재</a></li>
-	                     <li><a href="postFormSubmit(5);">진행중 결재</a></li>
-	                     <li><a href="postFormSubmit(6);">반려 결재</a></li>
-	                     <li><a href="postFormSubmit(7);">완료 결재</a></li>
+	                  	 <li><a onclick="postFormSubmit(4);">대기 결재</a></li>
+	                     <li><a onclick="postFormSubmit(5);">진행중 결재</a></li>
+	                     <li><a onclick="postFormSubmit(6);">반려 결재</a></li>
+	                     <li><a onclick="postFormSubmit(7);">완료 결재</a></li>
 	                  </ul>
 	               </li>
 	               <li class="sideMenu">
