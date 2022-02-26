@@ -131,6 +131,43 @@
                                 </table>
                             </div>
                             <script>
+                            $(function(){
+                                selectAttendance();
+
+                            })
+                            function selectAttendance(){ // 근태 전체조회용
+								$.ajax({
+									url: "selectat.at",
+									type: "post",
+									data :{ 
+										empNo: ${empNo}
+									},
+									success : function(list){
+										//테이블 초기화
+										$('#att-tbody').empty();
+										let value="";
+										if(list.length<1){
+											value += "<tr>"
+			                                    + "<td>" +  조회결과업슴  + "</td>"
+			                                    + "<tr>";
+										}else{
+											for(let i in list){
+												value += "<tr>"
+						                                    + "<td>" +  list[i].attDate  + "</td>"
+						                                    + "<td>" +  list[i].arriveTime  + "</td>"
+						                                    +"<td>" +  list[i].stepoutTime  + "</td>"
+						                                    +"<td>" +  list[i].outworkTime  + "</td>"
+						                                    +"<td>" +  list[i].leaveTime  + "</td>"
+						                                    +"<td>" +  list[i].attStatus  + "</td>" 
+				                                    	+"</tr>";
+							        		}				 
+											$('#att-tbody').append(value);
+										}
+									}, error:function(){
+                        				console.log("근태 조회용 ajax 통신 실패");
+                        			}
+								})
+							}
 	                        function searchAttendance(){ // 근태 검색용
 								$.ajax({
 									url: "searchlist.at",
@@ -162,7 +199,6 @@
                         			}
 								})
 							}
-	                        
                         	</script>
                         </div>
                     </div>

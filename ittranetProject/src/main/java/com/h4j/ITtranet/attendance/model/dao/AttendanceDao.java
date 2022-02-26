@@ -152,6 +152,17 @@ public class AttendanceDao {
 		return (ArrayList)sqlSession.selectList("attendanceMapper.atSearchList", at);
 	}
 	
+	public ArrayList<Attendance> ajaxAtList(SqlSessionTemplate sqlSession, int empNo){
+		return (ArrayList)sqlSession.selectList("attendanceMapper.ajaxAtList", empNo);
+	}
+	
+	public ArrayList<Attendance> ajaxAdminAtList(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("attendanceMapper.ajaxAdminAtList");
+	}
+	
+	public ArrayList<Attendance> ajaxAdminAtSearchList(SqlSessionTemplate sqlSession, Attendance at){
+		return (ArrayList)sqlSession.selectList("attendanceMapper.ajaxAdminAtSearchList", at);
+	}
 	
 	
 	

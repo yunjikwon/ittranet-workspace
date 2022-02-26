@@ -18,21 +18,21 @@
     .vc-box{
         background: white;
         width: 950px;
-        height: 1200px;
+        height: 800px;
         border-radius: 25px;
         padding: 50px;
         margin-left: 15px;
         font-size: 17px;
         margin-bottom: 50px;
     }
+    #att-search{
+        font-size: 15px;
+    }
     #att-search input, select{
         height: 36px;
         width: 180px;
         border: 1px solid lightgray;
         border-radius: 5px;
-    }
-    #att-search{
-        font-size: 15px;
     }
     .input, .output{
         float: left;
@@ -80,7 +80,7 @@
                 <div class="mainOuter">
                     <!--제목영역-->
                     <div style="width:100%; height:200px; float:right; padding:40px; font-size: 22px; font-weight: 600;">
-                        근무 통계
+                        근태 현황
                         <br><br>
                         <hr>
                     </div>
@@ -92,23 +92,21 @@
 	                                <table>
 	                                    <tr>
 	                                        <td width="150" height="80">기간 선택</td>
-	                                        <td width="210"><input type="date" name="atStart"> &nbsp;~&nbsp;</td>
-	                                        <td width="300"><input type="date" name="atEnd"></td>
+	                                        <td width="210"><input type="date" name="attDate"></td>
 	                                    </tr>
 	                                    <tr>
-	                                        <td height="80">부서</td>
+	                                        <td>근태</td>
 	                                        <td>
-	                                            <select name="deptName" id="deptName">
-	                                            	<option value="" selected disabled>선택안함</option>
-						                            <c:forEach var="t" items="${ tlist }">
-						                                <option value="${ t.deptName }">${ t.deptName }</option>
-						                            </c:forEach>
-			                            		</select>
+	                                            <select name="attStatus" id="attStatus">
+	                                                <option value="정상">정상</option>
+	                                                <option value="지각">지각</option>
+	                                                <option value="조퇴">조퇴</option>
+	                                            </select>
 	                                        </td>
 	                                    </tr>
 	                                </table>
                                     <div id="search-btn" align="center">
-	                                    <button type="button" onclick="searchStats();">조회</button>
+	                                    <button type="button" onclick="searchAttendance();">조회</button>
                                     </div>    
                                 </div>
                             </form>
@@ -116,14 +114,14 @@
                                 <table id="att-output">
                                     <thead>
                                         <tr>
-                                            <th width="150">이름</th>
-                                            <th width="180">부서</th>
-                                            <th width="150">소속팀</th>
-                                            <th width="80">지각</th>
-                                            <th width="80">조퇴</th>
-                                            <th width="80">결근</th>
-                                            <th width="100">근무일수</th>
-                                            <th width="150">총근무</th>
+                                            <th width="150">근무일자</th>
+	                                        <th width="150">이름</th>
+	                                        <th width="150">소속</th>
+	                                        <th width="150">근태구분</th>
+	                                        <td width="150">출근시간</td>
+	                                        <td width="150">퇴근시간</td>
+	                                        <td width="150">외출시간</td>
+	                                        <td width="150">외근시간</td>
                                         </tr>
                                     </thead>
                                     <tbody id="att-tbody">
@@ -132,9 +130,45 @@
                                 </table>
                             </div>
                             <script>
-	                        function searchStats(){ // 근무통계 검색용
+                            $(function(){
+                                selectAttendance();
+
+                            })
+                            function selectAttendance(){ // 일일근태 전체조회용
 								$.ajax({
-									url: "searchstats.at",
+									url: "selectat.ad",
+									type: "post",
+									success : function(list){
+										//테이블 초기화
+										$('#att-tbody').empty();
+										let value="";
+										if(list.length<1){
+											value += "<tr>"
+			                                    + "<td> 근태 내역이 없습니다. </td>"
+			                                    + "<tr>";
+										}else{
+											for(let i in list){
+												value += "<tr>"
+						                                    + "<td>" +  list[i].attDate  + "</td>"
+						                                    + "<td>" +  list[i].empName  + "</td>"
+						                                    + "<td>" +  list[i].teamName  + "</td>"
+						                                    +"<td>" +  list[i].attStatus  + "</td>"
+						                                    +"<td>" +  list[i].arriveTime  + "</td>"
+						                                    +"<td>" +  list[i].leaveTime  + "</td>"
+						                                    +"<td>" +  list[i].stepoutTime  + "</td>"
+						                                    +"<td>" +  list[i].outworkTime  + "</td>"
+				                                    	+"</tr>";
+							        		}				 
+											$('#att-tbody').append(value);
+										}
+									}, error:function(){
+                        				console.log("근태 조회용 ajax 통신 실패");
+                        			}
+								})
+							}
+	                        function searchAttendance(){ // 관리자 근태 검색용
+								$.ajax({
+									url: "searchlist.ad",
 									type: "post",
 									data : $("form[name=search-form]").serialize(),
 									success : function(list){
@@ -143,19 +177,19 @@
 										let value="";
 										if(list.length<1){
 											value += "<tr>"
-			                                    + "<td>" +  조회결과업슴  + "</td>"
-			                                    + "<tr>";
+				                                    	+ "<td colspan='8'> 근태 내역이 없습니다. </td>"
+				                                  + "<tr>";
 										}else{
 											for(let i in list){
 												value += "<tr>"
+						                                    + "<td>" +  list[i].attDate  + "</td>"
 						                                    + "<td>" +  list[i].empName  + "</td>"
-						                                    + "<td>" +  list[i].deptName  + "</td>"
 						                                    + "<td>" +  list[i].teamName  + "</td>"
-						                                    +"<td>" +  list[i].lateCount  + "</td>"
-						                                    +"<td>" +  list[i].earlyCount  + "</td>"
-						                                    +"<td>" +  list[i].absenceCount  + "</td>"
-						                                    +"<td>" +  list[i].dayCount  + "일</td>" 
-						                                    +"<td>" +  list[i].workSum  + "시간</td>" 
+						                                    +"<td>" +  list[i].attStatus  + "</td>"
+						                                    +"<td>" +  list[i].arriveTime  + "</td>"
+						                                    +"<td>" +  list[i].leaveTime  + "</td>"
+						                                    +"<td>" +  list[i].stepoutTime  + "</td>"
+						                                    +"<td>" +  list[i].outworkTime  + "</td>"
 				                                    	+"</tr>";
 							        		}				 
 											$('#att-tbody').append(value);
@@ -165,7 +199,6 @@
                         			}
 								})
 							}
-	                        
                         	</script>
                         </div>
                     </div>

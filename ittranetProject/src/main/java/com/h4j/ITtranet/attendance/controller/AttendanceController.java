@@ -89,6 +89,7 @@ public class AttendanceController {
 	}
 	
 	//관리자 일일근태 조회
+	/*
 	@RequestMapping("dayat.ad")
 	public ModelAndView selectAdminDayAttendance(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
 		
@@ -104,6 +105,7 @@ public class AttendanceController {
 		
 		return mv;	
 	}
+	*/
 	
 	// 관리자 근무통계 조회
 	/*
@@ -301,7 +303,7 @@ public class AttendanceController {
 		return new Gson().toJson(list);
 	}
 	
-	// 사용자 근태현황
+	// 사용자 근태현황 페이지
 	@RequestMapping("attlist.at")
 	public String attendanceList() {
 		
@@ -310,11 +312,48 @@ public class AttendanceController {
 	
 	// 사용자 내 근태현황 조회
 	@ResponseBody
+	@RequestMapping(value="selectat.at", produces="application/json; charset=utf-8")
+	public String ajaxAtList(int empNo) {
+		
+		ArrayList<Attendance> list = atService.ajaxAtList(empNo);
+		
+		return new Gson().toJson(list);
+	}
+	
+	// 사용자 내 근태현황 검색
+	@ResponseBody
 	@RequestMapping(value="searchlist.at", produces="application/json; charset=utf-8")
 	public String atSearchList(Attendance at) {
 		
 		ArrayList<Attendance> list = atService.atSearchList(at);
 		
+		return new Gson().toJson(list);
+	}
+	
+	// 관리자 일일근태
+	@RequestMapping("dayat.ad")
+	public String adminAttendanceList() {
+		
+		return "attendance/adminDayAttendance";
+	} 
+	
+	// 관리자 일일근태 전체조회
+	@ResponseBody
+	@RequestMapping(value="selectat.ad", produces="application/json; charset=utf-8")
+	public String ajaxAdminAtList() {
+		
+		ArrayList<Attendance> list = atService.ajaxAdminAtList();
+		
+		return new Gson().toJson(list);
+	}
+	
+	// 관리자 일일근태 검색
+	@ResponseBody
+	@RequestMapping(value="searchlist.ad", produces="application/json; charset=utf-8")
+	public String ajaxAdminAtSearchList(Attendance at) {
+		
+		ArrayList<Attendance> list = atService.ajaxAdminAtSearchList(at);
+		System.out.println(list);
 		return new Gson().toJson(list);
 	}
 	

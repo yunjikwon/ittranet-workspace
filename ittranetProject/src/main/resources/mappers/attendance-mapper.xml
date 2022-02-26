@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where emp_no = #{empNo}
 		   and apply_yn = 'Y'
 		   <!-- 휴가 신청 구현 후 수정하기!!! -->
-		   and vc_startdate >= to_char(sysdate, 'MM/DD/YYYY')
+		   and vc_startdate >= to_char(sysdate, 'YYYY-MM-DD')
 		 order
 		 	by vc_applyno desc
 	</select>
@@ -89,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  from vacation_apply
 		 where emp_no = #{empNo}
 		   and apply_yn = 'Y'
-		   and vc_startdate &lt; to_char(sysdate, 'MM/DD/YYYY')
+		   and vc_startdate &lt; to_char(sysdate, 'YYYY-MM-DD')
 		 order
 		 	by vc_applyno desc
 	</select>
@@ -278,10 +278,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		          from vacation_apply
 		         where vc_type = '생리'
 		           and emp_no = #{empNo}
-		           and substr(vc_startdate, 1, 2) = to_char(sysdate, 'MM')),1) as "REST_MONTH"
+		           and substr(vc_startdate, 6, 2) = to_char(sysdate, 'MM')),1) as "REST_MONTH"
 		  from vacation_apply
 		 where emp_no = #{empNo}
-		   and substr(vc_startdate, 7, 4) = to_char(sysdate, 'YYYY')
+		   and substr(vc_startdate, 1, 4) = to_char(sysdate, 'YYYY')
 		 group 
 		    by emp_no	
 	</select>
@@ -429,6 +429,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where to_date(att_date, 'MM/DD/YYYY') between to_date(#{atStart}, 'YYYY-MM-DD') and to_date(#{atEnd}, 'YYYY-MM-DD')
 		   and att_status = #{attStatus}
 		   and emp_no = #{empNo}
+		 order
+		 	by att_no desc
+	</select>
+	
+	<select id="ajaxAtList" resultMap="attendanceResult">
+		select
+			   att_no
+			 , emp_no
+			 , att_date
+			 , arrive_time
+			 , leave_time
+			 , stepout_time
+			 , outwork_time
+			 , att_status
+		  from attendance
+		 where emp_no = #{empNo}
+		 order
+		 	by att_no desc
+	</select>
+	
+	<select id="ajaxAdminAtList" resultMap="attendanceResult">
+		select
+			   att_no
+			 , emp_no
+			 , emp_name
+			 , team_name
+			 , att_date
+			 , arrive_time
+			 , leave_time
+			 , stepout_time
+			 , outwork_time
+			 , att_status
+		  from attendance
+		  join employee using(emp_no)
+		  join team using(team_code)
+		 where att_date = to_char(sysdate, 'MM/DD/YYYY')
+		 order
+		 	by att_no desc
+	</select>
+	
+	<select id="ajaxAdminAtSearchList" resultMap="attendanceResult">
+		select
+			   att_no
+			 , emp_no
+			 , emp_name
+			 , team_name
+			 , att_date
+			 , arrive_time
+			 , leave_time
+			 , stepout_time
+			 , outwork_time
+			 , att_status
+		  from attendance
+		  join employee using(emp_no)
+		  join team using(team_code)
+		 where emp_no > 1
+		   	and att_date = to_char(to_date(#{attDate},'yyyy-mm-dd'), 'MM/DD/YYYY')
+		   	and att_status = #{attStatus}
 		 order
 		 	by att_no desc
 	</select>

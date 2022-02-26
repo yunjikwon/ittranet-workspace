@@ -157,6 +157,21 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return atDao.atSearchList(sqlSession, at);
 	}
 
+	@Override
+	public ArrayList<Attendance> ajaxAtList(int empNo) {
+		return atDao.ajaxAtList(sqlSession, empNo);
+	}
+
+	@Override
+	public ArrayList<Attendance> ajaxAdminAtList() {
+		return atDao.ajaxAdminAtList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Attendance> ajaxAdminAtSearchList(Attendance at) {
+		return atDao.ajaxAdminAtSearchList(sqlSession, at);
+	}
+
 	
 
 

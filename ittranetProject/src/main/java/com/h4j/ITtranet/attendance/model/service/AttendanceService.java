@@ -76,8 +76,22 @@ public interface AttendanceService {
 	// 부서명 검색
 	ArrayList<Attendance> stSearchList(Attendance at);
 	
-	// 사용자 내 근태 조회
+	// 사용 내 근태 조회
+	ArrayList<Attendance> ajaxAtList(int empNo);
+	
+	// 사용자 내 근태 검색
 	ArrayList<Attendance> atSearchList(Attendance at);
+	
+	// 관리자 일일근태 전체조회
+	ArrayList<Attendance> ajaxAdminAtList();
+	
+	// 관리자 일일근태 검색
+	ArrayList<Attendance> ajaxAdminAtSearchList(Attendance at);
+	
+	
+	
+	
+	
 	
 	
 	
