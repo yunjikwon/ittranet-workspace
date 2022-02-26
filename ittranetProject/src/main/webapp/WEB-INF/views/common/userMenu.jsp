@@ -153,7 +153,7 @@
                 </a>
             </li>
             <li class="menu">
-                <a href="draftWait.dr">
+                <a href="draftWait.dr?drpersonNo=${loginUser.empNo }">
                         <div class="circle" style="background: rgb(240, 195, 237)">
                             <i class="fas fa-paperclip fa-3x approval_mn"></i> 
                         </div>
