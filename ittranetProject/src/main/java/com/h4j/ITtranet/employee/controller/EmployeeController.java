@@ -1,5 +1,9 @@
 package com.h4j.ITtranet.employee.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.h4j.ITtranet.employee.model.service.EmployeeService;
@@ -250,8 +255,23 @@ public class EmployeeController {
 	 * @return
 	 */
 	@RequestMapping("update.me")
-	public String updateMember(Employee e, HttpSession session) {
+	public String updateMember(Employee e, MultipartFile upfile, HttpSession session, Model model) {
+		
+		// System.out.println(upfile);
+		
+		if(!upfile.getOriginalFilename().equals("")) { // 파일명이 빈 문자열이 아닐 때(존재할 때)
+		
+			// saveFile에서 return된 파일수정명 changeName으로 받아옴
+			// 와~~~ 이 부분 너무 중요함
+			String changeName = saveFile(upfile, session);
+		
+			// 원본명 & 서버업로드된경로를 Board b에 이어서 담기 (마지막 과정)
+			e.setProfile("resources/images/profile/" + changeName);
+		
+		}
+		
 		// System.out.println(e);
+
 		int result = eService.updateMember(e);
 		if(result>0) {
 			session.setAttribute("loginUser",  eService.loginMember(e));
@@ -263,6 +283,34 @@ public class EmployeeController {
 		}	
 	}
 	
+	public String saveFile(MultipartFile upfile, HttpSession session) {
+
+		
+		// "년월일시분초"
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		
+		// "랜덤숫자5개"
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		
+		String changeName = currentTime + ranNum;
+		
+		// 업로드 시키고자 하는 폴더의 물리적인 경로 알아내기
+		// 경로 알아내려면 세션 객체 필요함 HttpSession 매개변수로 받기
+		String savePath = session.getServletContext().getRealPath("resources/images/profile/"); // jsp에서도 했었음!! 
+		
+		// savePath 경로에 changeName으로 이름 바꾼 첨부파일 업로드
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		// 이 메소드를 호출했던 곳으로 수정명 return
+		return changeName;
+	}
+
 	/**
 	 * 회원 탈퇴
 	 * @param empPwd
@@ -359,6 +407,65 @@ public class EmployeeController {
 		
 	}
 	
+	// ============================ 사원 관리 =================================
+	
+	/**
+	 * 사원 초대 페이지 호출
+	 * @return
+	 */
+	@RequestMapping("addEmpForm.me")
+	public String inviteEmpForm() {
+		return "member/adminMemberInsert";
+	}
+	
+	/**
+	 * ajax 사원 초대 메일 발송
+	 * @param inviteMail
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addEmp.me")
+	public String inviteEmployee(String inviteMail, HttpSession session) {
+		
+		EmployeeMail em = new EmployeeMail();
+		try {
+			em.inviteEmployee(inviteMail);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "success";
+
+	} 
+	
+	/**
+	 * 가입 승인 페이지 호출
+	 * @return
+	 */
+	@RequestMapping("appEmpForm.me")
+	public String approvalEmpForm() {
+		return "member/adminMemberWtoY";
+	}
+	
+	/**
+	 * 직위 직무 관리 페이지 호출
+	 * @return
+	 */
+	@RequestMapping("setEmpForm.me")
+	public String approvalEmployee() {
+		return "member/adminMemberUpdate";
+	}
+	
+	/**
+	 * 사원 계정 삭제 페이지 호출
+	 * @return
+	 */
+	@RequestMapping("delEmpForm.me")
+	public String deleteEmpForm() {
+		return "member/adminMemberDelete";
+	}
+	
 
 	// adminJobcode => 사원 정보 
 	// adminJobcodeDetail => 사원 정보 디테일
@@ -377,9 +484,9 @@ public class EmployeeController {
 	// 사원 추가 addEmp.me (이메일 주소 작성하고 버튼 누르면 회원가입폼 보내는 메일 발송 - DB연결 x)
 	
 	// ~~가입 승인
-	// 사원 가입 승인 페이지 호출 addEmpAppForm.me
+	// 사원 가입 승인 페이지 호출 appEmpForm.me
 	
-	// 사원 가입 승인 addEmpApp.me (status를 W에서 Y로 update)
+	// 사원 가입 승인 appEmpApp.me (status를 W에서 Y로 update)
 	
 	// 사원 가입 반려 addEmpCom.me (status를 W에서 N으로 update)
 	

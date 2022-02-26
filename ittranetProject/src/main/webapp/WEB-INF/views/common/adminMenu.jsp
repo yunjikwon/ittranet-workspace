@@ -105,11 +105,11 @@
             </a>
         </li>
         <li class="menu">
-            <a href="">
+            <a href="addEmpForm.me">
                     <div class="circle" style="background: rgb(191, 177, 241)">
-                        <i class="far fa-smile fa-3x employee_mn"></i> 
+                        <i class="far fa-smile fa-3x emplManage employee_mn"></i> 
                     </div>
-                    <p class="employee_mn"><b>사원관리</b></p>
+                    <p class="emplManage employee_mn"><b>사원관리</b></p>
             </a>
         </li>        
         <li class="menu">

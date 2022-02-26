@@ -42,7 +42,7 @@
     .abl{
     	color:rgb(181, 211, 236);
     }
-    input {
+    .input-form {
     	display:flex;
         width: 100%;
         height: 50px;
@@ -53,12 +53,17 @@
         outline: none;
         background-color: rgb(233, 233, 233);
     }
-    input:focus{
+    .input-form:focus{
         outline: 2px solid rgba(26, 161, 120, 0.692);
         font-size: 20px;
         border-radius: 10px;
         padding-left: 15px;
         background-color: white;
+    }
+    .profileZone{
+    	width:400px;
+    	height:400px;
+    	border-radius:50%;	
     }
     .clickHere {
         width:150px;
@@ -158,18 +163,67 @@
 			  <div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 			  	<br><br>
         	    <p class="anton" style="font-style:italic;" id="hi">My! Page</p>
-        	    
-		        <form name="updateForm" id="updateForm" action="update.me" method="post">
-		        	<p class="anton abl">&nbsp;Profile</p>
-		        	<div id="profileZone" style="border:1px solid black;">
-		        		프로필 자리
-		        	</div>
-		        	<br>
+        	    <br>
+		        <form name="updateForm" id="updateForm" action="update.me" method="post" enctype="multipart/form-data">
+		        	<%-- 테이블  --%>
+		        	<table <%--border="1"--%>/>
+		        		<tr>
+			                <td rowspan="5" style="width:500px;">
+			                	<c:choose>
+			                		<c:when test="${ loginUser.profile eq 'NULL'}">
+			                			<div style="margin-left:50px;">
+						                	<p class="anton abl" style="margin-left:140px;">&nbsp;Profile</p>
+						                	<img class="profileZone" onclick="clickProfile();" src="resources/images/userprofile.png">
+		        						</div>
+			                		</c:when>
+			                		<c:otherwise>
+			                			<div style="margin-left:50px;">
+						                	<p class="anton abl" style="margin-left:140px;">&nbsp;Profile</p>
+						                	<img class="profileZone" onclick="clickProfile();" src="${ loginUser.profile }">
+						                	<%--
+					        				<label for="profile" style="border:1px solid black;" id="profileZone"></label>
+					        				<input type="file" id="profile" class="form-control-file border" style="margin-left:100px;" name="profile">
+				        					--%>
+		        						</div>
+			                		</c:otherwise>
+			                	</c:choose>			                	
+			                </td>
+			            </tr>
+			            <tr>
+			                <td style="width:700px;">
+			                	<p class="anton abl">&nbsp;Name</p>
+			        			<input type="text" class="input-form" id="empName" name="empName" value="${ loginUser.empName }">
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                	<p class="anton disabl">&nbsp;Department (부서)</p>
+			                	<input type="text" class="input-form" id="deptName" name="deptName" value="${ loginUser.deptName }" readonly>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                	<p class="anton disabl">&nbsp;Team (팀)</p>
+			                	<input type="text" class="input-form" id="teamName" name="teamName" value="${ loginUser.teamName }" readonly>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                	<p class="anton disabl">&nbsp;Job (직급)</p>
+			                	<input type="text" class="input-form" id="jobName" name="jobName" value="${ loginUser.jobName }" readonly>
+			                </td>
+			            </tr>
+		        	</table>
+		        	
+		        	<%-- 숨겨진 첨부파일 infut (form안에 있어야 함) --%>
+					<div id="file-area" style="display:none">
+				        <input type="file" name="upfile" class="file" onchange="loadImg(this);">
+				    </div>
+		        	
+		        	<br><br><br>
+		        	
 			        <p class="anton disabl">&nbsp;ID</p>
-			        <input type="text" class="input-form" id="empId" name="empId" value="${ loginUser.empId }" readonly>
-			        <br>
-			        <p class="anton abl">&nbsp;Name</p>
-			        <input type="text" class="input-form" id="empName" name="empName" value="${ loginUser.empName }">
+			        <input type="text" class="input-form" id="empId" name="empId" value="${ loginUser.empId }">
 			        <br>
 			        <p class="anton abl">&nbsp;Email</p>
 			        <input type="text" class="input-form" id="email" name="email" value="${ loginUser.email }">
@@ -177,17 +231,8 @@
 			        <p class="anton abl">&nbsp;Phone</p>
 			        <input type="text" class="input-form" id="phone" name="phone" value="${ loginUser.phone }">
 			        <br>
-			        <p class="anton disabl">&nbsp;Department (부서)</p>
-			        <input type="text" class="input-form" id="deptName" name="deptName" value="${ loginUser.deptName }" readonly>
-			        <br>
-			        <p class="anton disabl">&nbsp;Team (팀)</p>
-			        <input type="text" class="input-form" id="teamName" name="teamName" value="${ loginUser.teamName }" readonly>
-			        <br>
-			        <p class="anton disabl">&nbsp;Job (직급)</p>
-			        <input type="text" class="input-form" id="jobName" name="jobName" value="${ loginUser.jobName }" readonly>
-			        <br>
 			        <p class="anton abl">&nbsp;Address</p>
-			        <input type="text" class="input-form" id="address" name="address" value="${ loginUser.address }" style="width: 80%; display: inline;" readonly>
+			        <input type="text" class="input-form" id="address" name="address" value="${ loginUser.address }" style="width:90%; display:inline;" readonly>
 			        &nbsp;<button type="button" class="btn btn-info btn-open-popup">주소 변경</button><br>
 			        <br>
 			        <div class="btns" style="margin-left:500px;">
@@ -199,7 +244,7 @@
 			        	</div>
        				</div>
        				<br><br><br><br><br>
-		        </form>
+		        </form> <%-- form --%>
 		        
 		        <%-- 주소변경 모달창 --%>
 		        <div class="modal"> 
@@ -278,6 +323,47 @@
 	        }
 	      }
 	    });
+	    
+	    // *** 프로필 사진 업로드 ***
+	    function clickProfile(){
+	    	$(".file").click();
+	    }
+	    
+	    function loadImg(inputFile) {
+            // inputFile 매개변수 : 현재 변화가 생긴 input type="file" 요소객체
+            
+            
+            // 선택된 파일이 있다면 inputFile.files[0] 에 선택된 파일이 담겨있음
+            //                   => inputFile.files.length 또한 1이 될거임
+            // inputFile(input요소객체) 
+            
+            // 이 함수는 파일 추가 / 파일 취소 할 때마다 호출됨 (onchange) => 2가지 경우 존재
+
+            if(inputFile.files.length == 1) {
+                // 파일 선택된 경우 => 파일 읽어들여서 미리보기
+
+                // 자바 스크립트에서 FileReader객체 제공
+                // 파일을 읽어들일 FileReader객체 생성
+                const reader = new FileReader();
+
+                // 파일 읽어들이는 메소드
+                reader.readAsDataURL(inputFile.files[0]);
+                // 해당 파일을 읽어들이는 순간 해당 이 파일만의 고유한 url이 내부적으로 부여됨
+
+                // 파일 읽어들이기가 완료됐을 때 실행할 함수 정의해두기
+                reader.onload = function(e){
+                    // e == 현재 읽어들여진 파일
+                    // e.target.result => 읽어들인 파일의 고유한 url
+                    $(".profileZone").attr("src", e.target.result);
+
+                }
+
+            }else {
+                // 선택된 파일이 취소된 경우 => 미리보기 된 것도 사라지게
+                $("#titleImg").attr("src", null);
+            }
+
+        } 
 
 		// *** 우편번호 ***
 		function execPostCode() {
