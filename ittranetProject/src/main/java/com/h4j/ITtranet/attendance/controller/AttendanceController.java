@@ -21,9 +21,12 @@ import com.google.gson.Gson;
 import com.h4j.ITtranet.attendance.model.service.AttendanceService;
 import com.h4j.ITtranet.attendance.model.vo.Attendance;
 import com.h4j.ITtranet.attendance.model.vo.Vacation;
+import com.h4j.ITtranet.board.model.vo.Board;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.template.Pagination;
+import com.h4j.ITtranet.company.model.vo.Company;
 import com.h4j.ITtranet.employee.model.vo.Employee;
+import com.h4j.ITtranet.notice.model.vo.Notice;
 
 @Controller
 public class AttendanceController {
@@ -103,24 +106,38 @@ public class AttendanceController {
 	}
 	
 	// 관리자 근무통계 조회
+	/*
 	@RequestMapping("yearat.ad")
 	public ModelAndView selectAdminYearAttendance(ModelAndView mv, HttpSession session) {
 		
-		String date = new SimpleDateFormat("yyyy").format(new Date());
-		
-		ArrayList<Attendance> list = atService.selectAdminYear(date);
+		// 근무통계 조회
+		ArrayList<Attendance> list = atService.selectAdminYear();
+		// 부서명 조회
+		ArrayList<Attendance> tlist = atService.selectTeam();
 		
 		mv.addObject("list", list).setViewName("attendance/adminAttendanceYear");
+		mv.addObject("tlist", tlist).setViewName("attendance/adminAttendanceYear");
 
 		return mv;
 			
 	}
-	
+	*/
 	
 	// 내 근무 페이지
 	@RequestMapping("main.at")
-	public String attendanceMain() {
-		return "attendance/attendanceMain";
+	public ModelAndView attendanceMain(ModelAndView mv, HttpSession session) {
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String empNo = loginUser.getEmpNo();
+		
+		// 근무통계 조회
+		Attendance result = atService.selectMainAttendance(empNo);
+		// 잔여연차 조회
+		Vacation vc = atService.selectMainVacation(empNo);
+		
+		mv.addObject("result", result).setViewName("attendance/attendanceMain");
+		mv.addObject("vc", vc).setViewName("attendance/attendanceMain");
+		
+		return mv;
 	}
 	
 	// 사용자 출근
@@ -264,11 +281,73 @@ public class AttendanceController {
 		}
 	}
 	
+	// 관리자 근무통계
+	@RequestMapping("atstats.ad")
+	public ModelAndView statisticsList(ModelAndView mv, HttpSession session) {
+		
+		// 부서명 조회
+		ArrayList<Attendance> tlist = atService.selectTeam();
+		mv.addObject("tlist", tlist).setViewName("attendance/adminAttendanceStats");
+		return mv;
+	} 
+	
+	// 근무통계 검색
+	@ResponseBody
+	@RequestMapping(value="searchstats.at", produces="application/json; charset=utf-8")
+	public String stSearchList(Attendance at) {
+		
+		ArrayList<Attendance> list = atService.stSearchList(at);
+		
+		return new Gson().toJson(list);
+	}
+	
+	// 사용자 근태현황
+	@RequestMapping("attlist.at")
+	public String attendanceList() {
+		
+		return "attendance/attendanceStatus";
+	} 
+	
+	// 사용자 내 근태현황 조회
+	@ResponseBody
+	@RequestMapping(value="searchlist.at", produces="application/json; charset=utf-8")
+	public String atSearchList(Attendance at) {
+		
+		ArrayList<Attendance> list = atService.atSearchList(at);
+		
+		return new Gson().toJson(list);
+	}
 	
 	
 	
 	
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

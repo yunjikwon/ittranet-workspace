@@ -86,9 +86,6 @@
 	   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
 	   				let mainOuterTop = $(".mainOuter").offset().top;
 	   				
-	   				console.log("scroll : " + scrollTop);
-	   				console.log("mainOuter : " + mainOuterTop);
-	   				
 	   				if(scrollTop > mainOuterTop - 70){
 	   					$(".cont").addClass("fixed");
 	   				}else{
@@ -110,7 +107,7 @@
                   <a href="#">근무 관리</a>
                   <ul class="menu2">
                      <li><a href="dayat.ad">일일근태 관리</a></li>
-                     <li><a href="yearat.ad">근무 통계</a></li>
+                     <li><a href="atstats.ad">근무 통계</a></li>
                   </ul>
                </li>
                <li class="menu1">

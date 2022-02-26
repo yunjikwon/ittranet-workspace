@@ -27,4 +27,12 @@ public class Attendance {
 	 
 	 private String empName;
 	 private String teamName;
+
+	 private String deptName;
+	 
+	 private String condition;
+	 private String keyword;
+	 
+	 private String atStart;
+	 private String atEnd;
 }

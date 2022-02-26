@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.h4j.ITtranet.attendance.model.vo.Attendance;
 import com.h4j.ITtranet.attendance.model.vo.Vacation;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
+import com.h4j.ITtranet.company.model.vo.Company;
 
 public interface AttendanceService {
 
@@ -26,7 +27,7 @@ public interface AttendanceService {
 	ArrayList<Attendance> selectAdminDayAttendance(PageInfo pi);
 	
 	// 관리자 근무통계 조회
-	ArrayList<Attendance> selectAdminYear(String date);
+	ArrayList<Attendance> selectAdminYear();
 	
 	// 사용자 출근
 	int insertArrive(String empNo);
@@ -47,6 +48,12 @@ public interface AttendanceService {
 	// 사용자 출퇴근기록 조회
 	Attendance ajaxSelectAttendance(String empNo);
 	
+	// 사용자 근태 메인 근태현황 조회
+	Attendance selectMainAttendance(String empNo);
+	
+	// 사용자 근태 메인 근태현황 조회
+	Vacation selectMainVacation(String empNo);
+	
 	// 사용자 잔여휴가 조회
 	Vacation selectRestVacation(String empNo);
 	
@@ -63,8 +70,14 @@ public interface AttendanceService {
 	// 관리자 휴가신청 승인
 	int updateVcApproval(int vcno);
 	
+	// 부서명 조회
+	ArrayList<Attendance> selectTeam();
 	
+	// 부서명 검색
+	ArrayList<Attendance> stSearchList(Attendance at);
 	
+	// 사용자 내 근태 조회
+	ArrayList<Attendance> atSearchList(Attendance at);
 	
 	
 	

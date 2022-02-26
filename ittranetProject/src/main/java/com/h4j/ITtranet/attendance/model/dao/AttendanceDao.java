@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.h4j.ITtranet.attendance.model.vo.Attendance;
 import com.h4j.ITtranet.attendance.model.vo.Vacation;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
+import com.h4j.ITtranet.company.model.vo.Company;
 
 @Repository
 public class AttendanceDao {
@@ -70,9 +71,9 @@ public class AttendanceDao {
 		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminDayAttendance", null, rowBounds);
 	}
 	
-	public ArrayList<Attendance> selectAdminYear(SqlSessionTemplate sqlSession, String date){
+	public ArrayList<Attendance> selectAdminYear(SqlSessionTemplate sqlSession){
 		
-		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminYear", date);
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminYear");
 	}
 	
 	public int insertArrive(SqlSessionTemplate sqlSession, String empNo) {
@@ -130,6 +131,28 @@ public class AttendanceDao {
 	public int updateVcApproval(SqlSessionTemplate sqlSession, int vcno) {
 		return sqlSession.update("attendanceMapper.updateVcApproval", vcno);
 	}
+	
+	public ArrayList<Attendance> selectTeam(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectTeam");
+	}
+	
+	public ArrayList<Attendance> stSearchList(SqlSessionTemplate sqlSession, Attendance at){
+		return (ArrayList)sqlSession.selectList("attendanceMapper.stSearchList", at);
+	}
+	
+	public Attendance selectMainAttendance(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.selectOne("attendanceMapper.selectMainAttendance", empNo);
+	}
+	
+	public Vacation selectMainVacation(SqlSessionTemplate sqlSession, String empNo) {
+		return sqlSession.selectOne("attendanceMapper.selectRestVacation", empNo);
+	}
+	
+	public ArrayList<Attendance> atSearchList(SqlSessionTemplate sqlSession, Attendance at){
+		return (ArrayList)sqlSession.selectList("attendanceMapper.atSearchList", at);
+	}
+	
+	
 	
 	
 	

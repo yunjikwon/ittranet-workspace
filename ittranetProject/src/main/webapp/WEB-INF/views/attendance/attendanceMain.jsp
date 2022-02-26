@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +14,10 @@
         border-radius: 20px;
         float: left;
         margin-top: 30px;
-        margin-left: 40px;
+        margin-left: 55px;
 		margin-bottom: 50px;
-		width: 310px;
+		width: 290px;
+		box-shadow: 0 8px 20px 0 rgba(124, 6, 202, 0.130);
     }
     .category-title{
         height: 40px;
@@ -41,7 +43,7 @@
         float: left;
         margin-top: 30px;
         height: 120px;
-        width: 154px;
+        width: 145px;
         font-size: 14px;
     }
 	.commute-btn i{
@@ -53,7 +55,7 @@
 		border-radius: 5px;
 		width: 100px;
 		height: 35px;
-		margin-left: 35px;
+		margin-left: 29px;
 		margin-top: 35px;
 	}
 	/*근무현황*/
@@ -83,14 +85,11 @@
 	.c4{
 		background: rgba(19, 33, 142, 0.753);
 	}
-	/*
+	
 	#att-status{
-		
+		margin-left: 20px;
 	}
-	#att-status li::marker{
-		color:rgba(196, 158, 212, 0.8);
-	}
-	*/
+	
 
 	/*시계 스타일*/
 	#today{
@@ -116,6 +115,18 @@
 		text-align: center;
 		margin-top: 15px;
 		color: #000000cb
+	}
+	.status-box div{
+		width: 30%;
+		border-left: solid 1px lightgray;
+		float: left;
+		height: 100px;
+		text-align: center;
+		padding-top: 20px;
+	}
+	.status-box{
+		padding-left: 25px;
+		padding-top: 30px;
 	}
 
 	/*메뉴바 픽스 스타일*/
@@ -200,7 +211,7 @@
 						<div class="category-title">
 							&nbsp;&nbsp; 
 							<i class="far fa-clock fa-1x"></i>&nbsp;
-							근무 현황
+							출퇴근 기록
 							<a href="" class="plus-btn">+</a>
 						</div>
 						<br>
@@ -351,13 +362,51 @@
 							근태 현황
 							<a href="" class="plus-btn">+</a>
 						</div>
+						<div class="status-box">
+							<c:choose>
+                               	<c:when test="${ not empty result }">
+									<div style="border-left:none;">
+										<p>지각</p>
+										${ result.lateCount }회
+									</div>
+									<div>
+										<p>조퇴</p>
+										${ result.earlyCount }회
+									</div>
+									<div>
+										<p>결근</p>
+										${ result.absenceCount }회
+									</div>
+								</c:when>
+							</c:choose>
+						</div>
 					</div>               
 					<div class="contentbox" style="height: 200px;">
 						<div class="category-title">
 							&nbsp;&nbsp; 
 							<i class="far fa-clock fa-1x"></i>&nbsp;
-							근무 시간
+							근무 통계
 							<a href="" class="plus-btn">+</a>
+						</div>
+						<div class="status-box">
+							<c:choose>
+                               	<c:when test="${ not empty result }">
+									<div style="border-left:none;">
+										<p>근무일수</p>
+										${ result.dayCount }일
+									</div>
+									<div>
+										<p>총 근무</p>
+										<fmt:formatNumber type="number" maxFractionDigits="0"  value="${ result.workSum }" />
+										시간
+									</div>
+									<div>
+										<p>평균근무</p>
+										<fmt:formatNumber type="number" maxFractionDigits="0"  value="${ result.workSum / result.dayCount }" />
+										시간
+									</div>
+								</c:when>
+							</c:choose>
 						</div>
 					</div>
 					<div class="contentbox" style="height: 200px;">
@@ -366,6 +415,19 @@
 							<i class="far fa-clock fa-1x"></i>&nbsp;
 							휴가 현황
 							<a href="" class="plus-btn">+</a>
+						</div>
+						<div class="status-box">
+							<div style="border-left:none; width:105px;">
+								<c:choose>
+		                            <c:when test="${ not empty vc }">
+											<p>잔여 연차</p>
+											${ vc.restYear }일
+									</c:when>
+								</c:choose>
+							</div>
+							<div>
+								<button onclick="location.href='vclist.at'" class="out-btn" style="margin-top:10px;">휴가 신청</button>
+							</div>
 						</div>
 					</div>
 				</div>

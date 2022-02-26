@@ -46,6 +46,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		<result column="emp_name" property="empName" />
 		<result column="team_name" property="teamName" />
+		
+		<result column="dept_name" property="deptName" />
 	</resultMap>
 	
 	
@@ -356,7 +358,81 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where vc_applyno = #{vcno}
 	</update>
 	
+	<!-- 부서명 조회 -->
+	<select id="selectTeam" resultMap="attendanceResult">
+		select 
+               dept_name
+		  from department 
+		 where dept_name != '대표'
+		   and dept_name != '미정'
+	</select>
 	
+	<!-- 근무통계 검색 -->
+	<select id="stSearchList" resultMap="attendanceResult">
+		select emp_no
+			 , emp_name
+			 , team_name
+             , dept_name
+       		 , count(case when att_status='지각' then 1 end) AS "LATE_COUNT"
+        	 , count(case when att_status='조퇴' then 1 end) AS "EARLY_COUNT"
+        	 , 21 - (count(*)) as "ABSENCE_COUNT"
+        	 , count(*) as "DAY_COUNT"
+        	 , sum(round((to_date(leave_time, 'HH24:MI') - to_date(arrive_time, 'HH24:MI')) * 24, 1)) AS "WORK_SUM"
+          from attendance
+          join employee using(emp_no)
+          join department using(dept_code)
+          join team using(team_code)
+         where emp_no > 1
+         <choose>
+         	<when test="deptName != null">
+	           and dept_name=#{deptName} 
+         	</when>
+         	<when test="atStart != null">
+	           and to_date(att_date, 'MM/DD/YYYY') between to_date(#{atStart}, 'YYYY-MM-DD') and to_date(#{atEnd}, 'YYYY-MM-DD') 
+         	</when>
+         </choose>
+         group 
+            by emp_no, emp_name, team_name, dept_name
+         order 
+            by emp_no
+	</select>
 	
+	<!-- 근태 메인 근태현황 -->
+	<select id="selectMainAttendance" resultMap="attendanceResult">
+		select emp_no
+       		 , count(case when att_status='지각' then 1 end) AS "LATE_COUNT"
+        	 , count(case when att_status='조퇴' then 1 end) AS "EARLY_COUNT"
+        	 , 21 - (count(*)) as "ABSENCE_COUNT"
+        	 , count(*) as "DAY_COUNT"
+        	 , sum(round((to_date(leave_time, 'HH24:MI') - to_date(arrive_time, 'HH24:MI')) * 24, 1)) AS "WORK_SUM"
+          from attendance
+          join employee using(emp_no)
+         where substr(att_date, 7, 4) = to_char(sysdate, 'YYYY')
+           and emp_no = #{empNo}
+         group 
+            by emp_no
+         order 
+            by emp_no
+	</select>
+	
+	<select id="atSearchList" resultMap="attendanceResult">
+		select
+			   att_no
+			 , emp_no
+			 , att_date
+			 , arrive_time
+			 , leave_time
+			 , stepout_time
+			 , outwork_time
+			 , att_status
+		  from attendance
+		 where to_date(att_date, 'MM/DD/YYYY') between to_date(#{atStart}, 'YYYY-MM-DD') and to_date(#{atEnd}, 'YYYY-MM-DD')
+		   and att_status = #{attStatus}
+		   and emp_no = #{empNo}
+		 order
+		 	by att_no desc
+	</select>
+	
+
 	
 </mapper>
