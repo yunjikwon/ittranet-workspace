@@ -56,7 +56,11 @@
             color:color:rgb(94, 94, 94);        
         }
         
-        
+        #appLineText{
+        	font-weight:600;
+        	color:rgb(94, 94, 94);
+        	font-size:17px;
+        }
 
     </style>
 </head>
@@ -81,37 +85,38 @@
 		        <div id="formtitle">
 		            	연장근무신청
 		        </div>
-		        <form action="" method="post" onsubmit="">
+		        <form action="insert.dr?formNo=3" method="post" enctype="multipart/form-data">
 		        <div id="innerouter">
 		            <table class="formTable">
 		                <tr>
-		                    <td width=200>제목</td>
-		                    <td width=450><input type="text" placeholder="내용을 입력해주세요" name="" value="" size="50"></td>
+		                    <td width=150>제목</td>
+		                    <td width=450><input type="text"name="drTitle"  placeholder="내용을 입력해주세요" name="" value="" size="50"></td>
 		                    <td>
-		                    	<button class="formbtn">
+		                    	<button type="button" class="formbtn">
 		                    		<a data-toggle="modal" data-target="#line" data-backdrop="static" role="button">
 				                      	결재선
-				                    </a>		                    		
+				                    </a>
+				                    <input type="hidden" id="team" name="team">		                    		
 	                    		</button>
                     		</td>
 		                </tr>
 		                <tr>
-		                    <td>파일첨부</td>
+		                    <td> <label for="upfile">파일첨부</label></td>
 		                    <td>
-		                        <button style="width:60px; height:20px; font-size: 10px; border:none;">파일첨부</button>
-		                        <br><br>
-		                        <input type="text" placeholder="파일첨부"  name="" value="" size="50">
+		                        <input type="file" id="upfile" class="form-control-file border" name="upfile" placeholder="파일첨부" size="50">
 		                    </td>
-		                    <td></td>
-		                </tr>
+		                    <td id="appLine">
+		                    	<span id="appLineText">결재자 </span> <br> 
+		                    </td>
+		                </tr>	
 		                <tr>
 		                    <td>연장근무시간</td>
-		                    <td><input type="text" placeholder="연장근무시간"  name="" value="" size=""> 시간</td>
+		                    <td><input type="text" placeholder="연장근무시간"  name="drOvertime" value="" size=""> 시간</td>
 		                    <td></td>
 		                </tr>
 		                <tr>
 		                    <td>연장근무일</td>
-		                    <td><input type="date" placeholder="연장근무일"  name="" value="" size="50"></td>
+		                    <td><input type="date" placeholder="연장근무일"  name="drOverDate" value="" size="50"></td>
 		                    <td></td>
 		                </tr>
 		                <tr>
@@ -124,6 +129,8 @@
 		                    </td>
 		                </tr>
 		            </table>
+		            <input type="hidden" name="drDivision" value=3>
+		            <input type="hidden" name="empNo" value=${ loginUser.empNo }>
 		        </div>
 		        </form>
 		

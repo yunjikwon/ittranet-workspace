@@ -75,7 +75,7 @@
 		    <div class="mainOuter">
 		        <br>
 		        <div id="draftTitle">
-		           	 기안함 > 대기 결재
+		           	 결재함 > 미처리 결재
 		        </div> <br>
 	
 	            <div id="innerouter" style="padding:5% 10%;">
@@ -121,11 +121,7 @@
 			                        <td>${ d.drTitle }</td>
 			                        <td>${ d.drDate }</td>
 			                        <td class="linePerson">
-			                        	<c:forEach var="l" items="${ linePerson }">
-				                        	<c:if test="${ l.drNo eq d.drNo }">
-					                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
-				                           	 </c:if>
-				                        </c:forEach>
+			                        	${loginUser.empName }
 			                        </td>
 			                        <td>${ d.drStatus }</td>
 			                    </tr>
@@ -219,7 +215,7 @@
 			// 상세페이지 이동
 			$(function(){
            		$("#boardList>tbody>tr").click(function(){
-           			console.log($(this).children(".drNo").val());
+           			console.log($(this).children(".apNo").val());
            			console.log($(this).children(".drDivision").val());
            			location.href = 'detail.dr?drNo=' + $(this).children(".drNo").val()
            					       +'&drDivision=' + $(this).children(".drDivision").val();            			
