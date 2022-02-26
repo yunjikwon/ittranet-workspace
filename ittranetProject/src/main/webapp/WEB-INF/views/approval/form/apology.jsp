@@ -85,7 +85,7 @@
 		        <div id="formtitle">
 		           	 시말서
 		        </div>
-		        <form action="insert.dr?formNo=2" method="post">
+		        <form action="insert.dr?formNo=2" method="post" enctype="multipart/form-data">
 		        	
 			        <div id="innerouter">
 			            <table  class="formTable">
@@ -93,7 +93,7 @@
 			                    <td width=150>제목</td>
 			                    <td width=450><input type="text" name="drTitle" placeholder="내용을 입력해주세요" size="50"></td>
 			                    <td>
-		                    	<button class="formbtn">
+		                    	<button type="button" class="formbtn">
 		                    		<a data-toggle="modal" data-target="#line" data-backdrop="static" role="button">
 				                      	결재선
 				                    </a>
@@ -102,11 +102,9 @@
                     		</td>
 			                </tr>
 			                <tr>
-			                    <td>파일첨부</td>
+			                    <td> <label for="upfile">파일첨부</label></td>
 			                    <td>
-			                        <button style="width:60px; height:20px; font-size: 10px; border:none;">파일첨부</button>
-			                        <br><br>
-			                        <input type="text" placeholder="파일첨부" size="50">
+			                        <input type="file" id="upfile" class="form-control-file border" name="upfile" placeholder="파일첨부" size="50">
 			                    </td>
 			                    <td id="appLine">
 			                    	<span id="appLineText">결재자 </span> <br> 

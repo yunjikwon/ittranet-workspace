@@ -36,10 +36,16 @@ public class Approval {
 	private String drProTitle;  // 회의안건
 	private String drProDate;   // 회의일
 	
+	private int aplineOrder; 
+	private int aplineNo;
+	
 	private ArrayList<AppLine> appList;
 	// appList[0].empNo 
 	// appList[0].aplineOrder
 	
 	// appList[1].empNo 
 	// appList[1].aplineOrder
+	
+	private String originName;
+	private String changeName;
 }
