@@ -3,9 +3,11 @@ package com.h4j.ITtranet.employee.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.h4j.ITtranet.common.model.vo.PageInfo;
+import com.h4j.ITtranet.common.template.Pagination;
 import com.h4j.ITtranet.employee.model.service.EmployeeService;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.employee.model.vo.EmployeeMail;
@@ -426,7 +432,7 @@ public class EmployeeController {
 	 */
 	@ResponseBody
 	@RequestMapping("addEmp.me")
-	public String inviteEmployee(String inviteMail, HttpSession session) {
+	public String inviteEmployee(String inviteMail) {
 		
 		EmployeeMail em = new EmployeeMail();
 		try {
@@ -444,9 +450,61 @@ public class EmployeeController {
 	 * @return
 	 */
 	@RequestMapping("appEmpForm.me")
-	public String approvalEmpForm() {
-		return "member/adminMemberWtoY";
+	public ModelAndView approvalEmpForm(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
+		
+		int employeeCount = eService.selectWemployeeCount();
+		
+		PageInfo pi = Pagination.getPageInfo(employeeCount, currentPage, 5, 5);
+		
+		ArrayList<Employee> wlist = eService.selectWemployee(pi);
+
+		mv.addObject("pi", pi)
+		  .addObject("wlist", wlist)
+		  .setViewName("member/adminMemberWtoY");
+		
+		return mv;
 	}
+	
+	/**
+	 * ajax 사원 가입 승인 완료 (메일 && update)
+	 * @param e
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("appEmp.me")
+	public String confirmMember(Employee e) {
+		
+		// System.out.println(e);
+		
+		EmployeeMail em = new EmployeeMail(); // status W => Y 변경 후 메일 보내기
+		
+		int result = eService.confirmMember(e);
+		
+		if(result>0) {
+			// 메일 보내기
+			try {
+				em.confirmEmployee(e);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+			return "PASS";
+			
+		}else {
+			return "FAIL";
+		}
+
+	} 
+	
+	@ResponseBody
+	@RequestMapping("delEmps.me")
+	public String delEmpls(Employee e) {
+		int result = eService.deleteMember(e.getEmpNo());
+		
+		return result > 0 ? "PASS" : "FAIL";
+		
+	}
+	
 	
 	/**
 	 * 직위 직무 관리 페이지 호출
@@ -462,9 +520,23 @@ public class EmployeeController {
 	 * @return
 	 */
 	@RequestMapping("delEmpForm.me")
-	public String deleteEmpForm() {
-		return "member/adminMemberDelete";
+	public ModelAndView delEmpForm(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
+		
+		int employeeCount = eService.selectAllemployeeCount();
+		
+		PageInfo pi = Pagination.getPageInfo(employeeCount, currentPage, 5, 15);
+		
+		ArrayList<Employee> list = eService.selectAllemployee(pi);
+
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .setViewName("member/adminMemberDelete");
+		
+		return mv;
 	}
+
+	
+	
 	
 
 	// adminJobcode => 사원 정보 
