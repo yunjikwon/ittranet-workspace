@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.h4j.ITtranet.approval.model.vo.AppLine;
 import com.h4j.ITtranet.approval.model.vo.Approval;
+import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 
 @Repository
@@ -26,20 +27,27 @@ public class ApprovalDao {
 	
 	
 	// 기안 게시판 paging
-	public int selectListCount(SqlSession sqlSession, int category) {
-		
-		return sqlSession.selectOne("appMapper.selectListCount", category);
+	public int selectListCount(SqlSession sqlSession, int category, int empNo) {
+		HashMap<String, Integer> map = new HashMap<>();
+		map.put("category",category);
+		map.put("empNo",empNo);
+		return sqlSession.selectOne("appMapper.selectListCount", map);
 	}
 	
 	// 기안 게시판 select
+	//결재자 리스트
 	public ArrayList<AppLine> selectAppName(SqlSession sqlSession){
 		return (ArrayList)sqlSession.selectList("appMapper.selectAppName");
 	}
-	public ArrayList<Approval> selectList(SqlSession sqlSession, PageInfo pi, int category) {
+	public ArrayList<Approval> selectList(SqlSession sqlSession, PageInfo pi, int category, int empNo) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return (ArrayList)sqlSession.selectList("appMapper.selectList", category, rowBounds);
+		
+		HashMap<String, Integer> map = new HashMap<>();
+		map.put("category",category);
+		map.put("empNo",empNo);
+		return (ArrayList)sqlSession.selectList("appMapper.selectList", map, rowBounds);
 		
 	}
 
@@ -69,6 +77,9 @@ public class ApprovalDao {
 	}
 	
 	// 결재선 insert
+	public int insertAttachment(SqlSessionTemplate sqlSession, Attachment at) {
+		return sqlSession.insert("appMapper.insertAttachment", at);
+	}
 	public int insertAppLine(SqlSession sqlSession, Approval app, ArrayList<AppLine> appList) {		
 		int result = 0;
 		for(AppLine ap : appList) {
@@ -88,10 +99,51 @@ public class ApprovalDao {
 	
 	
 	// 기안게시판 상세페이지
-	public Approval apoDetail(SqlSession sqlSession, int drNo){
-		return sqlSession.selectOne("appMapper.apoDetail", drNo);
+	public Attachment selectAttachment(SqlSessionTemplate sqlSession, int drNo){
+		return (Attachment)sqlSession.selectOne("appMapper.selectAttachment", drNo);
 	}
 	
+	
+	public Approval businessDetail(SqlSession sqlSession, int drNo){
+		return sqlSession.selectOne("appMapper.businessDetail", drNo);
+	}
+	public Approval apologyDetail(SqlSession sqlSession, int drNo){
+		return sqlSession.selectOne("appMapper.apologyDetail", drNo);
+	}
+	public Approval overtimeDetail(SqlSession sqlSession, int drNo){
+		return sqlSession.selectOne("appMapper.overtimeDetail", drNo);
+	}
+	public Approval expenditureDetail(SqlSession sqlSession, int drNo){
+		return sqlSession.selectOne("appMapper.expenditureDetail", drNo);
+	}
+	public Approval budgetDetail(SqlSession sqlSession, int drNo){
+		return sqlSession.selectOne("appMapper.budgetDetail", drNo);
+	}
+	public Approval proceedingsDetail(SqlSession sqlSession, int drNo){
+		return sqlSession.selectOne("appMapper.proceedingsDetail", drNo);
+	}
+
+	//-------------------------------------------------------------------------------
+	// 결재 게시판 select
+	public int selectApListCount(SqlSession sqlSession, int category, int empNo) {
+		HashMap<String, Integer> map = new HashMap<>();
+		map.put("category",category);
+		map.put("empNo", empNo);
+		return sqlSession.selectOne("appMapper.selectApListCount", map);
+	}
+
+	public ArrayList<Approval> selectApList(SqlSession sqlSession, PageInfo pi, int category, int empNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		HashMap<String, Integer> map = new HashMap<>();
+		map.put("category",category);
+		map.put("empNo", empNo);
+		
+		return (ArrayList)sqlSession.selectList("appMapper.selectApList", map, rowBounds);
+	}
+
 	
 	
 }

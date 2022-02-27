@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.h4j.ITtranet.approval.model.dao.ApprovalDao;
 import com.h4j.ITtranet.approval.model.vo.AppLine;
 import com.h4j.ITtranet.approval.model.vo.Approval;
+import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 
 @Service
@@ -35,22 +36,27 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	// 기안 insert
 	@Override
+	public int insertAttachment(Attachment at) {
+		return aDao.insertAttachment(sqlSession, at);
+	}
+	
+	@Override
 	public int insertDraft(Approval app, int formNo, ArrayList<AppLine> appList) {
 		int result1 = aDao.insertDraft(sqlSession, app);
 		
 		int result2 = 0;
 		switch(formNo) {
-			case 1: aDao.insertBussinessPlan(sqlSession, app);
+			case 1: result2 = aDao.insertBussinessPlan(sqlSession, app);
 			        break;
-			case 2: aDao.insertApology(sqlSession, app);
+			case 2: result2 = aDao.insertApology(sqlSession, app);
 					break;
-			case 3: aDao.insertOvertime(sqlSession, app);	
+			case 3: result2 = aDao.insertOvertime(sqlSession, app);	
 					break;
-			case 4: aDao.insertExpenditure(sqlSession, app);
+			case 4: result2 = aDao.insertExpenditure(sqlSession, app);
 					break;
-			case 5: aDao.insertBudget(sqlSession, app);		
+			case 5: result2 = aDao.insertBudget(sqlSession, app);		
 					break;
-			case 6: aDao.insertProceedings(sqlSession, app);		
+			case 6: result2 = aDao.insertProceedings(sqlSession, app);		
 					break;
 		}
 		
@@ -61,8 +67,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	// 기안게시판 select
 	@Override
-	public int selectListCount(int category) {
-		return aDao.selectListCount(sqlSession, category);
+	public int selectListCount(int category, int empNo) {
+		return aDao.selectListCount(sqlSession, category, empNo);
 	}
 
 	@Override
@@ -71,8 +77,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 	
 	@Override
-	public ArrayList<Approval> selectList(PageInfo pi, int category) {
-		return aDao.selectList(sqlSession, pi, category);
+	public ArrayList<Approval> selectList(PageInfo pi, int category, int empNo) {
+		return aDao.selectList(sqlSession, pi, category, empNo);
 	}
 
 	
@@ -86,9 +92,43 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	// 기안게시판 상세조회
 	@Override
-	public Approval selectDetail(int drNo) {
-		return aDao.apoDetail(sqlSession, drNo);
+	public Attachment selectAttachment(int drNo) {
+		return aDao.selectAttachment(sqlSession, drNo);
 	}
+	
+	@Override
+	public Approval selectDetail(int drNo, String drDivision) {
+		
+		Approval result2 = null;
+		switch(drDivision) {
+			case "사업계획서" : result2 = aDao.businessDetail(sqlSession, drNo);
+			        break;
+			case "시말서": result2 = aDao.apologyDetail(sqlSession, drNo);
+					break;
+			case "연장근무신청": result2 = aDao.overtimeDetail(sqlSession, drNo);
+					break;
+			case "지출결의서": result2  = aDao.expenditureDetail(sqlSession, drNo);
+					break;
+			case "추가예산신청": result2 = aDao.budgetDetail(sqlSession, drNo);	
+					break;
+			case "회의록": result2 = aDao.proceedingsDetail(sqlSession, drNo);
+					break;
+		}
+		return result2;
+	}
+
+	//---------------------------------------------------------------------------------------
+	// 결재 게시판 select
+	@Override
+	public int selectApListCount(int category, int empNo) {
+		return aDao.selectApListCount(sqlSession, category, empNo);
+	}
+
+	@Override
+	public ArrayList<Approval> selectApList(PageInfo pi, int category, int empNo) {
+		return aDao.selectApList(sqlSession,pi, category, empNo);
+	}
+
 
 	
 
