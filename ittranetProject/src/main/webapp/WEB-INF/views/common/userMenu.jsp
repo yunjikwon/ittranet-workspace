@@ -90,7 +90,7 @@
         <ul>
             <li class="menu">
                 <a href="main.at">
-                        <div class="circle" style="background: rgb(147, 205, 207)">
+                        <div class="circle" style="background: rgba(26, 161, 121, 0.18)">
                             <i class="fas fa-briefcase attendance_mn"></i> 
                         </div>
                     <p class="attendance_mn"><b>근태관리</b></p>
@@ -98,7 +98,7 @@
             </li>
             <li class="menu">
                 <a href="alllist.ml">
-                        <div class="circle" style="background: rgb(171, 187, 240)">
+                        <div class="circle" style="background: rgba(91, 211, 211, 0.17)">
                             <i class="far fa-envelope fa-3x mail_mn"></i>  
                         </div>
                         <p class="mail_mn"><b>메일</b></p>
@@ -106,7 +106,7 @@
             </li>
             <li class="menu">
                 <a href="">
-                        <div class="circle" style="background: rgb(191, 177, 241)">
+                        <div class="circle" style="background: rgba(88, 187, 211, 0.3)">
                             <i class="far fa-comment-dots fa-3x chat_mn"></i> 
                         </div>
                         <p class="chat_mn"><b>채팅</b></p>
@@ -114,7 +114,7 @@
             </li>
             <li class="menu">
                 <a href="list.ms">
-                        <div class="circle" style="background: rgb(181, 211, 236)">
+                        <div class="circle" style="background: rgba(68, 135, 191, 0.24)">
                             <i class="fas fa-edit fa-3x message_mn"></i> 
                         </div>
                         <p class="message_mn"><b>쪽지</b></p>
@@ -122,7 +122,7 @@
             </li>
             <li class="menu">
                 <a href="list.bo">
-                        <div class="circle" style="background: rgb(194, 184, 206)">
+                        <div class="circle" style="background: rgba(66, 103, 202, 0.17)">
                             <i class="fas fa-bullhorn fa-3x board_mn"></i> 
                         </div>
                         <p class="board_mn"><b>게시판</b></p>
@@ -130,7 +130,7 @@
             </li>
             <li class="menu">
                 <a href="list.pr">
-                        <div class="circle" style="background: rgb(183, 188, 235)">
+                        <div class="circle" style="background: rgba(19, 33, 142, 0.2)">
                             <i class="fas fa-desktop fa-3x project_mn"></i> 
                         </div>
                         <p class="project_mn"><b>프로젝트</b></p>
@@ -138,7 +138,7 @@
             </li>
             <li class="menu">
                 <a href="viewUserCal.ca">
-                        <div class="circle" style="background: rgb(218, 172, 236)">
+                        <div class="circle" style="background: rgba(125, 96, 206, 0.24)">
                             <i class="fas fa-calendar-alt fa-3x schedule schedule_mn"></i> 
                         </div>
                         <p class="schedule schedule_mn"><b>일정</b></p>
@@ -146,7 +146,7 @@
             </li>
             <li class="menu">
                 <a href="chartMain.co">
-                        <div class="circle" style="background: rgb(205, 186, 241)">
+                        <div class="circle" style="background: rgba(129, 70, 161, 0.26)">
                             <i class="far fa-user fa-3x company_mn"></i> 
                         </div>
                         <p class="company_mn"><b>조직도</b></p>
@@ -154,7 +154,7 @@
             </li>
             <li class="menu">
                 <a href="draftWait.dr?drpersonNo=${loginUser.empNo }">
-                        <div class="circle" style="background: rgb(240, 195, 237)">
+                        <div class="circle" style="background: rgba(122, 39, 135, 0.26)">
                             <i class="fas fa-paperclip fa-3x approval_mn"></i> 
                         </div>
                         <p class="approval_mn"><b>전자결재</b></p>

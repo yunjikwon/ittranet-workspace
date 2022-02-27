@@ -90,7 +90,7 @@
     <ul>
         <li class="menu">
             <a href="dayat.ad">
-                    <div class="circle" style="background: rgb(147, 205, 207)">
+                    <div class="circle" style="background: rgba(26, 161, 121, 0.18)">
                         <i class="fas fa-briefcase fa-3x attendance_mn"></i> 
                     </div>
                 <p class="attendance_mn"><b>근태관리</b></p>
@@ -98,7 +98,7 @@
         </li>
         <li class="menu">
             <a href="">
-                    <div class="circle" style="background: rgb(171, 187, 240)">
+                    <div class="circle" style="background: rgba(88, 187, 211, 0.3)">
                         <i class="far fa-envelope fa-3x mail_mn"></i>  
                     </div>
                     <p class="mail_mn"><b>메일</b></p>
@@ -106,7 +106,7 @@
         </li>
         <li class="menu">
             <a href="addEmpForm.me">
-                    <div class="circle" style="background: rgb(191, 177, 241)">
+                    <div class="circle" style="background: rgba(68, 135, 191, 0.24)">
                         <i class="far fa-smile fa-3x emplManage employee_mn"></i> 
                     </div>
                     <p class="emplManage employee_mn"><b>사원관리</b></p>
@@ -114,7 +114,7 @@
         </li>        
         <li class="menu">
             <a href="listAdmin.no">
-                    <div class="circle" style="background: rgb(194, 184, 206)">
+                    <div class="circle" style="background: rgba(19, 33, 142, 0.2)">
                         <i class="fas fa-bullhorn fa-3x board_mn"></i> 
                     </div>
                     <p class="board_mn"><b>게시판관리</b></p>
@@ -122,7 +122,7 @@
         </li>
         <li class="menu">
             <a href="viewAdminCal.ca">
-                    <div class="circle" style="background: rgb(218, 172, 236)">
+                    <div class="circle" style="background: rgba(125, 96, 206, 0.24)">
                         <i class="fas fa-calendar-alt fa-3x schedule schedule_mn"></i>
                     </div>
                     <p class="schedule schedule_mn"><b>일정관리</b></p>
@@ -130,7 +130,7 @@
         </li>
         <li class="menu">
             <a href="">
-                    <div class="circle" style="background: rgb(194, 151, 250)">
+                    <div class="circle" style="background: rgba(129, 70, 161, 0.281)">
                         <i class="fas fa-building fa-3x company_mn"></i> 
                     </div>
                     <p class="company_mn"><b>회사관리</b></p>
@@ -138,7 +138,7 @@
         </li>
         <li class="menu">
             <a href="">
-                    <div class="circle" style="background: rgb(240, 195, 237)">
+                    <div class="circle" style="background: rgba(122, 39, 135, 0.342)">
                         <i class="fas fa-paperclip fa-3x approval_mn"></i> 
                     </div>
                     <p class="approval_mn"><b>결재관리</b></p>
