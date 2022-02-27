@@ -26,8 +26,10 @@ public class Message {
 	private String readDate;
 	
 	private String status;
-	
-	
-	
+
+	private int empNo;
+	private String empName;
+	private String teamCode;
+	private String teamName;
 
 }

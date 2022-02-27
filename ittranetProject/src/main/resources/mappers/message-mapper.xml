@@ -3,4 +3,156 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="messageMapper">
+	
+	<resultMap id="messageResult" type="Message">
+		<result column="send_msg_no" property="sendMsgNo" />
+		<result column="sender_no" property="senderNo" />
+		<result column="msg_content" property="msgContent" />
+		<result column="send_date" property="sendDate" />
+		<result column="status" property="status" />
+		<result column="receive_msg_no" property="receiveMsgNo" />
+		<result column="receiver_no" property="receiverNo" />
+		<result column="read_date" property="readDate" />
+		<result column="emp_no" property="empNo" />
+		<result column="emp_name" property="empName" />
+		<result column="team_code" property="teamCode" />
+		<result column="team_name" property="teamName" />
+		
+	</resultMap>
+	
+	<!--받은 메세지 갯수 세기 -->
+	<select id="selectRMsgCount" resultType="_int">
+		select count(*) as "count"
+		  from msg_receive
+		 where receiver_no = #{empNo}
+		   and status = 'Y'
+	</select>
+	
+	<!--보낸 메세지 갯수 세기 -->
+	<select id="selectSMsgCount" resultType="_int">
+		select count(*) as "count"
+		  from msg_send
+		 where sender_no = #{empNo}
+		   and status = 'Y'
+	</select>
+	
+	<!-- 받은 메세지 리스트 조회 -->
+	<select id="selectRMsgList" resultMap="messageResult">
+		select 
+		       receive_msg_no
+		     , s.send_msg_no
+		     , sender_no
+		     , emp_name 
+		     , msg_content
+		     , to_char(send_date, 'YYYY-MM-DD') as "send_date"
+		     , to_char(read_date, 'YYYY-MM-DD HH24:MM') as "read_date"
+		     , r.status as "status"
+		  from msg_receive r 
+		  join msg_send s on (r.send_msg_no = s.send_msg_no)
+		  join employee on (sender_no = emp_no)
+		 where r.status = 'Y'
+		   and receiver_no = #{receiveNo}
+		 order
+    		by send_date desc
+	</select>
+	
+	<!-- 사원검색 -->
+	<select id="selectEmpList" resultMap="messageResult">
+		select
+		       emp_no
+		     , emp_name
+		     , e.team_code
+		     , team_name
+		  from employee e
+		  join team t on (e.team_code = t.team_code)
+		 where emp_name LIKE '%' || #{keyword} || '%'
+		 order
+		    by emp_name
+	</select>
+	
+	<!-- 보낸 메세지함 insert -->
+	<insert id="sendMessage">
+		insert 
+		  into msg_send
+		     (
+		       send_msg_no
+		     , sender_no
+		     , msg_content
+		     , send_date
+		     , status
+		     )
+		 values
+		     (
+		       seq_smsgno.nextval
+		     , #{senderNo}
+		     , #{msgContent}
+		     , sysdate
+		     , 'Y'
+		     )	
+	</insert>
+	
+	<!-- 받은 메세지함 insert -->
+	<insert id="receiveMessage">
+		insert 
+		  into msg_receive
+		     (
+		       receive_msg_no
+		     , send_msg_no
+		     , receiver_no
+		     , status
+		     )
+		 values
+		     (
+		       seq_rmsgno.nextval
+		     , seq_smsgno.currval
+		     , #{receiverNo}
+		     , 'Y'
+		     )	
+	</insert>
+	
+	<!-- 메세지 내용확인 -->
+	<select id="selectRMsg" resultMap="messageResult">
+		select 
+	           receive_msg_no
+	         , sender_no
+	         , emp_name
+	         , team_name
+	         , msg_content
+	         , to_char(send_date, 'YYYY-MM-DD HH24:mm') as "send_date"
+	         , read_date
+	         , r.status as "status"
+	      from msg_send s
+	      join employee on (sender_no = emp_no)
+	      join team using(team_code)
+	      join msg_receive r on (r.send_msg_no = s.send_msg_no)
+	     where r.status = 'Y'
+	       and receiver_no = #{receiverNo}
+	       and s.send_msg_no = #{sendMsgNo}
+	</select>
+	
+	<!-- 읽은 시간 업데이트 -->
+	<update id="readMessage">
+		update msg_receive
+		   set read_date = sysdate
+		 where receive_msg_no = #{receiveMsgNo}					
+	</update>
+	
+	<!-- 보낸 메세지 리스트 조회 -->
+	<select id="selectSMsgList" resultMap="messageResult">
+		select 
+		       s.send_msg_no
+		     , receiver_no
+		     , emp_name 
+		     , msg_content
+		     , to_char(send_date, 'YYYY-MM-DD') as "send_date"
+		     , to_char(read_date, 'YYYY-MM-DD HH24:MM') as "read_date"
+		     , s.status as "status"
+		  from msg_send s
+          join msg_receive r on (r.send_msg_no = s.send_msg_no)
+		  join employee on (receiver_no = emp_no)
+		 where s.status = 'Y'
+		   and sender_no = #{senderNo}
+		 order
+    		by send_date desc
+	</select>
 </mapper>
