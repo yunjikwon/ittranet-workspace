@@ -135,7 +135,7 @@
 		                  <a href="list.pr">내 프로젝트</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">프로젝트 만들기</a>
+		                  <a href="newpro.pr">프로젝트 만들기</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="todo.pr">내 업무</a>

@@ -38,4 +38,21 @@ public class ProjectController {
 		return mv ;
 	}
 	
+	@RequestMapping("newpro.pr")
+	public String newProject() {
+		return "project/newProject";
+	}
+
+	
+	@RequestMapping("npro.pr")
+	public String newProject(Project p, HttpSession session) {
+		
+		Employee loginUser = (Employee)session.getAttribute("loginUser");
+		String empNo = loginUser.getEmpNo();
+		
+		System.out.println("프로젝트 새로 만들때 p에 담겨잇는 것  : " + p);
+		int result = pService.insertProject(p);
+		return "redirect:list.pr";
+	}
+	
 }

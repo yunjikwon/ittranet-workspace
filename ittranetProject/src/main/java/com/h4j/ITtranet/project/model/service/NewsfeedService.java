@@ -37,6 +37,9 @@ public interface NewsfeedService {
 	// 뉴스피드 게시글 첨부파일 추가
 	ArrayList<Attachment> selectAttachment(Newsfeed n);
 	
+	// 뉴스피드 게시글 댓글 조회
+	ArrayList<Reply> selectReplyList(int nfNo);
+	
 
 	
 

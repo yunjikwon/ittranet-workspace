@@ -22,7 +22,7 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public int insertProject(Project p) {
-		return 0;
+		return pDao.insertProject(sqlSession, p);
 	}
 
 	@Override

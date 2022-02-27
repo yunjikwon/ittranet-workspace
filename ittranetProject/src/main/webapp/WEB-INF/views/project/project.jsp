@@ -216,7 +216,7 @@
 		                  <a href="list.pr">내 프로젝트</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">프로젝트 만들기</a>
+		                  <a href="newpro.pr">프로젝트 만들기</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="todo.pr">내 업무</a>
@@ -403,16 +403,11 @@
 	                <!--댓글-->
 	                <div class="reply" style="font-size: 13px;">
 	                    <div class="replylist">
-                            <table>
-                              <thead>
-                                <tr>
-                                    <td><b>&emsp;오트라</b> &emsp;&emsp;&emsp; </td>
-                                    <td><span class="replycontents">안녕하세요 !</span>댓글 내용</td>
-                                    <td>2022-01-10&emsp;11:48</span></td>
-                                </tr>
-                                <tr>         	 
+                            <table id="replyArea">
+                              <thead>                                
+                              	<tr>         	 
                                     <td colspan="3">
-                              		  <textarea id="replyContent" type="text" name="reply"  cols="80" rows="3" style="resize:none; margin:10px; border-radius: 2mm;"></textarea>                            	
+                              		  <textarea id="replyContent" type="text" name="reply" cols="80" rows="3" style="resize:none; margin:10px; border-radius: 2mm;"></textarea>                            	
                                     </td>
                                     <td>
                                         <button id="replyok" onclick="addReply(${n.nfNo});"><b>등록</b></button>  
@@ -426,29 +421,27 @@
 	                    </div>
        </div>
        
-	
-    </c:forEach>
 
-	<script>
+    </c:forEach>
+    
 
 	<!-- 댓글 script -->
-	
-		function addReply(int){
-			
 
-			var nfNo = ${n.nfNo};
+	<script>
+		
+		function addReply(no){
 			
 			
 			if($("#replyContent").val().trim().length != 0){
 				$.ajax({
 					url : "rinsert.pr",
 					data : {
-						refNo:nfNo,
-						empNo:${ list.get(0).prNo },
+						refNo:no,
+						empNo:${ list.get(0).empNo },
 						replyContent:$("#replyContent").val()
 					}, success:function(status){
 						if(status == "success"){
-							selectReplyList();
+							selectReplyList(no);
 							$("#replyContent").val("");
 						}
 					}, error:function(status){
@@ -459,6 +452,35 @@
 				alertify.alert("댓글 작성후 등록 요청해주세요!");
 			}
 		}
+
+	</script>
+
+	<script>
+	
+	function selectReplyList(no){ 
+        $.ajax({
+           url:"rlist.pr",
+           data:{
+        	   nfNo:no
+        	},
+           success:function(list){
+              console.log(list);
+              let value = "";
+              for(let i in list){
+                 value += "<tr>"
+                       +   "<td>"+ list[i].empName + "</td>"
+                       +   "<td>"+ list[i].replyContent + "</td>"
+                       +   "<td>"+ list[i].createDate + "</td>"
+                       + "</tr>"
+              }
+              
+              $("#replyArea tbody").html(no);
+              
+           },error:function(){
+              console.log("댓글리스트조회용 ajax 통신실패");
+           }
+        })
+     }
 	</script>
 	
     </div>

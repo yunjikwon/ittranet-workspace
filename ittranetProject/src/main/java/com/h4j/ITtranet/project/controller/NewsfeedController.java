@@ -141,13 +141,22 @@ public class NewsfeedController {
 	// 댓글 달기
 	@ResponseBody
 	@RequestMapping(value="rinsert.pr")
-	public String ajaxInsertReply(Reply r, Newsfeed n) {
+	public String ajaxInsertReply(Reply r) {
 		
 		System.out.println("댓글 달기 클릭했을 때 r: "  + r);
-		System.out.println("댓글 달기 클릭했을 때 n: "  + n);
 		int result = nService.insertReply(r);
 		
 		return result>0 ? "success" : "fail";
+	}
+	
+	// 댓글 목록
+	@ResponseBody
+	@RequestMapping(value="rlist.pr", produces="application/json; charset=utf-8")
+	public String ajaxSelectReplyList(int nfNo) {
+		System.out.println("댓글 목록에서  : " + nfNo);
+		ArrayList<Reply> list = nService.selectReplyList(nfNo);
+		System.out.println("댓글 목록 조회할 때 list : " + list );
+		return new Gson().toJson(list);
 	}
 	
 

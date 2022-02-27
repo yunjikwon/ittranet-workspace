@@ -59,5 +59,9 @@ public class NewsfeedDao {
 		return (ArrayList)sqlSession.selectList("newsfeedMapper.prAttachment", nfNo);
 	}
 
+	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int nfNo) {
+		return (ArrayList)sqlSession.selectList("newsfeedMapper.feedReplyList", nfNo);
+	}
+
 
 }

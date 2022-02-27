@@ -90,6 +90,12 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	public ArrayList<Attachment> selectAttachment(Newsfeed n) {
 		return null;
 	}
+	
+	// 댓글 조회
+	@Override
+	public ArrayList<Reply> selectReplyList(int nfNo) {
+		return nDao.selectReplyList(sqlSession, nfNo);
+	}
 
 	
 

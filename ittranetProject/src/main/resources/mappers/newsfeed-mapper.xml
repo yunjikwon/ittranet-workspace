@@ -29,6 +29,17 @@
 	<result property="refNo" column="ref_no"/>
 </resultMap>
 
+<resultMap id="replylist" type="Reply">
+ 	<result column="reply_no" property="replyNo" />
+ 	<result column="emp_no" property="empNo" />
+ 	<result column="ref_code" property="refCode" />
+ 	<result column="ref_no" property="refNo" />
+ 	<result column="reply_content" property="replyContent" />
+  	<result column="create_date" property="createDate" />
+ 	<result column="status" property="status" />
+ 	<result column="emp_name" property="empName"  />
+</resultMap>
+ 	
  <select id="selectNews" resultMap="NewsfeedList">
  	select
 	 		nf_no,
@@ -165,6 +176,8 @@
 		     , reply_content
 		     , create_date
 		     , status
+		     , reply_origin_no
+             , reply_branch
 		     )
 		values
 		     (
@@ -175,8 +188,23 @@
 		     , #{replyContent}
 		     , sysdate
 		     , 'Y'
+		     , 0
+		     , 1
 		     )
 </insert>
 
+<select id="feedReplyList" resultMap="replylist">
+		select 
+		 	   reply_no
+		     , r.emp_no
+		     , emp_name
+		     , reply_content
+		     , create_date
+		  from reply r
+		  join employee e on e.emp_no = r.emp_no 
+		 where ref_code = 'NF'
+		   and r.status = 'Y'
+		   and ref_no = #{nfNo}
+</select>
  
 </mapper>

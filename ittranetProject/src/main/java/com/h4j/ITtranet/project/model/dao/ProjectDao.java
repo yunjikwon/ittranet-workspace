@@ -19,6 +19,10 @@ public class ProjectDao {
 	public ArrayList<Project> selectEndProject(SqlSessionTemplate sqlSession, String empNo) {
 		return (ArrayList)sqlSession.selectList("projectMapper.selectEndProject", empNo);
 	}
+
+	public int insertProject(SqlSessionTemplate sqlSession, Project p) {
+		return sqlSession.insert("projectMapper.insertProject", p);
+	}
 	
 
 }

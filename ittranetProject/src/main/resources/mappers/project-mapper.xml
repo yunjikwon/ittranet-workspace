@@ -52,4 +52,32 @@
 	]]>    
 </select>
 
+<insert id="insertProject">
+insert
+	into project
+		  (
+		  	pr_no
+		  , emp_no
+		  , pr_title
+		  , pr_startdate
+          , pr_enddate
+          , pr_size
+          , pr_content
+          , pr_logo
+          , status
+		  )
+	values
+		  (
+		  	seq_prno.nextval
+		  , #{empNo}
+		  , #{prTitle}
+		  , sysdate
+          , #{prEnddate}
+          , #prSize
+          , #{prContent}
+          , #{prLogo}
+          , 'Y'
+		  )
+</insert>
+
 </mapper>
