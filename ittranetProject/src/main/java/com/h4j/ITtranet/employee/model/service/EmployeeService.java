@@ -1,5 +1,8 @@
 package com.h4j.ITtranet.employee.model.service;
 
+import java.util.ArrayList;
+
+import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 
 public interface EmployeeService {
@@ -31,6 +34,19 @@ public interface EmployeeService {
 		
 	// 비밀번호 변경
 	int updatePwd(Employee e);
+	
+	// 가입 승인 대기 회원 화면 조회
+	int selectWemployeeCount();
+	ArrayList<Employee> selectWemployee(PageInfo pi);
+	
+	// 가입 승인 (status => Y && 부서,팀,직급 정하기도 함)
+	int confirmMember(Employee e);
+	
+	// 가입 승인 반려 + 계정 탈퇴 (status => N)
+	
+	// 상태 Y인 사원  조회 
+	int selectAllemployeeCount();
+	ArrayList<Employee> selectAllemployee(PageInfo pi);
 	
 	// ~~사원 추가
 	// 사원 추가 페이지 호출 addEmpForm.me

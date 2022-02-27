@@ -22,14 +22,14 @@
     	color:black;
     }
    #hi{
-	   font-size:45px;
+	   font-size:60px;
 	   text-align: center;
 	   font-weight: bold;
 	   color: rgb(147, 205, 207);
     }
     .anton{
         font-family: 'Anton', sans-serif;
-        font-size:35px;
+        font-size:40px;
         font-weight: bold;
         text-shadow: 1px 1px 1px black;
     }
@@ -112,16 +112,16 @@
                 </li>
                 <div id="border">
 		               <li class="menu1" style="background:rgb(147, 205, 207);">
-		                  <a href="addEmpForm.me" style="color:white;">사원 추가</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="appEmpForm.me">가입 승인</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="setEmpForm.me">직위/직무 관리</a>
+		                  <a href="addEmpForm.me" style="color:white;">사원 초대</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="delEmpForm.me">사원 계정 삭제</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="appEmpForm.me">가입 승인/반려</a>
+		               </li>
+		               <li class="menu1">
+		                  <a href="setEmpForm.me">직무/직위 관리</a>
 		               </li>
             	</div>
             </ul>
@@ -135,7 +135,7 @@
 		
 		<div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 			  	<br><br><br>
-        	    <p class="anton" style="font-style:italic;" id="hi">Envite Employee</p>
+        	    <p class="anton" style="font-style:italic;" id="hi">Invite Employee</p>
 		        <br><br>
         	    <div style="margin-left:150px;">
 
