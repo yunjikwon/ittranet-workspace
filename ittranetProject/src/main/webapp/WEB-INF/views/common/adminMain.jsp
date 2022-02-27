@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -128,10 +129,6 @@
             margin-right:5%;
             margin-top: 3px;
         }
-
-
-
-
         #logo>img{
             width:80%;
             height:100px;
@@ -139,6 +136,11 @@
             margin-top: 20px;
             display: inline-block;
         }
+        .profileZone {
+	    	width:150px;
+	    	height:150px;
+	    	border-radius:50%;	
+	    }
     </style>
 </head>
 <body>
@@ -154,10 +156,14 @@
             <div id="person">
 				<br>
                 <div id="profile">
-                    <div id="picture">
-                        <img src="" alt="">
-                    </div>
-
+                   	<c:choose>
+                		<c:when test="${ loginUser.profile eq 'NULL'}">
+		                	<img class="profileZone" src="resources/images/userprofile.png">
+                		</c:when>
+                		<c:otherwise>
+		                	<img class="profileZone" src="${ loginUser.profile }">
+                		</c:otherwise>
+                	</c:choose>
                     <div align="center" style="font-weight: 600;">관리자</div>
                 </div>
 

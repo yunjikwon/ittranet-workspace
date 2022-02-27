@@ -146,24 +146,32 @@
                 	<%--여기까지 프로필 사진 동그라미 영역 (마이페이지에서 사진 등록) --%>
                 </div>
                 <br><br><br>
-                <div class="profile">
-                    <!--사용자 이름, 부서명 연결-->
-                    <p style="font-weight: 900;">${ loginUser.empName } ${ loginUser.jobName }</p>
-                    
-                    <c:choose>
-                    	<c:when test="${ loginUser.teamCode eq 'T0' }">
-                    		<p style="font-weight: 900;">${ loginUser.deptName }</p>
-                    	</c:when>
-                    	<c:otherwise>
-                    		<p style="font-weight: 900;">${ loginUser.deptName } ${ loginUser.teamName }</p>
-                    	</c:otherwise>
-                    </c:choose>
-                    
-                </div>
-                <div align="center">
-                    <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
-                    <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>   
-                </div>
+                <c:choose>
+                	<c:when test="${ loginUser.empNo eq '1' }">
+                		<div class="adminProfile">
+                			<p style="font-weight: 900; text-align:center;">관리자님 환영합니다</p>
+                			<button class="header-btn" onclick="location.href='goAdminMain.me'" style="margin-left:100px;">관리자 페이지</button>
+                		</div>
+                	</c:when>
+                	<c:otherwise>
+	                	<div class="profile">
+		                    <!--사용자 이름, 부서명 연결-->
+		                    <p style="font-weight: 900;">${ loginUser.empName } ${ loginUser.jobName }</p>        
+		                    <c:choose>
+		                    	<c:when test="${ loginUser.teamCode eq 'T0' }">
+		                    		<p style="font-weight: 900;">${ loginUser.deptName }</p>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<p style="font-weight: 900;">${ loginUser.deptName } ${ loginUser.teamName }</p>
+		                    	</c:otherwise>
+		                    </c:choose>
+		                    <div align="center">
+			                    <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
+			                    <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>   
+                			</div>
+	                	</div>
+                	</c:otherwise>
+                </c:choose>
             </div>
             <div class="commute-box">
                 <div style="height: 50px; font-size: 18px; margin: 20px; padding-top: 20px;">
