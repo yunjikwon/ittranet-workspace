@@ -138,5 +138,17 @@ public class NewsfeedController {
 		return "redirect:feed.pr?prNo=" + prNo;
 	}
 	
+	// 댓글 달기
+	@ResponseBody
+	@RequestMapping(value="rinsert.pr")
+	public String ajaxInsertReply(Reply r, Newsfeed n) {
+		
+		System.out.println("댓글 달기 클릭했을 때 r: "  + r);
+		System.out.println("댓글 달기 클릭했을 때 n: "  + n);
+		int result = nService.insertReply(r);
+		
+		return result>0 ? "success" : "fail";
+	}
+	
 
 }

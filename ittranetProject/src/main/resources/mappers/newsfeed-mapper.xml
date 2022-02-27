@@ -154,6 +154,29 @@
 	where nf_no = #{nfNo}
 </update>
  
+<insert id="insertReply">
+		insert
+		  into reply
+		     (
+		       reply_no
+		     , emp_no
+		     , ref_code
+		     , ref_no
+		     , reply_content
+		     , create_date
+		     , status
+		     )
+		values
+		     (
+		       seq_reply.nextval
+		     , #{empNo}
+		     , 'NF'
+		     , #{refNo}
+		     , #{replyContent}
+		     , sysdate
+		     , 'Y'
+		     )
+</insert>
 
  
 </mapper>

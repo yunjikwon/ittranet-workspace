@@ -379,7 +379,7 @@
                                 }
                             </script>
 
-
+					<!-- 게시글 내용 -->
 	                <div class="feedcontent">
 	                    <p>${n.nfContent}</p>
 	                    <form id="postForm" action="" method="post">
@@ -403,24 +403,64 @@
 	                <!--댓글-->
 	                <div class="reply" style="font-size: 13px;">
 	                    <div class="replylist">
-	                        <b>오트라</b> &emsp;&emsp;&emsp; 
-	                        <span class="replycontents">안녕하세요 !</span>
-	                        <span class="date">2022-01-10&emsp;11:48</span>
+                            <table>
+                              <thead>
+                                <tr>
+                                    <td><b>&emsp;오트라</b> &emsp;&emsp;&emsp; </td>
+                                    <td><span class="replycontents">안녕하세요 !</span>댓글 내용</td>
+                                    <td>2022-01-10&emsp;11:48</span></td>
+                                </tr>
+                                <tr>         	 
+                                    <td colspan="3">
+                              		  <textarea id="replyContent" type="text" name="reply"  cols="80" rows="3" style="resize:none; margin:10px; border-radius: 2mm;"></textarea>                            	
+                                    </td>
+                                    <td>
+                                        <button id="replyok" onclick="addReply(${n.nfNo});"><b>등록</b></button>  
+                                    </td>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                            </table>
 	                    </div>
-	                    
-	                    <!-- 댓글 작성 -->
-	                    <input id="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
-	                    <button id="replyok" onclick="addReply"><b>등록</b></button>
-	                </div>
-	            
-	          
-	            </div>
-            </c:forEach> 
-        </div>
-        
-    
+	                    </div>
+       </div>
+       
+	
+    </c:forEach>
 
+	<script>
 
+	<!-- 댓글 script -->
+	
+		function addReply(int){
+			
+
+			var nfNo = ${n.nfNo};
+			
+			
+			if($("#replyContent").val().trim().length != 0){
+				$.ajax({
+					url : "rinsert.pr",
+					data : {
+						refNo:nfNo,
+						empNo:${ list.get(0).prNo },
+						replyContent:$("#replyContent").val()
+					}, success:function(status){
+						if(status == "success"){
+							selectReplyList();
+							$("#replyContent").val("");
+						}
+					}, error:function(status){
+						console.log("댓글작성용 ajax통신 실패")
+					}
+				})
+			}else{
+				alertify.alert("댓글 작성후 등록 요청해주세요!");
+			}
+		}
+	</script>
+	
     </div>
     </div>
     </div>
@@ -516,63 +556,6 @@
         </div>
 	
 
-       
-<script>
-	$(function(){
-		var chkObj = document.getElementsByName("RowCheck");
-		var rowCnt = chkObj.length;
-		
-		$("input[name='RowCheck']").click(function(){
-			if($("input[name='RowCheck']:checked").length == rowCnt){
-				$("input[name='allCheck']")[0].checked = true;
-			}
-			else{
-				$("input[name='allCheck']")[0].checked = false;
-			}
-		});
-	});
-	
-
-	
-	function deleteTodo(){
-		
-		console.log("클릭은 됨");
-		var url = "deletetd.pr";
-		var valueArr = new Array();
-		var list = $("input[name='RowCheck']");
-		for(var i = 0; i < list.length; i++){
-			if(list[i].checked){
-				valueArr.push(list[i].value);
-			}
-		}
-		if (valueArr.length == 0){
-			alert("선택된 글이 없습니다.");
-		}
-		else {
-			var chk = confirm("정말 삭제하시겠습니까?");
-			$.ajax({
-				url : url,
-				type : 'POST',
-				traditional : true,
-				data : {
-					valueArr : valueArr
-				},
-				success : function(jdata){
-					if(jdata = 1){
-						alert("삭제 성공");
-						location.reload();
-					}
-					else{
-						alert("삭제 실패")
-					}
-				}
-			})
-		}
-	}
-	}
-	
-	
-</script>
 
  
 

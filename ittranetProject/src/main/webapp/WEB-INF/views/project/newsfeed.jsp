@@ -171,18 +171,15 @@
             
             <!-- 진행중인 프로젝트 목록 -->
             <c:forEach var="p" items="${ list2 }">
-            	<!-- <a href="javascript:prNewsfeed('${p.prNo}')">  -->
             	
 		            <div class="projectboxes">
 		                <div class="projectlogo">
-		                	<!--<form id="projectclick" type="hidden" method="post"></form>-->
 		                	 <input method="post" type="hidden" class="prno" name="prNo" value="${ p.prNo }">
 		                     <img class="logoimg" src="${ p.prLogo }"  />
 		                </div>
 		                <p class="projectname" style="font-size: 13px; text-align: center;">${ p.prTitle }</p>   
 		            </div>
 		            
-	            <!-- </a> -->
 
             </c:forEach>
             	
@@ -231,14 +228,14 @@
             <div class="feedlist">
                    <br>
                    <!-- 사용자 프로필 사진 조건 -->
-	                   <c:choose>
-	                      <c:when test="${ loginUser.profile eq 'NULL'}">
-	                         <img class="userProfile" src="resources/images/userprofile.png">
-	                      </c:when>
-	                      <c:otherwise>
-	                         <img class="userProfile" src="${ loginUser.profile }">
-	                      </c:otherwise>
-	                   </c:choose>
+                   <c:choose>
+                      <c:when test="${ loginUser.profile eq 'NULL'}">
+                         <img class="userProfile" src="resources/images/userprofile.png">
+                      </c:when>
+                      <c:otherwise>
+                         <img class="userProfile" src="${ loginUser.profile }">
+                      </c:otherwise>
+                   </c:choose>
                    
 				<!-- 게시물 작성 -->
                 <div class="projectmem">

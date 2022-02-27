@@ -109,6 +109,7 @@
 	
 	            <c:forEach var="p" items="${ list1 }">
 		            <div class="proing" style="text-align: center;">
+		            <input method="post" type="hidden" class="prno" name="prNo" value="${ p.prNo }">
 		                <div class="logo">
 		                    <img class="logoimg" src="${ p.prLogo }"/>
 		                </div>
@@ -130,6 +131,7 @@
             
             <c:forEach var="e" items="${ list2 }">
 	            <div class="proend" style="text-align: center;">
+	            <input method="post" type="hidden" class="prno" name="prNo" value="${ e.prNo }">
 	      	            <div class="logo">
 		                    <img class="logoimg" src="${ e.prLogo }"/>
 		                </div>
@@ -139,6 +141,20 @@
 	            </div>
             </c:forEach>
           </div>   
+          
+               <script>
+	             $(function(){
+	                 $(".proing").click(function(){
+	                    location.href = 'feed.pr?prNo=' + $(this).find(".prno").val();
+	                  })
+	               })
+	               
+	              $(function(){
+	                 $(".proend").click(function(){
+	                    location.href = 'feed.pr?prNo=' + $(this).find(".prno").val();
+	                  })
+	               })
+	             </script>
         
         </div>
         </div>
