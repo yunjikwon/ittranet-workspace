@@ -353,7 +353,6 @@ public class AttendanceController {
 	public String ajaxAdminAtSearchList(Attendance at) {
 		
 		ArrayList<Attendance> list = atService.ajaxAdminAtSearchList(at);
-		System.out.println(list);
 		return new Gson().toJson(list);
 	}
 	
