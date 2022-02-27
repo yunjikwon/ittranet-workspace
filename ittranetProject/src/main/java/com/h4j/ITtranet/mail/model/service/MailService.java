@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.mail.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.h4j.ITtranet.common.model.vo.Attachment;
@@ -22,8 +23,20 @@ public interface MailService {
 	// 3. 메일 상세조회
 	Mail selectMail(int sendMailNo);
 	
+	// 중요 메일
+	int importantMail(int receiveMailNo);
+	
 	// 5. 메일 삭제
 	int deleteMail(List<Integer> receiveMailNo);
+	
+	// 5-2. (상세조회) 메일 삭제
+	int deleteOneMail(int rvno);
+	
+	// 중요 메일
+	int updateImportantMail(HashMap<String, String> map);
+	
+	// 중요 메일 (보낸메일함)
+	int updateImportantSendMail(HashMap<String, String> map);
 	
 	
 	// 6. 휴지통

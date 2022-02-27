@@ -5,40 +5,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>중요메일함</title>
 <style>
+	/*공통*/
 	.wrap{
         width: 900px;
     }
+    /*내용*/
     #mainOuter{
            width:1200px;
            height:800px;
           }
-    .outer div{float:left;}
-    .top{
-         width:1200px;
-         height:200px;
-    }
-    .sidebar{
-         width:300px;
-         height:600px;
-        }
-    .middle{
-            width:880px;
-            height:580px;
-    }
-
-
+	/*버튼*/
     #buttonbar{
     	float:right;
-    	padding-left:5px;        
-               
+    	padding-left:5px;            
     }
+    /*조회 테이블*/
     table{
           text-align:center;
     }
-    
-    /* 버튼 그라데이션 존예 */
+    /* 버튼 그라데이션 */
     .w-btn {
     	position: relative;
     	border: none;
@@ -59,12 +46,10 @@
 		background: linear-gradient(to top right, #33ccff 0%, #ff0000 100%);
 		color: white;
 	}
-
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-
 </head>
 <body>
 	<!-- 공용 -->
@@ -87,35 +72,12 @@
 
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
+            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
                 <button class="w-btn w-btn-gra2" type="submit">삭제</button>
-            
-            	<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  					<div class="modal-dialog" role="document">
-    				<div class="modal-content">
-    				
-      					<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							</button>
-      					</div>
-      			
-      				<div class="modal-body">
-						정말로 삭제하시겠습니까?
-      				</div>
-      			
-      				<div class="modal-footer">
-        				<button type="button" class="btn btn-danger">네</button>
-        				<button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
-      				</div>
-    			
-    				</div>
-  					</div>
-				</div>
-				
 			</div>
 			
-            <form id="postForm" action="alllist.ml" method="post">
+			<!-- 폼 -->
+            <form id="postForm" action="impolist.ml" method="post">
 
             
             <br><br><br>
@@ -125,8 +87,8 @@
                 <table id="impolist" style="background-color:white">
                 	<thead>
                     	<tr>
-                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
-                        	<th style="width:50px;">☆</th>
+                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
+                        	<th style="width:50px;"><i class="fa-solid fa-star"></i></th>
                         	<th style="width:150px;">보낸사람</th>
                         	<th style="width:500px;">제목</th>
                         	<th style="width:200px;">날짜</th>
@@ -135,12 +97,27 @@
                     <tbody>
                     	<c:forEach var="m" items="${ impolist }">
 	                    	<tr>
-	                    		<input class="sdNo" type="hidden" value=${ m.sendMailNo }>
-                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
-                        		<td>★</td>
+	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
+                        		<td onclick="event.cancelBubble=true;"><input type="checkbox" name="rvno" id="Check" value="${ m.receiveMailNo }"></td>
+                        		<td>
+                        			<button id="on" class="btn btn-sm" onclick="importantSendStar();">
+                        			<c:choose>
+                        				<c:when test="${m.important eq 'N'}">
+                        					<img src="resources/images/whitestar.png" style="widt:15px; height:15px;">
+                        				</c:when>
+                        				<c:otherwise>
+                        					<img src="resources/images/blackstar.png" style="width:15px; height:15px;">
+                        				</c:otherwise>
+                        			</c:choose>
+                        			</button>
+                        		</td>
                         		<td>${ m.empNameSd }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
+                        		
+                        		<input type="hidden" name="receiveAccount" value="${ m.receiverAccount }">
+                        		<input type="hidden" name="statusRv" value="${ m.statusRv }">
+                        		<input type="hidden" name="important" value="${ m.important }">
                     		</tr>
                     	</c:forEach>
                     </tbody>
@@ -148,29 +125,79 @@
                 
 			</form>
 			
+				<!-- 상세페이지 조회 -->
                 <script>
             		$(function(){
             			$("#impolist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
-            				console.log(mno);
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
             			});
             		})
             	</script>
+            	
+            	<!-- 체크박스 전체체크/체크해제 -->
             	<script>	
-            		$(document).ready(function() {
-            			$("#allCheck").click(function() {
+            		function checkAll(check){
             				if($("#allCheck").prop("checked")) { 
-            				$("input[name=checked]").prop("checked", true);
+            				$("input[name=rvno]").prop("checked", true);
             			}else {
-            				$("input[name=checked]").prop("checked", false);
+            				$("input[name=rvno]").prop("checked", false);
             			}
-            			});
-            		})
+            		}
 				</script>
+				
+				<!-- 체크박스 : 중요 -->
+				<script>
+				
+				function importantStar(){
+					
+					$.ajax({
+						url:"impo.ml",
+						data:{
+							rvno:$("input[name='rvno']").val(),
+							important:$("input[name='important']").val()
+						},
+						success:function(result){
+							if(result == 'success'){
+								location.onload();
+							}
+						}
+					})
+					
+				}
+				</script>
+				
+			<!-- 체크박스 : 삭제 -->			
+			<script>	
+            	function deletemail() {
+            		var rcArr = [];
+            		$("input[name='rvno']:checked").each(function(){
+            			rcArr.push($(this).val());
+            		 })
+            		 console.log(rcArr);
+            		 
+            		 $.ajax({
+            			 url:"delete.ml",
+            			 type:"post",
+            			 data:{receiveMailNo:rcArr},
+            			 success:function(result){
+            				 if(result == 'success'){
+            				 	console.log("게시글 삭제 성공!");
+            				 }else{
+            					 console.log("게시글 삭제실패");
+            				 }
+            			 },error:function(){
+            				 console.log("ajax게시글 삭제 통신 실패!");
+            			 }
+            			 
+            			 
+            		 })
+            	}            	
+            </script>
 				
 			<!-- 내용닫는곳 -->
             </div>
 
+			<!-- 페이징바 -->
           	<div id="pagingArea">
     			<ul class="pagination justify-content-center">
 	        		<c:choose>
@@ -203,7 +230,6 @@
         <jsp:include page="../common/footer.jsp" />
 
 
-    </div>
     </div>
     </div>
 

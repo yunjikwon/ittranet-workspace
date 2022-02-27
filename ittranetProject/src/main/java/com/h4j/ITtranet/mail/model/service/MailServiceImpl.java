@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.mail.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -149,9 +150,36 @@ public class MailServiceImpl implements MailService{
 		return mDao.deleteMail(sqlSession, receiveMailNo);
 	}
 	
+/*
+	// (상세조회) 삭제
+	@Override
+	public int deleteOneMail(int rvno) {
+		return mDao.deleteOneMail(sqlSession, rvno);
+	}
+	*/
 
 
-	
+	@Override
+	public int updateImportantMail(HashMap<String, String> map) {
+		return mDao.updateImportantMail(sqlSession, map);
+	}
+
+	// 중요 메일 (보낸메일함)
+	@Override
+	public int updateImportantSendMail(HashMap<String, String> map) {
+		return mDao.updateImportantSendMail(sqlSession, map);
+	}
+
+	@Override
+	public int importantMail(int receiveMailNo) {
+		return 0;
+	}
+
+	@Override
+	public int deleteOneMail(int rvno) {
+		return 0;
+	}
+
 	
 	
 

@@ -124,8 +124,8 @@
                 <table id="sendlist" style="background-color:white">
                 	<thead>
                     	<tr>
-                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
-                        	<th style="width:50px;">☆</th>
+                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
+                        	<th style="width:50px;"><i class="fa-solid fa-star"></i></th>
                         	<th style="width:150px;">받는사람</th>
                         	<th style="width:500px;">제목</th>
                         	<th style="width:200px;">날짜</th>
@@ -134,12 +134,27 @@
                     <tbody>
                     	<c:forEach var="m" items="${ sendlist }">
 	                    	<tr>
-	                    		<input type="hidden" value=${ m.sendMailNo }>
-                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
-                        		<td>★</td>
+	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
+                        		<td onclick="event.cancelBubble=true;"><input type="checkbox" name="mno" id="Check" value="${ m.sendMailNo }"></td>
+                        		<td>
+                        			<button id="on" class="btn btn-sm" onclick="importantSendStar();">
+                        			<c:choose>
+                        				<c:when test="${m.important eq 'N'}">
+                        					<img src="resources/images/whitestar.png" style="widt:15px; height:15px;">
+                        				</c:when>
+                        				<c:otherwise>
+                        					<img src="resources/images/blackstar.png" style="width:15px; height:15px;">
+                        				</c:otherwise>
+                        			</c:choose>
+                        			</button>
+                        		</td>
                         		<td>${ m.empNameRv }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
+                        		
+
+                        		<input type="hidden" name="statusSd" value="${ m.statusSd }">
+                        		<input type="hidden" name="important" value="${ m.important }">
                     		</tr>
                     	</c:forEach>
                     </tbody>
@@ -150,21 +165,64 @@
                 <script>
             		$(function(){
             			$("#sendlist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
             				console.log(mno);
-            			});
+            			})
             		})
             	</script>
+            	
+            	
             	<script>	
-            		$(document).ready(function() {
-            			$("#allCheck").click(function() {
+            		function checkAll(check) {
             				if($("#allCheck").prop("checked")) { 
-            				$("input[name=checked]").prop("checked", true);
+            				$("input[name=mno]").prop("checked", true);
             			}else {
-            				$("input[name=checked]").prop("checked", false);
+            				$("input[name=mno]").prop("checked", false);
             			}
-            			});
-            		})
+            		}
+				</script>
+				
+				<script>
+					function importantSendStar() {
+						$.ajax({
+							url:"impo.sdml",
+							data:{
+								mno:$("input[id='Check']").val(),
+								important:$("input[name='important']").val()
+							},success:function(result){
+								if(result== 'success'){
+									location.onload();
+								}
+							}
+						})
+					}
+				</script>
+				
+				<script>
+            	function deletemail() {
+            		var rcArr = [];
+            		$("input[name='checked']:checked").each(function(){
+            			rcArr.push($(this).val());
+            		 })
+            		 console.log(rcArr);
+            		 
+            		 $.ajax({
+            			 url:"delete.ml",
+            			 type:"post",
+            			 data:{receiveMailNo:rcArr},
+            			 success:function(result){
+            				 if(result == 'success'){
+            				 	console.log("게시글 삭제 성공!");
+            				 }else{
+            					 console.log("게시글 삭제실패");
+            				 }
+            			 },error:function(){
+            				 console.log("ajax게시글 삭제 통신 실패!");
+            			 }
+            			 
+            			 
+            		 })
+            	}  				
 				</script>
 				
 			<!-- 내용닫는곳 -->

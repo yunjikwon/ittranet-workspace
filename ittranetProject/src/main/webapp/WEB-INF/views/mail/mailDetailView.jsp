@@ -78,10 +78,15 @@
         <div class="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 		
 			<br>
+			
+			<form id="detaildelete" action="deleteone.ml" method="post">
+				<input type="hidden" name="mno" value="${ m.sendMailNo }">
+				<input type="hidden" name="rvno" value="${ m.receiveMailNo }">
+
 
 			<!-- 버튼바 (목록, 삭제, 스팸, 답장) -->
 	        <div id="buttonbar">
-	        	<button type="button" id="delete" class="btn btn-danger" onclick="deleteMail">삭제</button>
+	        	<button type="button" id="delete" class="btn btn-danger" onclick="detaildelete();">삭제</button>
 	            <button type="button" id="spam" class="btn btn-warning" onclick="spamMail">스팸</button>
 	            <button type="button" id="answer" class="btn btn-secondary" onclick="answerMail">답장</button>
 	         	<button type="button" id="backpage" class="btn btn-secondary" onclick="history.back()">뒤로</button>
@@ -121,6 +126,8 @@
 	            </div>
 	        </div>
 	        
+	        </form>
+	        
 	        <!-- 
 	        <script>
 	        function fileDownload(fileNameKey, fileName, filePath){
@@ -130,6 +137,14 @@
 	        </script>
 	         -->
 	        
+	        
+			
+	        <!-- 메일 삭제 -->
+	        <script>
+	        function detaildelete() {
+	        	$("#detaildelete").submit;
+	        }
+	        </script>
 	        <br><br><br>
 	        
 		</div>

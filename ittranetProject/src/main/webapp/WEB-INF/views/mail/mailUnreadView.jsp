@@ -38,6 +38,24 @@
           text-align:center;
     }
     
+    
+    /* 중요메일 : 별표 체크*/
+    label.immail:before{
+    	content:"\f005";
+    	font-family:"Font Awesome 5 free";
+    	vertical-align:middle;
+    }
+    label.moreimmail:checked + label.immail:before {
+    	content:"\f005\f005";
+    	font-family:"Font Awesome 5 free";
+    	color:purple;
+    	text-align:center;
+    }
+    input#oneStar{
+    	display:none;
+    }
+    
+    
     /* 버튼 그라데이션 존예 */
     .w-btn {
     	position: relative;
@@ -64,6 +82,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 </head>
 <body>
 	<!-- 공용 -->
@@ -87,7 +106,7 @@
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
             	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="submit">삭제</button>
+                <button class="w-btn w-btn-gra2" type="submit" onclick="deletemail();">삭제</button>
             
 				
 			</div>
@@ -103,7 +122,7 @@
                 	<thead>
                     	<tr>
                         	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
-                        	<th style="width:50px;">☆</th>
+                        	<th style="width:50px;"><i class="fa-solid fa-star"></i></th>
                         	<th style="width:150px;">보낸사람</th>
                         	<th style="width:500px;">제목</th>
                         	<th style="width:200px;">날짜</th>
@@ -113,8 +132,20 @@
                     	<c:forEach var="m" items="${ unreadlist }">
 	                    	<tr>
 	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
-                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.receiveMailNo }"></td>
-                        		<td>★</td>
+	                    		
+                        		<td onclick="event.cancelBubble=true;"><input type="checkbox" name="rvno" id="Check" value="${ m.receiveMailNo }"></td>
+                        		<td>
+                        			<button id="on" class="btn btn-sm" onclick="importantStar();">
+                    				<c:choose>
+	                    				<c:when test="${m.important eq 'N'}">
+	                    					<img src="resources/images/whitestar.png" style="width:15px; height:15px;">
+	                    				</c:when>
+	                    				<c:otherwise>
+	                    					<img src="resources/images/blackstar.png" style="width:15px; height:15px;">
+	                    				</c:otherwise>
+                    				</c:choose>
+                    				</button>
+                        		</td>
                         		<td>${ m.empNameSd }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
@@ -135,15 +166,17 @@
             		})
             	</script>
             	
+            	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            	
             	<!-- 체크박스 전체체크/체크해제 -->
             	<script>
-            			$("#allCheck").click(function() {
+            			function checkAll(check) {
             				if($("#allCheck").prop("checked")) { 
-            				$("input[name=checked]").prop("checked", true);
+            				$("input[name=rvno]").prop("checked", true);
             			}else {
-            				$("input[name=checked]").prop("checked", false);
+            				$("input[name=rvno]").prop("checked", false);
             			}
-            			})
+            			}
 				</script>
 				
 				<!-- 체크박스 : 삭제 -->			
@@ -173,6 +206,25 @@
             		 })
             	}            	
             	</script>
+            	
+            	<!-- 중요메일/안중요메일 조회 -->
+				<script>
+					function importantStar(){
+						$.ajax({
+							url:"impo.ml",
+							data:{
+								rvno:$("input[name='rvno']").val(),
+								important:$("input[name='important']").val()
+							},
+							success:function(result){
+								if(result == 'success'){
+									location.onload();
+								}
+							}
+						})
+						
+					}
+				</script>
 				
 			<!-- 내용닫는곳 -->
             </div>
@@ -209,7 +261,6 @@
         <jsp:include page="../common/footer.jsp" />
 
 
-    </div>
     </div>
     </div>
 

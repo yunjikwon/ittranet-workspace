@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -87,13 +88,13 @@ public class MailController {
 		return "redirect:alllist.ml";
 	}
 	
-	// 12-1. 내게쓰기 폼
+	// 2-1. 내게쓰기 폼
 	@RequestMapping("enrollForm.mlme")
 	public String toMeEnrollForm() {
 		return "mail/mailTomeEnrollForm";
 	}
 	
-	// 12-2. 새로운 메일 데이터 추가 (+첨부파일)
+	// 2-2. 새로운 메일 데이터 추가 (+첨부파일)
 	@RequestMapping("tomeinsert.ml")
 	public String toMeInsertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
 		
@@ -129,7 +130,38 @@ public class MailController {
 
 	}
 	
-	// 5. 메일 삭제
+	// 4. 중요 메일 조회
+	@ResponseBody
+	@RequestMapping(value="impo.ml", produces="application/text; charset=UTF-8")
+	public String importantmail(String rvno, String important) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("rvno", rvno);
+		map.put("important", important);
+		
+		System.out.println(map);
+		int result = mService.updateImportantMail(map);
+		
+		return result>0? "success" : "fail";
+	}
+	
+	// 4-2. 중요 메일 조회 (보낸편지함)	// 왜 맨 상위만 선택되는가??????????????????????
+	@ResponseBody
+	@RequestMapping(value="impo.sdml", produces="application/text; charset=UTF-8")
+	public String importantsendmail (String mno, String important) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("mno", mno);
+		map.put("important", important);
+		
+		System.out.println(map);
+		int result = mService.updateImportantSendMail(map);
+		
+		return result>0? "success" : "fail";
+		
+	}
+	
+	
+	// 5. (리스트에서) 메일 삭제
 	@ResponseBody
 	@RequestMapping(value="delete.ml", produces="application/text; charset=UTF-8")
 	public String deletemail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
@@ -139,6 +171,28 @@ public class MailController {
 		return result>0? "success" : "fail";
 	}
 	
+	// 12. (리스트에서) 메일 복원
+	/*
+	@ResponseBody
+	@RequestMapping(value="resto.ml")
+	*/
+	
+	/*
+	// 5-2. (상세조회페이지에서) 메일 삭제 //////////////////////////////// 수정해야됨
+	@RequestMapping("deleteone.ml")
+	public String deleteOneMail(int rvno, HttpSession session, Model model) {
+		int result = mService.deleteOneMail(rvno);
+		
+		
+		if(result>0) {
+			return "redirect:alllist.ml";
+		}else {
+			return "common/errorPage";
+		}
+
+	}
+	*/
+
 
 	
 	// 넘어온 첨부파일 서버의 폴더에 저장시킴
@@ -170,10 +224,9 @@ public class MailController {
 	public String selectBinList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		
-		int listCount = mService.selectBinListCount(empNo);
+		int listCount = mService.selectBinListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -192,10 +245,10 @@ public class MailController {
 	public String selectUnreadList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectUnreadListCount(empNo);
-		
+		int listCount = mService.selectUnreadListCount(email);
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
 		ArrayList<Mail> unreadlist = mService.selectUnreadList(pi, email);
@@ -211,9 +264,9 @@ public class MailController {
 	public String selectImpoList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectImpoListCount(empNo);
+		int listCount = mService.selectImpoListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -230,9 +283,9 @@ public class MailController {
 	public String selectSpamList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectSpamListCount(empNo);
+		int listCount = mService.selectSpamListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -249,9 +302,9 @@ public class MailController {
 	public String selectSendList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectSendListCount(empNo);
+		int listCount = mService.selectSendListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -268,10 +321,11 @@ public class MailController {
 	public String selectTemList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectTemListCount(empNo);
+		int listCount = mService.selectTemListCount(email);
 		
+		System.out.println(listCount);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
 		ArrayList<Mail> temlist = mService.selectTemList(pi, email);
