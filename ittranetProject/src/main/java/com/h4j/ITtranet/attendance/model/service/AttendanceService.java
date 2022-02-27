@@ -88,6 +88,9 @@ public interface AttendanceService {
 	// 관리자 일일근태 검색
 	ArrayList<Attendance> ajaxAdminAtSearchList(Attendance at);
 	
+	// 사용자 휴가신청 취소
+	int updateVcDelete(int vcno);
+	
 	
 	
 	

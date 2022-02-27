@@ -115,6 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  join employee using(emp_no) 
 		  join team using(team_code)
 		 where vc_status = '대기'
+		   and apply_yn = 'Y'
 		 order
 		 	by vc_applyno desc
 	</select>
@@ -124,6 +125,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   count(*)
 		  from vacation_apply
 		 where vc_status in ('승인', '반려')
+		   and apply_yn = 'Y'
 	</select>
 	
 	<select id="selectFinVacationList" resultMap="vacationResult">
@@ -140,6 +142,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  join employee using(emp_no) 
 		  join team using(team_code)
 		 where vc_status in ('승인', '반려')
+		   and apply_yn = 'Y'
 		 order
 		 	by vc_applyno desc
 	</select>
@@ -282,6 +285,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  from vacation_apply
 		 where emp_no = #{empNo}
 		   and substr(vc_startdate, 1, 4) = to_char(sysdate, 'YYYY')
+		   and apply_yn = 'Y'
 		 group 
 		    by emp_no	
 	</select>
@@ -421,9 +425,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 , emp_no
 			 , att_date
 			 , arrive_time
-			 , leave_time
-			 , stepout_time
-			 , outwork_time
+			 , nvl(leave_time, '-') "leave_time"
+			 , nvl(stepout_time, '-') "stepout_time"
+			 , nvl(outwork_time, '-') "outwork_time"
 			 , att_status
 		  from attendance
 		 where to_date(att_date, 'MM/DD/YYYY') between to_date(#{atStart}, 'YYYY-MM-DD') and to_date(#{atEnd}, 'YYYY-MM-DD')
@@ -439,9 +443,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 , emp_no
 			 , att_date
 			 , arrive_time
-			 , leave_time
-			 , stepout_time
-			 , outwork_time
+			 , nvl(leave_time, '-') "leave_time"
+			 , nvl(stepout_time, '-') "stepout_time"
+			 , nvl(outwork_time, '-') "outwork_time"
 			 , att_status
 		  from attendance
 		 where emp_no = #{empNo}
@@ -457,9 +461,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 , team_name
 			 , att_date
 			 , arrive_time
-			 , leave_time
-			 , stepout_time
-			 , outwork_time
+			 , nvl(leave_time, '-') "leave_time"
+			 , nvl(stepout_time, '-') "stepout_time"
+			 , nvl(outwork_time, '-') "outwork_time"
 			 , att_status
 		  from attendance
 		  join employee using(emp_no)
@@ -477,9 +481,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 , team_name
 			 , att_date
 			 , arrive_time
-			 , leave_time
-			 , stepout_time
-			 , outwork_time
+			 , nvl(leave_time, '-') "leave_time"
+			 , nvl(stepout_time, '-') "stepout_time"
+			 , nvl(outwork_time, '-') "outwork_time"
 			 , att_status
 		  from attendance
 		  join employee using(emp_no)
@@ -490,6 +494,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 order
 		 	by att_no desc
 	</select>
+	
+	<update id="updateVcDelete">
+		update vacation_apply
+		   set apply_yn = 'N'
+		 where vc_applyno = #{vcno}
+	</update>
 	
 
 	
