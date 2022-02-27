@@ -73,15 +73,15 @@
    }
 
    #write{
-       width: 700px;
-       height: 80px;
+       width: 790px;
+       height: 90px;
        border-radius: 2mm;
        border:1px solid rgb(190, 190, 190);
-       margin-left:100px;
+       margin: 10px;
    }
 
    #file{
-       margin-left: 100px;
+       margin-left: 130px;
        margin-top: 5px;
        font-size: 13px;
    }
@@ -170,6 +170,12 @@
        width: 70px;
    }
 
+   #replyButton{
+       width: 70px;
+       height: 40px;
+       border-radius: 2mm;
+       background-color: rgb(184, 181, 181);
+   }
    ::placeholder{
        font-size: 13px;
    }
@@ -297,14 +303,12 @@
         <div id="newsfeed">
            <!--게시물 작성-->
            <div id="feedwrite">
-                <div class="profile">
-                    <br>사진
-                </div>
                  <form id="ttt" action="ninsert.pr" method="post" enctype="multipart/form-data">
 				   <input type="hidden" name="prNo" value="${list.get(0).prNo}">
 				   <input type="hidden" name="empNo" value="${ loginUser.empNo }">
 				   <input id="write" name="nfContent" type="text" placeholder="&emsp;내용을 입력해주세요">
           		   <input id="upfile" type="file" name="upfile">
+                    <br>
            		   <button type="submit" id="writeok"  style="background-color: rgb(187, 159, 202);">등록</button>
 	  			 </form>
 		    </div>
@@ -404,17 +408,17 @@
 	                <div class="reply" style="font-size: 13px;">
 	                    <div class="replylist">
                             <table id="replyArea">
-                              <thead>                                
+                              <thead style="background-color:rgb(187, 159, 202)">                                 
                               	<tr>         	 
                                     <td colspan="3">
                               		  <textarea id="replyContent" type="text" name="reply" cols="80" rows="3" style="resize:none; margin:10px; border-radius: 2mm;"></textarea>                            	
                                     </td>
                                     <td>
-                                        <button id="replyok" onclick="addReply(${n.nfNo});"><b>등록</b></button>  
+                                        <button id="replyButton" onclick="addReply(${n.nfNo});"><b>등록</b></button>  
                                     </td>
                                 </tr>
                               </thead>
-                              <tbody>
+                              <tbody style="background-color:rgb(187, 159, 202)">
                               </tbody>
                             </table>
 	                    </div>
@@ -469,12 +473,12 @@
               for(let i in list){
                  value += "<tr>"
                        +   "<td>"+ list[i].empName + "</td>"
-                       +   "<td>"+ list[i].replyContent + "</td>"
+                       +   "<td colspan='2'>" + list[i].replyContent + "</td>"
                        +   "<td>"+ list[i].createDate + "</td>"
                        + "</tr>"
               }
               
-              $("#replyArea tbody").html(no);
+              $("#replyArea tbody").html(value);
               
            },error:function(){
               console.log("댓글리스트조회용 ajax 통신실패");
