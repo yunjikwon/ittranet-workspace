@@ -15,7 +15,7 @@
         font-size: 14px;
         height: 650px;
     }
-    #rMsgTable tbody tr:hover{ opacity: 50%;}
+    #sMsgTable tbody tr:hover{ opacity: 50%;}
     .mContent:hover{cursor: pointer;} 
 	.aTag, .aTag:hover{
 		text-decoration: none;
@@ -97,14 +97,14 @@
                 <div class="mainOuter">
                     <br>
                     <span style="margin: 10px;">
-                        <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="list.ms">받은 쪽지함</a></h2>
+                        <h2 style="margin-left:50px; font-weight: 900;"><a class="aTag" href="slist.ms">보낸 쪽지함</a></h2>
                     </span>
                     
                     <div class="messageOuter" align="center">
                         <button id="addBtn" class="btnStyle" style="float:right; margin-right:5px;"><a class="aTag" href="">쪽지작성</a></button>
                         <button id="addBtn" class="btnStyle" style="float:right"><a class="aTag" href="">삭제</a></button>
                         <br clear="both"><br>
-                        <table id="rMsgTable" align="center">
+                        <table id="sMsgTable" align="center">
                             <thead>
                                 <tr align="center"  style=" background-color: rgb(181, 211, 236);">
                                     <th width="50">
@@ -118,8 +118,8 @@
                                             <i class="fas fa-regular fa-star"></i>
                                         </button>
                                     </th>
-                                    <th width="100">발신인</th>
-                                    <th width="150">수신날짜</th>
+                                    <th width="100">수신인</th>
+                                    <th width="150">발신날짜</th>
                                     <th width="400">내용</th>
                                     <th width="150">읽은날짜</th>
                                 </tr>
@@ -143,7 +143,7 @@
                                         <td  class="mContent" max-width="350px">
                                         	${m.msgContent}
                                         	<input type="hidden" class="sNo" value="${m.sendMsgNo }">
-                                        	<input type="hidden" class="rNo" value="${m.receiveMsgNo }">
+                                        	<input type="hidden" class="rNo" value="${m.receiverNo }">
                                         </td>
                                         <td>${m.readDate}</td>
                                     </tr>
@@ -211,11 +211,11 @@
                            	});
 							
                             function selectMsg(rMsgNo, sMsgNo){
-                            	let receiverNo = '${loginUser.empNo}'
+                            	let senderNo = '${loginUser.empNo}'
                             	$.ajax({
-                            		url:"selectRMsg.ms",
+                            		url:"selectSMsg.ms",
                             		data:{
-                            			receiverNo:receiverNo,
+                            			senderNo:senderNo,
                             			sendMsgNo:sMsgNo,
                             			receiveMsgNo:rMsgNo
                             		},success:function(msg){

@@ -4,13 +4,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!--FONT-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-    .middle{
-        width:800px;
-        height:800px;
+<style>   .emplManage {
+    	color:black;
     }
+    .buttonbar{
+        float:right;
+        margin-right:10px;
+        height:100px;
+    }
+    table{
+        text-align:center;
+        width:800px;
+    }
+    #pagingArea{
+    	margin-left:500px;
+    }
+    #hi{
+		font-family: 'Anton', sans-serif;
+		font-weight: bold;
+		text-shadow: 1px 1px 1px black;
+		font-size:60px;
+		text-align: center;
+		font-weight: bold;
+		color: rgb(147, 205, 207);
+    }
+
     #searchbar{
         width:300px;
     }
@@ -43,69 +67,116 @@
                     <a href="#">사원관리</a>
                 </li>
                 <div id="border">
-		               <li class="menu1">
-		                  <a href="addEmpForm.me">사원 추가</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="empSetForm.me">가입 승인</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="empSetForm.me">직위/직무 관리</a>
-		               </li>
-		               <li class="menu1" style="background:rgb(147, 205, 207);">
-		                  <a href="delEmpForm.me"  style="color:white;">사원 계정 삭제</a>
-		               </li>
+		           <li class="menu1">
+	                  <a href="addEmpForm.me">사원 초대</a>
+	               </li>
+	               <li class="menu1" style="background:rgb(147, 205, 207);">
+	                  <a href="delEmpForm.me" style="color:white;">사원 계정 삭제</a>
+	               </li>
+	               <li class="menu1">
+	                  <a href="appEmpForm.me">가입 승인/반려</a>
+	               </li>
+	               <li class="menu1">
+	                  <a href="setEmpForm.me">직무/직위 관리</a>
+	               </li>
             	</div>
             </ul>
          	</div>
          	
-         	
          	<div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif; background:whitesmoke;">
 			  	<br><br>
-			  	
-        	    <p class="anton" style="font-style:italic;" id="hi">Envite Employee</p>
-        	    
-        	    <div class="input-group mb-3" id="searchbar">
-		            <input class="form-control mr-sm-2" type="text" placeholder="이름을 입력하세요" style="width:10px">
-		            <button class="btn btn-success" type="submit">검색</button>
-		        </div>
-		        
+        	    <p class="anton" style="font-style:italic;" id="hi">Delete Employee</p>
+		        <br><br><br>
+ 
 		        <div class="buttonbar">
-            <button type="button" class="btn btn-danger">계정삭제</button>
-        </div>
+		            <button type="button" class="btn btn-danger">삭제</button>
+		        </div>
 
-        <br><br>
-        <div class="table table-hover" align="center">
-            <table>
-                <tr>
-                    <th width="50px"><input type="checkbox"></th>
-                    <th width="100px">이름</th>
-                    <th width="100px">아이디</th>
-                    <th width="250px">이메일</th>
-                    <th width="150px">직위</th>
-                    <th width="150px">직무</th>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>이트라</td>
-                    <td>ittranet</td>
-                    <td>ittranet@gmail.com</td>
-                    <td>사원</td>
-                    <td>총무</td>
-                </tr>
-            </table>
-
-		페이징바 자리
-        </div>
-		
-		</div>
-        	    
+		        <br><br><br>
+		        <div align="center">
+		            <table class="table table-striped table-hover" id="table">
+		            	<thead>
+			            	<tr>
+			                    <th width="50px"><input type="checkbox" id="allCheck"></th>
+			                    <th width="100px">이름</th>
+			                    <th width="100px">아이디</th>
+			                    <th width="250px">번호</th>
+			                    <th width="250px">이메일</th>
+			                    <th width="150px">부서</th>
+			                    <th width="150px">팀</th>
+			                    <th width="150px">직급</th>
+			                </tr>
+		            	</thead>
+		                <tbody>
+		                	<c:forEach var="e" items="${ list }">
+		                		<input type="hidden" value="${ e.empNo }">
+				                <tr>
+				                    <td><input type="checkbox"></td>
+				                    <td>${ e.empName }</td>
+				                    <td>${ e.empId }</td>
+				                    <td>${ e.phone }</td>
+				                    <td>${ e.email }</td>
+				                    <td>${ e.deptName }</td>
+				                    <td>${ e.teamName }</td>
+				                    <td>${ e.jobName }</td>
+				                </tr>
+			                </c:forEach>
+		                </tbody>
+		            </table>
+				</div>
+				<br><br>
+				
+        	    <div id="pagingArea">
+                <ul class="pagination">
+                	
+                	<c:choose>
+                		<c:when test="${ pi.currentPage eq 1 }">
+                    		<li class="page-item disabled"><a class="page-link" href="#" style="display:none">◀</a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="delEmpForm.me?cpage=${ pi.currentPage-1 }" style="color:rgb(147, 205, 207);">◀</a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                    
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+	                    <c:choose>
+	                    	<c:when test="${ p eq pi.currentPage }">
+	                    		<li class="page-item"><a class="page-link" href="delEmpForm.me?cpage=${ p }" style="background:rgb(147, 205, 207); color:white;">${ p }</a></li>
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<li class="page-item"><a class="page-link" href="delEmpForm.me?cpage=${ p }" style="color:rgb(147, 205, 207);">${ p }</a></li>
+	                    	</c:otherwise>
+	                    </c:choose>
+                    </c:forEach>
+                    
+                    <c:choose>
+                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+                    		<li class="page-item disabled"><a class="page-link" href="#" style="display:none">▶</a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="page-link" href="delEmpForm.me?cpage=${ pi.currentPage+1 }" style="color:rgb(147, 205, 207);">▶</a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                    
+                </ul>
+            	</div>
 			        
         	  </div> <%-- mainOuter --%>         
 
         </div><%-- innerback --%>
 
     </div><%-- back --%>
+    
+    <script>
+		$("#allCheck").click(function(){
+	        if($(this).is(":checked")){
+	            $(":checkbox", $("#table")).prop("checked", true);
+	        }else {
+	            $(":checkbox", $("#table")).prop("checked", false);
+	        }
+	    });	
+	</script>
 
 </body>
 </html>

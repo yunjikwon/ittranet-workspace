@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,8 +59,9 @@
             <span style="font-size: 16px;">${ loginUser.empName }</span> <span style="font-size: 16px;">님 환영합니다</span>
             <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
             <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>
-            <!--관리자에게만 보여지도록-->
-            <button class="header-btn" onclick="location.href=''">페이지이동</button>            
+           	<c:if test="${ loginUser.empNo eq '1' }">
+            	<button class="header-btn" onclick="location.href='goUserMain.me'">유저페이지</button>
+            </c:if>        
         </div>
 
 </body>

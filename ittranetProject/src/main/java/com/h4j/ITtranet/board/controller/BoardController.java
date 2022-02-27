@@ -131,7 +131,7 @@ public class BoardController {
 	
 	// 게시글 수정 페이지로 이동
 	@RequestMapping("updateForm.bo")
-	public String updateForm(int bno, String admin, Model model) {
+	public String updateForm(int bno, @RequestParam(value="admin", defaultValue="N")String admin, Model model) {
 		model.addAttribute("b", bService.SelectBoard(bno));
 		model.addAttribute("atList", bService.selectAttachment(bno));
 		if(admin.equals("Y")) {
