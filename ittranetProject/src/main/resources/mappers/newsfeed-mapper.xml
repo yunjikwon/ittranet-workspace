@@ -63,5 +63,32 @@
 	where p.pr_no = #{prNo}
  </select>
  
+ <insert id="insertFeed">
+ 		insert
+		  into NEWSFEED
+		  (
+		    nf_no
+		  , nf_content
+		  , nf_date
+		  , pr_no
+		  , emp_no
+		  )
+		  values
+		  (
+		    seq_nfno.nextval
+		  , #{nfContent}
+		  , sysdate
+		  , #{prNo}
+		  , #{empNo}
+		  )
+ </insert>
+
+ 
+ <update id="deleteFeed">
+		 update
+		       newsfeed
+		   set status = 'N'
+		 where nf_no = #{nfNo}
+ </update>
  
  </mapper>

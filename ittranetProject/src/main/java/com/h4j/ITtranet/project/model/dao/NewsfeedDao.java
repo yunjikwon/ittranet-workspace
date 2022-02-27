@@ -22,4 +22,13 @@ public class NewsfeedDao {
 		return (ArrayList)sqlSession.selectList("newsfeedMapper.prNewsfeed", prNo);
 	}
 
+	public int insertFeed(SqlSessionTemplate sqlSession, Newsfeed n) {
+		return sqlSession.insert("newsfeedMapper.insertFeed", n);
+	}
+
+	public int deleteFeed(SqlSessionTemplate sqlSession, int nfNo) {
+		return sqlSession.update("newsfeedMapper.deleteFeed", nfNo);
+	}
+
+
 }

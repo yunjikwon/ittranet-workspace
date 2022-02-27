@@ -14,4 +14,6 @@ import lombok.ToString;
 public class NoticeHeader {
 	private int noticeNo;
 	private String noticeHeader;
+	private int headerNo;
+	private String headerTitle;
 }

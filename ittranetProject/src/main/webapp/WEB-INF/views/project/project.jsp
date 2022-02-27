@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.ArrayList, com.h4j.ITtranet.project.model.vo.Newsfeed" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-	ArrayList<Newsfeed> list = (ArrayList<Newsfeed>)request.getAttribute("list");
-%>
-    
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +8,7 @@
 <title>Insert title here</title>
 <style>
     
+   
     .wrap{
        padding: 30px;
     }
@@ -73,7 +70,7 @@
        background-color: rgba(211, 196, 220, 0.47);
    }
 
-   .write{
+   #write{
        width: 700px;
        height: 80px;
        border-radius: 2mm;
@@ -122,6 +119,25 @@
        margin-left: 105px;
        font-size: 13px;
    }
+   .buttons{
+       float: right;
+       margin: 25px;
+       font-size: 13px;
+   }
+
+   .btn1{
+       background-color: rgb(165, 137, 177);
+       border-radius: 1mm;
+       width: 50px;
+       height: 30px;
+   }
+
+   .btn2{
+       background-color: rgb(160, 156, 163);  
+       border-radius: 1mm;   
+       width: 50px;
+       height: 30px;
+    }
    .reply{
        background-color: rgb(227, 210, 235);
        border-radius: 3mm;
@@ -179,7 +195,7 @@
 		                  <a href="#">프로젝트 만들기</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">내 업무</a>
+		                  <a href="todo.pr">내 업무</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="news.pr">뉴스피드</a>
@@ -250,11 +266,40 @@
                 <div class="profile">
                     <br>사진
                 </div>
-                <input class="write" type="text" name="write" placeholder="&emsp;내용을 입력해주세요">
-                <input id="file" type="file">
-                <button id="writeok" name="" style="background-color: rgb(187, 159, 202);">등록</button>
-            </div>
-            
+	                <input id="write" name="feedwrite" type="text" name="write" placeholder="&emsp;내용을 입력해주세요">
+	                <input id="file" type="file" name="file">
+	                <button id="writeok"  style="background-color: rgb(187, 159, 202);">등록</button>
+	            </div>
+        
+        <script>        
+        
+       	// 게시글 작성용 ajax		
+       	$("#writeok").click(function(){
+ 	  		if($("#write").val().trim().length != 0){	// 유효한 게시글 작성시 insertWrite요청
+ 	  			$.ajax({
+ 	  				if(list.size()!=0){
+	 	  				url:"ninsert.pr",
+	 	  				data:{
+	 	  					prNo : ${list.get(0).prNo},
+	 	  					empNo : ${ loginUser.empNo },
+	 	  					nfContent : $("#write").val(),
+	 	  					// 파일을 어떻게 넘길 것인가..
+	 	  				}, success: function(status){
+	 	  					 console.log("뉴스피드 게시글 작성용 ajax통신 성공");
+	 	  					 console.log(status);
+	 	  					location.reload();
+	 	  					
+	 	  				}, error:function(){
+	 	  					console.log("뉴스피드 게시글 작성용 ajax통신 실패");
+	 	  				}
+	 	  			})			
+	 	  		}else{
+	 	  			alertify.alert("게시글 작성 후 등록 요청 해주세요 !");
+	 	  		}
+ 	  		}
+       	});	       	
+        </script>
+           
             
             <!-- 게시물 -->
             <c:forEach var="n" items="${ list }">
@@ -266,9 +311,35 @@
 	                    <b>${n.empName } &emsp;&emsp;&emsp;</b>
 	                    <h style="font-size: 12px; color: dimgray;">${n.nfDate } &emsp; 13:01</h>
 	                </div>
+	                	<c:if test="${ loginUser.empNo eq n.empNo }">
+                            <div class="buttons">
+                                <!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
+                                <button class="btn1" onclick="postFormSubmit(1);">수정</button>
+                                <button class="btn2" onclick="postFormSubmit(2);">삭제</button>
+                            </div>
+                            
+                            <form id="postForm" action="" method="post">
+                                <input type="hidden" name="nfNo" value="${ n.nfNo }">
+                            </form>
+                            
+                            <script>
+                                function postFormSubmit(num){
+                                    if(num == 1){ // 수정하기
+                                        $("#postForm").attr("action", "nupdateForm.pr").submit();
+                                    }else{ // 삭제하기
+                                        $("#postForm").attr("action", "ndelete.pr").submit();
+                                    }
+                                }
+                            </script>
+	                </c:if>
+
 	                <div class="feedcontent">
 	                    <p>${n.nfContent }</p>
 	                </div>
+	                
+		
+	            
+    
 	                <!--댓글-->
 	                <div class="reply" style="font-size: 13px;">
 	                    <div class="replylist">
@@ -276,9 +347,36 @@
 	                        <span class="replycontents">안녕하세요 !</span>
 	                        <span class="date">2022-01-10&emsp;11:48</span>
 	                    </div>
-	                    <input class="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
-	                    <button class="replyok" ><b>등록</b></button>
+	                    
+	                    <!-- 댓글 작성 -->
+	                    <input id="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
+	                    <button id="replyok" onclick="addReply"><b>등록</b></button>
 	                </div>
+	                
+	                <script>
+	            	
+	        		if($("#replycontent").val().trim().length != 0){ // 유효한 댓글 작성시 => insert ajax요청
+	        			$.ajax({
+	        				url:"rinsert.pr",
+	        				data:{
+	     	  					prNo : ${list.get(0).prNo},
+	     	  					empNo : ${ loginUser.empNo },
+	     	  					nfContent : $("#write").val()
+	        				},success:function(status){
+	        					if(status == "success"){
+	        						selectReplyList();
+	        						$("#content").val("");
+	        					}
+	        				},error:function(){
+	        					console.log("댓글작성용 ajax 통신실패");
+	        				}
+	        			})
+	        		}else{
+	        			alertify.alert("댓글 작성후 등록 요청해주세요!");
+	        		}
+	        	
+	        	}
+	                </script>
 	            </div>
             </c:forEach>
         </div>
@@ -287,5 +385,7 @@
     </div>
     </div>
     </div>
+    
+
 </body>
 </html>

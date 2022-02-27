@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace="todoMapper">
+
+<resultMap type="Todo" id="todoList">
+	<result column="todo_no" property="todoNo" />
+	<result column="pr_no" property="prNo" />
+	<result column="emp_no" property="empNo" />
+	<result column="todo_title" property="todoTitle" />
+	<result column="todo_startdate" property="todoStartdate" />
+	<result column="todo_enddate" property="todoEnddate" />
+	<result column="todo_content" property="todoContent" />
+	<result column="status" property="status" />
+	<result column="pr_title" property="prTitle"  />
+</resultMap>
+
+<resultMap type="Todo" id="todoCount">
+	<result column="pr_no" property="prNo"  />
+	<result column="emp_no" property="empNo"  />
+	<result column="pr_title" property="prTitle"  />
+	<result column="status" property="status"  />
+	<result column="W" property="wait"  />
+	<result column="Y" property="yes"  />
+	<result column="O" property="ok"  />
+	<result column="L" property="late"  />
+	<result column="N" property="no"  />
+</resultMap>
+
+<select id="selectTodo" resultMap="todoList">
+<![CDATA[
+ 	select
+	    todo_no
+	   ,t.pr_no
+	   ,t.emp_no
+	   ,todo_title
+	   ,todo_startdate
+	   ,todo_enddate
+	   ,todo_content
+	   ,t.status
+       ,pr_title
+	from todo t 
+    join project p on p.pr_no = t.pr_no  
+	where t.emp_no = #{empNo}
+	and pr_enddate > to_char(sysdate, 'mm/dd/yyyy')
+]]> 	
+</select>
+
+<select id="countTodo" resultMap="todoCount">
+<![CDATA[
+	select
+	        p.pr_no
+	       ,pr_title
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'W') as W
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'Y') as Y
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'O') as O
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'L') as L
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'N') as N
+	   from project p
+	   join prmember pr on pr.pr_no = p.pr_no
+	   where pr.emp_no = #{empNo}
+	   and pr_enddate > to_char(sysdate, 'mm/dd/yyyy')
+]]> 
+</select>
+</mapper>

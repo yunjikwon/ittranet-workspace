@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <style>
 	body {
 		background-image: url('resources/images/backImg.jpg');
@@ -15,20 +16,20 @@
         height: 90vh;
 	}
 </style>
-<!-- sweetalert2 -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
 	
-	
-	<script>
-		Swal.fire({
-			  icon: 'error',
-			  title:'Error!',
-			  text: 'Something went wrong!',
-			  footer: '<a href="#" onClick="history.back()">Back Step</a>'
+	<c:if test="${ not empty errorMsg }">
+		<script>
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops!',
+				text: '${ errorMsg }',
+				footer: '<a href="javascript:window.history.back();">뒤로가기</a>'
 			})
-	</script>
+		</script>
+		<c:remove var="errorMsg" />
+	</c:if>
 	
 </body>
 </html>

@@ -21,5 +21,6 @@ public class Calendar {
 	private String calEnd;
 	private String calContent;
 	private String calColor;
+	private String allDay;
 
 }

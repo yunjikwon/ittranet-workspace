@@ -10,6 +10,7 @@ import com.h4j.ITtranet.attendance.model.dao.AttendanceDao;
 import com.h4j.ITtranet.attendance.model.vo.Attendance;
 import com.h4j.ITtranet.attendance.model.vo.Vacation;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
+import com.h4j.ITtranet.company.model.vo.Company;
 
 @Service
 public class AttendanceServiceImpl implements AttendanceService {
@@ -62,8 +63,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public ArrayList<Attendance> selectAdminYear(String date) {
-		return atDao.selectAdminYear(sqlSession, date);
+	public ArrayList<Attendance> selectAdminYear() {
+		return atDao.selectAdminYear(sqlSession);
 	}
 	
 	@Override
@@ -101,6 +102,77 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return atDao.ajaxSelectAttendance(sqlSession, empNo);
 	}
 
+	@Override
+	public Vacation selectRestVacation(String empNo) {
+		return atDao.selectRestVacation(sqlSession, empNo);
+	}
+
+	@Override
+	public int insertVacation(Vacation vc) {
+		return atDao.insertVacation(sqlSession, vc);
+	}
+
+	@Override
+	public int updateVacationSum(String empNo) {
+		return atDao.updateVacationSum(sqlSession, empNo);
+	}
+
+	@Override
+	public Vacation selectVacationDetail(int vcno) {
+		return atDao.selectVacationDetail(sqlSession, vcno);
+	}
+
+	@Override
+	public int updateVcRefuse(int vcno) {
+		return atDao.updateVcRefuse(sqlSession, vcno);
+	}
+
+	@Override
+	public int updateVcApproval(int vcno) {
+		return atDao.updateVcApproval(sqlSession, vcno);
+	}
+
+	@Override
+	public ArrayList<Attendance> selectTeam() {
+		return atDao.selectTeam(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Attendance> stSearchList(Attendance at) {
+		return atDao.stSearchList(sqlSession, at);
+	}
+
+	@Override
+	public Attendance selectMainAttendance(String empNo) {
+		return atDao.selectMainAttendance(sqlSession, empNo);
+	}
+
+	@Override
+	public Vacation selectMainVacation(String empNo) {
+		return atDao.selectMainVacation(sqlSession, empNo);
+	}
+
+	@Override
+	public ArrayList<Attendance> atSearchList(Attendance at) {
+		return atDao.atSearchList(sqlSession, at);
+	}
+
+	@Override
+	public ArrayList<Attendance> ajaxAtList(int empNo) {
+		return atDao.ajaxAtList(sqlSession, empNo);
+	}
+
+	@Override
+	public ArrayList<Attendance> ajaxAdminAtList() {
+		return atDao.ajaxAdminAtList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Attendance> ajaxAdminAtSearchList(Attendance at) {
+		return atDao.ajaxAdminAtSearchList(sqlSession, at);
+	}
+
+	
 
 
 	

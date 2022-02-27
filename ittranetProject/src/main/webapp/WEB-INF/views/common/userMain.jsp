@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,7 @@
 	}
     .profile-area{
         width: 400px;
-        height: 100%;
+        height: 100vh;
         background: rgb(142,207,246);
         background: linear-gradient(157deg, rgba(142,207,246,1) 0%
         , rgba(134,189,251,1) 15%, rgba(169,160,255,1) 52%, rgba(237,198,241,1) 87%
@@ -34,7 +35,7 @@
     /*프로필 스타일*/
     .profile-box{
         width: 300px;
-        height: 300px;
+        height: 350px;
         margin: auto;
         background: lightgray;
         border-radius: 20px;
@@ -64,11 +65,31 @@
         height: 120px;
         width: 149px;
         font-size: 14px;
+        border: none;
+        background: none;
+    }
+    .commute-btn i{
+    	font-size: 45px;
     }
     .content-area{
         width: 1500px;
         float: right;
         padding: 0px 100px;
+    }
+    #cdiv1{
+    	height: 40%;
+    }
+    #cdiv2{
+    	height: 20%;
+    }
+    #cdiv3{
+    	height: 30%;
+    }
+    .now span{
+    	width: 50px;
+    	height: 20px;
+    	float: left;
+    	border: solid 1px red;
     }
     /*게시판 연결*/
     .contentbox{
@@ -111,6 +132,12 @@
     	cursor:pointer;
     	text-decoration:none;
     }
+    /*프로필 사진 영역*/
+    .profileZone {
+    	width:150px;
+    	height:150px;
+    	border-radius:50%;	
+    }
 </style>
 </head>
 <body>
@@ -127,51 +154,177 @@
             </div>
             <div class="profile-box">
                 <div class="photo" align="center">
-                    <!--case1:프로필사진 미등록 시-->
-                    <span class="fa-stack fa-3x"> 
-                        <i class="fas fa-circle fa-stack-2x" style="color:white"></i>
-                        <i class="far fa-user fa-stack-1x"></i>  
-                    </span>
-                    <!--case2:프로필사진 등록 시 등록된 이미지-->
-                    <!--
-                        <img src=""/>
-                    -->
+                	<%-- 여기 복붙하면 됨!!! (style 가서 .profileZone 스타일 => 크기는 각자 화면에 맞춰서) --%>
+                   	<c:choose>
+                		<c:when test="${ loginUser.profile eq 'NULL'}">
+		                	<img class="profileZone" src="resources/images/userprofile.png">
+                		</c:when>
+                		<c:otherwise>
+		                	<img class="profileZone" src="${ loginUser.profile }">
+                		</c:otherwise>
+                	</c:choose>
+                	<%--여기까지 프로필 사진 동그라미 영역 (마이페이지에서 사진 등록) --%>
                 </div>
-                <div class="profile">
-                    <!--사용자 이름, 부서명 연결-->
-                    <p style="font-weight: 900;">김땡땡 사원</p>
-                    개발팀
-                </div>
-                <div align="center">
-                    <button class="header-btn" onclick="location.href=''">마이페이지</button>
-                    <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>   
-                </div>
+                <br><br><br>
+                <c:choose>
+                	<c:when test="${ loginUser.empNo eq '1' }">
+                		<div class="adminProfile">
+                			<p style="font-weight: 900; text-align:center;">관리자님 환영합니다</p>
+                			<button class="header-btn" onclick="location.href='goAdminMain.me'" style="margin-left:100px;">관리자 페이지</button>
+                		</div>
+                	</c:when>
+                	<c:otherwise>
+	                	<div class="profile">
+		                    <!--사용자 이름, 부서명 연결-->
+		                    <p style="font-weight: 900;">${ loginUser.empName } ${ loginUser.jobName }</p>        
+		                    <c:choose>
+		                    	<c:when test="${ loginUser.teamCode eq 'T0' }">
+		                    		<p style="font-weight: 900;">${ loginUser.deptName }</p>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<p style="font-weight: 900;">${ loginUser.deptName } ${ loginUser.teamName }</p>
+		                    	</c:otherwise>
+		                    </c:choose>
+		                    <div align="center">
+			                    <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
+			                    <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>   
+                			</div>
+	                	</div>
+                	</c:otherwise>
+                </c:choose>
             </div>
             <div class="commute-box">
-                <div style="height: 50px; font-size: 18px; margin: 20px; padding-top: 20px;">
+                <div id="now" style="height: 50px; font-size: 18px; margin: 20px; padding-top: 20px;">
                     <!--오늘날짜-->
-                    xxxx년 xx월 xx일 <br>
+					<span id="nowYear"></span><span>년</span>
+                    <span id="nowMonth"></span><span>월</span>
+					<span id="nowDay"></span><span>일</span>
                     <!--현재시간-->
-                    12:00:00
-                </div>
-                <div class="commute-btn" style="border-right: 0.1px solid rgb(156, 156, 156);">
-                    <i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(163, 100, 223);"></i>
                     <br>
-                    <p>
-                        출근하기 <br>
-                        00:00:00
-                    </p>   
+                    <span id="nowTimes"></span>
                 </div>
-                <div class="commute-btn">
-                    <i class="far fa-arrow-alt-circle-right fa-4x" style="color: rgb(163, 100, 223);"></i>
+                <button id="arr-btn" class="commute-btn" onclick="insertArrive();" style="border-right: 0.1px solid rgb(156, 156, 156);">
+                	<div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(163, 100, 223);"></i></div>
                     <br>
-                    <p>
-                        퇴근하기 <br>
-                        00:00:00
-                    </p>   
-                </div>
+                    <div id="cdiv2">
+                        출근하기
+                    </div>
+                    <div id="cdiv3"><span id="arr-time"></span></div>
+                </button>
+                <button id="lev-btn" class="commute-btn" onclick="updateLeave();" disabled>
+                    <div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x" style="color: gray;"></i></div>
+                    <br>
+                    <div id="cdiv2">
+                        퇴근하기 
+                    </div>
+                    <div id="cdiv3"><span id="lev-time"></span></div>
+                </button>
             </div>
         </div>
+        <!-- 출퇴근기록용 스크립트 -->
+        <script>
+			$(function(){
+				selectAttStatus();
+				setInterval(selectAttStatus, 1000);
+				
+		        clock();
+		        setInterval(clock, 500);
+			})
+			
+			function insertArrive(){ // 출근기록용
+				$.ajax({
+					url: "arrive.at",
+					data:{
+						empNo: '${loginUser.empNo}'
+					}, success:function(arstatus){
+						if(arstatus == "success"){
+							console.log("출근 통신 성공")
+						}
+					}, error:function(){
+						console.log("출근 통신 실패")
+					}
+				})
+			}
+			
+			function updateLeave(){ // 퇴근기록용
+				$.ajax({
+					url: "leave.at",
+					data:{
+						empNo: '${loginUser.empNo}'
+					}, success:function(arstatus){
+						if(arstatus == "success"){
+							console.log("퇴근 통신 성공")
+						}
+					}, error:function(){
+						console.log("퇴근 통신 실패")
+					}
+				})
+			}
+			
+			function selectAttStatus(){ // 출퇴근기록 조회용
+				$.ajax({
+					url:"list.at",
+					type: "post",
+					data:{
+						empNo: '${loginUser.empNo}'
+					}, success: function(at){
+						let arr = "";
+						let lev = "";
+						console.log(at);
+						if(at.arriveTime != null){
+							
+							arr = at.arriveTime;
+							
+						}if(at.leaveTime != null){
+							
+							lev = at.leaveTime;
+							
+						}		  
+						$("#arr-time").html(arr);
+						$("#lev-time").html(lev);
+					}, error:function(){
+						console.log("출퇴근리스트 통신실패");
+					}
+				})
+			}
+			
+		    function clock() { // 날짜 및 시간 조회
+				const nowTime = new Date();
+				const hour = nowTime.getHours();
+				const min = nowTime.getMinutes();
+				const sec = nowTime.getSeconds();
+				
+				
+				let month = nowTime.getMonth();
+				let day =  nowTime.getDate();
+				let year = nowTime.getFullYear();
+				let value = hour + ":" + addzero(min) + ":" + addzero(sec);
+				
+				$("#nowMonth").html(month);
+				$("#nowDay").html(day);
+				$("#nowYear").html(year);
+				$("#nowTimes").html(value);
+			}
+		        // 1자리수의 숫자인 경우 앞에 0을 붙이도록
+			function addzero(num) {
+				if(num < 10) { num = "0" + num; }
+		 		return num;
+			}
+		    
+		    // 출퇴근버튼 클릭 효과
+			$('#arr-btn').click(function() {
+        	    $('#arr-btn').attr("disabled","disabled");
+        	    $('#arr-btn i').css("color","gray"); 
+        	    $('#lev-btn').removeAttr("disabled");
+        	    $('#lev-btn i').css("color","rgb(163, 100, 223)");
+    	    })
+    	    $('#lev-btn').click(function() {
+        	    $('#lev-btn').attr("disabled","disabled");
+        	    $('#lev-btn i').css("color","gray");
+        	    $('#arr-btn').removeAttr("disabled");
+        	    $('#arr-btn i').css("color","rgb(163, 100, 223)");
+    	    })   
+		</script>
 
         <!--각 메뉴 연결할 영역-->
         <div class="content-area">
@@ -280,7 +433,7 @@
             </div>
         </div>
     </div>
-    <br clear="both">
+    <!-- <br clear="both"> -->
     <!-- 푸터바 -->
     <jsp:include page="footer.jsp" />
 </body>

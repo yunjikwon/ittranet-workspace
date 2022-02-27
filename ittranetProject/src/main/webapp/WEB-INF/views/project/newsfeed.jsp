@@ -15,7 +15,6 @@
    #list{
        width: 1000px;
        height: 200px;
-       border: 1px solid;
    }
    .projectbox{
        border:1px solid rgb(190, 190, 190); 
@@ -139,7 +138,7 @@
 		                  <a href="#">프로젝트 만들기</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">내 업무</a>
+		                  <a href="todo.pr">내 업무</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="news.pr">뉴스피드</a>
@@ -155,12 +154,14 @@
         
         <!--프로젝트 리스트-->
         <div id="list">
+           <!--
             <div class="projectbox">
                 <div class="projectlogo">
                     <img class="logoimg" src="resources/images/projectlogo/list.png"  />
                 </div>
                 <p class="projectname" style="font-size: 13px; text-align: center;">전체 소식</p>   
             </div>
+             -->
             <div class="projectbox">
                 <div class="projectlogo">
                     <img class="logoimg" src="resources/images/projectlogo/bookmark.png"  />
@@ -199,7 +200,8 @@
 	                   	  <img class="userProfile" src="${ n.profile }"  />
 	                   </c:otherwise>
                    </c:choose>
-
+                   
+				<!-- 게시물 작성 -->
                 <div class="projectmem">
                     <b>${ n.prTitle } &emsp; > &emsp;${ n.empName } &emsp;&emsp;&emsp;</b>
                     <h style="font-size: 12px; color: dimgray;">${ n.nfDate } &emsp; 13:01</h>
@@ -207,6 +209,7 @@
                 <div class="feedcontent">
                     <p>${ n.nfContent }</p>
                 </div>
+                
                 <!--댓글-->
                 <div class="reply">
                     <input class="replycontent" type="text" name="reply" placeholder="&emsp;댓글을 입력해주세요">
@@ -241,6 +244,8 @@
         	  document.body.appendChild(f);
         	  f.submit();
         }
+        
+ 
 
       </script>
 </body>

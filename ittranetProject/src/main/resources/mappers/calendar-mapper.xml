@@ -11,18 +11,20 @@
 		<result column="cal_end" property="calEnd"/>
 		<result column="cal_content" property="calContent"/>
 		<result column="cal_color" property="calColor"/>
+		<result column="all_day" property="allDay"/>
 	</resultMap>
 	
 	<select id="ajaxSelectCalendar" resultMap="calendarResult">
 		select
 			   cal_no
 			 , emp_no
-			 , TO_CHAR(to_date(cal_start, 'MM/DD/YYYY HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') as "cal_start"
-			 , TO_CHAR(to_date(cal_end, 'MM/DD/YYYY HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') as "cal_end"
+			 , TO_CHAR(to_date(cal_start, 'MM/DD/YYYY HH24:MI'), 'YYYY-MM-DD HH24:MI') as "cal_start"
+			 , TO_CHAR(to_date(cal_end, 'MM/DD/YYYY HH24:MI'), 'YYYY-MM-DD HH24:MI') as "cal_end"
 			 , cal_content
 			 , cal_color
+			 , all_day
 		  from calendar
-		 where emp_no = 3
+		 where emp_no = ${empNo}
 			or emp_no = 1
 	</select>
 												
@@ -34,6 +36,7 @@
 			 , TO_CHAR(to_date(cal_end, 'MM/DD/YYYY HH24:MI'), 'YYYY-MM-DD HH24:MI') as "cal_end"
 			 , cal_content
 			 , cal_color
+			 , all_day
 		  from calendar
 		 where emp_no = 1
 	</select>
@@ -48,6 +51,7 @@
 		  , cal_end
 		  , cal_content
 		  , cal_color
+		  , all_day
 		  )
 		  values
 		  (
@@ -57,7 +61,48 @@
 		  , #{calEnd}
 		  , #{calContent}
 		  , 'cadetblue'
+		  , #{allDay}
 		  )
+	</insert>
+	
+	<delete id="ajaxDeleteCalendar">
+		delete
+		  from calendar
+		 where cal_no = #{calNo}
+	</delete>
+	
+	<update id="ajaxUpdateCalendar">
+		update
+		       calendar
+		   set cal_start = #{calStart}
+		     , cal_end = #{calEnd}
+		     , cal_content = #{calContent}
+		     , all_day = #{allDay}
+		 where cal_no = #{calNo}
+	</update>
+	
+	<insert id="adminInsertCalendar">
+		insert
+			  into calendar
+			  (
+			    cal_no
+			  , emp_no
+			  , cal_start
+			  , cal_end
+			  , cal_content
+			  , cal_color
+			  , all_day
+			  )
+			  values
+			  (
+			    seq_cno.nextval
+			  , #{empNo}
+			  , #{calStart}
+			  , #{calEnd}
+			  , #{calContent}
+			  , 'royalblue'
+			  , #{allDay}
+			  )
 	</insert>
 
 </mapper>

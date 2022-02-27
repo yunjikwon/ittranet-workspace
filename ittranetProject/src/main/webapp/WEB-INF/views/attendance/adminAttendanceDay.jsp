@@ -91,25 +91,8 @@
             
             <br clear="both">
             <div style="position:relative">
-                <jsp:include page="../common/sidebar.jsp" />
-                    <div class="cont">
-		            <ul id="ac">
-		                <li class="division">
-		                    <a href="#">근태관리</a>
-		                </li>
-		                <div id="border">
-				               <li class="menu1">
-				                  <a href="#">근무 통계</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">일일근태 관리</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">휴가 관리</a>
-				               </li>
-		            	</div>
-		            </ul>
-		         </div>                 
+                <jsp:include page="adminAttendanceSidebar.jsp" />
+              
                 <div class="mainOuter">
                     <!--제목영역-->
                     <div style="width:100%; height:200px; float:right; padding:40px; font-size: 22px; font-weight: 600;">
@@ -121,8 +104,7 @@
                     <div class="content-area">
                         &lt; YYYY년 MM년 DD일 &gt;
                         <br><br>
-                        <c:if test="${ not empty list }">
-	                        <div class="vc-box">
+                        <div class="vc-box">
 	                            <select name="" id="">
 	                                <option value="">무슨팀</option>
 	                                <option value="">무슨팀</option>
@@ -133,6 +115,7 @@
 	                                <button><i class="fas fa-search"></i></button>
 	                            </div>
 	                            <br><br><br>
+                       	 		<c:if test="${ not empty list }">
 	                            <table border="1">
 	                                <thead>
 	                                    <tr>
@@ -150,8 +133,8 @@
 	                                	<c:forEach var="at" items="${ list }">
 		                                    <tr>
 			                                    <td>${ at.attDate }</td>
-			                                    <td>${ at.empNo }</td>
-			                                    <td>무슨팀</td>
+			                                    <td>${ at.empName }</td>
+			                                    <td>${ at.teamName }</td>
 			                                    <td>${ at.attStatus }</td>
 			                                    <td>${ at.arriveTime }</td>
 			                                    <td>${ at.leaveTime }</td>
@@ -188,8 +171,8 @@
 				                	</ul>
 	                            </div>
 	                            <br>
-	                        </div>
-	                     </c:if>
+	                     	</c:if>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -306,11 +306,11 @@
 				<when test="type == 'noticeTitle'">
 		 			AND notice_title LIKE '%' || #{keyword} || '%'
 				</when>
-				<when test="type == 'empName'">
-		 			AND emp_name LIKE '%' || #{keyword} || '%'
+				<when test="type == 'noticeContent'">
+		 			AND notice_content LIKE '%' || #{keyword} || '%'
 				</when>
 				<when test="type == 'noticeHeader'">
-		 			AND notice_header LIKE '%' || #{keyword} || '%'
+		 			AND header_no = #{headerNo}
 				</when>
 			</choose>
 
@@ -337,4 +337,33 @@
 		  where rnum <![CDATA[<=]]>  4
 		 order by cdate desc
 	</select>
+	
+	<!-- 말머리 추가 -->
+	<insert id="addNewHeader">
+		insert 
+		  into notice_header
+			 ( 
+			   header_no
+			 , header_title
+			 )
+		values
+			 (
+			   seq_noheader.nextval
+			 , #{headerTitle}
+			 )
+	</insert>
+	
+	<!-- 말머리 수정 -->
+	<update id="updateHeader">
+		update notice_header
+		   set header_title = #{headerTitle}
+		 where header_no = #{headerNo}
+	</update>
+	
+	<!-- 말머리 삭제 -->
+	<delete id="deleteHeader">
+		delete 
+		  from notice_header
+		 where header_no = #{headerNo}
+	</delete>
 </mapper>

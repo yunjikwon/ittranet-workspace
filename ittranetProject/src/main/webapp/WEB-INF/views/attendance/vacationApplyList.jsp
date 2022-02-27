@@ -28,15 +28,6 @@
         width: 50px;
         height: 50px;
     }
-    .app-btn{
-        width: 80px;
-        height: 30px;
-        background: rgb(211, 180, 211);
-        border: none;
-        border-radius: 5px;
-        float: right;
-        font-size: 15px;
-    }
     table{
         font-size: 15px;
         font-weight: 400;
@@ -120,7 +111,39 @@
         width: 100%;
         height: 50px;
         color: red;
+        margin-top: 20px;
+        margin-left: 15px;
     }
+    /*휴가신청폼*/
+    #vc-tb{
+        width: 650px;
+        text-align: left;
+    }
+    #vc-tb th{
+        width: 100px;
+        height: 60px;
+    }
+
+    /*휴가신청 버튼 스타일*/
+    select::-ms-expand { 
+	    display: none;
+    }
+    .app-btn{
+        float:right;
+        appearance: none;
+        width: 90px;
+        height: 40px;
+        background: rgb(211, 180, 211);
+        border: none;
+        border-radius: 5px;
+        float: right;
+        font-size: 15px;
+        padding-left: 12px;
+    }
+    .app-btn option{
+        background: #ffffff;
+    }
+
     
     /*메뉴바 픽스 스타일*/
     .attendance_mn{
@@ -137,32 +160,17 @@
             
             <br clear="both">
             <div style="position:relative">
-                <jsp:include page="../common/sidebar.jsp" />
-                    <div class="cont">
-		            <ul id="ac">
-		                <li class="division">
-		                    <a href="#">근태관리</a>
-		                </li>
-		                <div id="border">
-				               <li class="menu1">
-				                  <a href="#">내 근무</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">근무현황</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">휴가 신청</a>
-				               </li>
-		            	</div>
-		            </ul>
-		         </div>                 
+                <jsp:include page="attendanceSidebar.jsp" />
+                                    
                 <div class="mainOuter">
 
                     <!--제목영역-->
                     <div style="width:100%; height:200px; float:right; padding:40px; font-size: 22px; font-weight: 600;">
                         휴가 신청
+
                         <!--휴가신청버튼-->
                         <button id="modal_open_btn" class="app-btn" onclick="openPop();">휴가신청</button>
+                      
                         <br><br>
                         <hr>
                     </div>                   
@@ -201,7 +209,7 @@
                         <script>
                         	$(function(){
                         		$("#upVacationList>tbody>tr").click(function(){
-                        			location.href='detail.vcno?vcno=' + $(this).children(".vcno").text();
+                        			location.href='vcdetail.at?vcno=' + $(this).children(".vcno").text();
                         		})
                         	})
                         </script>
@@ -263,63 +271,81 @@
                 <div class="modal-window">
                     <div class="title">
                         <!--선택한 휴가 종류에 따라 달라지게-->
-                        <h2><b>연차 휴가</b></h2>
+                        <h2><b>휴가 신청</b></h2>
                     </div>
-                    
-                    <div class="content">
-                        <div class="input-area">시작일<input type="date"></div>
-                        <div class="input-area">종료일<input type="date"></div>
-                        <div class="input-area">
-                            시간
-                            <select name="" id="">
-                                <!--오전, 오후 옵션은 연차 신청 시에만 보여지게-->
-                                <option value="">오전</option>
-                                <option value="">오후</option>
-                                <option value="">종일</option>
-                            </select>
+                       <!--잔여휴가 0개일 시 보여질 문구-->
+                       <div id="warning">! 사용가능한 휴가가 없습니다.</div>
+                       <form action="vcinsert.at" method="post" enctype="multipart/form-data">
+                       <input type="hidden" value="${ loginUser.empNo }" name="empNo">
+                        <table id="vc-tb" align="center">
+                        	<tr>
+                        		<th><label for="vc-type">휴가종류</label></th>
+                                <td>
+                                <c:choose>
+                                	<c:when test="${ not empty rest }">
+                                    <select id="vc-type" name="vcType" class="select">    
+	                                        <option value="연차">연차 &nbsp;&nbsp;&nbsp;${ rest.restYear }</option>
+	                                        <option value="생리">생리 &nbsp;&nbsp;&nbsp;${ rest.restMonth }</option>
+	                                        <option value="병가">병가 &nbsp;&nbsp;&nbsp;${ rest.restSick }</option>
+                                    </select>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <select id="vc-type" name="vcType" class="select">    
+	                                        <option value="연차">연차 &nbsp;&nbsp;&nbsp;15</option>
+	                                        <option value="생리">생리 &nbsp;&nbsp;&nbsp;1</option>
+	                                        <option value="병가">병가 &nbsp;&nbsp;&nbsp;10</option>
+                                    </select>
+                                    </c:otherwise>
+                                </c:choose>
+                                </td>
+                        	</tr>
+                            <tr>
+                                <th><label for="start-date">시작일</label></th>
+                                <td><input type="date" id="start-date" name="vcStartDate"></td>
+                                <th><label for="end-date">종료일</label></th>
+                                <td><input type="date" id="end-date" name="vcEndDate"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="vc-time">시간</label></th>
+                                <td colspan="3">
+                                    <select name="vcTime" id="vc-time">
+                                        <!--오전, 오후 옵션은 연차 신청 시에만 보여지게-->
+                                        <option value="오전">오전</option>
+                                        <option value="오후">오후</option>
+                                        <option value="종일">종일</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label for="upfile">증명서제출</label></th>
+                                <td colspan="3"><input type="file" name="upfile" id="upfile"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="vc-content">비고</label></th>
+                                <td colspan="3"><textarea name="vcContent" id="vc-content" rows="5" cols="60" style="resize:none; margin-top: 35px;"></textarea></td>
+                            </tr>
+                        </table>
+                        <div class="mbtn-area">
+                            <button type="button" onclick="closePop();">닫기</button>
+                            <button type="submit" style="background: rgb(210, 163, 238);">신청</button>
                         </div>
-                        <div class="input-area">증명서제출<input type="file"></div>
-                        <div class="input-area">비고<textarea name="" id=""></textarea></div>
-                        <!--잔여휴가 0개일 시 보여질 문구-->
-                        <div id="warning">! 사용가능한 휴가가 없습니다.</div>
-                        <div class="output-area">
-                            <ul>
-                                <li>dd</li>
-                                <li>dd</li>
-                                <li>dd</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="mbtn-area">
-                        <button onclick="closePop();">닫기</button>
-                        <button style="background: rgb(210, 163, 238);">신청</button>
+                        </form>
                     </div>
                 </div>
+            </div>
                 <!--모달 스크립트-->
 
 	            <script type="text/javascript">
-	      
+                    closePop();
+
 	                //팝업 show 기능
-	                function openPop(flag) {
+	                function openPop() {
 	                     $('#modal').show();
 	                };
 	                //팝업 Close 기능
-	                function closePop(flag) {
+	                function closePop() {
 	                     $('#modal').hide();
 	                };
-	                
-	                /*
-	                //esc키 눌러서 close
-	                function modalOff() {
-					    modal.style.display = "none"
-					}
-	                window.addEventListener("keyup", e => {
-	                    if(isModalOn() && e.key === "Escape") {
-	                        modalOff()
-	                    }
-	                })
-	                */
-	                
 	            </script>
 	            <!--모달 스크립트 끝-->
 	            </div>

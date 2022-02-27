@@ -59,6 +59,10 @@
         width: 30px;
         border-radius: 9px;
     }
+    /*메뉴바 픽스 스타일*/
+    .attendance_mn{
+    	color: #000000;
+    }
 </style>
 </head>
 <body>
@@ -70,25 +74,8 @@
             
             <br clear="both">
             <div style="position:relative">
-                <jsp:include page="../common/sidebar.jsp" />
-                    <div class="cont">
-		            <ul id="ac">
-		                <li class="division">
-		                    <a href="#">근태관리</a>
-		                </li>
-		                <div id="border">
-				               <li class="menu1">
-				                  <a href="#">근무 통계</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">일일근태 관리</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="#">휴가 관리</a>
-				               </li>
-		            	</div>
-		            </ul>
-		         </div>                
+                <jsp:include page="adminAttendanceSidebar.jsp" />
+              
                 <div class="mainOuter">
                     <!--제목영역-->
                     <div style="width:100%; height:200px; float:right; padding:40px; font-size: 22px; font-weight: 600;">
@@ -101,8 +88,7 @@
                     <div class="content-area">
                         &lt; YYYY년 &gt;
                         <br><br>
-                        <c:if test="${ not empty list }">
-	                        <div class="vc-box">
+                        <div class="vc-box">
 	                            <select name="" id="">
 	                                <option value="">무슨팀</option>
 	                                <option value="">무슨팀</option>
@@ -113,6 +99,7 @@
 	                                <button><i class="fas fa-search"></i></button>
 	                            </div>
 	                            <br><br><br>
+                        		<c:if test="${ not empty list }">
 	                            <table border="1">
 	                                <thead>
 	                                    <tr>
@@ -128,8 +115,8 @@
 	                                <tbody>
 		                                <c:forEach var="at" items="${ list }">
 		                                    <tr>
-			                                    <td>${ at.empNo }</td>
-			                                    <td>무슨팀</td>
+			                                    <td>${ at.empName }</td>
+			                                    <td>${ at.teamName }</td>
 			                                    <td>${ at.lateCount }</td>
 			                                    <td>${ at.earlyCount }</td>
 			                                    <td>${ at.absenceCount }</td>
@@ -147,8 +134,8 @@
 	                                <button class="page">&gt;</button>
 	                                
 	                            </div>
-	                        </div>
-                        </c:if>
+                        	</c:if>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -12,20 +12,51 @@
 		<result column="dr_division" property="drDivision" />
 		<result column="emp_name" property="empName" />
 		<result column="team_name" property="teamName" />
+		<result column="emp_no" property="empNo" />
+		<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
+		
+		<result column="apo_content" property="drContent" />
+		<result column="business" property="drBusiness" />
+		<result column="overtime" property="drOvertime" />
+		<result column="overtime_date" property="drOverDate" />
+		<result column="ex_content" property="drContent" />
+		<result column="ex_sum" property="drSum" />
+		<result column="bu_reason" property="drReason" />
+		<result column="bu_money" property="drMoney" />
+		<result column="bu_content" property="drContent" />
+		<result column="pro_title" property="drProTitle" />
+		<result column="pro_date" property="drProDate" />
+		
+		<result column="ap_no" property="empNo" />
+		<result column="apline_order" property="aplineOrder" />
+		<result column="apline_no" property="aplineNo" />
 	</resultMap>
 	
 	<resultMap id="appLineResultSet" type="AppLine">
+		<result column="emp_no" property="empNo" />
+		<result column="emp_name" property="empName" />
+		<result column="emp_id" property="empId" />
+		<result column="dr_no" property="drNo" />
+		<result column="apline_order" property="aplineOrder" />
 		<result column="team_name" property="team" />
 		<result column="job_name" property="job" />
-		<result column="emp_id" property="empId" />
-		<result column="emp_name" property="empName" />
 	</resultMap>
 
+	<resultMap id="attachmentResult" type="Attachment">
+		<result column="attachment_no" property="attachmentNo" />
+		<result column="origin_name" property="originName" />
+		<result column="change_name" property="changeName" />
+		<result column="file_path" property="filePath" />
+		<result column="ref_code" property="refCode" />
+		<result column="ref_no" property="refNo" />
+	</resultMap>
+ 
 
 	<!-- 결재선 검색 -->
 	<select id="selectSearchTeam" resultMap="appLineResultSet">
 		select
-		       team_name, job_name, emp_id, emp_name 
+		       emp_no, team_name, job_name, emp_id, emp_name 
 		  from employee
 		  join job using(job_code)
 		  join team using(team_code)
@@ -37,14 +68,14 @@
 	
 	<select id="selectSearchName" resultMap="appLineResultSet">
 		select
-		       team_name, job_name, emp_id, emp_name 
+		       emp_no, team_name, job_name, emp_id, emp_name 
 		  from employee
 		  join job using(job_code)
 		  join team using(team_code)
 		 where 
 			   emp_name like '%' || #{keyword} || '%' 		    
 		 order
-		    by team_name
+		    by emp_name
 			   
 	</select>
 
@@ -53,6 +84,7 @@
 		select
 		       count(*)
 		  from draft
+		  join employee using(emp_no)
 		 where 
 		<choose>
 		 	<when test="category == 1">
@@ -70,18 +102,19 @@
 		 	and dr_status = '관리자승인'		 		
 		 	</when>
 		 </choose>
-
+		 and emp_no = #{empNo}
 	</select>
 	
 	<select id="selectList" resultMap="appResultSet">
 		select 
 		       dr_no
-		     , dr_division  
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"   
 		     , dr_title
 		     , dr_date
 		     , dr_status
 		     , emp_name
 		     , team_name
+		     , emp_no
 		  from draft
 		  join employee using (emp_no)
 		  join team using (team_code)
@@ -101,16 +134,323 @@
 		 		dr_status = '완료'
 		 	and dr_status = '관리자승인'		 		
 		 	</when>
-		 </choose>
-				 	
+		 </choose>	
+		 and emp_no = #{empNo}
 		 order 
 		    by dr_date
 	</select>
+	
+	<!-- 결재자 리스트 출력 -->
+	<select id="selectAppName" resultMap="appLineResultSet">
+		select dr_no, emp_no, emp_name, apline_order, job_name 
+		  from approval_line
+		  join employee using (emp_no)
+		  join job using(job_code)
+	</select>
+	
+	<!-- 새 첨부파일 등록 -->
+	<insert id="insertAttachment">
+		insert 
+	      into attachment
+	         (
+	           attachment_no
+	         , origin_name
+	         , change_name
+	         , file_path
+	         , ref_code
+	         , ref_no
+	         )
+	     values
+	        (
+	          seq_atno.nextval
+	        , #{originName}
+	        , #{changeName}
+	        , #{filePath}
+	        , 'A'
+	        , seq_drno.currval
+	        )
+	</insert>
+	
+	<!-- draft insert -->
+	<insert id="insertDraft">
+		 insert
+		   into draft(dr_no, emp_no, dr_title, dr_status, dr_date, dr_division)
+		   values(seq_drno.nextval, #{empNo}, #{drTitle}, '결재대기', sysdate, #{drDivision})
+	</insert>
+	
+	<insert id="businessplan">
+		insert
+		  into businessplan(dr_no, business)
+		values (seq_drno.currval, #{drBusiness})
+	</insert>
+	
+	<insert id="apology">
+		insert
+		  into apology(dr_no, apo_content)
+		values(seq_drno.currval, #{drContent})
+	</insert>
+	<insert id="overtime">
+		insert
+		  into overtime(dr_no, overtime, overtime_date)
+		values(seq_drno.currval, #{drOvertime}, #{drOverDate})
+	</insert>
+	<insert id="expenditure">
+		insert
+		  into expenditure(dr_no, ex_content, ex_sum)
+		values(seq_drno.currval, #{drContent}, #{drSum} )
+	</insert>
+	<insert id="budget">
+		insert
+		  into budget(dr_no, bu_reason, bu_money, bu_content)
+		values (seq_drno.currval, #{drReason}, #{drMoney}, #{drContent})
+	</insert>
+	<insert id="proceedings">
+		insert
+		  into proceedings(dr_no, pro_title, pro_date)
+		values (seq_drno.currval, #{drProTitle}, #{drProDate})
+	</insert>
 
+	<!-- 결재선 insert -->
+	<insert id="appline">
+		insert
+		  into approval_line(dr_no, apline_no, emp_no, apline_order, ap_status) 
+		values (seq_drno.currval, seq_lino.nextval, #{empNo}, #{aplineOrder}, '미처리')
+	</insert>
 
+	<!-- 기안 게시판 검색 -->
+	<select id="selectSearchForm" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division" 
+		     , dr_title
+		     , dr_date
+		     , dr_status
+		     , emp_name
+		     , team_name
+		     , emp_no
+		  from draft
+		  join employee using (emp_no)
+		  join team using (team_code)
+		 where 
+		 	<choose>
+		 		<when test="boardSearch == 1">
+		        	dr_division = 5  
+		        </when>
+		        <when test="boardSearch == 2">
+		        	dr_division =  6
+		        </when>
+		         <when test="boardSearch == 3">
+		        	dr_division =  3
+		        </when>
+		         <when test="boardSearch == 4">
+		        	dr_division =  1
+		        </when>
+		         <when test="boardSearch == 5">
+		        	dr_division =  2
+		        </when>
+		         <when test="boardSearch == 6">
+		        	dr_division =  4
+		        </when>
+		    </choose>    	   
+		 order
+		    by dr_date
+	</select>
+	
+	<select id="selectSearchDate" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"   
+		     , dr_title
+		     , dr_date
+		     , dr_status
+		     , emp_name
+		     , team_name
+		     , emp_no
+		  from draft
+		  join employee using (emp_no)
+		  join team using (team_code)
+		 where 
+		 	<choose>
+		 		<when test="boardSearch == 7">
+		        	dr_date BETWEEN TO_CHAR(SYSDATE-7 ,'YYYY-MM-DD')
+							    AND TO_CHAR(SYSDATE , 'YYYY-MM-DD')  
+		        </when>
+		        <when test="boardSearch == 8">
+		        	dr_date BETWEEN TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM-DD')
+					            AND TO_CHAR(SYSDATE ,'YYYY-MM-DD')
+		        </when>
+		        <when test="boardSearch == 8">
+		        	dr_date BETWEEN TO_CHAR(ADD_MONTHS(SYSDATE, -3), 'YYYY-MM-DD')
+					            AND TO_CHAR(SYSDATE ,'YYYY-MM-DD')
+		        </when>
+		    </choose>    	 
+		 order
+		    by dr_date
+	</select>
+	
+	<!-- 문서별 상세조회 -->
+	<!-- 첨부파일 조회 -->
+ 	<select id="selectAttachment" resultMap="attachmentResult">
+ 		select attachment_no
+ 		     , origin_name
+ 		     , change_name
+ 		     , file_path
+ 			 , ref_no
+		  from attachment
+		 where ref_Code = 'A'
+		   and ref_no = #{dr_No}
+ 
+ 	</select>
+ 	
 
+	<!-- 사업계획서 -->
+	<select id="businessDetail" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
+		     , emp_name
+		     , dr_title
+		     , business
+		  from draft
+		  join employee using(emp_no)
+		  join businessplan using(dr_no)
+		 where dr_no = #{drNo}
+	</select>
+	
+	<!-- 시말서 -->
+	<select id="apologyDetail" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
+		     , emp_name
+		     , dr_title
+		     , apo_content
+		  from draft
+		  join employee using(emp_no)
+		  join apology using(dr_no)
+		 where dr_no = #{drNo}
+	</select>
+	
+	<!-- 연장근무신청 -->
+	<select id="overtimeDetail" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
+		     , emp_name
+		     , dr_title
+		     , overtime
+		     , overtime_date
+		  from draft
+		  join employee using(emp_no)
+		  join overtime using(dr_no)
+		 where dr_no = #{drNo}
+	</select>
+	
+	<!-- 지출결의서 -->
+	<select id="expenditureDetail" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
+		     , emp_name
+		     , dr_title
+		     , ex_content
+		     , ex_sum
+		  from draft
+		  join employee using(emp_no)
+		  join expenditure using(dr_no)
+		 where dr_no = #{drNo}
+	</select>
+	
+	<!-- 추가예산신청 -->
+	<select id="budgetDetail" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
+		     , emp_name
+		     , dr_title
+		     , bu_reason
+		     , bu_money
+		     , bu_content
+		  from draft
+		  join employee using(emp_no)
+		  join budget using(dr_no)
+		 where dr_no = #{drNo}
+	</select>
+	
+	<!-- 회의록 -->
+	<select id="proceedingsDetail" resultMap="appResultSet">
+		select
+		       dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
+		     , emp_name
+		     , dr_title
+		     , pro_title
+		     , pro_date
+		  from draft
+		  join employee using(emp_no)
+		  join proceedings using(dr_no)
+		 where dr_no = #{drNo}
+	</select>
+	
+	<select id="selectLineDetail" resultMap="appLineResultSet">
+		select
+		       dr_no
+		     , emp_no
+		     , emp_name
+		     , apline_order
+		     , job_name
+		  from approval_line
+		  join employee using(emp_no)
+		  join job using(job_code)
+		 where dr_no = #{drNo}
+	</select>
 
+	
+	<!-- 결재 게시판 select -->
+	<select id="selectApListCount" resultMap="appResultSet">
+		select
+		       count(*)
+		  from approval_line
+  		 where 
+		<choose>
+		 	<when test="category == 5">
+		 		ap_status = '미처리'
+		 	</when>
+		 	<when test="category == 6">
+		 		ap_status = '반려'
+		 	and ap_status = '관리자반려'		 		
+		 	</when>
+		 	<when test="category == 7">
+		 		ap_status = '완료'	
+		 	and ap_status = '관리자승인'		 		
+		 	</when>
+		 </choose>
+		    and emp_no = #{empNo}
+	</select>
+	
+	
+	<select id="selectApList" resultMap="appResultSet">
+		 select 
+		       d.dr_no
+		     , d.dr_division  
+		     , d.dr_title
+		     , d.dr_date
+		     , d.dr_status
+		     , a.emp_no "apNo"
+		     , apline_no
+		     , apline_order
+		  from draft d
+		  join employee e on (d.emp_no = e.emp_no)
+		  join approval_line a on(d.dr_no = a.dr_no)
+		 where ap_status = '미처리'
+		   and apline_order = 1
+		   and a.emp_no = #{empNo}
+		 order 
+		    by dr_date desc
+	</select>
 
+	
+	
 
 
 </mapper>

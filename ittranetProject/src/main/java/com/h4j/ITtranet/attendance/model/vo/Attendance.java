@@ -24,4 +24,15 @@ public class Attendance {
 	 private int dayCount;
 	 private double workSum;
 	 private int absenceCount;
+	 
+	 private String empName;
+	 private String teamName;
+
+	 private String deptName;
+	 
+	 private String condition;
+	 private String keyword;
+	 
+	 private String atStart;
+	 private String atEnd;
 }

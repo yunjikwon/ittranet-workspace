@@ -119,7 +119,7 @@
         <div class="cont">
             <ul id="ac">
                 <li class="division">
-                    <a href="#">전자결재</a>
+                    <a href="#">전자결재 </a>
                 </li>
                 
                 <li id="newDraft">                	  
@@ -133,21 +133,45 @@
 	               <li class="sideMenu">
 	                  <a href="#">기안함</a>
 	                  <ul class="subMenu">
-	                  	 <li><a href="draftWait.dr?category=1">대기 결재</a></li>
-	                     <li><a href="draftOngoing.dr?category=2">진행중 결재</a></li>
-	                     <li><a href="draftReject.dr?category=3">반려 결재</a></li>
-	                     <li><a href="draftComplete.dr?category=4">완료 결재</a></li>
+	                  	 <li><a onclick="postFormSubmit(4);">대기 결재</a></li>
+	                     <li><a onclick="postFormSubmit(5);">진행중 결재</a></li>
+	                     <li><a onclick="postFormSubmit(6);">반려 결재</a></li>
+	                     <li><a onclick="postFormSubmit(7);">완료 결재</a></li>
 	                  </ul>
 	               </li>
 	               <li class="sideMenu">
 	                  <a href="#">결재함</a>
 	                  <ul class="subMenu">
-	                     <li><a href="#">미처리 결재</a></li>
-	                     <li><a href="#">완료 결재</a></li>
+	                     <li><a onclick="postFormSubmit(1);">미처리 결재</a></li>
+	                     <li><a onclick="postFormSubmit(2);">반려 결재</a></li>
+	                     <li><a onclick="postFormSubmit(3);">완료 결재</a></li>
 	                  </ul>
 	               </li>
             	</div>
-            	
+            	<form id="postForm" action="" method="post">
+	            	<input type="hidden" name="appersonNo" value="${ loginUser.empNo }">
+	            	<input type="hidden" name="drpersonNo" value="${ loginUser.empNo }">
+	            </form>
+	            
+	            <script>
+	            	function postFormSubmit(num){
+	            		if(num == 1){
+	            			$("#postForm").attr("action", "approvalWait.ap?category=5").submit();
+	            		} else if(num==2){
+	            			$("#postForm").attr("action", "approvalWait.ap?category=6").submit();
+	            		} else if(num==3) {
+	            			$("#postForm").attr("action", "approvalWait.ap?category=7").submit();
+	            		} else if(num==4){
+	            			$("#postForm").attr("action", "draftWait.dr?category=1").submit();
+	            		} else if(num==5){
+	            			$("#postForm").attr("action", "draftOngoing.dr?category=2").submit();
+	            		} else if(num==6){
+	            			$("#postForm").attr("action", "draftReject.dr?category=3").submit();
+	            		} else {
+	            			$("#postForm").attr("action", "draftComplete.dr?category=4").submit();
+	            		}
+	            	}
+	            </script>
             </ul>
          </div>
 

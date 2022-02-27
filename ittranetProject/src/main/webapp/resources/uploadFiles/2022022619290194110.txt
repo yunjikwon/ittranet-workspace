@@ -1,0 +1,28 @@
+ function sendData(){
+   		if($("#boardListTwo input[name='checkPerson']:checked").length == 0){
+   			alert("체크할 리스트를 선택해주세요.");
+   			return false;		
+        }
+   		
+   		//let checkValueTwo = [];
+   		$("#boardListTwo input[name='checkPerson']:checked").each(function(){
+	   		$("#team", opener.document).val("team");
+			$("#job", opener.document).val("job");
+			$("#empId", opener.document).val("empId");
+			$("#empName", opener.document).val(empName);
+			$("aplineNo", opener.document).val(aplineNo);
+			$("aplineOrder", opener.document).val(aplineNo);
+   		})
+   		console.log($("#team", opener.document).val(team));
+   		$('#line').modal('hide');
+   	  }
+
+document.getElementById("team").value = team;
+    	
+   		if($("#boardListTwo input[name='checkPerson']:checked").length == 0){
+   			alert("체크할 리스트를 선택해주세요.");
+   			return false;		
+        }else{
+        	setChildValue(team);
+   		}
+   		console.log($("#team", document).val(team));
