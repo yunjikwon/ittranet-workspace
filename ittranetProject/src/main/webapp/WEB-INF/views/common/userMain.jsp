@@ -195,17 +195,16 @@
                     <br>
                     <span id="nowTimes"></span>
                 </div>
-                <button class="commute-btn" onclick="insertArrive();" style="border-right: 0.1px solid rgb(156, 156, 156);">
+                <button id="arr-btn" class="commute-btn" onclick="insertArrive();" style="border-right: 0.1px solid rgb(156, 156, 156);">
                 	<div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(163, 100, 223);"></i></div>
                     <br>
                     <div id="cdiv2">
                         출근하기
                     </div>
                     <div id="cdiv3"><span id="arr-time"></span></div>
-                        
                 </button>
-                <button class="commute-btn" onclick="updateLeave();">
-                    <div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x" style="color: rgb(163, 100, 223);"></i></div>
+                <button id="lev-btn" class="commute-btn" onclick="updateLeave();" disabled>
+                    <div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x" style="color: gray;"></i></div>
                     <br>
                     <div id="cdiv2">
                         퇴근하기 
@@ -303,6 +302,20 @@
 				if(num < 10) { num = "0" + num; }
 		 		return num;
 			}
+		    
+		    // 출퇴근버튼 클릭 효과
+			$('#arr-btn').click(function() {
+        	    $('#arr-btn').attr("disabled","disabled");
+        	    $('#arr-btn i').css("color","gray"); 
+        	    $('#lev-btn').removeAttr("disabled");
+        	    $('#lev-btn i').css("color","rgb(163, 100, 223)");
+    	    })
+    	    $('#lev-btn').click(function() {
+        	    $('#lev-btn').attr("disabled","disabled");
+        	    $('#lev-btn i').css("color","gray");
+        	    $('#arr-btn').removeAttr("disabled");
+        	    $('#arr-btn i').css("color","rgb(163, 100, 223)");
+    	    })   
 		</script>
 
         <!--각 메뉴 연결할 영역-->

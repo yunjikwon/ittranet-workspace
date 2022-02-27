@@ -36,6 +36,15 @@
         font-size: 22px;
         margin-right: 15px;
     }
+    #vc-btn{
+    	border: none;
+		background: rgba(203, 173, 214, 0.63);
+		border-radius: 5px;
+		width: 100px;
+		height: 35px;
+		margin-left: 29px;
+    	margin-top:10px;
+    }
 	/*출퇴근체크*/
 	.commute-btn{
 		border: none;
@@ -185,7 +194,7 @@
 						</div>
 
 							<!-- 이미 출/퇴근 버튼 클릭했을 시 다시 클릭되지 않도록 -->
-							<button class="commute-btn" onclick="insertArrive();" style="border-right: 2px solid lightgray;"align="center">
+							<button id="arr-btn" class="commute-btn" onclick="insertArrive();" style="border-right: 2px solid lightgray;"align="center">
 								<i class="far fa-arrow-alt-circle-right fa-rotate-90" style="color: rgb(163, 100, 223);"></i>
 								<br><br>
 								<p>
@@ -193,16 +202,16 @@
 								</p>   
 							</button>
 						
-							<button class="commute-btn" onclick="updateLeave();" align="center">
-								<i class="far fa-arrow-alt-circle-right" style="color: rgb(163, 100, 223);"></i>
+							<button id="lev-btn" class="commute-btn" onclick="updateLeave();" align="center" disabled>
+								<i class="far fa-arrow-alt-circle-right" style="color: lightgray;"></i>
 								<br><br>
 								<p>
 									퇴근하기 <br>
 								</p>   
 							</button>
 
-							<button class="out-btn" onclick="updateStepout();">외출</button> 
-							<button class="out-btn" onclick="updateOutwork();">외근</button>
+							<button class="out-btn" onclick="updateStepout();" disabled>외출</button> 
+							<button class="out-btn" onclick="updateOutwork();" disabled>외근</button>
 					</div>
 					
 					
@@ -353,6 +362,21 @@
 							if(num < 10) { num = "0" + num; }
 					 		return num;
 						}
+					        
+						$('#arr-btn').click(function() {
+	                	    $('#arr-btn').attr("disabled","disabled");
+	                	    $('#arr-btn i').css("color","lightgray"); 
+	                	    $('#lev-btn').removeAttr("disabled");
+	                	    $('#lev-btn i').css("color","rgb(163, 100, 223)");
+	                	    $('.out-btn').removeAttr("disabled");
+                	    })
+                	    $('#lev-btn').click(function() {
+	                	    $('#lev-btn').attr("disabled","disabled");
+	                	    $('#lev-btn i').css("color","lightgray");
+                	    	$('.out-btn').attr("disabled","disabled");
+	                	    $('#arr-btn').removeAttr("disabled");
+	                	    $('#arr-btn i').css("color","rgb(163, 100, 223)");
+                	    })
 					</script>
 
 					<div class="contentbox" style="height: 200px;">
@@ -426,7 +450,7 @@
 								</c:choose>
 							</div>
 							<div>
-								<button onclick="location.href='vclist.at'" class="out-btn" style="margin-top:10px;">휴가 신청</button>
+								<button onclick="location.href='vclist.at'" id="vc-btn">휴가 신청</button>
 							</div>
 						</div>
 					</div>
