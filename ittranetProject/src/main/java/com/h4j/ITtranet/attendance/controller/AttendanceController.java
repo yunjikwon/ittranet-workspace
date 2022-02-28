@@ -357,6 +357,20 @@ public class AttendanceController {
 		return new Gson().toJson(list);
 	}
 	
+	// 사용자 휴가신청 취소
+	@RequestMapping("vcdelete.at")
+	public String updateVcDelete(int vcno, HttpSession session, Model model) {
+		int result = atService.updateVcDelete(vcno);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "휴가신청이 취소됐습니다.");
+			return "redirect:vclist.at";
+			
+		}else {
+			model.addAttribute("errorMsg", "휴가신청 취소 실패");
+			return "common/errorPage";
+		}
+	}
 	
 	
 	

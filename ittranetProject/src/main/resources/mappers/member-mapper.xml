@@ -194,6 +194,29 @@
 		    by emp_no desc
 	</select>
 	
+	
+	
+	<select id="selectAllemployee2" resultMap="memberResult">
+		select
+		       emp_no
+		     , emp_name
+		     , emp_id
+		     , phone
+		     , email
+		     , address
+		     , d.dept_name
+		     , t.team_name
+		     , j.job_name
+		  from employee e,department d,team t,job j
+		 where status = 'Y'
+		   and e.dept_code = d.dept_code
+		   and e.team_code = t.team_code
+		   and e.job_code = j.job_code
+		 order
+		    by emp_no desc
+	</select>
+	
+	
 	<!-- 가입 승인 완료 && 부서, 팀, 직급 지정 -->
 	<update id="confirmMember">
 		update

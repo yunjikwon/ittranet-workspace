@@ -172,6 +172,11 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return atDao.ajaxAdminAtSearchList(sqlSession, at);
 	}
 
+	@Override
+	public int updateVcDelete(int vcno) {
+		return atDao.updateVcDelete(sqlSession, vcno);
+	}
+
 	
 
 

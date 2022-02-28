@@ -164,6 +164,10 @@ public class AttendanceDao {
 		return (ArrayList)sqlSession.selectList("attendanceMapper.ajaxAdminAtSearchList", at);
 	}
 	
+	public int updateVcDelete(SqlSessionTemplate sqlSession, int vcno) {
+		return sqlSession.update("attendanceMapper.updateVcDelete", vcno);
+	}
+	
 	
 	
 	

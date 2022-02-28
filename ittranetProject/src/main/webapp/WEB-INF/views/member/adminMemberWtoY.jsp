@@ -96,8 +96,8 @@
 
 		        
 		        <div class="buttonbar">
-		        	<button type="button" class="btn btn-info" id="approvalBtn">승인</button>
-		            <button type="button" class="btn btn-danger" id="disapprovalBtn">반려</button>
+		        	<button type="button" class="btn btn-outline-info" id="approvalBtn">승인</button>
+		            <button type="button" class="btn btn-outline-danger" id="disapprovalBtn">반려</button>
 		        </div>
 
 		        <br><br>
@@ -283,9 +283,6 @@
 					            	if(result == "PASS") {
 					            		
 					            		document.location.reload();
-					            		
-					            		
-					            		
 					            		
 					            		// document.location.reload();
 				          				

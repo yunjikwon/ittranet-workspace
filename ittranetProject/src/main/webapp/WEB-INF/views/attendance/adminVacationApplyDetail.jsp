@@ -85,10 +85,15 @@
                             <!--휴가종류에 따라 제목 달라지게-->
                             ${ vc.vcType } 휴가 신청
                             <c:choose>
-	                            <c:when test="${ vc.vcStatus eq '대기' }">
+	                            <c:when test="${ vc.vcStatus eq '대기' and loginUser.empNo eq 1 }">
 	                            <div id="app-btn">
 	                                <button onclick="vcFormSubmit(1);" style="background: #e6a4e0; color: red;">거절</button>
 	                                <button onclick="vcFormSubmit(2);" style="background: rgb(119, 194, 135); color: white;">승인</button>
+	                            </div>
+	                            </c:when>
+	                            <c:when test="${ vc.vcStatus eq '대기' and loginUser.empNo eq vc.empNo }">
+	                            <div id="app-btn">
+	                                <button onclick="vcFormSubmit(3);" style="background: rgb(119, 194, 135); color: white;">취소</button>
 	                            </div>
 	                            </c:when>
                             </c:choose>
@@ -97,10 +102,12 @@
 				            </form>
                             <script>
 				            	function vcFormSubmit(num){
-				            		if(num == 1){ // 거절
+				            		if(num == 1){ // 반려
 				            			$("#vcForm").attr("action", "vcrefuse.at").submit();
-				            		}else{ // 승인
+				            		}else if(num == 2){ // 승인
 				            			$("#vcForm").attr("action", "vcapproval.at").submit();
+				            		}else{
+				            			$("#vcForm").attr("action", "vcdelete.at").submit();
 				            		}
 				            	}
 				            </script>

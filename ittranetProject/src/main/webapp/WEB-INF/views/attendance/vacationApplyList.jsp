@@ -113,11 +113,13 @@
         color: red;
         margin-top: 20px;
         margin-left: 15px;
+        display: none;
     }
     /*휴가신청폼*/
     #vc-tb{
-        width: 650px;
+        width: 630px;
         text-align: left;
+        margin-left: 20px;
     }
     #vc-tb th{
         width: 100px;
@@ -188,7 +190,6 @@
 	                                        <th width="200">휴가구분</th>
 	                                        <th width="200">총 시간</th>
 	                                        <th width="200">상태</th>
-	                                        <td width="100"></td>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
@@ -199,7 +200,6 @@
 		                                        <td>${ vc.vcType }</td>
 		                                        <td>${ vc.vcTime }</td>
 		                                        <td>${ vc.vcStatus }</td>
-		                                        <td><button>취소</button></td>
 		                                    </tr>
 		                                </c:forEach>
 	                                </tbody>
@@ -277,20 +277,21 @@
                        <div id="warning">! 사용가능한 휴가가 없습니다.</div>
                        <form action="vcinsert.at" method="post" enctype="multipart/form-data">
                        <input type="hidden" value="${ loginUser.empNo }" name="empNo">
-                        <table id="vc-tb" align="center">
+                       <br><br>
+                        <table id="vc-tb">
                         	<tr>
                         		<th><label for="vc-type">휴가종류</label></th>
                                 <td>
                                 <c:choose>
                                 	<c:when test="${ not empty rest }">
-                                    <select id="vc-type" name="vcType" class="select">    
-	                                        <option value="연차">연차 &nbsp;&nbsp;&nbsp;${ rest.restYear }</option>
-	                                        <option value="생리">생리 &nbsp;&nbsp;&nbsp;${ rest.restMonth }</option>
-	                                        <option value="병가">병가 &nbsp;&nbsp;&nbsp;${ rest.restSick }</option>
+                                    <select id="vc-type" name="vcType" class="select" required>    
+	                                        <option value="연차" id="${ rest.restYear }">연차 &nbsp;&nbsp;&nbsp;${ rest.restYear }</option>
+	                                        <option value="생리" id="${ rest.restMonth }">생리 &nbsp;&nbsp;&nbsp;${ rest.restMonth }</option>
+	                                        <option value="병가" id="${ rest.restSick }">병가 &nbsp;&nbsp;&nbsp;${ rest.restSick }</option>
                                     </select>
                                     </c:when>
                                     <c:otherwise>
-                                    <select id="vc-type" name="vcType" class="select">    
+                                    <select id="vc-type" name="vcType" class="select" required>    
 	                                        <option value="연차">연차 &nbsp;&nbsp;&nbsp;15</option>
 	                                        <option value="생리">생리 &nbsp;&nbsp;&nbsp;1</option>
 	                                        <option value="병가">병가 &nbsp;&nbsp;&nbsp;10</option>
@@ -301,18 +302,18 @@
                         	</tr>
                             <tr>
                                 <th><label for="start-date">시작일</label></th>
-                                <td><input type="date" id="start-date" name="vcStartDate"></td>
+                                <td><input type="date" id="start-date" name="vcStartDate" required></td>
                                 <th><label for="end-date">종료일</label></th>
-                                <td><input type="date" id="end-date" name="vcEndDate"></td>
+                                <td><input type="date" id="end-date" name="vcEndDate" required></td>
                             </tr>
                             <tr>
                                 <th><label for="vc-time">시간</label></th>
                                 <td colspan="3">
-                                    <select name="vcTime" id="vc-time">
+                                    <select name="vcTime" id="vc-time" required>
                                         <!--오전, 오후 옵션은 연차 신청 시에만 보여지게-->
-                                        <option value="오전">오전</option>
-                                        <option value="오후">오후</option>
                                         <option value="종일">종일</option>
+                                        <option value="오전" class="half">오전</option>
+                                        <option value="오후" class="half">오후</option>
                                     </select>
                                 </td>
                             </tr>
@@ -327,7 +328,7 @@
                         </table>
                         <div class="mbtn-area">
                             <button type="button" onclick="closePop();">닫기</button>
-                            <button type="submit" style="background: rgb(210, 163, 238);">신청</button>
+                            <button type="submit" id="vcsubmit" style="background: rgb(210, 163, 238);">신청</button>
                         </div>
                         </form>
                     </div>
@@ -346,6 +347,27 @@
 	                function closePop() {
 	                     $('#modal').hide();
 	                };
+	                
+	                $(document).ready(function() {
+                	  $('#vc-type').change(function() {
+                	    var result = $('#vc-type option:selected').attr('id');
+                	    if (result == 0) {
+                	      $('#warning').show();
+                	      $('#vcsubmit').attr("disabled","disabled");
+                	    } else {
+                	      $('#warning').hide();
+                	      $('#vcsubmit').removeAttr("disabled");
+                	    }
+                	  });
+                	  $('#vc-type').change(function() {
+                  	    var result = $('#vc-type option:selected').val();
+                  	    if (result != '연차') {
+                  	      $('.half').hide();
+                  	    } else {
+                  	      $('.half').show();
+                  	    }
+                  	  });
+                	}); 
 	            </script>
 	            <!--모달 스크립트 끝-->
 	            </div>

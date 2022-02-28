@@ -27,11 +27,11 @@
             
             position:absolute;
             top:0;
-            left:130px;
+            left:127px;
         }
         .fixed{
         	position: fixed !important;
-        	left:230px !important;
+        	left:240px !important;
         	top:70px !important;
         }
 
@@ -45,7 +45,8 @@
             width: 100%;
             text-align: center;
             height:70px;
-            line-height: 70px;
+            line-height: 70px;            
+            text-decoration: none !important;
         }
         #ac .menu1 a{
             color: #000;

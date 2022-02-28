@@ -129,7 +129,21 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.selectApList(sqlSession,pi, category, empNo);
 	}
 
+	// 반려 상태 update
+	@Override
+	public int updateReject(HashMap<String, Integer> map) {
+		int result1 = aDao.apUpdateReject(sqlSession, map);
+		int result2 = aDao.drUpdateReject(sqlSession, map);
+		return result1 * result2;
+	}
 
+	// 완료 상태 update
+	@Override
+	public int updateComplete(HashMap<String, Integer> map) {
+		int result1 = aDao.apUpdateComplete(sqlSession, map);
+		int result2 = aDao.drUpdateComplete(sqlSession, map);
+		return result1 * result2;
+	}
 	
 
 	
