@@ -112,6 +112,9 @@
 		                    </tr>
 		                </thead>    
 		                <tbody>    
+		                	<c:if test="${ pi.listCount } = 0">
+		                		조회된 데이터 목록이 없습니다.
+		                	</c:if>
 			            	<c:forEach var="d" items="${ list }">
 			                    <tr>
 			                    	<input type="hidden" class="drNo" value="${ d.drNo }">
@@ -119,11 +122,11 @@
 			                    	<input type="hidden" name="empNo" value="${ d.empNo }">	                    	
 			                        <th class="drDivison"> ${ d.drDivision } </th>
 			                        <td>${ d.drTitle }</td>
-			                        <td>${ d.drDate }</td>
+			                        <td>${ d.apDate }</td>
 			                        <td class="linePerson">
 			                        	${loginUser.empName }
 			                        </td>
-			                        <td>${ d.drStatus }</td>
+			                        <td>${ d.apStatus }</td>
 			                    </tr>
 			                </c:forEach>  
 		                </tbody> 		 
@@ -138,13 +141,13 @@
 	                    		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
 	                    	</c:when>
 	                    	<c:otherwise>
-	                    		<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ pi.currentPage-1 }">Previous</a></li>
+	                    		<li class="page-item"><a class="page-link" href="approvalWait.ap?cpage=${ pi.currentPage-1 }">Previous</a></li>
 	                    	</c:otherwise>
 	                    </c:choose>
 	                    
 	                    
 	                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-	                    	<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ p }">${ p }</a></li>
+	                    	<li class="page-item"><a class="page-link" href="approvalWait.ap?cpage=${ p }">${ p }</a></li>
 	                    </c:forEach>
 	                    
 	                    
@@ -153,7 +156,7 @@
 	                    		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
 	                    	</c:when>
 	                    	<c:otherwise>
-	                    		<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ pi.currentPage+1 }">Next</a></li>
+	                    		<li class="page-item"><a class="page-link" href="approvalWait.ap?cpage=${ pi.currentPage+1 }">Next</a></li>
 	                    	</c:otherwise>
 	                    </c:choose>
 	                    
@@ -198,7 +201,7 @@
 					                        + "<th>"+ list[i].drDivision +"</th>"
 					                        + "<td>"+ list[i].drTitle + "</td>"
 					                        + "<td>"+ list[i].drDate + "</td>"
-					                        + "<td>" + + "</td>" 
+					                        + "<td>" + list[i].empNo+ "</td>" 
 					                        + "<td>"+ list[i].drStatus + "</td>"
 				                        + "</tr>";
 							}
@@ -206,7 +209,6 @@
 							$("#boardSearch1 option:eq(0)").prop("selected", true); //select(셀렉트) 원위치
 							$("#boardSearch2 option:eq(0)").prop("selected", true);
 						} , error : function(){
-							console.log("searchType:"+searchType);
 							console.log("ajax 통신 실패 ");
 						}
 					});
@@ -215,9 +217,7 @@
 			// 상세페이지 이동
 			$(function(){
            		$("#boardList>tbody>tr").click(function(){
-           			console.log($(this).children(".apNo").val());
-           			console.log($(this).children(".drDivision").val());
-           			location.href = 'detail.dr?drNo=' + $(this).children(".drNo").val()
+           			location.href = 'detail.ap?drNo=' + $(this).children(".drNo").val()
            					       +'&drDivision=' + $(this).children(".drDivision").val();            			
            		});
            	})

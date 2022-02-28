@@ -92,6 +92,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return eDao.selectAllemployee(sqlSession, pi);
 	}
 
+	@Override
+	public ArrayList<Employee> selectAllemployee2() {
+		return eDao.selectAllemployee2(sqlSession);
+	}
+
 
 	
 }

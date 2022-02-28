@@ -38,6 +38,11 @@ public interface ApprovalService {
 	int selectApListCount(int category, int empNo);
 	ArrayList<Approval> selectApList(PageInfo pi, int category, int empNo);
 	
+	// 반려 상태 update
+	int updateReject(HashMap<String, Integer> map);
+	
+	// 반려 상태 update
+	int updateComplete(HashMap<String, Integer> map);
 	
 	
 }

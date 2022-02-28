@@ -75,7 +75,7 @@
 		    <div class="mainOuter">
 		        <br>
 		        <div id="draftTitle">
-		           	 기안함 > 대기 결재
+		           	 결재함 > 반려 결재
 		        </div> <br>
 	
 	            <div id="innerouter" style="padding:5% 10%;">
@@ -112,6 +112,9 @@
 		                    </tr>
 		                </thead>    
 		                <tbody>    
+		                	<c:if test="${ pi.listCount } = 0">
+		                		조회된 데이터 목록이 없습니다.
+		                	</c:if>
 			            	<c:forEach var="d" items="${ list }">
 			                    <tr>
 			                    	<input type="hidden" class="drNo" value="${ d.drNo }">
@@ -119,15 +122,11 @@
 			                    	<input type="hidden" name="empNo" value="${ d.empNo }">	                    	
 			                        <th class="drDivison"> ${ d.drDivision } </th>
 			                        <td>${ d.drTitle }</td>
-			                        <td>${ d.drDate }</td>
+			                        <td>${ d.apDate }</td>
 			                        <td class="linePerson">
-			                        	<c:forEach var="l" items="${ linePerson }">
-				                        	<c:if test="${ l.drNo eq d.drNo }">
-					                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
-				                           	 </c:if>
-				                        </c:forEach>
+			                        	${loginUser.empName }
 			                        </td>
-			                        <td>${ d.drStatus }</td>
+			                        <td>${ d.apStatus }</td>
 			                    </tr>
 			                </c:forEach>  
 		                </tbody> 		 
@@ -142,13 +141,13 @@
 	                    		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
 	                    	</c:when>
 	                    	<c:otherwise>
-	                    		<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ pi.currentPage-1 }">Previous</a></li>
+	                    		<li class="page-item"><a class="page-link" href="approvalReject.ap?cpage=${ pi.currentPage-1 }">Previous</a></li>
 	                    	</c:otherwise>
 	                    </c:choose>
 	                    
 	                    
 	                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-	                    	<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ p }">${ p }</a></li>
+	                    	<li class="page-item"><a class="page-link" href="approvalReject.ap?cpage=${ p }">${ p }</a></li>
 	                    </c:forEach>
 	                    
 	                    
@@ -157,7 +156,7 @@
 	                    		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
 	                    	</c:when>
 	                    	<c:otherwise>
-	                    		<li class="page-item"><a class="page-link" href="draftWait.dr?cpage=${ pi.currentPage+1 }">Next</a></li>
+	                    		<li class="page-item"><a class="page-link" href="approvalReject.ap?cpage=${ pi.currentPage+1 }">Next</a></li>
 	                    	</c:otherwise>
 	                    </c:choose>
 	                    
@@ -184,28 +183,28 @@
 						data : {
 							flag : flag,
 							search : search
-						} , success : function(result){
+						} , success : function(list){
 							//테이블 초기화
 		    				$('#boardList tbody').empty();
-							let appPerson = "";
+
+							let $linePerson;
+							$(".linePerson").each(function(){
+								linePerson = $(this).text(); 
+								console.log("linePerson : " + linePerson);
+								list.push(linePerson);
+							})
 							
 		    				let str = "";
-							for(let i in result.list){
+							for(let i in list){
 								str += "<tr>"
-									    	+ "<input type='hidden' name='empNo' value='" + result.list[i].empNo + "'>"		                    	
-					                        + "<th>"+ result.list[i].drDivision +"</th>"
-					                        + "<td>"+ result.list[i].drTitle + "</td>"
-					                        + "<td>"+ result.list[i].drDate + "</td>"
-					                        + "<td>" ;
-					                        	for(let a in result.linePerson){
-					                        		if( result.list[i].drNo == result.linePerson[a].drNo){
-					                        			appPerson += result.linePerson[a].empName + result.linePerson[a].job + "&nbsp;"
-					                        		}
-												}
-					                        str += appPerson + "</td>" 
-						                        + "<td>"+ result.list[i].drStatus + "</td>"
-					                        + "</tr>";
-								}
+									    	+ "<input type='hidden' name='empNo' value='" + list[i].empNo + "'>"		                    	
+					                        + "<th>"+ list[i].drDivision +"</th>"
+					                        + "<td>"+ list[i].drTitle + "</td>"
+					                        + "<td>"+ list[i].drDate + "</td>"
+					                        + "<td>" + list[i].empNo+ "</td>" 
+					                        + "<td>"+ list[i].drStatus + "</td>"
+				                        + "</tr>";
+							}
 							$('#boardList > tbody').html(str);
 							$("#boardSearch1 option:eq(0)").prop("selected", true); //select(셀렉트) 원위치
 							$("#boardSearch2 option:eq(0)").prop("selected", true);
@@ -218,7 +217,7 @@
 			// 상세페이지 이동
 			$(function(){
            		$("#boardList>tbody>tr").click(function(){
-           			location.href = 'detail.dr?drNo=' + $(this).children(".drNo").val()
+           			location.href = 'detail.ap?drNo=' + $(this).children(".drNo").val()
            					       +'&drDivision=' + $(this).children(".drDivision").val();            			
            		});
            	})
