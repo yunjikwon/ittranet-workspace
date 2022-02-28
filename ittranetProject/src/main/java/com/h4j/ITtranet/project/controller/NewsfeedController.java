@@ -54,6 +54,7 @@ public class NewsfeedController {
 		ArrayList<Todo> todo = nService.prTodo(prNo);
 		//ArrayList<Todo> countTd = nService.countTd(prNo);
 		ArrayList<Attachment> pra = nService.prAttachment(nfNo);
+		System.out.println(nfNo);
 		Newsfeed nf = nService.nfNo(prNo);
 	
 		mv.addObject("list", list)
@@ -79,17 +80,17 @@ public class NewsfeedController {
 		System.out.println("n : " + n);
 		System.out.println("upfile : " + upfile);
 		
-			if(!upfile.getOriginalFilename().equals("")) {
-				String changeName = saveFile(upfile, session);
-				String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
-				n.setOriginName(upfile.getOriginalFilename());
-				n.setChangeName("resources/uploadFiles/" + changeName);	
-				n.setFilePath("resources/uploadFiles/" + changeName);
-				int insertFile = nService.insertFile(n);	
-			}
-			int result = nService.insertFeed(n);
-
-			return result>0 ? "redirect:feed.pr?prNo=" + n.getPrNo() : "fail";
+		if(!upfile.getOriginalFilename().equals("")) {
+			String changeName = saveFile(upfile, session);
+			String filePath = session.getServletContext().getRealPath("/resources/uploadFiles");
+			n.setOriginName(upfile.getOriginalFilename());
+			n.setChangeName("resources/uploadFiles/" + changeName);	
+			n.setFilePath("resources/uploadFiles/" + changeName);
+		}
+		
+		//int insertFile = nService.insertFile(n);	
+		int result = nService.insertFeed(n);
+		return result>0 ? "redirect:feed.pr?prNo=" + n.getPrNo() : "fail";
 			
 	}
 		
@@ -138,6 +139,33 @@ public class NewsfeedController {
 		model.addAttribute("n", nService.prNewsfeed(nfNo));
 		System.out.println("수정하기 클릭");
 		return "redirect:feed.pr?prNo=" + prNo;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="update.pr")
+	public String updateFeed(String nfNo, String nfContent, MultipartFile reupfile, HttpSession session) {
+		/*
+		if(!reupfile.getOriginalFilename().equals("")) {
+			if(n.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(n.getChangeName())).delete();
+			}
+			String changeName = saveFile(reupfile, session);
+			n.setOriginName(reupfile.getOriginalFilename());
+			n.setChangeName("resources/uploadFiles/" + changeName);
+		}
+		int result = nService.updateFeed(n);
+		
+		if(result > 0) { // 수정 성공
+			session.setAttribute("alertMsg", "성공적으로 게시글이 수정되었습니다.");
+			return "redirect:feed.pr?prNo=" + prNo;
+		}else { // 수정 실패
+			return "common/errorPage";
+		}*/
+		System.out.println("nfNo : " + nfNo);
+		System.out.println("nfContent : " + nfContent);
+		System.out.println("reupfile : " + reupfile);
+		
+		return null;
 	}
 	
 	// 댓글 달기

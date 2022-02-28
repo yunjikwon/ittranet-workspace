@@ -18,9 +18,7 @@ public interface NewsfeedService {
 	// 프로젝트 뉴스피드 조회
 	ArrayList<Newsfeed> prNewsfeed(String prNo);
 	Newsfeed nfNo(String prNo);
-	// 뉴스피드 게시글 첨부파일 조회
-	ArrayList<Attachment> prAttachment(String nfNo);
-	
+
 	// 프로젝트 뉴스피드 게시글 작성, 첨부파일 추가
 	int insertFeed(Newsfeed n);
 	int insertFile(Newsfeed n);
@@ -37,11 +35,17 @@ public interface NewsfeedService {
 	// 뉴스피드 게시글 첨부파일 추가
 	ArrayList<Attachment> selectAttachment(Newsfeed n);
 	
+	// 뉴스피드 게시글 첨부파일 조회
+	ArrayList<Attachment> prAttachment(String nfNo);
+	
 	// 뉴스피드 게시글 댓글 조회
 	ArrayList<Reply> selectReplyList(int nfNo);
 	
 	// 프로젝트 업무 갯수 조회
 	ArrayList<Todo> countTd(String prNo);
+	
+	// 게시글 수정
+	int updateFeed(Newsfeed n);
 	
 
 	

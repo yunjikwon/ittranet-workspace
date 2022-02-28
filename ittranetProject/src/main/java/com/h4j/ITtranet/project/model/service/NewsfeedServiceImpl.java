@@ -53,7 +53,11 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	// 뉴스피드 게시글 작성 
 	@Override
 	public int insertFeed(Newsfeed n) {
-		return nDao.insertFeed(sqlSession, n);
+		int result = nDao.insertFeed(sqlSession, n);
+		if(n.getOriginName() != null) {
+			result += nDao.insertAttachment(sqlSession, n);
+		}
+		return result;
 	}
 	// 첨부파일 추가하기 2번째
 	@Override
@@ -101,6 +105,12 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	@Override
 	public ArrayList<Todo> countTd(String prNo) {
 		return nDao.countTd(sqlSession, prNo);
+	}
+	
+	// 게시글 수정
+	@Override
+	public int updateFeed(Newsfeed n) {
+		return nDao.updateFeed(sqlSession, n);
 	}
 
 	

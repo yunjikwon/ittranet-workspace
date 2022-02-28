@@ -200,6 +200,23 @@
    .todoTabletr{
        border: none;
    }
+   
+    .updateFeed{
+        width: 830px;
+        height: 230px;
+        border:1px solid rgb(190, 190, 190);
+        border-radius: 5mm;
+        background-color: rgb(231, 217, 238);
+        padding: 30px;
+        margin-top: 15px;
+    }
+    #nfContent{
+        width: 760px;
+        margin : auto;
+        border-radius: 2mm;
+        height: 150px;
+        border: 1px solid rgb(202, 202, 202);
+    }
 
 </style>
 </head>
@@ -361,8 +378,6 @@
         
         </script>
         
-           
-            
             <!-- 게시물 -->
             <c:forEach var="n" items="${ list }">
 	            <div class="feedlist">
@@ -377,8 +392,8 @@
 	                <!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
 	                	<c:if test="${ loginUser.empNo eq n.empNo }">
                             <div class="buttons">
-                                <button id="updateFeed" class="btn1" onclick="postFormSubmit(1);">수정</button>
-                                <button id="deleteFeed" class="btn2" onclick="postFormSubmit(2);">삭제</button>
+                                <button id="updateFeed" class="btn1" onclick="updateFeed(this);">수정</button>
+                                <button id="deleteFeed" class="btn2" onclick="feedDelete();">삭제</button>
                             </div>
 	               		</c:if>                     
 	           
@@ -388,12 +403,8 @@
                             </form>	               		
 	                   
                             <script>
-                                function postFormSubmit(num){
-                                    if(num == 1){ // 수정하기
-                                        $("#postForm").attr("action", "updateForm.pr").submit();
-                                    }else{ // 삭제하기
-                                        $("#postForm").attr("action", "delete.pr").submit();
-                                    }
+                               function feedDelete(){
+                                  $("#postForm").attr("action", "delete.pr").submit();
                                 }
                             </script>
 
@@ -403,21 +414,21 @@
 	                    <form id="postForm" action="" method="post">
                                 <input type="hidden" name="nfNo" value="${ n.nfNo }">
                         </form>
+	                   
+	                    <!-- 첨부파일 다운 -->
+	                    <div class="attdiv">
 	                    <c:choose>
-							<c:when test="${ empty pra }">
+							<c:when test="${ n.originName eq null}">
 								 첨부파일이 없습니다.
 							</c:when>
 							<c:otherwise>
-								<c:forEach var="pra" items="${ pra }">
-									<a href="${ pra.filePath }" download="${ pra.originName }" class="aTag">${ at.originName }</a><br>
-								</c:forEach>
+									첨부파일 <a href="${ n.changeName }" download="${ n.changeName }" class="aTag">${ n.originName }</a><br>
 							</c:otherwise>
-						</c:choose>	                    	       
+						</c:choose>	      	                    
+	                    </div>
+              	       
 	                </div>
-	                
-		
-	            
-    
+
 	                <!--댓글-->
 	                <div class="reply" style="font-size: 13px;">
 	                    <div class="replylist">
@@ -428,7 +439,7 @@
                               		  <textarea id="replyContent" type="text" name="reply" cols="80" rows="3" style="resize:none; margin:10px; border-radius: 2mm;"></textarea>                            	
                                     </td>
                                     <td>
-                                        <button id="replyButton" onclick="addReply(${n.nfNo});"><b>등록</b></button>  
+                                        <button id="replyButton" onclick="addReply(${n.nfNo}, $(this).parents('.feedlist'), $(this).parents('#replyArea').find('#replyContent'));"><b>등록</b></button>  
                                     </td>
                                 </tr>
                               </thead>
@@ -437,37 +448,84 @@
                             </table>
 	                    </div>
 	                    </div>
-       </div>
+   			    </div>
        
-
+   <!-- 수정하기 눌렀을때 나타나는 수정 폼  -->
+    	<div class="updateFeed" style="display:none;">
+			<div class="update">
+				<textarea id="nfContent" name="nfContent"></textarea>
+				<input id="upfile" type="file" name="upfile">
+				<input type="hidden" name="nfNo" value="${n.nfNo}">
+				<button type="button" class="okButton">확인</button>
+				<button type="button" data-dismiss="modal" class="cancelButton">취소</button>
+			</div>   
+		</div>
     </c:forEach>
-    
+
+     <script>
+          function updateFeed(btn){
+                $(btn).parent().parent().next(".updateFeed").attr("style", "display:block");
+                $(btn).parent().parent().attr("style", "display:none");
+           }
+          
+          $(".okButton").click(function(){
+        	  
+        	  let content = $(this).siblings("textarea[name='nfContent']").val();
+        	  let nfNo = $(this).siblings("input[name='nfNo']").val();
+        	  let reupfile = $(this).siblings("input[name='upfile']").val();
+        	
+        	     $.ajax({
+               	  url:"update.pr",
+                 	 data:{
+                 		 nfNo:nfNo,
+                 		 nfContent:content, 
+                 		 reupfile:reupfile
+                 	 },success :
+                 		 function(status){
+                 		 if(status = "success"){
+                 			 location.reload();
+                 		 }
+                 	 }, error: function(status){
+                 		console.log("뉴스피드 게시글 수정 ajax 통신 실패");
+                 	 }
+                 })     
+          })
+
+     </script>
+
+
+
+
 
 	<!-- 댓글 script -->
 
 	<script>
 		
 	$(function(){
-		selectReplyList(no);
+		$(".feedlist").each(function(){
+			
+			selectReplyList($(this).find("input[name=nfNo]").val(), $(this));
+			
+		})
+		
 	})
 	
-		function addReply(no){
+		function addReply(no, newsDiv, content){
 			
-			
-			if($("#replyContent").val().trim().length != 0){
+			if(content.val().trim().length != 0){
 				$.ajax({
 					url : "rinsert.pr",
 					data : {
 						refNo:no,
 						empNo:${ list.get(0).empNo },
-						replyContent:$("#replyContent").val()
+						replyContent:content.val()
 					}, success:function(status){
 						if(status == "success"){
-							selectReplyList(no);
-							$("#replyContent").val("");
+							selectReplyList(no,newsDiv);
+							content.val("");
 						}
 					}, error:function(status){
-						console.log("댓글작성용 ajax통신 실패")
+						console.log("댓글작성용 ajax통신 실패");
 					}
 				})
 			}else{
@@ -476,10 +534,11 @@
 		}
 
 	</script>
-
+	
+	
 	<script>
 	
-	function selectReplyList(no){ 
+	function selectReplyList(no, newsDiv){ 
         $.ajax({
            url:"rlist.pr",
            data:{
@@ -489,14 +548,26 @@
               console.log(list);
               let value = "";
               for(let i in list){
-                 value += "<tr>"
-                       +   "<td>"+ list[i].empName + "</td>"
-                       +   "<td colspan='2'>" + list[i].replyContent + "</td>"
-                       +   "<td>"+ list[i].createDate + "</td>"
-                       + "</tr>"
+            	  if(list[i].empNo == '${loginUser.empNo}'){
+                      value +="<tr>"
+                          +   "<td>"+ list[i].empName + "</td>"
+                          +   "<td colspan='2'>" + list[i].replyContent + "</td>"
+                          +   "<td>"+ list[i].createDate + "</td>"
+                          +   "<td>"+ "<button type='button'> 수정 </button>"  +"</td>"	
+                          +   "<td>"+ "<button type='button'> 삭제 </button>"  +"</td>"	
+                          + "</tr>"
+            	  }else{
+            		     value +="<tr>"
+                             +   "<td>"+ list[i].empName + "</td>"
+                             +   "<td colspan='2'>" + list[i].replyContent + "</td>"
+                             +   "<td colspan='3'>"+ list[i].createDate + "</td>"	
+                             + "</tr>"
+            	  }
               }
+
               
-              $("#replyArea tbody").html(value);
+              //$("#replyArea tbody").html(value);
+              newsDiv.find("#replyArea tbody").html(value);
               
            },error:function(){
               console.log("댓글리스트조회용 ajax 통신실패");

@@ -56,7 +56,7 @@ public class NewsfeedDao {
 	}
 
 	public ArrayList<Attachment> prAttachment(SqlSessionTemplate sqlSession, String nfNo) {
-		return (ArrayList)sqlSession.selectList("newsfeedMapper.prAttachment", nfNo);
+		return (ArrayList)sqlSession.selectOne("newsfeedMapper.prAttachment", nfNo);
 	}
 
 	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int nfNo) {
@@ -65,6 +65,10 @@ public class NewsfeedDao {
 
 	public ArrayList<Todo> countTd(SqlSessionTemplate sqlSession, String prNo) {
 		return (ArrayList)sqlSession.selectList("todoMapper.proCountTd", prNo);
+	}
+
+	public int updateFeed(SqlSessionTemplate sqlSession, Newsfeed n) {
+		return sqlSession.update("newsfeedMapper.updateFeed", n);
 	}
 
 

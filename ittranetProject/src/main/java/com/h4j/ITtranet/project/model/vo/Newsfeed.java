@@ -28,7 +28,7 @@ public class Newsfeed {
 	private String originName;
 	private String changeName;
 	private String filePath;
-	private String refConde;
+	private String refCode;
 	private String refNo;
 	private String attachNo;
 	

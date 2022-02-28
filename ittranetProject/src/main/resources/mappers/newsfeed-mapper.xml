@@ -81,9 +81,12 @@
 		,e.emp_name
 		,e.profile
 		,p.pr_title
+        ,origin_name
+        ,change_name
 	from newsfeed n
 	join project p on p.pr_no = n.pr_no
 	join employee e on e.emp_no = n.emp_no
+    left join attachment a on (n.nf_no = a.ref_no and ref_code = 'NF')
 	where p.pr_no = #{prNo}
 	and n.status = 'Y' 
 </select>
@@ -106,7 +109,7 @@
  
  <insert id="insertFeed">
  	insert
- 		into NEWSFEED
+ 		into newsfeed
  		(
  		nf_no
  		, nf_content
@@ -206,5 +209,11 @@
 		   and r.status = 'Y'
 		   and ref_no = #{nfNo}
 </select>
- 
+
+<update id="updateFeed">
+	update
+		board
+		set nf_content = #{nfContent}
+	   where nf_no = #{nfNo}
+</update>
 </mapper>
