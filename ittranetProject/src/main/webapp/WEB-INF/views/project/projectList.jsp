@@ -63,6 +63,24 @@
 	.projectBox2{
 	}
 	
+	.checkProject{
+        border: 1px solid rgb(202, 202, 202);
+        border-radius: 2mm;
+        width: 500px;
+        height: 400px;
+        background-color: rgb(231, 217, 238);
+        padding: 15px;
+    }
+    .projectTable{
+        background-color: white;
+        border-radius: 2mm;
+        width: 495px;
+        height: 360px;
+    }
+    th,td,tr >.projectTable{
+        border-bottom: 1px dotted rgb(202, 202, 202);
+    }
+    
 </style>
 </head>
 <body>
@@ -141,7 +159,8 @@
 	            </div>
             </c:forEach>
           </div>   
-          
+          	
+          	<!-- 싱글클릭 이벤트 (페이지 이동) 
                <script>
 	             $(function(){
 	                 $(".proing").click(function(){
@@ -154,8 +173,48 @@
 	                    location.href = 'feed.pr?prNo=' + $(this).find(".prno").val();
 	                  })
 	               })
+	             </script>       	
+          	-->
+          	
+	          <!-- 더블클릭 이벤트 (프로젝트 상세 내용) -->   
+	             <script>
+	             $(function(){
+	                 $(".proing").dblclick(function(){
+	                    console.log("더블클릭하기1");
+	                  })
+	               })
+	             
+	              $(function(){
+	                 $(".proend").dblclick(function(){
+	                	 console.log("더블클릭하기2");
+	                  })
+	               })
 	             </script>
         
+        <!-- 프로젝트 상세 내용 -->
+		<div class="checkProject">
+		    <div class="checkPr">
+		        <table class="projectTable">
+		            <tr>
+		                <th style="width: 100px;">프로젝트명</th>
+		                <td>잇트라넷</td>
+		            </tr>
+		            <tr>
+		                <th>담당자</th>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <th>기간</th>
+		                <td></td>
+		            </tr>
+		            <tr style="height: 200px;">
+		                <th>내용</th>
+		                <td></td>
+		            </tr>
+		        </table>
+		        <button class="okButton">확인</button>
+		    </div>   
+		</div>
         </div>
         </div>
         </div>

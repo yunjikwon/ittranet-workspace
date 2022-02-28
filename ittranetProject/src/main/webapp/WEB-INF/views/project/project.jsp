@@ -278,7 +278,7 @@
                         <td>${ todoW }</td>
                         <td>${ todoY }</td>
                         <td>${ todoO }</td>
-                        <td> ${ todoL }</td>
+                        <td>${ todoL }</td>
                     </tr>
                 </table>
             </div>
@@ -338,46 +338,12 @@
 				   <input type="hidden" name="prNo" value="${list.get(0).prNo}">
 				   <input type="hidden" name="empNo" value="${ loginUser.empNo }">
 				   <input id="write" name="nfContent" type="text" placeholder="&emsp;내용을 입력해주세요">
-          		   <input id="upfile" type="file" name="upfile">
+          		   <input id="upfile" type="file" class="upfilec" name="upfile">
                     <br>
            		   <button type="submit" id="writeok"  style="background-color: rgb(187, 159, 202);">등록</button>
 	  			 </form>
 		    </div>
-        
-        <script>        
-     
-        
-          // 게시글 작성용 ajax                
-          /*
-        $("#writeok").click(function(){
-           
-            if($("#write").val().trim().length != 0){   
-               
-               let data = new FormData($("#ttt")[0]); // 해당 아이디를 가진 form요소의 요청시 전달값들을 FormData객체 형태로 만드는 과정 
-                 
-               $.ajax({
-                     url:"ninsert.pr",
-                     data: data  // 아까 위에서 만든 data 전달
-                     , processData: false
-                     , contentType: false // formData를 써서 ajax로 값을 넘기기위해 processData, contentType 속성
-                     , enctype:"multipart/form-data" // 파일 넘기려면 무조건 작성해야되는 옵션
-                     , success: function(status){
-                         console.log("뉴스피드 게시글 작성용 ajax통신 성공");
-                         console.log(status);
-                         location.reload();
-                     }, error:function(){
-                        console.log("뉴스피드 게시글 작성용 ajax통신 실패");
-                     } 
-                })
-            }else{
-              alertify.alert("게시글 작성 후 등록 요청 해주세요 !");
-            }
 
-      })
-      */
-        
-        </script>
-        
             <!-- 게시물 -->
             <c:forEach var="n" items="${ list }">
 	            <div class="feedlist">
@@ -453,14 +419,18 @@
    <!-- 수정하기 눌렀을때 나타나는 수정 폼  -->
     	<div class="updateFeed" style="display:none;">
 			<div class="update">
+			<form id="uu" action="update.pr" method="post" enctype="multipart/form-data">
 				<textarea id="nfContent" name="nfContent"></textarea>
-				<input id="upfile" type="file" name="upfile">
+				<input id="upfile" type="file" name="reupfile" value="${n.originName}">
+				<input type="hidden" name="prNo" value="${n.prNo}">
 				<input type="hidden" name="nfNo" value="${n.nfNo}">
-				<button type="button" class="okButton">확인</button>
-				<button type="button" data-dismiss="modal" class="cancelButton">취소</button>
+				<button type="submit" class="okButton">확인</button>
+				<button type="submit" data-dismiss="modal" class="cancelButton">취소</button>	
+			</form>
 			</div>   
 		</div>
     </c:forEach>
+	
 
      <script>
           function updateFeed(btn){
@@ -468,8 +438,10 @@
                 $(btn).parent().parent().attr("style", "display:none");
            }
           
+          
+          /*
           $(".okButton").click(function(){
-        	  
+
         	  let content = $(this).siblings("textarea[name='nfContent']").val();
         	  let nfNo = $(this).siblings("input[name='nfNo']").val();
         	  let reupfile = $(this).siblings("input[name='upfile']").val();
@@ -480,6 +452,7 @@
                  		 nfNo:nfNo,
                  		 nfContent:content, 
                  		 reupfile:reupfile
+                 		 prNo:${ list.get(0).prNo }
                  	 },success :
                  		 function(status){
                  		 if(status = "success"){
@@ -490,7 +463,7 @@
                  	 }
                  })     
           })
-
+	*/
      </script>
 
 

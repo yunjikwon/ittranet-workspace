@@ -47,6 +47,9 @@ public interface NewsfeedService {
 	// 게시글 수정
 	int updateFeed(Newsfeed n);
 	
+	// 게시글 첨부파일 삭제
+	int deleteAttachment(Newsfeed n);
+	
 
 	
 

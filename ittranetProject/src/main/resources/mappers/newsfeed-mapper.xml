@@ -211,9 +211,17 @@
 </select>
 
 <update id="updateFeed">
-	update
-		board
-		set nf_content = #{nfContent}
-	   where nf_no = #{nfNo}
+update
+	newsfeed
+	set nf_content = #{nfContent}
+	where nf_no = #{nfNo}
 </update>
+
+<delete id="deleteAttachment">
+delete
+    from attachment
+    where ref_code='NF'
+    and ref_no=#{nfNo}
+</delete>
+
 </mapper>

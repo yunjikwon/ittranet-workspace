@@ -112,6 +112,12 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	public int updateFeed(Newsfeed n) {
 		return nDao.updateFeed(sqlSession, n);
 	}
+	
+	// 게시글 첨부파일 삭제
+	@Override
+	public int deleteAttachment(Newsfeed n) {
+		return nDao.deleteAttachment(sqlSession, n);
+	}
 
 	
 

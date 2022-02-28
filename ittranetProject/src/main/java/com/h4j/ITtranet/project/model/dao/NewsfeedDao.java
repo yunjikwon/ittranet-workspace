@@ -71,5 +71,9 @@ public class NewsfeedDao {
 		return sqlSession.update("newsfeedMapper.updateFeed", n);
 	}
 
+	public int deleteAttachment(SqlSessionTemplate sqlSession, Newsfeed n) {
+		return sqlSession.delete("newfeedMapper.deleteAttachment", n);
+	}
+
 
 }

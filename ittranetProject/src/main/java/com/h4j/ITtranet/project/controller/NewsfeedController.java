@@ -141,33 +141,32 @@ public class NewsfeedController {
 		return "redirect:feed.pr?prNo=" + prNo;
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="update.pr")
-	public String updateFeed(String nfNo, String nfContent, MultipartFile reupfile, HttpSession session) {
-		/*
-		if(!reupfile.getOriginalFilename().equals("")) {
-			if(n.getOriginName() != null) {
-				new File(session.getServletContext().getRealPath(n.getChangeName())).delete();
-			}
-			String changeName = saveFile(reupfile, session);
-			n.setOriginName(reupfile.getOriginalFilename());
-			n.setChangeName("resources/uploadFiles/" + changeName);
-		}
-		int result = nService.updateFeed(n);
+
+	@RequestMapping("update.pr")
+	public String updateFeed(String nfNo, Newsfeed n, String prNo, String nfContent, MultipartFile reupfile, HttpSession session) {
 		
-		if(result > 0) { // 수정 성공
+	if(!reupfile.getOriginalFilename().equals("")) {
+		int result2 = nService.deleteAttachment(n);
+		System.out.println("게시글에 딸린 첨부파일 지움");
+	}
+	
+		System.out.println("nfNo : " + nfNo);
+		System.out.println("n : " + n);
+		System.out.println("prNo : " + prNo);
+		System.out.println("nfContent : " + nfContent);
+		System.out.println("reupfile : " +  reupfile);
+
+		
+		int result = nService.updateFeed(n);
+				if(result > 0) { // 수정 성공
 			session.setAttribute("alertMsg", "성공적으로 게시글이 수정되었습니다.");
 			return "redirect:feed.pr?prNo=" + prNo;
 		}else { // 수정 실패
 			return "common/errorPage";
-		}*/
-		System.out.println("nfNo : " + nfNo);
-		System.out.println("nfContent : " + nfContent);
-		System.out.println("reupfile : " + reupfile);
-		
-		return null;
-	}
+		}
 	
+	}
+
 	// 댓글 달기
 	@ResponseBody
 	@RequestMapping(value="rinsert.pr")
