@@ -342,14 +342,19 @@
             </div>
             <div class="contentbox" style="width: 390px; height: 280px; margin-left: 0px;">
                 <div class="category-title">
-                    &nbsp;&nbsp;결제내역
-                    <a href="" class="plus-btn">+</a>
+                    &nbsp;&nbsp;결재내역
+                    <a href="newForm.fo" class="plus-btn">+</a>
                 </div>
-                <table>
-                    <tr>
-                        <th width="300">기안 제목</th>
-                        <td>상태</td>
-                    </tr>
+                <table id="drList">
+                	<thead>
+	                    <tr>
+	                        <th width="300">기안 제목</th>
+	                        <td>상태</td>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                	
+	                </tbody>    
                 </table>
             </div>
             <div class="contentbox" style="width: 390px; height: 590px; float: right; margin-left: 0px;">
@@ -400,6 +405,10 @@
                 				location.href = "detail.bo?bno=" + number;
                 			}
                 		})
+                		
+                		selectDrList();
+
+                		
                 	})
                 	
                 	function selectNewList(){
@@ -429,6 +438,30 @@
                 			}
                 		})
                 	}
+                	
+                	// 결재내역 불러오기
+                	$(document).on("click", "#drList>tbody", function selectDrList(){
+                		$.ajax({
+                			url: "draftWait.dr",
+                			success:function(list){
+                				console.log(list);
+                				
+                				let value="";
+                				for(let i in list){
+                					value += "<tr>"
+                							+ 	"<th width='120' class='type' height='30'>";
+											+	"<input type='hidden' name='drNo'  value='" + list[i].drNo + "'>" + "</th>"
+               								+ 	"<td width='500' height='30'>" + list[i].drTitle + "</td>"
+	                						+ 	"<td width='500' height='30'>" + list[i].drDivision + "</td>";
+                							+ "</td>"
+                				}
+                				
+                				$("#drList>tbody").html(value);
+                			},error:function(){
+                				console.log("최신글 ajax 통신 실패");
+                			}
+                		})
+                	})
                 </script>
             </div>
         </div>

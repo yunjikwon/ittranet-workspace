@@ -65,7 +65,7 @@
             text-align: right;
             
         }
-		.apbtn{
+		        .apbtn{
             margin:auto;
             margin-top:20px;
             margin-left: 40px;
@@ -121,7 +121,7 @@
 </head>
 <body>
 <div class="back">
-<div class="innerBack">
+	<div class="innerBack">
 		<!-- 헤더 -->
 	    <jsp:include page="../../common/pageHeader.jsp"/>
 	    <!-- 메뉴바 -->
@@ -137,7 +137,7 @@
 		    <div class="mainOuter">
 		        <br>
 		        <div id="detailTitle">
-		            	${ b.apStatus } 결재 상세
+		            	미처리 결재 상세
 		        </div>
 		        
 		        <a id="listbtn" href="approvalWait.ap">목록으로</a>
@@ -152,17 +152,17 @@
 		                <tr>
 		                    <th width="200px">기안자</th>
 		                    <td>
-			                    ${ b.empName }			                    		                    	
-		                    </td>
-		                </tr>
-		                <tr>
-		                    <th>결재자</th>
-		                    <td>
 		                    	<c:forEach var="l" items="${ aline }">
 		                        	<c:if test="${ l.drNo eq b.drNo }">
 			                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
 		                           	 </c:if>
 		                        </c:forEach>
+		                    </td>
+		                </tr>
+		                <tr>
+		                    <th>결재자</th>
+		                    <td>
+		                    	${ b.empName }
 		                    </td>
 		                </tr>
 		                <tr>
@@ -174,33 +174,35 @@
 		                    <td>${ at.filePath }</td>
 		                </tr>
 		                <tr>
-		                	<th>내용</th>
-		                    <td colspan="2" id="detailContent">
-		                      	
-		                        ${ b.drContent }
+		                	<th>프로젝트 제안</th>
+		                    <td id="detailContent">자세한 사항 첨부파일 확인 부탁드립니다.<br>
+		                        ${ b.drBusiness }
 		                        
 		                    </td>
 		                </tr>
 		
 		                   
-		            </table> <br>      
+		            </table> <br>       
 		            
 		            <!-- ------------------------------------------------------------------------- -->
 		            
 		            <div style="text-align: center;">
 		
-		            <button class="apbtn" style="background-color:rgba(36, 151, 123, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-		                	반려처리
+		            		            <button class="apbtn" style="background-color:rgba(36, 151, 123, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+		                	관리자 반려
                 	</button>
 		                <!-- The Modal -->
 		                <div class="modal" id="myModal1">
 		                    <div class="modal-dialog">
-			                    <div class="modal-content">
+			                    <div class="modal-content">		                
 			                
-			                
+			                        <!-- Modal head -->
+			                        <div class="modal-head" style="font-weight: 700;">
+			                           	  반려
+			                        </div>
 			                        <!-- Modal body -->
-			                        <div class="modal-body" style="height: 100px; margin-top: 12px; font-weight: 600;">
-			                           	 반려 처리가 완료되었습니다.
+			                        <div class="modal-body">
+			                           	 <textarea name="drManagerOp" ></textarea>
 			                        </div>
 			                
 			                        <!-- Modal footer -->
@@ -209,21 +211,24 @@
 			                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(1);">OK</button>
 			                        </div>
 			                
-		                    	</div>
+		                    </div>
 		                    </div>
 		                </div>
 		
 		            <button class="apbtn" style="background-color:rgba(122, 39, 135, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
-		                	결재확인
+		                	관리자 결재
 		            </button>
 		                <!-- The Modal -->
 		                <div class="modal" id="myModal2">
 		                    <div class="modal-dialog">
 			                    <div class="modal-content">
-			
+									<!-- Modal head -->
+			                        <div class="modal-head" style="font-weight: 700;">
+			                           	 결재
+			                        </div>
 			                        <!-- Modal body -->
-			                        <div class="modal-body" style="height: 100px; margin-top: 12px; font-weight: 600;">
-			                           	 결재 처리가 완료되었습니다.
+			                        <div class="modal-body">
+			                           	 <textarea name="drManagerOp" ></textarea>
 			                        </div>
 			                
 			                        <!-- Modal footer -->
@@ -241,21 +246,18 @@
         	
         	<form id="postForm" action="" method="post">
         		<input type="hidden" name="drNo" value="${ b.drNo }">
-        		<input type="hidden" name="" value="">
-        		<input type="hidden" name="" value="">
         	</form>
         	<script>
         		function postFormSubmit(num){
         			if(num==1){
-        				$("#postForm").attr("action", "updateReject.ap?category=5").submit();
+        				$("#postForm").attr("action", "updateAdminReject.ap").submit();
         			}else {
-        				$("#postForm").attr("action", "updateComplete.ap?category=5").submit();
+        				$("#postForm").attr("action", "updateAdminComplete.ap").submit();
         			}
         		}
         	</script>
         	
-        	
-        	</div>
+        </div>	
 	    <!-- 푸터 -->
 	    <jsp:include page="../../common/footer.jsp"/>
 	    

@@ -502,6 +502,13 @@
 		where dr_no = #{drNo}
 	</update>
 	
+	<!-- 관리자 반려 draft -->
+	<update id="updateAdminReject">
+		update draft
+		   set dr_status = '관리자반려'
+		where dr_no = #{drNo}
+	</update>
+	
 	<!-- 완료 approval_line -->
 	<update id="apComplete">
 		update
@@ -519,6 +526,44 @@
 		where dr_no = #{drNo}
 	</update>
 	
+	<!-- 관리자 완료 draft -->
+	<update id="updateAdminComplete">
+		update draft
+		   set dr_status = '관리자완료'
+		where dr_no = #{drNo}
+	</update>
+	
+	<!-- 관리자 권한 결재 -->
+	<select id="selectadminApListCount" resultType="_int">
+		select
+		       count(*)
+		  from approval_line
+  		 where 
+		 		ap_status = '미처리'
+	</select>
+	
+	
+	<select id="selectadminApList" resultMap="appResultSet">
+		 select 
+		       d.dr_no
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"  
+		     , d.dr_title
+		     , d.dr_date
+		     , d.dr_status
+		     , a.emp_no "apNo"
+		     , apline_no
+		     , apline_order
+		     , ap_status
+		     , ap_date
+		  from draft d
+		  join employee e on (d.emp_no = e.emp_no)
+		  join approval_line a on(d.dr_no = a.dr_no)
+		 where 
+		 		ap_status = '미처리'
+		 	and apline_order = 1
+		 order 
+		    by dr_date desc
+	</select>
 
 
 </mapper>
