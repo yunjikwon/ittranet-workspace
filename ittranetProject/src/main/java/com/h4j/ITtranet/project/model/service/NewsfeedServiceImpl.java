@@ -96,6 +96,12 @@ public class NewsfeedServiceImpl implements NewsfeedService {
 	public ArrayList<Reply> selectReplyList(int nfNo) {
 		return nDao.selectReplyList(sqlSession, nfNo);
 	}
+	
+	// 프로젝트 업무 갯수 조회
+	@Override
+	public ArrayList<Todo> countTd(String prNo) {
+		return nDao.countTd(sqlSession, prNo);
+	}
 
 	
 

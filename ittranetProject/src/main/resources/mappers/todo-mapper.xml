@@ -116,5 +116,20 @@
 	    where todo_no = #{tdNo}
 </delete>
 
+<select id="proCountTd" resultMap="todoList">
+<![CDATA[
+	select
+	        p.pr_no
+	       ,pr_title
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'W') as W
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'Y') as Y
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'O') as O
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'L') as L
+	       , (select count(*) from todo t where t.pr_no = p.pr_no and t.status = 'N') as N
+	   from project p
+	   where p.pr_no = #{prNo}
+	   and pr_enddate > to_char(sysdate, 'mm/dd/yyyy')
+]]> 
+</select>
 
 </mapper>

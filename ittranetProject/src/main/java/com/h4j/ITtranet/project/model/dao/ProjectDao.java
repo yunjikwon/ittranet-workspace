@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.h4j.ITtranet.employee.model.vo.Employee;
+import com.h4j.ITtranet.project.model.vo.Prmember;
 import com.h4j.ITtranet.project.model.vo.Project;
 
 @Repository
@@ -22,6 +23,10 @@ public class ProjectDao {
 
 	public int insertProject(SqlSessionTemplate sqlSession, Project p) {
 		return sqlSession.insert("projectMapper.insertProject", p);
+	}
+
+	public ArrayList<Prmember> searchMember(SqlSessionTemplate sqlSession, String search) {
+		return (ArrayList)sqlSession.selectList("prememberMapper.searchMember", search);
 	}
 	
 

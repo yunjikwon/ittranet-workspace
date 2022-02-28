@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.project.model.dao.ProjectDao;
+import com.h4j.ITtranet.project.model.vo.Prmember;
 import com.h4j.ITtranet.project.model.vo.Project;
 
 @Service
@@ -38,6 +39,11 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public int updateProject(Project p) {
 		return 0;
+	}
+
+	@Override
+	public ArrayList<Prmember> searchMember(String search) {
+		return pDao.searchMember(sqlSession, search);
 	}
 	
 

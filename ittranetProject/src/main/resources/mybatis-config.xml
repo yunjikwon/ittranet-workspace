@@ -14,6 +14,7 @@
 		<typeAlias type="com.h4j.ITtranet.common.model.vo.Attachment" alias="Attachment"/>
 		<typeAlias type="com.h4j.ITtranet.common.model.vo.Reply" alias="Reply"/>
 		<typeAlias type="com.h4j.ITtranet.project.model.vo.Project" alias="Project"/>
+		<typeAlias type="com.h4j.ITtranet.project.model.vo.Prmember" alias="Prmember"/>
 		<typeAlias type="com.h4j.ITtranet.project.model.vo.Newsfeed" alias="Newsfeed"/>
 		<typeAlias type="com.h4j.ITtranet.project.model.vo.Todo" alias="Todo"/>
 		<typeAlias type="com.h4j.ITtranet.mail.model.vo.Mail" alias="Mail" />
@@ -38,6 +39,7 @@
 		<mapper resource="/mappers/project-mapper.xml" />
 		<mapper resource="/mappers/todo-mapper.xml" />
 		<mapper resource="/mappers/newsfeed-mapper.xml" />
+		<mapper resource="/mappers/prmember-mapper.xml" />
 		<mapper resource="/mappers/mail-mapper.xml" />
 
 		<mapper resource="/mappers/calendar-mapper.xml"/>

@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.project.model.service.ProjectService;
+import com.h4j.ITtranet.project.model.vo.Prmember;
 import com.h4j.ITtranet.project.model.vo.Project;
 
 @Controller
@@ -54,5 +57,16 @@ public class ProjectController {
 		int result = pService.insertProject(p);
 		return "redirect:list.pr";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value ="addmem.pr", produces="application/json; charset=utf-8")
+	public String searchMember(String search) {
+		
+		ArrayList<Prmember> list = new ArrayList<>();
+		list = pService.searchMember(search);
+		System.out.println("클릭했을때 list : " + list);
+		return new Gson().toJson(list);
+	}
+
 	
 }

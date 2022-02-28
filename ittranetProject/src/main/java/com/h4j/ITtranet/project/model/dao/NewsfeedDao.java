@@ -63,5 +63,9 @@ public class NewsfeedDao {
 		return (ArrayList)sqlSession.selectList("newsfeedMapper.feedReplyList", nfNo);
 	}
 
+	public ArrayList<Todo> countTd(SqlSessionTemplate sqlSession, String prNo) {
+		return (ArrayList)sqlSession.selectList("todoMapper.proCountTd", prNo);
+	}
+
 
 }

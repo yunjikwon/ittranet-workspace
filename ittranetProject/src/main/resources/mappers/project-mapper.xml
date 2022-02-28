@@ -73,7 +73,7 @@ insert
 		  , #{prTitle}
 		  , sysdate
           , #{prEnddate}
-          , #prSize
+          , #{prSize}
           , #{prContent}
           , #{prLogo}
           , 'Y'

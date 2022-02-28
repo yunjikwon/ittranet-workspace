@@ -53,6 +53,28 @@
         font-size: 15px;
         border: none;
     }
+        button{
+        width: 80px;
+        height: 35px;
+        border: none;
+        border-radius: 1mm;
+        font-size: 13px;
+        font-weight: bold;
+        color: white;
+    }
+    .button2{
+        background-color: rgb(202, 183, 211);       
+        float: right;
+        margin: 10px;
+        border-radius: 1mm;
+    }
+    .button3{
+        background-color: rgb(160, 156, 163);       
+        float: right;
+        margin: 10px;
+        margin-right: 40px;
+        border-radius: 1mm;
+    }
 </style>
 </head>
 <body>
@@ -94,6 +116,7 @@
         <!--업무 현황-->
         <div class="todostatus">
             <h6 class="statusmenu" style="font-weight: bold;">업무 현황</h6>
+            
             <table class="todoTable" style="text-align: center;">
             	<tr class="todoTabletr" style="background-color: transparent;">
             		<th rowspan="2" style="width: 250px; height: 70px; font-size: 60px;" > <fmt:formatNumber value="${(todoO/todoAll)*100}" pattern="#,#0.0" /></h>%</h1> </th>
@@ -157,6 +180,8 @@
             <table>
                 <h6 style="font-weight: bold;">업무</h6>
 
+            <button id="deleteTd" class="button3" onclick="deleteTodo();">삭제</button>
+            <button id="updateTodo" class="button2" onclick="updateTodo();">상태 변경</button>
                 <table style="text-align: center; margin-top: 20px;" width="770px">
                     <thead style="background-color:rgba(209, 189, 220, 0.7); border: none; font-size: 14px;" >
                         <tr>

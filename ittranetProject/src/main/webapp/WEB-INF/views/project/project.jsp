@@ -32,19 +32,7 @@
         background-color: rgb(165, 137, 177); 
         float: right;
         margin: 10px;
-        border-radius: 1mm;
-    }
-    .button2{
-        background-color: rgb(202, 183, 211);       
-        float: right;
-        margin: 10px;
-        border-radius: 1mm;
-    }
-    .button3{
-        background-color: rgb(160, 156, 163);       
-        float: right;
-        margin: 10px;
-        margin-right: 40px;
+        margin-right: 100px;
         border-radius: 1mm;
     }
     .todo{
@@ -200,6 +188,18 @@
         position: absolute;
         margin: auto;
    }
+   .proTodo{
+       margin: 20px;
+       width: 800px;
+       height: 100px;
+       border-radius: 2mm;
+       margin-left: 50px;
+       background-color: rgb(197, 181, 204);
+   }
+
+   .todoTabletr{
+       border: none;
+   }
 
 </style>
 </head>
@@ -242,17 +242,32 @@
         <!--담당 업무, 업무 버튼, 리스트-->
         <div class="menuname">
             <br>
-            <h6 style="font-weight: bold;">&emsp;담당 업무</h6>
+            <h6 style="font-weight: bold;">&emsp;프로젝트 업무 현황</h6>
         </div>
-            <button id="deleteTd" class="button3" onclick="deleteTodo();">삭제</button>
-            <button id="updateTodo" class="button2" onclick="updateTodo();">상태 변경</button>
             <button id="newTodo" class="button1" onclick="openNew();">새 업무</button>
           
             <br><br>
+            <div class="proTodo">
+                <table class="todoTable" style="text-align: center;">
+                    <tr class="todoTabletr" style="background-color: transparent;">
+                        <th rowspan="2" style="width: 250px; height: 70px; font-size: 60px;" > <fmt:formatNumber value="${(todoO/todoAll)*100}" pattern="#,#0.0" /></h>%</h1> </th>
+                        
+                        <th style="width: 100px;">대기</th>
+                        <th style="width: 100px;">진행중</th>
+                        <th style="width: 100px;">완료</th>
+                        <th style="width: 100px;">지연</th>
+                    </tr>
+                    <tr class="todoTabletr" style="background-color: transparent;">
+                        <td>${ todoW }</td>
+                        <td>${ todoY }</td>
+                        <td>${ todoO }</td>
+                        <td> ${ todoL }</td>
+                    </tr>
+                </table>
+            </div>
         <table class="todo" width="780" style="text-align: center;" >
             <thead>
                 <tr style="background-color: rgba(209, 189, 220, 0.7); border: none; font-size: 14px; ">
-                    <th width="50"><input name="allCheck" id="allCheck" type="checkbox" /></th>
                     <th width="50">no</th>
                     <th width="340px">업무</th>
                     <th width="115">담당자</th>
@@ -263,7 +278,6 @@
             <tbody>
             	<c:forEach var="t" items="${ todo }">
                 <tr>
-                    <td>&emsp;<input type="checkbox" class="selectTodo" name="RowCheck" value="${ t.todoNo }" /></td>
                     <td>
                   	 1
                     </td>
@@ -433,6 +447,10 @@
 
 	<script>
 		
+	$(function(){
+		selectReplyList(no);
+	})
+	
 		function addReply(no){
 			
 			

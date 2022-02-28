@@ -46,19 +46,21 @@ public class NewsfeedController {
 		return mv;
 	}
 	
-	// 게시글 조회, 첨부파일 조회
+	// 게시글 조회, 첨부파일 조회, 업무 목록 조회
 	@RequestMapping("feed.pr")
 	public ModelAndView prNewsfeed(String nfNo, Newsfeed n, String prNo, ModelAndView mv) {
-		
+
 		ArrayList<Newsfeed> list = nService.prNewsfeed(prNo);
 		ArrayList<Todo> todo = nService.prTodo(prNo);
+		//ArrayList<Todo> countTd = nService.countTd(prNo);
 		ArrayList<Attachment> pra = nService.prAttachment(nfNo);
 		Newsfeed nf = nService.nfNo(prNo);
-		
+	
 		mv.addObject("list", list)
 		.addObject("todo", todo)
 		.addObject("nf",nf)
 		.addObject("pra",pra)
+		//.addObject("countTd", countTd)
 		.setViewName("project/project");
 		
 		System.out.println("프로젝트 뉴스피드 db : " + list);

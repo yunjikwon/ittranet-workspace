@@ -40,6 +40,9 @@ public interface NewsfeedService {
 	// 뉴스피드 게시글 댓글 조회
 	ArrayList<Reply> selectReplyList(int nfNo);
 	
+	// 프로젝트 업무 갯수 조회
+	ArrayList<Todo> countTd(String prNo);
+	
 
 	
 
