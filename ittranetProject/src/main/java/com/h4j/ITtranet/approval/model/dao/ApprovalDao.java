@@ -129,6 +129,7 @@ public class ApprovalDao {
 		HashMap<String, Integer> map = new HashMap<>();
 		map.put("category",category);
 		map.put("empNo", empNo);
+		System.out.println("map: " + map);
 		return sqlSession.selectOne("appMapper.selectApListCount", map);
 	}
 
@@ -144,6 +145,24 @@ public class ApprovalDao {
 		return (ArrayList)sqlSession.selectList("appMapper.selectApList", map, rowBounds);
 	}
 
+	
+	// 반려 상태 update
+	public int apUpdateReject(SqlSession sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.update("appMapper.apReject", map);
+	}
+	
+	public int drUpdateReject(SqlSession sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.update("appMapper.drReject", map);
+	}
+
+	// 완료 상태 update
+	public int apUpdateComplete(SqlSession sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.update("appMapper.apComplete", map);
+	}
+	
+	public int drUpdateComplete(SqlSession sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.update("appMapper.drComplete", map);
+	}
 	
 	
 }

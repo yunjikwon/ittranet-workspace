@@ -25,7 +25,7 @@ public class AppLine {
 	private int drNo;				// 기안문서번호(seq_drno)
 	private int empNo;				// 결재자 사원번호
 	private String aplineOrder;		// 결재순번(결재순서1순위 2순위)
-	private String apStatus;		// 결재상태 (미처리/완료)
+	private String apStatus;		// 결재상태 (미처리/반려/완료)
 	private Date apDate;			// 결재일
 	
 	//검색 필터

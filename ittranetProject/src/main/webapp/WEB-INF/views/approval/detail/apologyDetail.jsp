@@ -89,7 +89,7 @@
 		            	진행중 결재 상세
 		        </div>
 		        
-		        <a id="listbtn" href="draftWait.dr">목록으로</a>
+		        <a id="listbtn" href="draftWait.dr?empNo=${ loginUser.empNo }">목록으로</a>
 	            <div id="innerouter" style="padding:5% 5%;">
 		            <table id="contentArea" align="center">
 		                <tr>

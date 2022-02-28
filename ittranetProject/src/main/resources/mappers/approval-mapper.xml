@@ -28,9 +28,11 @@
 		<result column="pro_title" property="drProTitle" />
 		<result column="pro_date" property="drProDate" />
 		
-		<result column="ap_no" property="empNo" />
+		<result column="apNo" property="empNo" />
 		<result column="apline_order" property="aplineOrder" />
 		<result column="apline_no" property="aplineNo" />
+		<result column="ap_status" property="apStatus" />
+		<result column="ap_date" property="apDate" />
 	</resultMap>
 	
 	<resultMap id="appLineResultSet" type="AppLine">
@@ -41,6 +43,7 @@
 		<result column="apline_order" property="aplineOrder" />
 		<result column="team_name" property="team" />
 		<result column="job_name" property="job" />
+		<result column="ap_status" property="apStatus" />
 	</resultMap>
 
 	<resultMap id="attachmentResult" type="Attachment">
@@ -95,11 +98,11 @@
 		 	</when>
 		 	<when test="category == 3">
 		 		dr_status = '반려'
-		 	and dr_status = '관리자반려'		 		
+		 	or dr_status = '관리자반려'		 		
 		 	</when>
 		 	<when test="category == 4">
 		 		dr_status = '완료'
-		 	and dr_status = '관리자승인'		 		
+		 	or dr_status = '관리자승인'		 		
 		 	</when>
 		 </choose>
 		 and emp_no = #{empNo}
@@ -128,11 +131,11 @@
 		 	</when>
 		 	<when test="category == 3">
 		 		dr_status = '반려'
-		 	and dr_status = '관리자반려'		 		
+		 	or dr_status = '관리자반려'		 		
 		 	</when>
 		 	<when test="category == 4">
 		 		dr_status = '완료'
-		 	and dr_status = '관리자승인'		 		
+		 	or dr_status = '관리자승인'		 		
 		 	</when>
 		 </choose>	
 		 and emp_no = #{empNo}
@@ -273,15 +276,15 @@
 		 	<choose>
 		 		<when test="boardSearch == 7">
 		        	dr_date BETWEEN TO_CHAR(SYSDATE-7 ,'YYYY-MM-DD')
-							    AND TO_CHAR(SYSDATE , 'YYYY-MM-DD')  
+							    AND TO_CHAR(SYSDATE+1 , 'YYYY-MM-DD')  
 		        </when>
 		        <when test="boardSearch == 8">
 		        	dr_date BETWEEN TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM-DD')
-					            AND TO_CHAR(SYSDATE ,'YYYY-MM-DD')
+					            AND TO_CHAR(SYSDATE+1 ,'YYYY-MM-DD')
 		        </when>
 		        <when test="boardSearch == 8">
 		        	dr_date BETWEEN TO_CHAR(ADD_MONTHS(SYSDATE, -3), 'YYYY-MM-DD')
-					            AND TO_CHAR(SYSDATE ,'YYYY-MM-DD')
+					            AND TO_CHAR(SYSDATE+1 ,'YYYY-MM-DD')
 		        </when>
 		    </choose>    	 
 		 order
@@ -311,9 +314,12 @@
 		     , emp_name
 		     , dr_title
 		     , business
+		     , dr_status
+		     , ap_status
 		  from draft
 		  join employee using(emp_no)
 		  join businessplan using(dr_no)
+		  join approval_line using(dr_no)
 		 where dr_no = #{drNo}
 	</select>
 	
@@ -325,9 +331,12 @@
 		     , emp_name
 		     , dr_title
 		     , apo_content
+		     , dr_status
+		     , ap_status
 		  from draft
 		  join employee using(emp_no)
 		  join apology using(dr_no)
+		  join approval_line using(dr_no)
 		 where dr_no = #{drNo}
 	</select>
 	
@@ -340,9 +349,12 @@
 		     , dr_title
 		     , overtime
 		     , overtime_date
+		     , dr_status
+		     , ap_status
 		  from draft
 		  join employee using(emp_no)
 		  join overtime using(dr_no)
+		  join approval_line using(dr_no)
 		 where dr_no = #{drNo}
 	</select>
 	
@@ -355,9 +367,12 @@
 		     , dr_title
 		     , ex_content
 		     , ex_sum
+		     , dr_status
+		     , ap_status
 		  from draft
 		  join employee using(emp_no)
 		  join expenditure using(dr_no)
+		  join approval_line using(dr_no)
 		 where dr_no = #{drNo}
 	</select>
 	
@@ -371,9 +386,12 @@
 		     , bu_reason
 		     , bu_money
 		     , bu_content
+		     , dr_status
+		     , ap_status
 		  from draft
 		  join employee using(emp_no)
 		  join budget using(dr_no)
+		  join approval_line using(dr_no)
 		 where dr_no = #{drNo}
 	</select>
 	
@@ -386,9 +404,12 @@
 		     , dr_title
 		     , pro_title
 		     , pro_date
+		     , dr_status
+		     , ap_status
 		  from draft
 		  join employee using(emp_no)
 		  join proceedings using(dr_no)
+		  join approval_line using(dr_no)
 		 where dr_no = #{drNo}
 	</select>
 	
@@ -407,7 +428,7 @@
 
 	
 	<!-- 결재 게시판 select -->
-	<select id="selectApListCount" resultMap="appResultSet">
+	<select id="selectApListCount" resultType="_int">
 		select
 		       count(*)
 		  from approval_line
@@ -418,11 +439,11 @@
 		 	</when>
 		 	<when test="category == 6">
 		 		ap_status = '반려'
-		 	and ap_status = '관리자반려'		 		
+		 	or ap_status = '관리자반려'		 		
 		 	</when>
 		 	<when test="category == 7">
 		 		ap_status = '완료'	
-		 	and ap_status = '관리자승인'		 		
+		 	or ap_status = '관리자승인'		 		
 		 	</when>
 		 </choose>
 		    and emp_no = #{empNo}
@@ -432,24 +453,71 @@
 	<select id="selectApList" resultMap="appResultSet">
 		 select 
 		       d.dr_no
-		     , d.dr_division  
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"  
 		     , d.dr_title
 		     , d.dr_date
 		     , d.dr_status
 		     , a.emp_no "apNo"
 		     , apline_no
 		     , apline_order
+		     , ap_status
+		     , ap_date
 		  from draft d
 		  join employee e on (d.emp_no = e.emp_no)
 		  join approval_line a on(d.dr_no = a.dr_no)
-		 where ap_status = '미처리'
-		   and apline_order = 1
-		   and a.emp_no = #{empNo}
+		 where a.emp_no = #{empNo}
+		   and 
+		   <choose>
+			 	<when test="category == 5">
+			 		ap_status = '미처리'
+			 	and apline_order = 1
+			 	</when>
+			 	<when test="category == 6">
+			 		ap_status = '반려'
+			 	or ap_status = '관리자반려'		 		
+			 	</when>
+			 	<when test="category == 7">
+			 		ap_status = '완료'	
+			 	or ap_status = '관리자승인'		 		
+			 	</when>
+			</choose>
 		 order 
 		    by dr_date desc
 	</select>
 
+	<!-- 반려 approval_line -->
+	<update id="apReject">
+		update
+		       approval_line
+		   set apline_order = apline_order -1 
+		     , ap_date = sysdate
+		     , ap_status = '반려'
+		where dr_no = #{drNo}
+	</update>
 	
+	<!-- 반려 draft -->
+	<update id="drReject">
+		update draft
+		   set dr_status = '반려'
+		where dr_no = #{drNo}
+	</update>
+	
+	<!-- 완료 approval_line -->
+	<update id="apComplete">
+		update
+		       approval_line
+		   set apline_order = apline_order -1 
+		     , ap_date = sysdate
+		     , ap_status = '완료'
+		where dr_no = #{drNo}
+	</update>
+	
+	<!-- 완료 draft -->
+	<update id="drComplete">
+		update draft
+		   set dr_status = '완료'
+		where dr_no = #{drNo}
+	</update>
 	
 
 
