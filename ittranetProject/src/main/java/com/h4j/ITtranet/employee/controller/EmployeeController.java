@@ -496,6 +496,12 @@ public class EmployeeController {
 
 	} 
 	
+	/**
+	 * 관리자 다수 계정 삭제
+	 * 가입 승인 반려 | 사원 계정 삭제 (status 'N'으로 변경)
+	 * @param e
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("delEmps.me")
 	public String delEmpls(Employee e) {
@@ -515,10 +521,41 @@ public class EmployeeController {
 		return "member/adminMemberUpdate";
 	}
 	
+	
+	
+	
+	// 전체 사원 데이터 
+	/*
+	@ResponseBody
+	@RequestMapping("delEmpForm.me")
+	public String delEmpls(Employee e) {
+		int result = eService.deleteMember(e.getEmpNo());
+		
+		return result > 0 ? "PASS" : "FAIL";
+		
+	}
+	*/
+	
+	/* 
+	 * 페이징 처리 x버전
+	 */
+
+	@RequestMapping("delEmpForm.me")
+	public ModelAndView delEmpForm(ModelAndView mv) {
+		ArrayList<Employee> list = eService.selectAllemployee2();
+		mv.addObject("list", list)
+		  .setViewName("member/adminMemberDelete");
+		
+		return mv;
+		
+	}
+	
+	
 	/**
 	 * 사원 계정 삭제 페이지 호출
 	 * @return
 	 */
+	/*
 	@RequestMapping("delEmpForm.me")
 	public ModelAndView delEmpForm(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
 		
@@ -534,6 +571,7 @@ public class EmployeeController {
 		
 		return mv;
 	}
+	*/
 
 	
 	

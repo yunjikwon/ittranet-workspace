@@ -74,6 +74,11 @@ public class EmployeeDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectAllemployee", null, rowBounds);
 	}
 	
+	public ArrayList<Employee> selectAllemployee2(SqlSessionTemplate sqlSession) {
+
+		return (ArrayList)sqlSession.selectList("memberMapper.selectAllemployee2");
+	}
+	
 	public int confirmMember(SqlSessionTemplate sqlSession, Employee e) {
 		return sqlSession.update("memberMapper.confirmMember", e);
 	}

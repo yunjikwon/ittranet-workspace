@@ -48,6 +48,9 @@ public interface EmployeeService {
 	int selectAllemployeeCount();
 	ArrayList<Employee> selectAllemployee(PageInfo pi);
 	
+	// 상태 Y인 회원 조회 2
+	ArrayList<Employee> selectAllemployee2();
+	
 	// ~~사원 추가
 	// 사원 추가 페이지 호출 addEmpForm.me
 	
