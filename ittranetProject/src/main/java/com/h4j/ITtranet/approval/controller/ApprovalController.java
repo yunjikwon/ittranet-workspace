@@ -483,7 +483,7 @@ public class ApprovalController {
 			}
 		}
 		
-		@RequestMapping("admingForm.dr")
+		@RequestMapping("adminForm.dr")
 		public ModelAndView adminFormList(HttpSession session, ModelAndView mv, HttpServletRequest request) throws Exception {
 			mv
 			  .setViewName("approval/adminFormList");
