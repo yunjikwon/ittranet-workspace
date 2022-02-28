@@ -109,15 +109,15 @@
         	<!-- 입력폼 -->
             <div class="maildetail">
 
-				<input type="hidden" id="sdaccount" name="senderAccount">
+				<input type="hidden" name="senderAccount" name="rvac" value="${m.receiverAccount}">
 				<table id="mailinsert" align="center" style="font-family: 'Gowun Dodum', sans-serif;">
 					<tr>
 						<th>받는사람</th>
-						<td><input type="text" id="rvaccount" name="receiverAccount" required></td>
+						<td><input type="text" name="sdac" value="${m.senderAccount}" required disabled></td>
 					</tr>
 					<tr>
 						<th>제목</th>
-						<td><input type="text" id="title" name="mailTitle"></td>
+						<td><input type="text" id="title" name="mailTitle" value="[RE]:${m.mailTitle}"></td>
     	            </tr>
         	        <tr>
 						<th>첨부</th>

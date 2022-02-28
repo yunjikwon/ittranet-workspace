@@ -72,18 +72,18 @@
 
 			<!-- 버튼바 (복원, 완전삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="" style="text-decoration:none; color:white;">복원</a></button>
+            	<button class="w-btn w-btn-gra1" type="button"  onclick="restorationmail();">복원</button>
                 <button class="w-btn w-btn-gra2" type="button" onclick="deletemail();">완전삭제</button>				
 			</div>
 			
 			<!-- 폼 -->
-            <form id="postForm" action="alllist.ml" method="post">
+            <form id="postForm" action="spamlist.ml" method="post">
 
             <br><br><br>
 
 			<!-- 메일 조회 리스트 -->
             <div class="table table-hover" align="center">
-                <table id="mailalllist" style="background-color:white">
+                <table id="mailspamlist" style="background-color:white">
                 	<thead>
                     	<tr>
                         	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
@@ -110,7 +110,7 @@
 				<!-- 메일 상세조회 -->
                 <script>
             		$(function(){
-            			$("#mailalllist>tbody>tr").click(function(){
+            			$("#mailspamlist>tbody>tr").click(function(){
             				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
             			});
             		})
@@ -144,6 +144,7 @@
             			 success:function(result){
             				 if(result == 'success'){
             				 	console.log("게시글 삭제 성공!");
+            				 	location.reload();
             				 }else{
             					 console.log("게시글 삭제실패");
             				 }
@@ -167,11 +168,12 @@
             			
             			$.ajax({
             				url:"resto.ml",
-            				type="post",
-            				data:{reiveMailNo:rmArr},
+            				type:"post",
+            				data:{receiveMailNo:rmArr},
             				success:function(result){
             					if(result == 'success'){
             						console.log("게시글 복원 성공!");
+            						location.reload();
             					}else{
             						console.log("게시글 복원 실패");
             					}
@@ -191,12 +193,12 @@
                    			<li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage-1 }">&lt;</a></li>
+                    		<li class="page-item"><a class="page-link" href="spamlist.ml?cpage=${ pi.currentPage-1 }">&lt;</a></li>
                     	</c:otherwise>
                     </c:choose>
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                    	<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ p }">${ p }</a></li>
+                    	<li class="page-item"><a class="page-link" href="spamlist.ml?cpage=${ p }">${ p }</a></li>
                     </c:forEach>
                     
                     <c:choose>
@@ -204,7 +206,7 @@
                     		<li class="page-item disabled"><a class="page-link" href="#">&gt;</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage+1 }">&gt;</a></li>
+                    		<li class="page-item"><a class="page-link" href="spamlist.ml?cpage=${ pi.currentPage+1 }">&gt;</a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>

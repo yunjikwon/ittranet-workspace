@@ -102,7 +102,7 @@
 			<div id="buttonbar">
             	<button type="button" class="btn btn-secondary"><a href="enrollForm.mlme">내게쓰기</a></button>
             	<button type="submit" class="btn btn-success">보내기</button>
-            	<button type="reset" class="btn btn-light">취소</button>
+            	<button type="submit" class="btn btn-light">취소</button>
         	</div>
         	
         	<br><br>
@@ -140,6 +140,12 @@
 	</div>
     </div>
     </div>
+    
+    <script>
+    	$(".btn-light").on("click", function(){
+    		location.href="alllist.ml";
+    	})
+    </script>
        
 
 </body>

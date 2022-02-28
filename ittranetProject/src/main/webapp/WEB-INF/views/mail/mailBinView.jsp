@@ -89,7 +89,7 @@
 
 			<!-- 버튼바 (복원, 완전삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="" style="text-decoration:none; color:white;">복원</a></button>
+            	<button class="w-btn w-btn-gra1" type="button" onclick="restorationmail();">복원</button>
                 <button class="w-btn w-btn-gra2" type="button" onclick="deletemail();">완전삭제</button>
             
             	<!-- Modal 
@@ -142,6 +142,8 @@
                         		<td>${ m.empNameSd }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
+                        		
+                        		<input type="hidden" name="statusRv" value="${ m.statusRv }"> 
                     		</tr>
                     	</c:forEach>
                     </tbody>
@@ -185,6 +187,7 @@
             			 success:function(result){
             				 if(result == 'success'){
             				 	console.log("게시글 삭제 성공!");
+            				 	location.reload();
             				 }else{
             					 console.log("게시글 삭제실패");
             				 }
@@ -196,6 +199,33 @@
             		 })
             	}            	
             	</script>
+            	
+            	<!-- 체크박스 : 복원 -->
+            	<script>
+            		function restorationmail() {
+            			var rmArr = [];
+            			$("input[name='rvno']:checked").each(function(){
+            				rmArr.push($(this).val());
+            			})
+            			console.log(rmArr);
+            			
+            			$.ajax({
+            				url:"resto.ml",
+            				type:"post",
+            				data:{receiveMailNo:rmArr},
+            				success:function(result){
+            					if(result == 'success'){
+            						console.log("게시글 복원 성공!");
+            						location.reload();
+            					}else{
+            						console.log("게시글 복원 실패");
+            					}
+            				},error:function(){
+            					console.log("ajax게시글 복원 통신 실패!");
+            				}
+            			})
+            		}
+            		</script>
 				
 			
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -94,7 +95,7 @@ public class MailController {
 		return "mail/mailTomeEnrollForm";
 	}
 	
-	// 2-2. 새로운 메일 데이터 추가 (+첨부파일)
+	// 2-2. 내게쓰기 새로운 메일 데이터 추가 (+첨부파일)
 	@RequestMapping("tomeinsert.ml")
 	public String toMeInsertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
 		
@@ -119,12 +120,50 @@ public class MailController {
 		return "redirect:alllist.ml";
 	}
 	
+	
+	// 2-1. 답장하기 폼
+	@RequestMapping("enrollForm.mlas")
+	public ModelAndView answerEnrollForm(int mno, ModelAndView mv) {
+		
+		Mail m = mService.selectMail(mno);
+		
+		mv.addObject("m", m).setViewName("mail/mailAnswerView");
+		
+		return mv;
+	}
+	// 2-2. 답장하기 새로운 메일 데이터 추가 (+첨부파일)
+	@RequestMapping("asinsert.ml")
+	public String answerInsertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
+		ArrayList<Attachment> list = new ArrayList<>();
+		
+		for(MultipartFile f : upfile) {
+			if(!f.getOriginalFilename().equals("")) {
+				Attachment at = new Attachment();
+				
+				at.setOriginName(f.getOriginalFilename());
+				at.setChangeName(saveFile(f, session));
+				at.setFilePath("resources/uploadFiles/");
+				
+				list.add(at);
+			}
+		}
+
+		int result = mService.insertMail(m, list);
+
+		return "redirect:alllist.ml";
+	}
+	
+	
 	// 3. 상세조회 메일
 	@RequestMapping("detail.ml")
 	public ModelAndView selectMail(int mno, ModelAndView mv) {
-
+		
 		Mail m = mService.selectMail(mno);
-		mv.addObject("m", m).setViewName("mail/mailDetailView");
+
+		ArrayList<Attachment> list = mService.selectMailAttachment(mno);
+		
+		
+		mv.addObject("m", m).addObject("list", list).setViewName("mail/mailDetailView");
 		return mv;
 
 
@@ -139,13 +178,13 @@ public class MailController {
 		map.put("rvno", rvno);
 		map.put("important", important);
 		
-		System.out.println(map);
 		int result = mService.updateImportantMail(map);
 		
 		return result>0? "success" : "fail";
 	}
 	
 	// 4-2. 중요 메일 조회 (보낸편지함)	// 왜 맨 상위만 선택되는가??????????????????????
+	/*
 	@ResponseBody
 	@RequestMapping(value="impo.sdml", produces="application/text; charset=UTF-8")
 	public String importantsendmail (String mno, String important) {
@@ -159,6 +198,7 @@ public class MailController {
 		return result>0? "success" : "fail";
 		
 	}
+	*/
 	
 	
 	// 5. (리스트에서) 메일 삭제
@@ -166,32 +206,25 @@ public class MailController {
 	@RequestMapping(value="delete.ml", produces="application/text; charset=UTF-8")
 	public String deletemail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
 		
+		
+		
 		int result = mService.deleteMail(receiveMailNo);
 		
+	
 		return result>0? "success" : "fail";
 	}
 	
 	// 12. (리스트에서) 메일 복원
-	/*
 	@ResponseBody
-	@RequestMapping(value="resto.ml")
-	*/
-	
-	/*
-	// 5-2. (상세조회페이지에서) 메일 삭제 //////////////////////////////// 수정해야됨
-	@RequestMapping("deleteone.ml")
-	public String deleteOneMail(int rvno, HttpSession session, Model model) {
-		int result = mService.deleteOneMail(rvno);
-		
-		
-		if(result>0) {
-			return "redirect:alllist.ml";
-		}else {
-			return "common/errorPage";
-		}
+	@RequestMapping(value="resto.ml", produces="application/text; charset=UTF-8")
+	public String restorationmail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
+		int result = mService.restorationMail(receiveMailNo);
 
+		return result>0? "success" : "fail";
 	}
-	*/
+	
+	
+
 
 
 	
@@ -316,7 +349,7 @@ public class MailController {
 		return "mail/mailSendView";
 	}
 	
-	// 11 임시보관함
+	// 11. 임시보관함
 	@RequestMapping("temlist.ml")
 	public String selectTemList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
@@ -325,7 +358,6 @@ public class MailController {
 		
 		int listCount = mService.selectTemListCount(email);
 		
-		System.out.println(listCount);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
 		ArrayList<Mail> temlist = mService.selectTemList(pi, email);
@@ -335,5 +367,32 @@ public class MailController {
 		
 		return "mail/mailTemView";
 	}
+	
+	// 디테일화면 : 스팸메일
+	@ResponseBody
+	@RequestMapping(value="dtspam.ml", produces="application/text; charset=UTF-8")
+	public String updateSpamMail(int rvno) {
+		
+		int result = mService.updateSpamMail(rvno);
+
+		System.out.println(result);
+		return result>0? "success" : "fail";
+	}
+	
+	/*
+	// 5-2. (상세조회페이지에서) 메일 삭제 //////////////////////////////// 수정해야됨
+	@RequestMapping("deleteone.ml")
+	public String deleteOneMail(int rvno, HttpSession session, Model model) {
+		int result = mService.deleteOneMail(rvno);
+		
+		
+		if(result>0) {
+			return "redirect:alllist.ml";
+		}else {
+			return "common/errorPage";
+		}
+
+	}
+	*/
 
 }

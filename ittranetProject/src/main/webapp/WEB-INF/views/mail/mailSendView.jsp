@@ -134,8 +134,8 @@
                     <tbody>
                     	<c:forEach var="m" items="${ sendlist }">
 	                    	<tr>
-	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
-                        		<td onclick="event.cancelBubble=true;"><input type="checkbox" name="mno" id="Check" value="${ m.sendMailNo }"></td>
+	                    		
+                        		<td onclick="event.cancelBubble=true;"><input class="sdNo" type="checkbox" name="mno" id="Check" value="${ m.sendMailNo }"></td>
                         		<td>
                         			<button id="on" class="btn btn-sm" onclick="importantSendStar();">
                         			<c:choose>
@@ -183,7 +183,12 @@
 				</script>
 				
 				<script>
-					function importantSendStar() {
+					function importantSendStar(btn) {
+						let mno = $(btn).parent().children("input[name='mno']").val();
+						console.log(mno);
+						let important = $(btn).parent().siblings("input[name='important']").val();
+						console.log(important);
+						
 						$.ajax({
 							url:"impo.sdml",
 							data:{

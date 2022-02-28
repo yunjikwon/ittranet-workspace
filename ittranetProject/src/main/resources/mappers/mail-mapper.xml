@@ -36,6 +36,7 @@
 			   count(*)
 		  from mail_receive
 		 where status = 'Y'
+		   and spam = 'N'
 		   and emp_no = #{empNo}
 	</select>
 	<select id="selectList" resultMap="mailResult">
@@ -47,6 +48,7 @@
      		 , statusRv
      		 , receive_mail_no
      		 , important
+     		 , spam
 		 from(
 		select send_mail_no
 		      , emp_name sdpp
@@ -56,17 +58,19 @@
               , rv.status statusRv
               , receive_mail_no
               , important
+              , spam
 		  from mail_send sd
 		  join employee using(emp_no)
 		  join mail_receive rv using (send_mail_no)
 		 where tem_status = 'N')
 		 where receiver_account = #{receiveAccount}
       	   and statusRv = 'Y'
+      	   and spam = 'N'
 		 order
 	   	    by send_mail_no desc
 	</select>
 	
-	<!-- 메일 상세조회 -->
+	<!-- 메일 상세조회 (메일, 첨부파일) -->
 	<select id="selectMail" resultMap="mailResult">
 		select send_mail_no
       		 , sdpp
@@ -76,7 +80,7 @@
       		 , send_date
       		 , receiver_account
       		 , e2.emp_name rvpp
-      		 , receiveMailNo
+      		 , receive_mail_no 
   		  from (
   		  select
                  send_mail_no
@@ -86,7 +90,7 @@
                , mail_content
                , send_date
                , receiver_account
-               , receive_mail_no receiveMailNo
+               , receive_mail_no 
             from mail_send ms
             join employee e1 on (ms.emp_no = e1.emp_no)
             join mail_receive using(send_mail_no)) 
@@ -97,8 +101,10 @@
 		select
 			   origin_name
 			 , change_name
+			 , file_path
 		  from attachment
 		 where ref_code = 'M'
+		   and ref_no = #{sendMailNo}
 	</select>
 	
 	<!-- 메일쓰기 -->
@@ -185,6 +191,8 @@
      		 , receiver_account
      		 , rvst
              , sdst
+             , spam
+             , receive_mail_no
 		 from(
 		select send_mail_no
               , sender_account
@@ -194,6 +202,8 @@
 		      , receiver_account
               , rv.status rvst
               , sd.status sdst
+              , spam
+              , receive_mail_no
 		  from mail_send sd
 		  join employee using(emp_no)
 		  join mail_receive rv using (send_mail_no)
@@ -390,80 +400,24 @@
 		    left join employee on (email = receiver_account)
 	  </select>
 	  
-	  <!-- 메일 삭제 -->
+	  <!-- 리스트 : 메일 삭제 -->
 	  <update id="deleteMail">
 	  	update
 		       mail_receive
-		<choose>
-		<when test="status == 'Y'">
 		   set status= 'T'
-		</when>
-		<otherwise>
-		   set status = 'N'
-		</otherwise>
-		</choose>
 	     where receive_mail_no = #{receiveNo}
 	  </update>
 	  
-	  <!-- 중요메일 체크/체크해제 -->
-	  <update id="importantMail">
-		update
-			   mail_receive
-		<choose>
-		<when test="important == 'N'">
-		   set important = 'Y'
-		</when>
-		<otherwise>
-		   set important ='N'
-		</otherwise>
-		</choose>
-		 where receive_mail_no = #{receiveMailNo}
-		   and status = 'Y'
-		   and spam = 'N'
-	  </update>
-	
-	  <!-- 고민중~~~~~ -->
-	  <update id="deleteOneMail">
-		update
-			   mail_receive
-		<choose>
-		<when test="status == 'Y'">
-		    set status = 'T'
-		</when>
-		<when test="status == 'T'">
-			set status = 'N'
-		</when>
-		</choose>
-		 where receive_mail_no = #{receiveMailNo}
+	  <!-- 리스트 : 메일 복원 -->
+	  <update id="restorationMail">
+	  	update
+	  			mail_receive
+	  	   set spam = 'N',
+	  	  	   status = 'Y'
+	  	 where receive_mail_no = #{receiveNo}
 	  </update>
 	  
-	  <select id="selectMailList" resultMap="mailResult">
-	    select send_mail_no
-     		 , sdpp
-     		 , mail_title
-      		 , send_date
-     		 , receiver_account
-     		 , statusRv
-     		 , receive_mail_no
-     		 , important
-		 from(
-		select send_mail_no
-		      , emp_name sdpp
-		      , mail_title
-		      , send_date
-		      , receiver_account
-              , rv.status statusRv
-              , receive_mail_no
-              , important
-		  from mail_send sd
-		  join employee using(emp_no)
-		  join mail_receive rv using (send_mail_no)
-		 where tem_status = 'N')
-		 order
-	   	    by send_mail_no desc
-	  </select>
-	  
-	  <!-- 중요메일함 업데이트 -->
+	  <!-- 리스트 : 중요메일 체크/체크해제 -->
 	  <update id="updateImportantMail">
 		update
 			   mail_receive
@@ -476,9 +430,11 @@
 		</otherwise>
 		</choose>
 		 where receive_mail_no = #{rvno}
+		   and status = 'Y'
+		   and spam = 'N'
 	  </update>
 	  
-	  <!-- 중요메일함 업데이트 (보낸메일함) -->
+	  <!-- 리스트 : 중요메일 체크/체크해제 (보낸메일함) (진행중)-->
 	  <update id="updateImportantSendMail">
 		update
                mail_receive
@@ -492,8 +448,14 @@
 		</choose>
 			where send_mail_no = #{mno}
 	  	</update>
-
-	  
+	  	
+	  	<!-- 스팸메일 -->
+		<update id="updateSpamMail">
+			update
+			   	   mail_receive
+		   	   set spam = 'Y'
+		 	 where receive_mail_no = #{rvno}
+	    </update>
 	  
 	  
 	  
