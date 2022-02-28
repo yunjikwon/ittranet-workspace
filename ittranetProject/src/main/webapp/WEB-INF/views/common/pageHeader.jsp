@@ -51,6 +51,7 @@
         background:rgb(233, 232, 232);
         border-radius: 30px;
         margin-bottom: 100px;
+        box-shadow:1px 1px 20px 5px rgba(0, 0, 0, 0.144);
     }
     .header{
         width: 1200px;
@@ -61,10 +62,11 @@
     }
     .header-btn{
         border: none;
-        background: rgb(168, 201, 185);
+        background: rgba(100, 175, 157, 0.45);
         height: 35px;
         border-radius: 5px;
-        margin: 7px;
+        margin: 6px;
+        padding: 7px;
     }
     .menu>a{
         text-decoration: none; 
