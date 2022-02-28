@@ -44,5 +44,14 @@ public interface ApprovalService {
 	// 반려 상태 update
 	int updateComplete(HashMap<String, Integer> map);
 	
+	//---------------------------------------------------------------------
+	// 관리자 권한 결재 리스트
+	int selectAdminApListCount();
+	ArrayList<Approval> selectAdminApList(PageInfo pi);
+	
+	// 관리자 권한 결재 update
+	int updateAdminReject(int drNo);
+	int updateAdminComplete(int drNo);
+	
 	
 }
