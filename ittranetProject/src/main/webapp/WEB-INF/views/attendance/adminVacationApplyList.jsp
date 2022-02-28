@@ -14,15 +14,6 @@
         font-size: 18px; 
         font-weight: 600;
     }
-    .vc-box{
-        background: white;
-        width: 950px;
-        border-radius: 25px;
-        padding: 50px;
-        margin-left: 15px;
-        font-size: 17px;
-        margin-bottom: 50px;
-    }
     table{
         font-size: 15px;
         font-weight: 400;
@@ -100,18 +91,18 @@
                         <br><br>
                         <div class="vc-box">
                             
-                            <button id="vc-udt">수정</button>
+                            <!--<button id="vc-udt">수정</button>-->
                             
                             <br><br><br>
-                            <table id="yetVcList" border="1">
+                            <table id="yetVcList"  class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th width="110">No</th>
                                         <th width="150">이름</th>
                                         <th width="150">소속</th>
                                         <th width="150">휴가구분</th>
-                                        <th width="350">기간</td>
-                                        <th width="150">상태</td>
+                                        <th width="350">기간</th>
+                                        <th width="150">상태</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,11 +114,7 @@
 	                                    <td>${ vc.vcType }</td>
 	                                    <td>${ vc.vcStartDate } ~ ${ vc.vcEndDate }</td>
 	                                    <td>
-	                                        <select class="vc-select" name="" id="" style="width: 80px;">
-	                                            <option value="">대기</option>
-	                                            <option value="">승인</option>
-	                                            <option value="">반려</option>
-	                                        </select> 
+	                                        대기
 	                                    </td>                        
 	                                    </tr>
                                     </c:forEach>

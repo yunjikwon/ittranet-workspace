@@ -15,15 +15,8 @@
         font-size: 18px; 
         font-weight: 600;
     }
-    .vc-box{
-        background: white;
-        width: 950px;
-        height: 800px;
-        border-radius: 25px;
-        padding: 50px;
-        margin-left: 15px;
-        font-size: 17px;
-        margin-bottom: 50px;
+	.vc-box{
+        height: 1000px;
     }
     #att-search{
         font-size: 15px;
@@ -41,15 +34,6 @@
         height: 100px;
         width: 850px;
         padding-top: 30px;
-    }
-    #search-btn button{
-        border: none;
-        background: rgba(204, 74, 252, 0.63);
-        border-radius: 5px;
-        width: 80px;
-        height:35px;
-        font-size: 16px;
-        color: #ffffff;
     }
     #att-output{
         text-align: center;
@@ -80,7 +64,7 @@
                 <div class="mainOuter">
                     <!--제목영역-->
                     <div style="width:100%; height:200px; float:right; padding:40px; font-size: 22px; font-weight: 600;">
-                        근태 현황
+                        일일근태 관리
                         <br><br>
                         <hr>
                     </div>
@@ -106,11 +90,13 @@
 	                                    </tr>
 	                                </table>
                                     <div id="search-btn" align="center">
-	                                    <button type="button" onclick="searchAttendance();">조회</button>
+	                                    <button type="button" onclick="searchAttendance();" class="att-btn">조회</button>
                                     </div>    
                                 </div>
                             </form>
                             <div class="output">
+                            조회결과: <span id="searchCount">0</span>건
+							<br><br>
                                 <table id="att-output">
                                     <thead>
                                         <tr>
@@ -141,13 +127,16 @@
 									success : function(list){
 										//테이블 초기화
 										$('#att-tbody').empty();
+										$('#searchCount').empty();
 										let value="";
+										let result="";
 										if(list.length<1){
 											value += "<tr>"
 			                                    + "<td> 근태 내역이 없습니다. </td>"
 			                                    + "<tr>";
 										}else{
 											for(let i in list){
+												result = list.length;
 												value += "<tr>"
 						                                    + "<td>" +  list[i].attDate  + "</td>"
 						                                    + "<td>" +  list[i].empName  + "</td>"
@@ -160,6 +149,7 @@
 				                                    	+"</tr>";
 							        		}				 
 											$('#att-tbody').append(value);
+											$('#searchCount').append(result);
 										}
 									}, error:function(){
                         				console.log("근태 조회용 ajax 통신 실패");
@@ -174,13 +164,16 @@
 									success : function(list){
 										//테이블 초기화
 										$('#att-tbody').empty();
+										$('#searchCount').empty();
 										let value="";
+										let result="";
 										if(list.length<1){
 											value += "<tr>"
 				                                    	+ "<td colspan='8'> 근태 내역이 없습니다. </td>"
 				                                  + "<tr>";
 										}else{
 											for(let i in list){
+												result = list.length;
 												value += "<tr>"
 						                                    + "<td>" +  list[i].attDate  + "</td>"
 						                                    + "<td>" +  list[i].empName  + "</td>"
@@ -191,14 +184,16 @@
 						                                    +"<td>" +  list[i].stepoutTime  + "</td>"
 						                                    +"<td>" +  list[i].outworkTime  + "</td>"
 				                                    	+"</tr>";
-							        		}				 
+							        		}
 											$('#att-tbody').append(value);
+											$('#searchCount').append(result);
 										}
 									}, error:function(){
                         				console.log("근태 검색용 ajax 통신 실패");
                         			}
 								})
 							}
+	                        
                         	</script>
                         </div>
                     </div>

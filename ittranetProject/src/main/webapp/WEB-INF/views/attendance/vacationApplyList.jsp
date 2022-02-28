@@ -15,15 +15,6 @@
         font-size: 18px; 
         font-weight: 600;
     }
-    .vc-box{
-        background: white;
-        width: 950px;
-        border-radius: 25px;
-        padding: 50px;
-        margin-left: 15px;
-        font-size: 17px;
-        margin-bottom: 50px;
-    }
     .vc-box img{
         width: 50px;
         height: 50px;
@@ -76,15 +67,16 @@
         cursor: pointer;
         color: rgb(73, 73, 73);
     }
-    .mbtn-area button{
+    .close-btn{
         float: left;
-        width: 80px;
-        height: 40px;
         border: none;
         background: lightgray;
-        border-radius: 10px;
-        margin-top: 20px;
-        margin-left: 10px;
+        font-weight: 800;
+        border-radius: 5px;
+        width: 100px;
+        height: 35px;
+        margin-left: 29px;
+        margin-top:10px;
     }
     
     #modal .content {
@@ -122,35 +114,58 @@
         margin-left: 20px;
     }
     #vc-tb th{
-        width: 100px;
+        width: 90px;
         height: 60px;
+    }
+    #vc-content{
+        background: lightgray;
+        border-radius: 10px;
+        border: none;
+        width: 480px;
+        padding: 10px;
+    }
+    .sub-btn{
+        border:2px solid rgb(19, 187, 19);
+        color: rgb(19, 187, 19);
+        background: #ffffff;
+        font-weight: 800;
+        border-radius: 5px;
+        width: 100px;
+        height: 35px;
+        margin-left: 29px;
+        margin-top:10px;
+    }
+    .sub-btn:hover{
+        color: #ffffff;
+        background: rgb(19, 187, 19);;
+    }
+    .vc-sts{
+        height: 30px;
+        width: 50px;
+        border: none;
+        border-radius: 5px;
+        background: lightgray;
+        color: #000000;
+        font-weight: 700;
     }
 
     /*휴가신청 버튼 스타일*/
     select::-ms-expand { 
 	    display: none;
     }
-    .app-btn{
+    .att-btn{
         float:right;
         appearance: none;
         width: 90px;
         height: 40px;
-        background: rgb(211, 180, 211);
-        border: none;
-        border-radius: 5px;
-        float: right;
         font-size: 15px;
-        padding-left: 12px;
     }
-    .app-btn option{
-        background: #ffffff;
-    }
-
-    
+   
     /*메뉴바 픽스 스타일*/
     .attendance_mn{
     	color: #000000;
     }
+
 </style>
 </head>
 <body>
@@ -171,7 +186,7 @@
                         휴가 신청
 
                         <!--휴가신청버튼-->
-                        <button id="modal_open_btn" class="app-btn" onclick="openPop();">휴가신청</button>
+                        <button id="modal_open_btn" class="att-btn" onclick="openPop();">휴가신청</button>
                       
                         <br><br>
                         <hr>
@@ -182,24 +197,44 @@
                         <br><br>
                         <c:if test="${ not empty ulist }">
 	                        <div class="vc-box">
-	                            <table id="upVacationList" border="1">
+	                            <table id="upVacationList" class="table table-hover">
 	                                <thead>
 	                                    <tr>
-	                                        <td width="100">No</td>
-	                                        <th width="380">기간</th>
+	                                        <td width="10"></td>
+	                                        <th width="380" style="text-align:left;">기간</th>
 	                                        <th width="200">휴가구분</th>
-	                                        <th width="200">총 시간</th>
+	                                        <th width="200">휴가 시간</th>
 	                                        <th width="200">상태</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
 	                                	<c:forEach var="vc" items="${ ulist }">
 		                                    <tr>
-		                                        <td class="vcno">${ vc.vcApplyNo }</td>
-	                                            <td>${ vc.vcStartDate } ~ ${ vc.vcEndDate }</td>
+		                                        <td class="vcno" style="color: white;">${ vc.vcApplyNo }</td>
+	                                            <td style="text-align:left;">${ vc.vcStartDate } ~ ${ vc.vcEndDate }</td>
 		                                        <td>${ vc.vcType }</td>
-		                                        <td>${ vc.vcTime }</td>
-		                                        <td>${ vc.vcStatus }</td>
+		                                        <c:choose>
+				                                    <c:when test="${ vc.vcTime eq '오전' }">
+				                                        <td>09:00~13:00</td>
+				                                    </c:when>
+				                                    <c:when test="${ vc.vcTime eq '오전' }">
+				                                        <td>14:00~18:00</td>
+				                                    </c:when>
+				                                    <c:otherwise>
+				                                        <td>09:00~18:00</td>
+				                                    </c:otherwise>
+			                               		</c:choose>
+                                                <c:choose>
+                                                    <c:when test="${ vc.vcStatus eq '대기' }">
+		                                                <td><button class="vc-sts" disabled>대기</button></td>
+                                                    </c:when>
+                                                    <c:when test="${ vc.vcStatus eq '승인' }">
+                                                        <td><button class="vc-sts" style="background: rgba(7, 194, 7, 0.363); color: rgb(4, 112, 4);" disabled>승인</button></td>
+                                                    </c:when>
+                                                    <c:when test="${ vc.vcStatus eq '반려' }">
+                                                        <td><button class="vc-sts" style="background: rgba(255, 192, 203, 0.548); color: red;" disabled>반려</button></td>
+                                                    </c:when>
+                                                </c:choose>
 		                                    </tr>
 		                                </c:forEach>
 	                                </tbody>
@@ -229,30 +264,54 @@
                         <br><br>
                         <c:if test="${ not empty llist }">  
 	                        <div class="vc-box">
-	                            <table id="lastVacationList" border="1">
+	                            <table id="lastVacationList" class="table table-hover">
 	                                <thead>
 	                                    <tr>
-	                                        <td width="100">No</td>
-	                                        <th width="380">기간</th>
+	                                        <td width="10"></td>
+	                                        <th width="380" style="text-align:left;">기간</th>
 	                                        <th width="200">휴가구분</th>
-	                                        <th width="200">총 시간</th>
+	                                        <th width="200">휴가 시간</th>
 	                                        <th width="200">상태</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
 	                                	<c:forEach var="vc" items="${ llist }">
 		                                    <tr>
-		                                        <td class="vcno">${ vc.vcApplyNo }</td>
-	                                            <td>${ vc.vcStartDate } ~ ${ vc.vcEndDate }</td>
+		                                        <td class="vcno" style="color: white;">${ vc.vcApplyNo }</td>
+	                                            <td style="text-align:left;">${ vc.vcStartDate } ~ ${ vc.vcEndDate }</td>
 		                                        <td>${ vc.vcType }</td>
-		                                        <td>${ vc.vcTime }</td>
-		                                        <td>${ vc.vcStatus }</td>
+		                                        <c:choose>
+				                                    <c:when test="${ vc.vcTime eq '오전' }">
+				                                        <td>09:00~13:00</td>
+				                                    </c:when>
+				                                    <c:when test="${ vc.vcTime eq '오전' }">
+				                                        <td>14:00~18:00</td>
+				                                    </c:when>
+				                                    <c:otherwise>
+				                                        <td>09:00~18:00</td>
+				                                    </c:otherwise>
+			                               		</c:choose>
+		                                        <c:choose>
+				                                    <c:when test="${ vc.vcStatus eq '승인' }">
+				                                        <td><button class="vc-sts" style="background: rgba(7, 194, 7, 0.363); color: rgb(4, 112, 4);" disabled>승인</button></td>
+				                                    </c:when>
+				                                    <c:when test="${ vc.vcStatus eq '반려' }">
+				                                        <td><button class="vc-sts" style="background: rgba(255, 192, 203, 0.548); color: red;" disabled>반려</button></td>
+				                                    </c:when>
+			                               		</c:choose>
 		                                    </tr>
 		                                </c:forEach>
 	                                </tbody>
 	                            </table>
 	                        </div>
                         </c:if>
+                        <script>
+                        	$(function(){
+                        		$("#lastVacationList>tbody>tr").click(function(){
+                        			location.href='vcdetail.at?vcno=' + $(this).children(".vcno").text();
+                        		})
+                        	})
+                        </script>
                         <br><br>
                         <!--신청내역 없을 경우-->
                         <c:if test="${ empty llist }">
@@ -274,62 +333,86 @@
                         <h2><b>휴가 신청</b></h2>
                     </div>
                        <!--잔여휴가 0개일 시 보여질 문구-->
-                       <div id="warning">! 사용가능한 휴가가 없습니다.</div>
+                       <div id="warning"><b>⊘ 사용가능한 휴가가 없습니다.</b></div>
                        <form action="vcinsert.at" method="post" enctype="multipart/form-data">
-                       <input type="hidden" value="${ loginUser.empNo }" name="empNo">
-                       <br><br>
-                        <table id="vc-tb">
-                        	<tr>
-                        		<th><label for="vc-type">휴가종류</label></th>
-                                <td>
-                                <c:choose>
-                                	<c:when test="${ not empty rest }">
-                                    <select id="vc-type" name="vcType" class="select" required>    
-	                                        <option value="연차" id="${ rest.restYear }">연차 &nbsp;&nbsp;&nbsp;${ rest.restYear }</option>
-	                                        <option value="생리" id="${ rest.restMonth }">생리 &nbsp;&nbsp;&nbsp;${ rest.restMonth }</option>
-	                                        <option value="병가" id="${ rest.restSick }">병가 &nbsp;&nbsp;&nbsp;${ rest.restSick }</option>
-                                    </select>
-                                    </c:when>
-                                    <c:otherwise>
-                                    <select id="vc-type" name="vcType" class="select" required>    
-	                                        <option value="연차">연차 &nbsp;&nbsp;&nbsp;15</option>
-	                                        <option value="생리">생리 &nbsp;&nbsp;&nbsp;1</option>
-	                                        <option value="병가">병가 &nbsp;&nbsp;&nbsp;10</option>
-                                    </select>
-                                    </c:otherwise>
-                                </c:choose>
-                                </td>
-                        	</tr>
-                            <tr>
-                                <th><label for="start-date">시작일</label></th>
-                                <td><input type="date" id="start-date" name="vcStartDate" required></td>
-                                <th><label for="end-date">종료일</label></th>
-                                <td><input type="date" id="end-date" name="vcEndDate" required></td>
-                            </tr>
-                            <tr>
-                                <th><label for="vc-time">시간</label></th>
-                                <td colspan="3">
-                                    <select name="vcTime" id="vc-time" required>
-                                        <!--오전, 오후 옵션은 연차 신청 시에만 보여지게-->
-                                        <option value="종일">종일</option>
-                                        <option value="오전" class="half">오전</option>
-                                        <option value="오후" class="half">오후</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label for="upfile">증명서제출</label></th>
-                                <td colspan="3"><input type="file" name="upfile" id="upfile"></td>
-                            </tr>
-                            <tr>
-                                <th><label for="vc-content">비고</label></th>
-                                <td colspan="3"><textarea name="vcContent" id="vc-content" rows="5" cols="60" style="resize:none; margin-top: 35px;"></textarea></td>
-                            </tr>
-                        </table>
-                        <div class="mbtn-area">
-                            <button type="button" onclick="closePop();">닫기</button>
-                            <button type="submit" id="vcsubmit" style="background: rgb(210, 163, 238);">신청</button>
-                        </div>
+                           <div id="att-search">
+                                <input type="hidden" value="${ loginUser.empNo }" name="empNo">
+                                <br><br>
+                                    <table id="vc-tb">
+                                        <tr>
+                                            <th><label for="vc-type">휴가종류</label></th>
+                                            <td>
+                                            <c:choose>
+                                                <c:when test="${ not empty rest }">
+                                                <select id="vc-type" name="vcType" class="select" required>    
+                                                        <option value="연차" id="${ rest.restYear }">
+                                                            연차 
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            ${ rest.restYear }
+                                                        </option>
+                                                        <option value="생리" id="${ rest.restMonth }">
+                                                            생리 
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            ${ rest.restMonth }
+                                                        </option>
+                                                        <option value="병가" id="${ rest.restSick }">
+                                                            병가 
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            ${ rest.restSick }
+                                                        </option>
+                                                </select>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <select id="vc-type" name="vcType" class="select" required>    
+                                                        <option value="연차">
+                                                            연차
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                             15</option>
+                                                        <option value="생리">
+                                                            생리 
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            1</option>
+                                                        <option value="병가">
+                                                            병가 
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            10</option>
+                                                </select>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><label for="start-date">시작일</label></th>
+                                            <td><input type="date" id="start-date" name="vcStartDate" required></td>
+                                            <th><label for="end-date">종료일</label></th>
+                                            <td><input type="date" id="end-date" name="vcEndDate" required></td>
+                                        </tr>
+                                        <tr>
+                                            <th><label for="vc-time">시간</label></th>
+                                            <td colspan="3">
+                                                <select name="vcTime" id="vc-time" required>
+                                                    <!--오전, 오후 옵션은 연차 신청 시에만 보여지게-->
+                                                    <option value="종일">종일</option>
+                                                    <option value="오전" class="half">오전</option>
+                                                    <option value="오후" class="half">오후</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th><label for="upfile">증명서제출</label></th>
+                                            <td colspan="3"><input type="file" name="upfile" id="upfile" style="width: 400px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <th><label for="vc-content">비고</label></th>
+                                            <td colspan="3"><textarea name="vcContent" id="vc-content" rows="5" cols="60" style="resize:none; margin-top: 35px;"></textarea></td>
+                                        </tr>
+                                    </table>
+                                    <br><br>
+                                    <div class="mbtn-area">
+                                        <button type="button" onclick="closePop();" class="close-btn">닫기</button>
+                                        <button type="submit" id="vcsubmit" class="sub-btn">✓ 신청</button>
+                                    </div>
+                                </div>
                         </form>
                     </div>
                 </div>
