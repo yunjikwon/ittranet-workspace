@@ -137,7 +137,7 @@
             </a>
         </li>
         <li class="menu">
-            <a href="admingForm.dr">
+            <a href="adminForm.dr">
                     <div class="circle" style="background: rgb(240, 195, 237)">
                         <i class="fas fa-paperclip fa-3x approval_mn"></i> 
                     </div>
