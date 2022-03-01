@@ -86,10 +86,31 @@
 		    <div class="mainOuter">
 		        <br>
 		        <div id="detailTitle">
-		            	진행중 결재 상세
+		            <c:choose>
+				        <c:when test = "${ category eq 1 }">
+				        	대기
+			            </c:when>
+			             <c:when test = "${ category eq 3 }">
+				        	반려
+			            </c:when>
+			             <c:when test = "${ category eq 4 }">
+				        	완료
+			            </c:when>
+		            </c:choose>	
+					결재 상세
 		        </div>
 		        
-		        <a id="listbtn" href="draftWait.dr">목록으로</a>
+		         <c:choose>
+			        <c:when test = "${ category eq 1 }">
+			        	<a id="listbtn" href="draftWait.dr">목록으로</a>
+		            </c:when>
+		             <c:when test = "${ category eq 3 }">
+			        	<a id="listbtn" href="draftReject.dr">목록으로</a>
+		            </c:when>
+		             <c:when test = "${ category eq 4 }">
+			        	<a id="listbtn" href="draftComplete.dr">목록으로</a>
+		            </c:when>
+	            </c:choose>
 	            <div id="innerouter" style="padding:5% 5%;">
 		            <table id="contentArea" align="center">
 		                <tr>

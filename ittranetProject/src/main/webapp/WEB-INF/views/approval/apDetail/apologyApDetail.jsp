@@ -139,8 +139,17 @@
 		        <div id="detailTitle">
 		            	${ b.apStatus } 결재 상세
 		        </div>
-		        
-		        <a id="listbtn" href="approvalWait.ap">목록으로</a>
+		        <c:choose>
+			        <c:when test = "${ category eq 5 }">
+			        	<a id="listbtn" href="approvalWait.ap">목록으로</a>
+		            </c:when>
+		             <c:when test = "${ category eq 6 }">
+			        	<a id="listbtn" href="approvalReject.ap">목록으로</a>
+		            </c:when>
+		             <c:when test = "${ category eq 7}">
+			        	<a id="listbtn" href="approvalComplete.ap">목록으로</a>
+		            </c:when>
+	            </c:choose>
 	            <div id="innerouter" style="padding:5% 5%;">
 		            <table id="contentArea" align="center">
 		                <tr>
@@ -186,57 +195,58 @@
 		            </table> <br>      
 		            
 		            <!-- ------------------------------------------------------------------------- -->
-		            
-		            <div style="text-align: center;">
-		
-		            <button class="apbtn" style="background-color:rgba(36, 151, 123, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-		                	반려처리
-                	</button>
-		                <!-- The Modal -->
-		                <div class="modal" id="myModal1">
-		                    <div class="modal-dialog">
-			                    <div class="modal-content">
-			                
-			                
-			                        <!-- Modal body -->
-			                        <div class="modal-body" style="height: 100px; margin-top: 12px; font-weight: 600;">
-			                           	 반려 처리가 완료되었습니다.
-			                        </div>
-			                
-			                        <!-- Modal footer -->
-			                        <div class="modal-footer">
-			                            <button type="button" class="btn modalcc" data-dismiss="modal">CANCEL</button>
-			                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(1);">OK</button>
-			                        </div>
-			                
-		                    	</div>
-		                    </div>
-		                </div>
-		
-		            <button class="apbtn" style="background-color:rgba(122, 39, 135, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
-		                	결재확인
-		            </button>
-		                <!-- The Modal -->
-		                <div class="modal" id="myModal2">
-		                    <div class="modal-dialog">
-			                    <div class="modal-content">
+		            <c:if test="${ category eq 5}">
+			            <div style="text-align: center;">
 			
-			                        <!-- Modal body -->
-			                        <div class="modal-body" style="height: 100px; margin-top: 12px; font-weight: 600;">
-			                           	 결재 처리가 완료되었습니다.
-			                        </div>
-			                
-			                        <!-- Modal footer -->
-			                        <div class="modal-footer">
-			                            <button type="button" class="btn modalcc" data-dismiss="modal">CANCEL</button>
-			                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(2);">OK</button>
-			                        </div>
-			                
+			            <button class="apbtn" style="background-color:rgba(36, 151, 123, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+			                	반려처리
+	                	</button>
+			                <!-- The Modal -->
+			                <div class="modal" id="myModal1">
+			                    <div class="modal-dialog">
+				                    <div class="modal-content">
+				                
+				                
+				                        <!-- Modal body -->
+				                        <div class="modal-body" style="height: 100px; margin-top: 12px; font-weight: 600;">
+				                           	 반려 처리가 완료되었습니다.
+				                        </div>
+				                
+				                        <!-- Modal footer -->
+				                        <div class="modal-footer">
+				                            <button type="button" class="btn modalcc" data-dismiss="modal">CANCEL</button>
+				                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(1);">OK</button>
+				                        </div>
+				                
+			                    	</div>
 			                    </div>
-		                    </div>
-		                </div>
-		        
-		            </div>  <br>   
+			                </div>
+			
+			            <button class="apbtn" style="background-color:rgba(122, 39, 135, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
+			                	결재확인
+			            </button>
+			                <!-- The Modal -->
+			                <div class="modal" id="myModal2">
+			                    <div class="modal-dialog">
+				                    <div class="modal-content">
+				
+				                        <!-- Modal body -->
+				                        <div class="modal-body" style="height: 100px; margin-top: 12px; font-weight: 600;">
+				                           	 결재 처리가 완료되었습니다.
+				                        </div>
+				                
+				                        <!-- Modal footer -->
+				                        <div class="modal-footer">
+				                            <button type="button" class="btn modalcc" data-dismiss="modal">CANCEL</button>
+				                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(2);">OK</button>
+				                        </div>
+				                
+				                    </div>
+			                    </div>
+			                </div>
+			        
+			            </div>  <br>   
+			    	</c:if>        
         		</div> <br><br>
         	
         	<form id="postForm" action="" method="post">

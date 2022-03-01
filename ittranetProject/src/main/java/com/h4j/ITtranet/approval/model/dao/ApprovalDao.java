@@ -177,13 +177,22 @@ public class ApprovalDao {
 		
 		return (ArrayList)sqlSession.selectList("appMapper.selectadminApList", rowBounds);
 	}
-
-	public int updateAdminReject(SqlSession sqlSession, int drNo) {
-		return sqlSession.update("appMapper.updateAdminReject", drNo);
+	
+	// 관리자 권한 반려/결재 update
+	public int apAdminReject(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.apAdminReject", drNo);
+	}
+	
+	public int drAdminReject(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.drAdminReject", drNo);
+	}
+	
+	public int drAdminComplete(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.drAdminComplete", drNo);
 	}
 
-	public int updateAdminComplete(SqlSession sqlSession, int drNo) {
-		return sqlSession.update("appMapper.updateAdminComplete", drNo);
+	public int apAdminComplete(SqlSessionTemplate sqlSession, int drNo) {
+		return sqlSession.update("appMapper.apAdminComplete", drNo);
 	}
 	
 	
