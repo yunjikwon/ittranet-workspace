@@ -82,7 +82,7 @@ public class MailController {
 		
 		int result = mService.insertMail(m, list);
 
-		return "redirect:alllist.ml";
+		return "redirect:unreadlist.ml";
 	}
 	
 	// 2-1. 내게쓰기 폼
@@ -112,7 +112,7 @@ public class MailController {
 
 		int result = mService.insertMail(m, list);
 
-		return "redirect:alllist.ml";
+		return "redirect:unreadlist.ml";
 	}
 	
 	// 2-1. 답장하기 폼
@@ -148,7 +148,7 @@ public class MailController {
 
 		int result = mService.insertMail(m, list);
 
-		return "redirect:alllist.ml";
+		return "redirect:unreadlist.ml";
 	}
 	
 	// 3. 상세조회 메일

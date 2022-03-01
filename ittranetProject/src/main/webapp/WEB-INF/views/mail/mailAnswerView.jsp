@@ -141,7 +141,7 @@
     
     <script>
     	$(".btn-light").on("click", function(){
-    		location.href="alllist.ml";
+    		location.href="unreadlist.ml";
     	})
     </script>
        

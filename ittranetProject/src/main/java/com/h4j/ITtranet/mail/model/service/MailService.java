@@ -77,7 +77,7 @@ public interface MailService {
 	int updateSpamMail(int rvno);
 	
 	
-	// 5-2. (상세조회) 메일 삭제
+	// 14. 디테일화면 : 메일 삭제
 	int deleteOneMail(HashMap<String, Integer> map);
 	
 }
