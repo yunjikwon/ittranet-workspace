@@ -45,6 +45,7 @@
     }
     #searchForm{
         margin:auto;
+        height:100px;
         float:right;
     }
     #searchForm>*{
@@ -90,7 +91,7 @@
          	</div>
          	
          	<div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif; background:whitesmoke;">
-			  	<br><br>
+			  	<br><br><br><br>
         	    <p class="anton" style="font-style:italic;" id="hi">Delete Employee</p>
 		        <br><br>
 		        
@@ -136,10 +137,8 @@
 		                </tbody>
 		            </table>
 				</div>
-				<br><br>
-				
-        	    
-			        
+				<br><br><br><br>
+        
         	  </div> <%-- mainOuter --%>         
 
         </div><%-- innerback --%>

@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/gcal.js'></script>
     <!-- fullcalendar 언어 CDN -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.min.js'></script>
     <style>
@@ -74,6 +75,16 @@
      	margin:auto;
      	display:block;
      }
+     #calendar button{
+     	background:lightblue;
+     	border-color:lightskyblue;
+     	color:white;
+     	height:50px;
+     }
+     #calendar button:hover{
+     	color:black;
+     	font-weight:bold;
+     }
    	</style>
 
     <script> 
@@ -118,6 +129,15 @@
 	   	        var calendar = new FullCalendar.Calendar(calendarEl, {
 	   	          initialView: 'dayGridMonth',
 	   	          locale: 'ko',
+	   	          googleCalendarApiKey : "AIzaSyCLvJjierhxYSxsWIumWXGddinCb-QSiUk" 
+	               , eventSources : [
+	                   {
+	                         googleCalendarId : "ko.south_korea#holiday@group.v.calendar.google.com"
+	                       , className : "koHolidays"
+	                       , color : "lightpink"
+	                       , textColor : "tomato"
+	                   }
+	               ],
 	   	          expandRows: true,
 	   	          headerToolbar: {
 	   	            left: 'prev,next today',
