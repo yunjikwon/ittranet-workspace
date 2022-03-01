@@ -148,7 +148,7 @@
 		                </tr>
 		                <tr>
 		                    <th>비용청구</th>
-		                    <td>${ b.drReason }</td>
+		                    <td>${ b.Money }</td>
 		                </tr>
 		                <tr>
 		                    <td colspan="2" id="detailContent">

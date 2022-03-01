@@ -588,6 +588,23 @@
 		 order 
 		    by dr_date desc
 	</select>
+	
+	<!-- 메인화면 기안 리스트 -->
+	<select id="mainSelectList" resultMap="appResultSet">
+		select *
+		  from(
+				select 
+				       d.dr_no  
+				     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division"  
+				     , d.dr_title
+				     , d.dr_status
+				     , e.emp_no
+				  from draft d
+				  join employee e on (d.emp_no = e.emp_no)
+				  where e.emp_no =#{empNo}
+			  )
+		where rownum between 1 and 5
+	</select>
 
 
 </mapper>

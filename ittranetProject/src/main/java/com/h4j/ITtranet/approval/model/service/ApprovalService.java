@@ -53,5 +53,9 @@ public interface ApprovalService {
 	int updateAdminReject(int drNo);	
 	int updateAdminComplete(int drNo);
 	
+	//----------------------------------------------------------------------
+	// 메인화면 기안 리스트
+	ArrayList<Approval> mainSelectList(int empNo);
+	
 	
 }

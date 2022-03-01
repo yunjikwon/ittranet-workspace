@@ -191,8 +191,14 @@ public class ApprovalDao {
 		return sqlSession.update("appMapper.drAdminComplete", drNo);
 	}
 
-	public int apAdminComplete(SqlSessionTemplate sqlSession, int drNo) {
+	public int apAdminComplete(SqlSession sqlSession, int drNo) {
 		return sqlSession.update("appMapper.apAdminComplete", drNo);
+	}
+
+	//----------------------------------------------------------------------
+	// 메인화면 기안 리스트
+	public ArrayList<Approval> mainSelectList(SqlSession sqlSession, int empNo) {
+		return (ArrayList)sqlSession.selectList("appMapper.mainSelectList", empNo);
 	}
 	
 	
