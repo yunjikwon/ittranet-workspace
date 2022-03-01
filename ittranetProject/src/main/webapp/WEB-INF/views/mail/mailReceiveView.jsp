@@ -132,7 +132,7 @@
                 <script>
             		$(function(){
             			$("#mailalllist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val() + "&statusCheck=1";
             			})
             		})
             	</script>

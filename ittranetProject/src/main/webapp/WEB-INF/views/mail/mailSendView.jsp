@@ -14,25 +14,9 @@
            width:1200px;
            height:800px;
           }
-    .outer div{float:left;}
-    .top{
-         width:1200px;
-         height:200px;
-    }
-    .sidebar{
-         width:300px;
-         height:600px;
-        }
-    .middle{
-            width:880px;
-            height:580px;
-    }
-
-
     #buttonbar{
     	float:right;
-    	padding-left:5px;        
-               
+    	padding-left:5px;       
     }
     table{
           text-align:center;
@@ -59,7 +43,6 @@
 		background: linear-gradient(to top right, #33ccff 0%, #ff0000 100%);
 		color: white;
 	}
-
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,36 +66,12 @@
         <div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 			
             <br><br>
-
-			<!-- 버튼바 (메일쓰기, 삭제) -->
-            <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="submit">삭제</button>
             
-            	<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  					<div class="modal-dialog" role="document">
-    				<div class="modal-content">
-    				
-      					<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							</button>
-      					</div>
-      			
-      				<div class="modal-body">
-						정말로 삭제하시겠습니까?
-      				</div>
-      			
-      				<div class="modal-footer">
-        				<button type="button" class="btn btn-danger">네</button>
-        				<button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
-      				</div>
-    			
-    				</div>
-  					</div>
-				</div>
-				
-			</div>
+            <!-- 버튼바 (메일쓰기, 삭제) -->
+            <div id="buttonbar">
+            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
+                <button class="w-btn w-btn-gra2" type="button" onclick="sddeletemail();">삭제</button>
+            </div>
 			
             <form id="postForm" action="sendlist.ml" method="post">
 
@@ -134,10 +93,10 @@
                     <tbody>
                     	<c:forEach var="m" items="${ sendlist }">
 	                    	<tr>
-	                    		
-                        		<td onclick="event.cancelBubble=true;"><input class="sdNo" type="checkbox" name="mno" id="Check" value="${ m.sendMailNo }"></td>
+	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
+                        		<td onclick="event.cancelBubble=true;"><input type="checkbox" name=rvno id="Check" value="${ m.sendMailNo }"></td>
                         		<td>
-                        			<button id="on" class="btn btn-sm" onclick="importantSendStar();">
+                        			<button id="on" class="btn btn-sm" onclick="importantSendStar(this);">
                         			<c:choose>
                         				<c:when test="${m.important eq 'N'}">
                         					<img src="resources/images/whitestar.png" style="widt:15px; height:15px;">
@@ -152,7 +111,7 @@
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
                         		
-
+								<input type="hidden" name="receiveAccount" value="${ m.receiverAccount }">
                         		<input type="hidden" name="statusSd" value="${ m.statusSd }">
                         		<input type="hidden" name="important" value="${ m.important }">
                     		</tr>
@@ -165,8 +124,7 @@
                 <script>
             		$(function(){
             			$("#sendlist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
-            				console.log(mno);
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val() + "&statusCheck=2";
             			})
             		})
             	</script>
@@ -175,38 +133,42 @@
             	<script>	
             		function checkAll(check) {
             				if($("#allCheck").prop("checked")) { 
-            				$("input[name=mno]").prop("checked", true);
+            				$("input[name=rvno]").prop("checked", true);
             			}else {
-            				$("input[name=mno]").prop("checked", false);
+            				$("input[name=rvno]").prop("checked", false);
             			}
             		}
 				</script>
 				
 				<script>
 					function importantSendStar(btn) {
-						let mno = $(btn).parent().children("input[name='mno']").val();
-						console.log(mno);
+						let rvno = $(btn).parent().prev().children("input[name='rvno']").val();
 						let important = $(btn).parent().siblings("input[name='important']").val();
 						console.log(important);
 						
 						$.ajax({
 							url:"impo.sdml",
 							data:{
-								mno:$("input[id='Check']").val(),
-								important:$("input[name='important']").val()
+								rvno:rvno,
+								important:important
 							},success:function(result){
 								if(result== 'success'){
+									console.log("중요 메일 성공");
 									location.onload();
+								}else {
+									console.log("중요 메일 실패");
 								}
+							}, error:function(){
+								console.log("ajax 중요 메일 통신 실패");
 							}
 						})
 					}
 				</script>
 				
 				<script>
-            	function deletemail() {
+            	function sddeletemail() {
             		var rcArr = [];
-            		$("input[name='checked']:checked").each(function(){
+            		$("input[name='rvno']:checked").each(function(){
             			rcArr.push($(this).val());
             		 })
             		 console.log(rcArr);
@@ -214,10 +176,11 @@
             		 $.ajax({
             			 url:"delete.ml",
             			 type:"post",
-            			 data:{receiveMailNo:rcArr},
+            			 data:{sendMailNo:rcArr},
             			 success:function(result){
             				 if(result == 'success'){
             				 	console.log("게시글 삭제 성공!");
+            				 	location.reload();
             				 }else{
             					 console.log("게시글 삭제실패");
             				 }
@@ -265,7 +228,6 @@
         <jsp:include page="../common/footer.jsp" />
 
 
-    </div>
     </div>
     </div>
 

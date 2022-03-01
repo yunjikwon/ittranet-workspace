@@ -40,11 +40,9 @@ public class MailServiceImpl implements MailService{
 		
 		int result1 = mDao.insertSendMail(sqlSession, m);
 		int result2 = mDao.insertReceiveMail(sqlSession, m);
-		
 		int result3 = mDao.insertMailAttachment(sqlSession, list);
 		
 		return result1 * result2 * result3;
-		
 	}
 	
 	// 2-2. 내게 쓰기 (+첨부파일)
@@ -53,11 +51,9 @@ public class MailServiceImpl implements MailService{
 		
 		int result1 = mDao.insertSendMail(sqlSession, m);
 		int result2 = mDao.insertReceiveMail(sqlSession, m);
-		
 		int result3 = mDao.insertMailAttachment(sqlSession, list);
 		
 		return result1 * result2 * result3;
-		
 	}
 	
 	// 2-3. 답장
@@ -69,7 +65,6 @@ public class MailServiceImpl implements MailService{
 		int result3 = mDao.insertMailAttachment(sqlSession, list);
 		
 		return result1 * result2 * result3;
-		
 	}
 
 	// 6-1. [휴지통] 메일 리스트 *카운트* 조회
@@ -144,19 +139,31 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectTemList(sqlSession, pi, email);
 	}
 
-	// 리스트 : 메일 삭제
+	// 리스트 : 메일 삭제 (받은메일테이블 기준)
 	@Override
 	public int deleteMail(List<Integer> receiveMailNo) {
 		return mDao.deleteMail(sqlSession, receiveMailNo);
 	}
 	
-/*
+	// 리스트 : 메일 삭제 (보낸메일테이블 기준 ;보낸메일함,임시보관함)
+	@Override
+	public int sdDeleteMail(List<Integer> sendMailNo) {
+		return mDao.sdDeleteMail(sqlSession, sendMailNo);
+	}
+	
+	// 리스트 : 메일 완전삭제
+	@Override
+	public int comDeleteMail(List<Integer> receiveMailNo) {
+		return mDao.comDeleteMail(sqlSession, receiveMailNo);
+	}
+
+
 	// (상세조회) 삭제
 	@Override
-	public int deleteOneMail(int rvno) {
-		return mDao.deleteOneMail(sqlSession, rvno);
+	public int deleteOneMail(HashMap<String, Integer> map) {
+		return mDao.deleteOneMail(sqlSession, map);
 	}
-	*/
+	
 
 	// 리스트 : 중요 메일 체크/체크해제
 	@Override
@@ -165,13 +172,12 @@ public class MailServiceImpl implements MailService{
 	}
 
 	// 중요 메일 (보낸메일함)
-	/*
 	@Override
 	public int updateImportantSendMail(HashMap<String, String> map) {
 		return mDao.updateImportantSendMail(sqlSession, map);
 	}
 	
-
+/*
 	@Override
 	public int importantMail(int receiveMailNo) {
 		return 0;
@@ -184,7 +190,6 @@ public class MailServiceImpl implements MailService{
 		return mDao.restorationMail(sqlSession, receiveMailNo);
 	}
 	
-
 	// 3-1. 메일 상세조회 (메일)
 	@Override
 	public Mail selectMail(int sendMailNo) {
@@ -196,11 +201,23 @@ public class MailServiceImpl implements MailService{
 	public ArrayList<Attachment> selectMailAttachment(int sendMailNo) {
 		return mDao.selectMailAttachment(sqlSession, sendMailNo);
 	}
+	
+	// 3-3. 메일 상세조회 (읽음여부)
+	@Override
+	public int updateUnreadMail(int mno) {
+		return mDao.updateUnreadMail(sqlSession, mno);
+	}
 
+
+	// 디테일 : 스팸
 	@Override
 	public int updateSpamMail(int rvno) {
 		return mDao.updateSpamMail(sqlSession, rvno);
 	}
+
+
+
+
 
 
 	

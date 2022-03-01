@@ -149,6 +149,11 @@
                         		<td>${ m.empNameSd }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
+                        		
+                        		<input type="hidden" name="receiveAccount" value="${ m.receiverAccount }">
+                        		<input type="hidden" name="statusRv" value="${ m.statusRv }">
+                        		<input type="hidden" name="important" value="${ m.important }">
+                        			
                     		</tr>
                     	</c:forEach>
                     </tbody>
@@ -160,7 +165,7 @@
                 <script>
             		$(function(){
             			$("#unreadlist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val() + "&read=N";
             				console.log(mno);
             			});
             		})
@@ -183,7 +188,7 @@
 				<script>	
             	function deletemail() {
             		var rcArr = [];
-            		$("input[name='checked']:checked").each(function(){
+            		$("input[name='rvno']:checked").each(function(){
             			rcArr.push($(this).val());
             		 })
             		 console.log(rcArr);
@@ -207,23 +212,36 @@
             	}            	
             	</script>
             	
-            	<!-- 중요메일/안중요메일 조회 -->
+            	<!-- 체크박스 : 중요 -->
 				<script>
-					function importantStar(){
-						$.ajax({
-							url:"impo.ml",
-							data:{
-								rvno:$("input[name='rvno']").val(),
-								important:$("input[name='important']").val()
-							},
-							success:function(result){
-								if(result == 'success'){
-									location.onload();
-								}
+				
+				function importantStar(btn){
+	
+						let rvno = $(btn).parent().prev().children("input[name='rvno']").val();
+					console.log(rvno);
+						let important = $(btn).parent().siblings("input[name='important']").val();
+						console.log(important);
+					
+			
+					$.ajax({
+						url:"impo.ml",
+						data:{
+							rvno:rvno,
+							important:important
+						},
+						success:function(result){
+							if(result == 'success'){
+								console.log("중요 메일 성공");
+								location.onload();
+							}else {
+								console.log("중요 메일 실패");
 							}
-						})
-						
-					}
+						}, error:function() {
+							console.log("ajax 중요 메일 통신 실패");
+						}
+					})
+					
+				}
 				</script>
 				
 			<!-- 내용닫는곳 -->
