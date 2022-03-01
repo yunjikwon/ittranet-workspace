@@ -172,6 +172,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result2 = aDao.drAdminComplete(sqlSession, drNo);
 		return result1 * result2;
 	}
+
+	//----------------------------------------------------------------------
+	// 메인화면 기안 리스트
+	@Override
+	public ArrayList<Approval> mainSelectList(int empNo) {
+		return aDao.mainSelectList(sqlSession, empNo);
+	}
 	
 
 	

@@ -609,6 +609,19 @@ public class ApprovalController {
 			}
 		}
 		
+		// main페이지 기안리스트 불러오기
+		@ResponseBody
+		@RequestMapping(value="draft.main", produces="application/json; charset=utf-8")
+		public String mainDraftWaitSelect(HttpSession session) throws Exception {
+			// 세션에서 empNo 값 가져오기
+			Employee loginUser = (Employee) session.getAttribute("loginUser");
+			int loginNo = Integer.parseInt(loginUser.getEmpNo());
+			
+			// list 출력
+			ArrayList<Approval> list = aService.mainSelectList(loginNo);
+			System.out.println("main list: " + list);
+			return new Gson().toJson(list);
+		}
 
 		
 }

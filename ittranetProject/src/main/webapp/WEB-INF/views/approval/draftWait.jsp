@@ -202,12 +202,11 @@
 											// 결재자 리스트
 											for(let a in result.linePerson){						                        		
 						                        if((result.list[i].drNo == result.linePerson[a].drNo)){
-						                        	appPerson += result.linePerson[a].empName + result.linePerson[a].job + "&nbsp;"
-						                        	result.list.push(appPerson);
+						                        	str += result.linePerson[a].empName + result.linePerson[a].job + "&nbsp;"
+						                        	
 												}		
 				                        	} 
-					                 	str += result.list[i].appPerson + "</td>" 
-						                    + "<td>"+ result.list[i].drStatus + "</td>"
+					                 	str +=  "</td><td>"+ result.list[i].drStatus + "</td>"
 					                + "</tr>";
 							}
 								

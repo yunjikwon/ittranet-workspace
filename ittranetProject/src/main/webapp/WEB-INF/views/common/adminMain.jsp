@@ -268,7 +268,7 @@
 	                    </tr>        
 	                    <c:choose>
 	    					<c:when test="${ empty slist }">
-	    						<th>일정이 없습니다</th>>
+	    						<th>일정이 없습니다</th>
 	    					</c:when>
 	    					<c:otherwise>
 	    						<c:forEach var="s" items="${ slist }">
