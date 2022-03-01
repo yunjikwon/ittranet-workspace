@@ -58,7 +58,7 @@
     /*근태 스타일*/
     .commute-box{
         width: 300px;
-        height: 250px;
+        height: 265px;
         margin: auto;
         background: lightgray;
         border-radius: 20px;
@@ -96,6 +96,14 @@
     	float: left;
     	border: solid 1px red;
     }
+    #nowYear, #nowMonth, #nowDay{
+        font-size: 16px;
+    }
+    #nowTimes{
+        font-size: 25px;
+        font-weight: 500;
+    }
+
     /*게시판 연결*/
     .contentbox{
         background: lightgray;
@@ -229,8 +237,9 @@
                     <br>
                     <span id="nowTimes"></span>
                 </div>
+                <br>
                 <button id="arr-btn" class="commute-btn" onclick="insertArrive();" style="border-right: 0.1px solid rgb(156, 156, 156);">
-                	<div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(163, 100, 223);"></i></div>
+                	<div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(131, 26, 163);"></i></div>
                     <br>
                     <div id="cdiv2">
                         출근하기
@@ -321,8 +330,8 @@
 				const sec = nowTime.getSeconds();
 				
 				
-				let month = nowTime.getMonth();
-				let day =  nowTime.getDate();
+				let month = addzero(nowTime.getMonth());
+				let day =  addzero(nowTime.getDate());
 				let year = nowTime.getFullYear();
 				let value = hour + ":" + addzero(min) + ":" + addzero(sec);
 				
@@ -342,13 +351,13 @@
         	    $('#arr-btn').attr("disabled","disabled");
         	    $('#arr-btn i').css("color","gray"); 
         	    $('#lev-btn').removeAttr("disabled");
-        	    $('#lev-btn i').css("color","rgb(163, 100, 223)");
+        	    $('#lev-btn i').css("color","rgb(131, 26, 163)");
     	    })
     	    $('#lev-btn').click(function() {
         	    $('#lev-btn').attr("disabled","disabled");
         	    $('#lev-btn i').css("color","gray");
         	    $('#arr-btn').removeAttr("disabled");
-        	    $('#arr-btn i').css("color","rgb(163, 100, 223)");
+        	    $('#arr-btn i').css("color","rgb(131, 26, 163)");
     	    })   
 		</script>
 
