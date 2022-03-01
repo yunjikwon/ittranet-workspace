@@ -57,7 +57,7 @@ public class ApprovalDao {
 	}
 	
 	// 문서별 insert
-	public int insertBussinessPlan(SqlSession sqlSession, Approval app) {		
+	public int insertBusinessPlan(SqlSession sqlSession, Approval app) {		
 		return sqlSession.insert("appMapper.businessplan", app);
 	}
 	public int insertApology(SqlSession sqlSession, Approval app) {		

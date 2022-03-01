@@ -262,7 +262,7 @@ public class ApprovalController {
 		mv.addObject("b", b);
 		mv.addObject("at", at);
 		mv.setViewName("approval/detail/" + str);
-		//System.out.println(b);
+		System.out.println( "상세보기 approval 객체 정보 : " + b);
 		return mv;
 	}
 	

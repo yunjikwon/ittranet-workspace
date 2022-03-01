@@ -251,8 +251,6 @@
         	
         	<form id="postForm" action="" method="post">
         		<input type="hidden" name="drNo" value="${ b.drNo }">
-        		<input type="hidden" name="" value="">
-        		<input type="hidden" name="" value="">
         	</form>
         	<script>
         		function postFormSubmit(num){

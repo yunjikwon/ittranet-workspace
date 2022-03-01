@@ -46,7 +46,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		int result2 = 0;
 		switch(formNo) {
-			case 1: result2 = aDao.insertBussinessPlan(sqlSession, app);
+			case 1: result2 = aDao.insertBusinessPlan(sqlSession, app);
 			        break;
 			case 2: result2 = aDao.insertApology(sqlSession, app);
 					break;
