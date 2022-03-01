@@ -16,14 +16,7 @@
         font-weight: 600;
     }
     .vc-box{
-        background: white;
-        width: 950px;
-        height: 1200px;
-        border-radius: 25px;
-        padding: 50px;
-        margin-left: 15px;
-        font-size: 17px;
-        margin-bottom: 50px;
+        height: 1000px;
     }
     #att-search input, select{
         height: 36px;
@@ -41,15 +34,6 @@
         height: 100px;
         width: 850px;
         padding-top: 30px;
-    }
-    #search-btn button{
-        border: none;
-        background: rgba(204, 74, 252, 0.63);
-        border-radius: 5px;
-        width: 80px;
-        height:35px;
-        font-size: 16px;
-        color: #ffffff;
     }
     #att-output{
         text-align: center;
@@ -87,37 +71,41 @@
                     <div class="content-area">                       
                         <br><br><br><br><br><br><br>
                         <div class="vc-box">
-                           	<form name="search-form" method="post" autocomplete="off">
-	                            <div class="input" id="att-search">
-	                                <table>
-	                                    <tr>
-	                                        <td width="150" height="80">기간 선택</td>
-	                                        <td width="210"><input type="date" name="atStart"> &nbsp;~&nbsp;</td>
-	                                        <td width="300"><input type="date" name="atEnd"></td>
-	                                    </tr>
-	                                    <tr>
-	                                        <td height="80">부서</td>
-	                                        <td>
-	                                            <select name="deptName" id="deptName">
-	                                            	<option value="" selected disabled>선택안함</option>
-						                            <c:forEach var="t" items="${ tlist }">
-						                                <option value="${ t.deptName }">${ t.deptName }</option>
-						                            </c:forEach>
-			                            		</select>
-	                                        </td>
-	                                    </tr>
-	                                </table>
-                                    <div id="search-btn" align="center">
-	                                    <button type="button" onclick="searchStats();">조회</button>
-                                    </div>    
-                                </div>
-                            </form>
+                            <div>
+                                <form name="search-form" method="post" autocomplete="off">
+                                    <div class="input" id="att-search">
+                                        <table>
+                                            <tr>
+                                                <td width="150" height="80">기간 선택</td>
+                                                <td width="210"><input type="date" name="atStart"> &nbsp;~&nbsp;</td>
+                                                <td width="300"><input type="date" name="atEnd"></td>
+                                            </tr>
+                                            <tr>
+                                                <td height="80">부서</td>
+                                                <td>
+                                                    <select name="deptName" id="deptName">
+                                                        <option value="" selected disabled>선택안함</option>
+                                                        <c:forEach var="t" items="${ tlist }">
+                                                            <option value="${ t.deptName }">${ t.deptName }</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div id="search-btn" align="center">
+                                            <button type="button" onclick="searchStats();" class="att-btn">조회</button>
+                                        </div>    
+                                    </div>
+                                </form>
+                            </div>
                             <div class="output">
+                                조회결과: <span id="searchCount">0</span>건
+                                <br><br>
                                 <table id="att-output">
                                     <thead>
                                         <tr>
                                             <th width="150">이름</th>
-                                            <th width="180">부서</th>
+                                            <th width="150">부서</th>
                                             <th width="150">소속팀</th>
                                             <th width="80">지각</th>
                                             <th width="80">조퇴</th>
@@ -140,13 +128,16 @@
 									success : function(list){
 										//테이블 초기화
 										$('#att-tbody').empty();
+										$('#searchCount').empty();
 										let value="";
+										let result="";
 										if(list.length<1){
 											value += "<tr>"
-			                                    + "<td>" +  조회결과업슴  + "</td>"
+			                                    + "<td> 조회결과업슴 </td>"
 			                                    + "<tr>";
 										}else{
 											for(let i in list){
+												result = list.length;
 												value += "<tr>"
 						                                    + "<td>" +  list[i].empName  + "</td>"
 						                                    + "<td>" +  list[i].deptName  + "</td>"
@@ -157,7 +148,8 @@
 						                                    +"<td>" +  list[i].dayCount  + "일</td>" 
 						                                    +"<td>" +  list[i].workSum  + "시간</td>" 
 				                                    	+"</tr>";
-							        		}				 
+							        		}
+											$('#searchCount').append(result);
 											$('#att-tbody').append(value);
 										}
 									}, error:function(){
@@ -165,7 +157,6 @@
                         			}
 								})
 							}
-	                        
                         	</script>
                         </div>
                     </div>

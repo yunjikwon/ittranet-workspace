@@ -15,25 +15,13 @@
         font-size: 18px; 
         font-weight: 600;
     }
-    .vc-box{
-        background: white;
-        width: 950px;
-        height: 800px;
-        border-radius: 25px;
-        padding: 50px;
-        margin-left: 15px;
-        font-size: 17px;
-        margin-bottom: 50px;
+	.vc-box{
+        height: 1000px;
     }
     #att-search{
         font-size: 15px;
     }
-    #att-search input, select{
-        height: 36px;
-        width: 180px;
-        border: 1px solid lightgray;
-        border-radius: 5px;
-    }
+
     .input, .output{
         float: left;
     }
@@ -42,15 +30,7 @@
         width: 850px;
         padding-top: 30px;
     }
-    #search-btn button{
-        border: none;
-        background: rgba(204, 74, 252, 0.63);
-        border-radius: 5px;
-        width: 80px;
-        height:35px;
-        font-size: 16px;
-        color: #ffffff;
-    }
+
     #att-output{
         text-align: center;
         border-top: 1px solid #444444d5;
@@ -90,7 +70,7 @@
                            	<form name="search-form" method="post" autocomplete="off">
 	                            <div class="input" id="att-search">
                                     <fmt:parseNumber value = "${ loginUser.empNo }" var="empNo" />
-                                    <input type="hidden" name="empNo" value="${ empNo }">
+                                    <input class="att-input" type="hidden" name="empNo" value="${ empNo }">
 	                                <table>
 	                                    <tr>
 	                                        <td width="150" height="80">기간 선택</td>
@@ -100,7 +80,7 @@
 	                                    <tr>
 	                                        <td>근태</td>
 	                                        <td>
-	                                            <select name="attStatus" id="attStatus">
+	                                            <select name="attStatus" id="attStatus" class="att-select">
 	                                                <option value="정상">정상</option>
 	                                                <option value="지각">지각</option>
 	                                                <option value="조퇴">조퇴</option>
@@ -109,11 +89,13 @@
 	                                    </tr>
 	                                </table>
                                     <div id="search-btn" align="center">
-	                                    <button type="button" onclick="searchAttendance();">조회</button>
+	                                    <button type="button" onclick="searchAttendance();" class="att-btn">조회</button>
                                     </div>    
                                 </div>
                             </form>
                             <div class="output">
+                             조회결과: <span id="searchCount">0</span>건
+							 <br><br>
                                 <table id="att-output">
                                     <thead>
                                         <tr>
@@ -133,7 +115,6 @@
                             <script>
                             $(function(){
                                 selectAttendance();
-
                             })
                             function selectAttendance(){ // 근태 전체조회용
 								$.ajax({
@@ -145,13 +126,16 @@
 									success : function(list){
 										//테이블 초기화
 										$('#att-tbody').empty();
+										$('#searchCount').empty();
 										let value="";
+										let result="";
 										if(list.length<1){
 											value += "<tr>"
 			                                    + "<td>" +  조회결과업슴  + "</td>"
 			                                    + "<tr>";
 										}else{
 											for(let i in list){
+												result = list.length;
 												value += "<tr>"
 						                                    + "<td>" +  list[i].attDate  + "</td>"
 						                                    + "<td>" +  list[i].arriveTime  + "</td>"
@@ -162,6 +146,7 @@
 				                                    	+"</tr>";
 							        		}				 
 											$('#att-tbody').append(value);
+											$('#searchCount').append(result);
 										}
 									}, error:function(){
                         				console.log("근태 조회용 ajax 통신 실패");
@@ -176,13 +161,16 @@
 									success : function(list){
 										//테이블 초기화
 										$('#att-tbody').empty();
+										$('#searchCount').empty();
 										let value="";
+										let result="";
 										if(list.length<1){
 											value += "<tr>"
 			                                    + "<td>" +  조회결과업슴  + "</td>"
 			                                    + "<tr>";
 										}else{
 											for(let i in list){
+												result = list.length;
 												value += "<tr>"
 						                                    + "<td>" +  list[i].attDate  + "</td>"
 						                                    + "<td>" +  list[i].arriveTime  + "</td>"
@@ -193,6 +181,7 @@
 				                                    	+"</tr>";
 							        		}				 
 											$('#att-tbody').append(value);
+											$('#searchCount').append(result);
 										}
 									}, error:function(){
                         				console.log("근태 검색용 ajax 통신 실패");

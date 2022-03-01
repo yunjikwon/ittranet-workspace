@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>      
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>         
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <style>
+<style>
     	/*메뉴바 픽스 스타일*/
      	.attendance_mn{
      		color:#000000;
@@ -63,19 +63,36 @@
 		<!-- 헤더 -->
 	    <jsp:include page="../common/pageHeader.jsp"/>
 	    <!-- 메뉴바 -->
-	   	<jsp:include page="../common/userMenu.jsp"/>
+   		<jsp:include page="../common/adminMenu.jsp"/>
 	   	
 	   	
 	   	<br clear="both">
 	   	
 	   	<div style="position:relative">
-		   	<!-- 사이드바 -->
-		   	<jsp:include page="approvalSidebar.jsp" />
+		   	<!--사이드바-->
+                <jsp:include page="../common/sidebar.jsp" />
+                <!-- 각 메뉴에 맞게 수정 -->    	
+		        <div class="cont">
+		            <ul id="ac">
+		                <li class="division">
+		                    <a href="#">결재관리</a>
+		                </li>
+		                <div id="border">
+				               <li class="menu1">
+				                  <a href="adminForm.dr">기안 양식 관리</a>
+				               </li>
+                               <li class="menu1">
+                                    <a href="adminApWait.ap">관리자 권한 관리</a>
+                                </li>
+				               
+		            	</div>
+		            </ul>
+		         </div>
 		   	
 		    <div class="mainOuter">
 		        <br>
 		        <div id="draftTitle">
-		           	 결재함 > 미처리 결재
+		           	 관리자 권한 결재
 		        </div> <br>
 	
 	            <div id="innerouter" style="padding:5% 10%;">
@@ -112,20 +129,22 @@
 		                    </tr>
 		                </thead>    
 		                <tbody>    
-		                	<c:if test="${ pi.listCount } = 0">
-		                		조회된 데이터 목록이 없습니다.
-		                	</c:if>
+		                	
 			            	<c:forEach var="d" items="${ list }">
-			                    <tr>
+			            		
+			                    <tr>				                	
 			                    	<input type="hidden" class="drNo" value="${ d.drNo }">
 			                    	<input type="hidden" class="drDivision" value="${ d.drDivision }">
-			                    	<input type="hidden" class="category" value="${ category }">
 			                    	<input type="hidden" name="empNo" value="${ d.empNo }">	                    	
 			                        <th class="drDivison"> ${ d.drDivision } </th>
 			                        <td>${ d.drTitle }</td>
 			                        <td>${ d.apDate }</td>
-			                        <td class="linePerson">
-			                        	${loginUser.empName }
+									<td class="linePerson">
+			                        	<c:forEach var="l" items="${ linePerson }">
+				                        	<c:if test="${ l.drNo eq d.drNo }">
+					                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
+				                           	 </c:if>
+				                        </c:forEach>
 			                        </td>
 			                        <td>${ d.apStatus }</td>
 			                    </tr>
@@ -134,7 +153,7 @@
 		            </table>    <br>
 		        </div>    <br><br>
 		        		        
-		        <div id="pagingArea">
+   		        <div id="pagingArea">
 	                <ul class="pagination">
 	                	
 	                	<c:choose>
@@ -142,13 +161,13 @@
 	                    		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
 	                    	</c:when>
 	                    	<c:otherwise>
-	                    		<li class="page-item"><a class="page-link" href="approvalWait.ap?cpage=${ pi.currentPage-1 }">Previous</a></li>
+	                    		<li class="page-item"><a class="page-link" href="adminApWait.ap?cpage=${ pi.currentPage-1 }">Previous</a></li>
 	                    	</c:otherwise>
 	                    </c:choose>
 	                    
 	                    
 	                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-	                    	<li class="page-item"><a class="page-link" href="approvalWait.ap?cpage=${ p }">${ p }</a></li>
+	                    	<li class="page-item"><a class="page-link" href="adminApWait.ap?cpage=${ p }">${ p }</a></li>
 	                    </c:forEach>
 	                    
 	                    
@@ -157,7 +176,7 @@
 	                    		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
 	                    	</c:when>
 	                    	<c:otherwise>
-	                    		<li class="page-item"><a class="page-link" href="approvalWait.ap?cpage=${ pi.currentPage+1 }">Next</a></li>
+	                    		<li class="page-item"><a class="page-link" href="adminApWait.ap?cpage=${ pi.currentPage+1 }">Next</a></li>
 	                    	</c:otherwise>
 	                    </c:choose>
 	                    
@@ -218,18 +237,19 @@
 			// 상세페이지 이동
 			$(function(){
            		$("#boardList>tbody>tr").click(function(){
-           			location.href = 'detail.ap?drNo=' + $(this).children(".drNo").val()
-           					       +'&drDivision=' + $(this).children(".drDivision").val()
-           					       +'&category=' + $(this).children(".category").val();            			
+           			location.href = 'adminDetail.ap?drNo=' + $(this).children(".drNo").val()
+           					       +'&drDivision=' + $(this).children(".drDivision").val();            			
            		});
            	})
 				
 		</script>		    
-		    
 	    <!-- 푸터 -->
 	    <jsp:include page="../common/footer.jsp"/>
+
+
 	    
 	</div>    
 </div>    
+
 </body>
 </html>

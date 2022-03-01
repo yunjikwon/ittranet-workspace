@@ -25,6 +25,10 @@
 		<result column="team_name" property="teamName"/>
 		<result column="job_name" property="jobName"/>
 	</resultMap>
+	
+	<resultMap id="scheduleResult" type="Calendar">
+		<result column="cal_content" property="calContent"/>
+	</resultMap>
 
 	<!-- 로그인 -->
 	<select id="loginMember" resultMap="memberResult">
@@ -136,6 +140,7 @@
 		 where emp_no = #{empNo}
 	</update>
 	
+	<!-- 비밀번호 변경 -->
 	<update id="updatePwd">
 		update
 		       employee
@@ -227,6 +232,95 @@
 		     , job_code = #{jobCode}
 		 where emp_no = #{empNo}
 	</update>
+	
+	<!-- 관리자 페이지 진입시  -->
+	<select id="selectYemployeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where status = 'Y'
+	</select>
+	
+	<select id="selectD0employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D0'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD1employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D1'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD2employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D2'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD3employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D3'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD4employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D4'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD5employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D5'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD6employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D6'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD7employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D7'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectAdminSchedule" resultMap="scheduleResult">
+		select 
+		       cal_content
+		  from calendar 
+		 where emp_no= 1
+		   and substr(cal_start,1,10) = TO_CHAR(SYSDATE, 'MM/DD/YYYY')
+	</select>
+	
+	
+	<select id="selectUserSchedule" resultMap="scheduleResult">
+		select 
+		       cal_content
+		  from calendar 
+		 where emp_no = ${empNo}
+		   and substr(cal_start,1,10) = TO_CHAR(SYSDATE, 'MM/DD/YYYY')
+	</select>
 	
 
 </mapper>

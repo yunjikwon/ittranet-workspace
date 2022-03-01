@@ -2,16 +2,17 @@ package com.h4j.ITtranet.approval.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +51,6 @@ public class ApprovalController {
 		// 세션에서 empNo 값 가져오기
 		Employee loginUser = (Employee) session.getAttribute("loginUser");
 		int loginNo = Integer.parseInt(loginUser.getEmpNo());
-		System.out.println("personNo : " + loginNo);
 		
 		//paging
 		int listCount = aService.selectListCount(category, loginNo);
@@ -65,6 +65,7 @@ public class ApprovalController {
 		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
+		  .addObject("category", category)
 		  .addObject("linePerson", linePerson)
 		  .setViewName("approval/draftWait");
 		
@@ -119,7 +120,6 @@ public class ApprovalController {
 		// 세션에서 empNo 값 가져오기
 		Employee loginUser = (Employee) session.getAttribute("loginUser");
 		int loginNo = Integer.parseInt(loginUser.getEmpNo());
-		System.out.println("personNo : " + loginNo);
 				
 		//paging
 		int listCount = aService.selectListCount(category, loginNo);
@@ -132,8 +132,10 @@ public class ApprovalController {
 		// list 출력
 		ArrayList<Approval> list = aService.selectList(pi, category, loginNo);
 
+		System.out.println("반려 게시판 list : " + list);
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
+		  .addObject("category", category)
 		  .addObject("linePerson", linePerson)
 		  .setViewName("approval/draftReject");
 		
@@ -156,7 +158,6 @@ public class ApprovalController {
 		// 세션에서 empNo 값 가져오기
 		Employee loginUser = (Employee) session.getAttribute("loginUser");
 		int loginNo = Integer.parseInt(loginUser.getEmpNo());
-		System.out.println("personNo : " + loginNo);
 		
 		//paging
 		int listCount = aService.selectListCount(category, loginNo);
@@ -171,6 +172,7 @@ public class ApprovalController {
 
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
+		  .addObject("category", category)
 		  .addObject("linePerson", linePerson)
 		  .setViewName("approval/draftComplete");
 		
@@ -198,8 +200,8 @@ public class ApprovalController {
 			resultAt = aService.insertAttachment(at);
 		}
 		
-		System.out.println("result : " + result);
-		System.out.println("resultAt : " + resultAt);
+		//System.out.println("result : " + result);
+		//System.out.println("resultAt : " + resultAt);
 		
 		if(result * resultAt >0) {
 			return "redirect:draftWait.dr";
@@ -225,9 +227,10 @@ public class ApprovalController {
 		}
 		return changeName;
 	}
+	
 	// ----- 기안/결재 상세페이지 ------
 	@RequestMapping("detail.dr")
-	public ModelAndView selectDetail(int drNo, String drDivision, ModelAndView mv) {
+	public ModelAndView selectDetail(int category, int drNo, String drDivision, ModelAndView mv) {
 
 		Approval b = aService.selectDetail(drNo, drDivision);
 		ArrayList<AppLine> linePerson = aService.selectAppName();			
@@ -236,9 +239,11 @@ public class ApprovalController {
 		String str = "";
 		switch(drDivision) {
 		case "사업계획서" : str = "bussinessPlanDetail";
-						 break;
+		break;
+		
 		case "시말서": str = "apologyDetail";
-					 break;	
+		break;	
+		
 		case "연장근무신청": str = "overtimeDetail";
 		break;
 						
@@ -252,6 +257,7 @@ public class ApprovalController {
 		break;
 					
 		}
+		mv.addObject("category", category);
 		mv.addObject("aline", linePerson);
 		mv.addObject("b", b);
 		mv.addObject("at", at);
@@ -276,7 +282,7 @@ public class ApprovalController {
 		else{
 			HashMap<String, Integer> map = new HashMap<String, Integer>();		
 			map.put("boardSearch", search);
-			System.out.println("기안일 search map : " + map);
+			//System.out.println("기안일 search map : " + map);
 			list = aService.selectSearchDate(map);
 		}
 		//System.out.println(list);
@@ -348,11 +354,11 @@ public class ApprovalController {
 			// 세션에서 empNo 값 가져오기
 			Employee loginUser = (Employee) session.getAttribute("loginUser");
 			int loginNo = Integer.parseInt(loginUser.getEmpNo());
-			System.out.println("personNo : " + loginNo);
+			//System.out.println("personNo : " + loginNo);
 			
 			//paging
 			int listCount = aService.selectApListCount(category, loginNo);
-			System.out.println("listCount : " + listCount);
+			//System.out.println("listCount : " + listCount);
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 			
 			// 결재자 list 출력
@@ -385,11 +391,11 @@ public class ApprovalController {
 			// 세션에서 empNo 값 가져오기
 			Employee loginUser = (Employee) session.getAttribute("loginUser");
 			int loginNo = Integer.parseInt(loginUser.getEmpNo());
-			System.out.println("personNo : " + loginNo);
+			//System.out.println("personNo : " + loginNo);
 			
 			//paging
 			int listCount = aService.selectApListCount(category, loginNo);
-			System.out.println("listCount : " + listCount);
+			//System.out.println("listCount : " + listCount);
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 			
 			// 결재자 list 출력
@@ -410,7 +416,7 @@ public class ApprovalController {
 		// ----- 결재 상세페이지 ------
 		
 		@RequestMapping("detail.ap")
-		public ModelAndView selectApDetail(int drNo, String drDivision, ModelAndView mv) {
+		public ModelAndView selectApDetail(int category, int drNo, String drDivision, ModelAndView mv) {
 
 			Approval b = aService.selectDetail(drNo, drDivision);
 			ArrayList<AppLine> linePerson = aService.selectAppName();			
@@ -435,6 +441,7 @@ public class ApprovalController {
 			break;
 						
 			}
+			mv.addObject("category", category);
 			mv.addObject("aline", linePerson);
 			mv.addObject("b", b);
 			mv.addObject("at", at);
@@ -483,6 +490,7 @@ public class ApprovalController {
 			}
 		}
 		
+		// 관리자 양식관리
 		@RequestMapping("adminForm.dr")
 		public ModelAndView adminFormList(HttpSession session, ModelAndView mv, HttpServletRequest request) throws Exception {
 			mv
@@ -491,5 +499,116 @@ public class ApprovalController {
 			return mv;
 		}
 		
+		// ----- 관리자 "결재" 게시판 select ------
+		@RequestMapping("adminApWait.ap")
+		public ModelAndView adminApWait(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv, HttpSession session, HttpServletRequest request) throws Exception {
+			
+			//paging
+			int listCount = aService.selectAdminApListCount();
+			//System.out.println("listCount : " + listCount);
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+			
+			// 결재자 list 출력
+			ArrayList<AppLine> linePerson = aService.selectAppName();
+			
+			// list 출력
+			ArrayList<Approval> list = aService.selectAdminApList(pi);
+			
+			mv.addObject("pi", pi)
+			  .addObject("list", list)
+			  //.addObject("category", category)
+			  .addObject("linePerson", linePerson)
+			  .setViewName("approval/adminApList");
+			System.out.println("admin list : " + list);
+			System.out.println("admin linePerson : " + linePerson);
+			return mv;
+		}	
 	
+		
+		// ----- 관리자 권한 결재 상세페이지 ------
+		
+		@RequestMapping("adminDetail.ap")
+		public ModelAndView selectAdminApDetail(int drNo, String drDivision, ModelAndView mv) {
+
+			Approval b = aService.selectDetail(drNo, drDivision);
+			ArrayList<AppLine> linePerson = aService.selectAppName();			
+			Attachment at = aService.selectAttachment(drNo);
+			
+			String str = "";
+			switch(drDivision) {
+			case "사업계획서" : str = "AdBussinessPlanApDetail";
+							 break;
+			case "시말서": str = "AdApologyApDetail";
+						 break;	
+			case "연장근무신청": str = "AdOvertimeApDetail";
+			break;
+							
+			case "지출결의서": str = "AdExpenditureApDetail";
+			break;
+							
+			case "추가예산신청": str = "AdBudgetApDetail";
+			break;
+							
+			case "회의록": str = "AdProceedingsApDetail";
+			break;
+						
+			}
+			mv.addObject("aline", linePerson);
+			mv.addObject("b", b);
+			mv.addObject("at", at);
+			mv.setViewName("approval/adminApDetail/" + str);
+			//System.out.println(b);
+			return mv;
+		}
+		
+		//관리자 권한 결재 update 
+		
+		@RequestMapping("updateAdminReject.ap")
+		public String updateAdminReject(int drNo, HttpServletResponse response, HttpSession session, Model model) throws IOException {
+			
+			int result = aService.updateAdminReject(drNo);
+			
+			if(result > 0) { // 수정 성공
+				/*
+				// 알림창
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script language='javascript'>");	
+				out.println("alert('결재 완료했습니다.'");
+				out.println("</script>");
+
+				out.flush();
+				*/
+				return "redirect:adminApWait.ap";
+				
+			}else { // 수정 실패 => 에러페이지
+				model.addAttribute("errorMsg", "반려 요청 실패");
+				return "common/error";
+			}
+		}
+		
+		@RequestMapping("updateAdminComplete.ap")
+		public String updateAdminComplete(int drNo, HttpServletResponse response ,HttpSession session, Model model) throws IOException {
+			int result = aService.updateAdminComplete(drNo);
+			
+			if(result > 0) { // 수정 성공
+				// 알림창
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script language='javascript'>");	
+				out.println("alert('결재 완료했습니다.'");
+				out.println("</script>");
+
+				out.flush();
+				
+				return "redirect:adminApWait.ap";
+				
+			}else { // 수정 실패 => 에러페이지
+				model.addAttribute("errorMsg", "반려 요청 실패");
+				return "common/error";
+			}
+		}
+		
+
+		
 }

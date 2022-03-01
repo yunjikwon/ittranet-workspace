@@ -116,6 +116,7 @@
 			                    <tr>
 			                    	<input type="hidden" class="drNo" value="${ d.drNo }">
 			                    	<input type="hidden" class="drDivision" value="${ d.drDivision }">
+			                    	<input type="hidden" class="category" value="${ category }">
 			                    	<input type="hidden" name="empNo" value="${ d.empNo }">	                    	
 			                        <th class="drDivison"> ${ d.drDivision } </th>
 			                        <td>${ d.drTitle }</td>
@@ -188,24 +189,28 @@
 							//테이블 초기화
 		    				$('#boardList tbody').empty();
 							let appPerson = "";
-							
 		    				let str = "";
-							for(let i in result.list){
+	                        	
+		    				for(let i in result.list){
 								str += "<tr>"
 									    	+ "<input type='hidden' name='empNo' value='" + result.list[i].empNo + "'>"		                    	
 					                        + "<th>"+ result.list[i].drDivision +"</th>"
 					                        + "<td>"+ result.list[i].drTitle + "</td>"
 					                        + "<td>"+ result.list[i].drDate + "</td>"
-					                        + "<td>" ;
-					                        	for(let a in result.linePerson){
-					                        		if( result.list[i].drNo == result.linePerson[a].drNo){
-					                        			appPerson += result.linePerson[a].empName + result.linePerson[a].job + "&nbsp;"
-					                        		}
-												}
-					                        str += appPerson + "</td>" 
-						                        + "<td>"+ result.list[i].drStatus + "</td>"
-					                        + "</tr>";
-								}
+					                        + "<td>";  
+						                        
+											// 결재자 리스트
+											for(let a in result.linePerson){						                        		
+						                        if((result.list[i].drNo == result.linePerson[a].drNo)){
+						                        	appPerson += result.linePerson[a].empName + result.linePerson[a].job + "&nbsp;"
+						                        	result.list.push(appPerson);
+												}		
+				                        	} 
+					                 	str += result.list[i].appPerson + "</td>" 
+						                    + "<td>"+ result.list[i].drStatus + "</td>"
+					                + "</tr>";
+							}
+								
 							$('#boardList > tbody').html(str);
 							$("#boardSearch1 option:eq(0)").prop("selected", true); //select(셀렉트) 원위치
 							$("#boardSearch2 option:eq(0)").prop("selected", true);
@@ -219,7 +224,8 @@
 			$(function(){
            		$("#boardList>tbody>tr").click(function(){
            			location.href = 'detail.dr?drNo=' + $(this).children(".drNo").val()
-           					       +'&drDivision=' + $(this).children(".drDivision").val();            			
+           					       +'&drDivision=' + $(this).children(".drDivision").val()
+           					       +'&category=' + $(this).children(".category").val();                 			
            		});
            	})
 				

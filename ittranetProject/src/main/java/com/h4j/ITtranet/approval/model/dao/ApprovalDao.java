@@ -163,6 +163,37 @@ public class ApprovalDao {
 	public int drUpdateComplete(SqlSession sqlSession, HashMap<String, Integer> map) {
 		return sqlSession.update("appMapper.drComplete", map);
 	}
+
+	//_------------------------------------------------------------------
+	// 관리자 권한 결재 리스트
+	public int selectadminApListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("appMapper.selectadminApListCount");
+	}
+
+	public ArrayList<Approval> selectadminApList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("appMapper.selectadminApList", rowBounds);
+	}
+	
+	// 관리자 권한 반려/결재 update
+	public int apAdminReject(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.apAdminReject", drNo);
+	}
+	
+	public int drAdminReject(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.drAdminReject", drNo);
+	}
+	
+	public int drAdminComplete(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.drAdminComplete", drNo);
+	}
+
+	public int apAdminComplete(SqlSessionTemplate sqlSession, int drNo) {
+		return sqlSession.update("appMapper.apAdminComplete", drNo);
+	}
 	
 	
 }

@@ -79,10 +79,10 @@
 		                </li>
 		                <div id="border">
 				               <li class="menu1">
-				                  <a href="listAdmin.no">기안 양식 관리</a>
+				                  <a href="adminForm.dr">기안 양식 관리</a>
 				               </li>
                                <li class="menu1">
-                                    <a href="headerAdmin.no">관리자 권한 관리</a>
+                                    <a href="adminApWait.ap">관리자 권한 관리</a>
                                 </li>
 				               
 		            	</div>

@@ -90,6 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where emp_no = #{empNo}
 		   and apply_yn = 'Y'
 		   and vc_startdate &lt; to_char(sysdate, 'YYYY-MM-DD')
+		   and vc_status in ('승인', '반려')
 		 order
 		 	by vc_applyno desc
 	</select>

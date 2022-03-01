@@ -6,8 +6,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.h4j.ITtranet.calendar.model.vo.Calendar;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.employee.model.dao.EmployeeDao;
+import com.h4j.ITtranet.employee.model.vo.Department;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 
 @Service
@@ -24,6 +26,33 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Employee loginUser = eDao.loginMember(sqlSession, e);
 		return loginUser;
 	}
+	
+	@Override
+	public Department empCount() {
+		Department dlist = new Department();
+		dlist.setAllEmp(eDao.selectYemployeeCount(sqlSession));
+		dlist.setDzero(eDao.selectD0employeeCount(sqlSession));
+		dlist.setDone(eDao.selectD1employeeCount(sqlSession));
+		dlist.setDtwo(eDao.selectD2employeeCount(sqlSession));
+		dlist.setDthr(eDao.selectD3employeeCount(sqlSession));
+		dlist.setDfour(eDao.selectD4employeeCount(sqlSession));
+		dlist.setDfive(eDao.selectD5employeeCount(sqlSession));
+		dlist.setDsix(eDao.selectD6employeeCount(sqlSession));
+		dlist.setDsev(eDao.selectD7employeeCount(sqlSession));
+		return dlist;
+	}
+	
+	@Override
+	public ArrayList<Calendar> selectAdminSchedule() {
+		return eDao.selectAdminSchedule(sqlSession);
+	}
+	
+
+	@Override
+	public ArrayList<Calendar> selectUserSchedule(String empNo) {
+		return eDao.selectUserSchedule(sqlSession, empNo);
+	}
+
 
 	@Override
 	public int mailCheck(String checkMail) {
@@ -97,6 +126,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return eDao.selectAllemployee2(sqlSession);
 	}
 
+	
+
+	
 
 	
 }

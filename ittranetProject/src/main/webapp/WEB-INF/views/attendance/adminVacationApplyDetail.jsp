@@ -15,46 +15,66 @@
         font-size: 18px; 
         font-weight: 600;
     }
-    .vc-box{
-        background: white;
-        width: 950px;
-        border-radius: 25px;
-        padding: 50px;
-        margin-left: 15px;
-        font-size: 17px;
-        margin-bottom: 50px;
-    }
-    table{
-        width: 850px;
-        font-size: 15px;
-        font-weight: 400;
-        text-align: center;
-    }
     #app-btn{
         width: 300px;
         float: right;
     }
     #app-btn button{
-        width: 100px;
-        height: 40px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: 900;
-        margin-left: 20px;
         float: right;
     }
-    /*페이징바 스타일*/
-    .page{
-        border: none;
-        background: rgba(211, 211, 211, 0.521);
-        color: gray;
+    .ref{
+        border: 2px solid red;
+        background: none;
+        color: red;
+        font-weight: 800;
+        border-radius: 5px;
+        width: 100px;
+        height: 35px;
+        margin-left: 29px;
+        margin-top:10px;
+    }
+    .ref:hover{
+        background: red;
+        color: #ffffff;
+    }
+    .acc{
+        border: 2px solid green;
+        background: none;
+        color: green;
+        font-weight: 800;
+        border-radius: 5px;
+        width: 100px;
+        height: 35px;
+        margin-left: 29px;
+        margin-top:10px;
+    }
+    .acc:hover{
+        background: green;
+        color: #ffffff;
+    }
+    #vc-tb tr{
+        height: 50px;
+        text-align: left;
+    }
+    #vc-tb{
         font-size: 16px;
-        font-weight: 600;
-        height: 30px;
-        width: 30px;
-        border-radius: 9px;
-    }        
+        color: #000000af;
+        width: 750px;
+        font-size: 15px;
+        font-weight: 400;
+        text-align: center;
+    }
+    #vc-title{
+        font-size: 25px;
+        font-weight: 800;
+        color: #000000cb;
+    }
+    .sub-title{
+        font-size: 21px;
+        font-weight: 800;
+        color: #000000cb;
+        background: linear-gradient(to top, #FFE400 20%, transparent 10%);
+    }     
     /*메뉴바 픽스 스타일*/
     .attendance_mn{
     	color: #000000;
@@ -69,7 +89,14 @@
             
             <br clear="both">
             <div style="position:relative">
-                <jsp:include page="adminAttendanceSidebar.jsp" />               
+                <c:choose>
+                    <c:when test="${loginUser.empNo eq 1}">
+                        <jsp:include page="adminAttendanceSidebar.jsp" />               
+                    </c:when>
+                    <c:otherwise>
+                        <jsp:include page="attendanceSidebar.jsp" />  
+                    </c:otherwise>
+                </c:choose>
                 <div class="mainOuter">
                     <!--제목영역-->
                     <div style="width:100%; height:200px; float:right; padding:40px; font-size: 22px; font-weight: 600;">
@@ -79,21 +106,21 @@
                     </div>
                     <!--컨텐츠 영역-->
                     <div class="content-area">
-                        미처리 휴가
-                        <br><br>
-                        <div class="vc-box">
+                        
+                        <br><br><br><br><br><br>
+                        <div class="vc-box" style="padding: 100px;">
                             <!--휴가종류에 따라 제목 달라지게-->
-                            ${ vc.vcType } 휴가 신청
+                            <span id="vc-title">${ vc.vcType } 휴가 신청</span>
                             <c:choose>
 	                            <c:when test="${ vc.vcStatus eq '대기' and loginUser.empNo eq 1 }">
 	                            <div id="app-btn">
-	                                <button onclick="vcFormSubmit(1);" style="background: #e6a4e0; color: red;">거절</button>
-	                                <button onclick="vcFormSubmit(2);" style="background: rgb(119, 194, 135); color: white;">승인</button>
+	                                <button onclick="vcFormSubmit(1);" class="ref">거절</button>
+	                                <button onclick="vcFormSubmit(2);" class="acc">승인</button>
 	                            </div>
 	                            </c:when>
 	                            <c:when test="${ vc.vcStatus eq '대기' and loginUser.empNo eq vc.empNo }">
 	                            <div id="app-btn">
-	                                <button onclick="vcFormSubmit(3);" style="background: rgb(119, 194, 135); color: white;">취소</button>
+	                                <button onclick="vcFormSubmit(3);" class="ref">취소</button>
 	                            </div>
 	                            </c:when>
                             </c:choose>
@@ -113,7 +140,9 @@
 				            </script>
                             <br><br><br>
                             <div>
-                               	<table border="1">
+                                <span class="sub-title">사원 정보</span>
+                                <br><br>
+                               	<table id="vc-tb" class="table-hover">
                                     <tr>
                                         <th width="300">사원명</th>
                                         <td>${ vc.empName }</td>
@@ -122,8 +151,13 @@
                                         <th>신청일자</th>
                                         <td>${ vc.vcEnrollDate }</td>
                                     </tr>
+                                </table>
+                                <br><br>
+                                <span class="sub-title">휴가 정보</span>
+                                <br><br>
+                                <table id="vc-tb" class="table-hover">
                                     <tr>
-                                        <th>휴가 시작일</th>
+                                        <th width="300">휴가 시작일</th>
                                         <td>${ vc.vcStartDate }</td>
                                     </tr>
                                     <tr>

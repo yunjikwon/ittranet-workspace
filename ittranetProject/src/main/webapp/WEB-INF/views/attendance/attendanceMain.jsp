@@ -17,17 +17,18 @@
         margin-left: 55px;
 		margin-bottom: 50px;
 		width: 290px;
-		box-shadow: 0 8px 20px 0 rgba(124, 6, 202, 0.130);
+		box-shadow: 0 8px 20px 0 rgba(124, 6, 202, 0.096);
     }
     .category-title{
         height: 40px;
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
-        background-color: rgba(196, 158, 212, 0.8);
+        background-color: #ffffff;
         font-size: 17px;
         font-weight: 600;
         line-height: 40px;
         color: rgb(61, 58, 58);
+		padding: 10px;
     }
     .plus-btn{
         color: rgb(53, 50, 50);
@@ -35,16 +36,19 @@
         float: right;
         font-size: 22px;
         margin-right: 15px;
+		font-size: 1px;
     }
-    #vc-btn{
-    	border: none;
-		background: rgba(203, 173, 214, 0.63);
-		border-radius: 5px;
-		width: 100px;
-		height: 35px;
-		margin-left: 29px;
-    	margin-top:10px;
-    }
+	.plus{
+		border: none;
+		border-radius: 75px;
+		width: 4px;
+		height: 4px;
+		background: rgba(128, 128, 128, 0.623);
+		float: left;
+		margin-right: 4px;
+		margin-top: 17px;
+	}
+    
 	/*출퇴근체크*/
 	.commute-btn{
 		border: none;
@@ -59,13 +63,15 @@
 		font-size: 40px;
 	}
 	.out-btn{
-		border: none;
-		background: rgba(203, 173, 214, 0.63);
+		border: 2px solid lightgray;
+		background: #ffffff;
 		border-radius: 5px;
 		width: 100px;
 		height: 35px;
 		margin-left: 29px;
 		margin-top: 35px;
+		color: lightgray;
+		font-weight: 800;
 	}
 	/*근무현황*/
 	.att-circle{
@@ -98,7 +104,10 @@
 	#att-status{
 		margin-left: 20px;
 	}
-	
+	.att-result{
+		color: gray;
+		font-weight: 500;
+	}
 
 	/*시계 스타일*/
 	#today{
@@ -106,35 +115,36 @@
 	}
 	#nowMonth{
 		font-size: 30px;
-		margin-top: 20px;
+		margin-top: 25px;
 		color: gray;
 	}
 	#nowDay{
 		font-size: 70px;
-		margin-top: -140px;
+		margin-top: -135px;
 		color: #000000b6;
 	}
 	#nowYear{
 		font-size: 30px;
-		margin-top: -75px;
+		margin-top: -70px;
 		color: gray;
 	}
 	#clock{
 		font-size: 30px; 
 		text-align: center;
-		margin-top: 15px;
+		margin-top: 20px;
 		color: #000000cb
 	}
 	.status-box div{
-		width: 30%;
+		width: 88px;
 		border-left: solid 1px lightgray;
 		float: left;
 		height: 100px;
 		text-align: center;
 		padding-top: 20px;
+		margin-top: 20px;
 	}
 	.status-box{
-		padding-left: 25px;
+		padding-left: 15px;
 		padding-top: 30px;
 	}
 
@@ -142,6 +152,7 @@
 	.attendance_mn{
 		color: #000000;
 	}
+	
 </style>
 </head>
 <body>
@@ -169,7 +180,11 @@
 							&nbsp;&nbsp; 
 							<i class="far fa-clock fa-1x"></i>&nbsp;
 							TODAY
-							<a href="" class="plus-btn">+</a>
+							<a href="" class="plus-btn">
+								<div class="plus"></div>
+								<div class="plus"></div>
+								<div class="plus"></div>
+							</a>
 						</div>
 						
 						<div id="today">
@@ -190,12 +205,16 @@
 							&nbsp;&nbsp; 
 							<i class="far fa-clock fa-1x"></i>&nbsp;
 							출/퇴근 체크
-							<a href="" class="plus-btn">+</a>
+							<a href="" class="plus-btn">
+								<div class="plus"></div>
+								<div class="plus"></div>
+								<div class="plus"></div>
+							</a>
 						</div>
 
 							<!-- 이미 출/퇴근 버튼 클릭했을 시 다시 클릭되지 않도록 -->
 							<button id="arr-btn" class="commute-btn" onclick="insertArrive();" style="border-right: 2px solid lightgray;"align="center">
-								<i class="far fa-arrow-alt-circle-right fa-rotate-90" style="color: rgb(163, 100, 223);"></i>
+								<i class="far fa-arrow-alt-circle-right fa-rotate-90" style="color: rgb(131, 26, 163);"></i>
 								<br><br>
 								<p>
 									출근하기 <br>
@@ -221,7 +240,11 @@
 							&nbsp;&nbsp; 
 							<i class="far fa-clock fa-1x"></i>&nbsp;
 							출퇴근 기록
-							<a href="" class="plus-btn">+</a>
+							<a href="" class="plus-btn">
+								<div class="plus"></div>
+								<div class="plus"></div>
+								<div class="plus"></div>
+							</a>
 						</div>
 						<br>
 						<table id="att-status">
@@ -362,95 +385,113 @@
 							if(num < 10) { num = "0" + num; }
 					 		return num;
 						}
-					        
+
+						// 버튼 클릭이벤트    
 						$('#arr-btn').click(function() {
 	                	    $('#arr-btn').attr("disabled","disabled");
 	                	    $('#arr-btn i').css("color","lightgray"); 
 	                	    $('#lev-btn').removeAttr("disabled");
-	                	    $('#lev-btn i').css("color","rgb(163, 100, 223)");
+	                	    $('#lev-btn i').css("color","rgb(131, 26, 163)");
 	                	    $('.out-btn').removeAttr("disabled");
+							$('.out-btn').css("color", "rgb(131, 26, 163)");
+							$('.out-btn').css("border", "2px solid rgb(131, 26, 163)");
+							
                 	    })
                 	    $('#lev-btn').click(function() {
 	                	    $('#lev-btn').attr("disabled","disabled");
 	                	    $('#lev-btn i').css("color","lightgray");
                 	    	$('.out-btn').attr("disabled","disabled");
 	                	    $('#arr-btn').removeAttr("disabled");
-	                	    $('#arr-btn i').css("color","rgb(163, 100, 223)");
+	                	    $('#arr-btn i').css("color","rgb(131, 26, 163)");
+							$('.out-btn').css("color", "lightgray")
+							$('.out-btn').css("border", "2px solid lightgray")
                 	    })
 					</script>
 
-					<div class="contentbox" style="height: 200px;">
+					<div class="contentbox" style="height: 230px;">
 						<div class="category-title">
 							&nbsp;&nbsp; 
 							<i class="far fa-clock fa-1x"></i>&nbsp;
 							근태 현황
-							<a href="" class="plus-btn">+</a>
+							<a href="" class="plus-btn">
+								<div class="plus"></div>
+								<div class="plus"></div>
+								<div class="plus"></div>
+							</a>
 						</div>
 						<div class="status-box">
 							<c:choose>
                                	<c:when test="${ not empty result }">
 									<div style="border-left:none;">
-										<p>지각</p>
-										${ result.lateCount }회
+										<p><b>지각</b></p>
+										<span class="att-result">${ result.lateCount }회</span>
 									</div>
 									<div>
-										<p>조퇴</p>
-										${ result.earlyCount }회
+										<p><b>조퇴</b></p>
+										<span class="att-result">${ result.earlyCount }회</span>
 									</div>
 									<div>
-										<p>결근</p>
-										${ result.absenceCount }회
+										<p><b>결근</b></p>
+										<span class="att-result">${ result.absenceCount }회</span>
 									</div>
 								</c:when>
 							</c:choose>
 						</div>
 					</div>               
-					<div class="contentbox" style="height: 200px;">
+					<div class="contentbox" style="height: 230px;">
 						<div class="category-title">
 							&nbsp;&nbsp; 
 							<i class="far fa-clock fa-1x"></i>&nbsp;
 							근무 통계
-							<a href="" class="plus-btn">+</a>
+							<a href="" class="plus-btn">
+								<div class="plus"></div>
+								<div class="plus"></div>
+								<div class="plus"></div>
+							</a>
 						</div>
 						<div class="status-box">
 							<c:choose>
                                	<c:when test="${ not empty result }">
 									<div style="border-left:none;">
-										<p>근무일수</p>
-										${ result.dayCount }일
+										<p><b>근무일수</b></p>
+										<span class="att-result">${ result.dayCount }일</span>
 									</div>
 									<div>
-										<p>총 근무</p>
-										<fmt:formatNumber type="number" maxFractionDigits="0"  value="${ result.workSum }" />
-										시간
+										<p><b>총 근무</b></p>
+										<span class="att-result"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${ result.workSum }" />
+										시간</span>
 									</div>
 									<div>
-										<p>평균근무</p>
-										<fmt:formatNumber type="number" maxFractionDigits="0"  value="${ result.workSum / result.dayCount }" />
-										시간
+										<p><b>평균근무</b></p>
+										<span class="att-result"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${ result.workSum / result.dayCount }" />
+										시간</span>
 									</div>
 								</c:when>
 							</c:choose>
 						</div>
 					</div>
-					<div class="contentbox" style="height: 200px;">
+					<div class="contentbox" style="height: 230px;">
 						<div class="category-title">
 							&nbsp;&nbsp; 
 							<i class="far fa-clock fa-1x"></i>&nbsp;
 							휴가 현황
-							<a href="" class="plus-btn">+</a>
+							<a href="" class="plus-btn">
+								<div class="plus"></div>
+								<div class="plus"></div>
+								<div class="plus"></div>
+							</a>
 						</div>
 						<div class="status-box">
 							<div style="border-left:none; width:105px;">
 								<c:choose>
 		                            <c:when test="${ not empty vc }">
-											<p>잔여 연차</p>
-											${ vc.restYear }일
+											<p><b>잔여 연차</b></p>
+											<span id="att-result">${ vc.restYear }일</span>
 									</c:when>
 								</c:choose>
 							</div>
 							<div>
-								<button onclick="location.href='vclist.at'" id="vc-btn">휴가 신청</button>
+								<button onclick="location.href='vclist.at'" class="att-btn">휴가 신청</button>
 							</div>
 						</div>
 					</div>

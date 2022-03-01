@@ -65,7 +65,7 @@
             text-align: right;
             
         }
-        .apbtn{
+		        .apbtn{
             margin:auto;
             margin-top:20px;
             margin-left: 40px;
@@ -137,7 +137,7 @@
 		    <div class="mainOuter">
 		        <br>
 		        <div id="detailTitle">
-		            	미처리 결재 상세
+		            	진행중 결재 상세
 		        </div>
 		        
 		        <a id="listbtn" href="approvalWait.ap">목록으로</a>
@@ -152,7 +152,7 @@
 		                <tr>
 		                    <th width="200px">기안자</th>
 		                    <td>
-		                    	${ b.empName }		                    	
+		                    	${ b.empName }
 		                    </td>
 		                </tr>
 		                <tr>
@@ -174,12 +174,14 @@
 		                    <td>${ at.filePath }</td>
 		                </tr>
 		                <tr>
-		                    <th>연장근무시간</th>
-		                    <td>${ b.drOvertime }</td>
+		                    <th>지결합계</th>
+		                    <td>${ b.drSum } 원</td>
 		                </tr>
 		                <tr>
-		                    <th>연장근무일</th>
-		                    <td>${ b.drOverDate }</td>
+		                    <td colspan="2" id="detailContent">
+		                      	  위 안건으로 회의 완료했습니다. 자세한 사항 첨부파일 확인 부탁드립니다.<br>
+		                        ${ b.drContent }
+		                    </td>
 		                </tr>
 		
 		                   
@@ -189,24 +191,27 @@
 		            
 		            <div style="text-align: center;">
 		
-		            <button class="apbtn" style="background-color:rgba(36, 151, 123, 0.26);"type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-		                	반려처리
+		            <button class="apbtn" style="background-color:rgba(36, 151, 123, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+		                	관리자 반려
                 	</button>
 		                <!-- The Modal -->
 		                <div class="modal" id="myModal1">
 		                    <div class="modal-dialog">
-			                    <div class="modal-content">
+			                    <div class="modal-content">		                
 			                
-			                
+			                        <!-- Modal head -->
+			                        <div class="modal-head" style="font-weight: 700;">
+			                           	  반려
+			                        </div>
 			                        <!-- Modal body -->
-			                        <div class="modal-body" style="height: 80px; margin-top: 12px; font-weight: 600;">
-			                           	 반려 처리가 완료되었습니다.
+			                        <div class="modal-body">
+			                           	 <textarea name="drManagerOp" ></textarea>
 			                        </div>
 			                
 			                        <!-- Modal footer -->
 			                        <div class="modal-footer">
 			                            <button type="button" class="btn modalcc" data-dismiss="modal">CANCEL</button>
-			                            <button type="button" class="btn modalok" data-dismiss="modal">OK</button>
+			                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(1);">OK</button>
 			                        </div>
 			                
 		                    </div>
@@ -214,22 +219,25 @@
 		                </div>
 		
 		            <button class="apbtn" style="background-color:rgba(122, 39, 135, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
-		                	결재확인
+		                	관리자 결재
 		            </button>
 		                <!-- The Modal -->
 		                <div class="modal" id="myModal2">
 		                    <div class="modal-dialog">
 			                    <div class="modal-content">
-			
+									<!-- Modal head -->
+			                        <div class="modal-head" style="font-weight: 700;">
+			                           	 결재
+			                        </div>
 			                        <!-- Modal body -->
-			                        <div class="modal-body" style="height: 80px; margin-top: 12px; font-weight: 600;">
-			                           	 결재 처리가 완료되었습니다.
+			                        <div class="modal-body">
+			                           	 <textarea name="drManagerOp" ></textarea>
 			                        </div>
 			                
 			                        <!-- Modal footer -->
 			                        <div class="modal-footer">
 			                            <button type="button" class="btn modalcc" data-dismiss="modal">CANCEL</button>
-			                            <button type="button" class="btn modalok" data-dismiss="modal">OK</button>
+			                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(2);">OK</button>
 			                        </div>
 			                
 			                    </div>
@@ -239,7 +247,20 @@
 		            </div>  <br>   
         		</div> <br><br>
         	
-        	</div>
+        	<form id="postForm" action="" method="post">
+        		<input type="hidden" name="drNo" value="${ b.drNo }">
+        	</form>
+        	<script>
+        		function postFormSubmit(num){
+        			if(num==1){
+        				$("#postForm").attr("action", "updateAdminReject.ap").submit();
+        			}else {
+        				$("#postForm").attr("action", "updateAdminComplete.ap").submit();
+        			}
+        		}
+        	</script>
+        	
+        </div>	
 	    <!-- 푸터 -->
 	    <jsp:include page="../../common/footer.jsp"/>
 	    

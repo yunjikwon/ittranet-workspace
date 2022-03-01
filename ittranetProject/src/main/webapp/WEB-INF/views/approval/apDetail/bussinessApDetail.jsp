@@ -152,17 +152,17 @@
 		                <tr>
 		                    <th width="200px">기안자</th>
 		                    <td>
-		                    	<c:forEach var="l" items="${ aline }">
-		                        	<c:if test="${ l.drNo eq b.drNo }">
-			                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
-		                           	 </c:if>
-		                        </c:forEach>
+		                    	${ b.empName }
 		                    </td>
 		                </tr>
 		                <tr>
 		                    <th>결재자</th>
 		                    <td>
-		                    	${ b.empName }
+		                    	<c:forEach var="l" items="${ aline }">
+		                        	<c:if test="${ l.drNo eq b.drNo }">
+			                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
+		                           	 </c:if>
+		                        </c:forEach>
 		                    </td>
 		                </tr>
 		                <tr>
