@@ -111,7 +111,7 @@
 	<select id="selectList" resultMap="appResultSet">
 		select 
 		       dr_no
-		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"   
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division"   
 		     , dr_title
 		     , dr_date
 		     , dr_status
@@ -224,7 +224,7 @@
 	<select id="selectSearchForm" resultMap="appResultSet">
 		select
 		       dr_no
-		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division" 
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
 		     , dr_title
 		     , dr_date
 		     , dr_status
@@ -262,7 +262,7 @@
 	<select id="selectSearchDate" resultMap="appResultSet">
 		select
 		       dr_no
-		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"   
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division"   
 		     , dr_title
 		     , dr_date
 		     , dr_status
@@ -453,7 +453,7 @@
 	<select id="selectApList" resultMap="appResultSet">
 		 select 
 		       d.dr_no
-		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"  
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division"  
 		     , d.dr_title
 		     , d.dr_date
 		     , d.dr_status
@@ -502,12 +502,6 @@
 		where dr_no = #{drNo}
 	</update>
 	
-	<!-- 관리자 반려 draft -->
-	<update id="updateAdminReject">
-		update draft
-		   set dr_status = '관리자반려'
-		where dr_no = #{drNo}
-	</update>
 	
 	<!-- 완료 approval_line -->
 	<update id="apComplete">
@@ -525,13 +519,43 @@
 		   set dr_status = '완료'
 		where dr_no = #{drNo}
 	</update>
+
+
+
 	
+	<!-- 관리자 반려 approval_line -->
+	<update id="apAdminReject">
+		update
+		       approval_line
+		   set apline_order = apline_order -1 
+		     , ap_date = sysdate
+		     , ap_status = '관리자반려'
+		where dr_no = #{drNo}
+	</update>
+	
+	<!-- 관리자 반려 draft -->
+	<update id="drAdminReject">
+		update draft
+		   set dr_status = '관리자반려'
+		where dr_no = #{drNo}
+	</update>
+
 	<!-- 관리자 완료 draft -->
-	<update id="updateAdminComplete">
+	<update id="drAdminComplete">
 		update draft
 		   set dr_status = '관리자완료'
 		where dr_no = #{drNo}
 	</update>
+	<!-- 관리자 완료 approval_line -->
+	<update id="apAdminComplete">
+		update
+		       approval_line
+		   set apline_order = apline_order -1 
+		     , ap_date = sysdate
+		     , ap_status = '관리자완료'
+		where dr_no = #{drNo}
+	</update>
+	
 	
 	<!-- 관리자 권한 결재 -->
 	<select id="selectadminApListCount" resultType="_int">
@@ -546,7 +570,7 @@
 	<select id="selectadminApList" resultMap="appResultSet">
 		 select 
 		       d.dr_no
-		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서', 6, '시말서') "dr_division"  
+		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division"  
 		     , d.dr_title
 		     , d.dr_date
 		     , d.dr_status

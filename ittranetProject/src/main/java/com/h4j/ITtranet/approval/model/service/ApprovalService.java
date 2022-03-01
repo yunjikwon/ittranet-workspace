@@ -50,7 +50,7 @@ public interface ApprovalService {
 	ArrayList<Approval> selectAdminApList(PageInfo pi);
 	
 	// 관리자 권한 결재 update
-	int updateAdminReject(int drNo);
+	int updateAdminReject(int drNo);	
 	int updateAdminComplete(int drNo);
 	
 	

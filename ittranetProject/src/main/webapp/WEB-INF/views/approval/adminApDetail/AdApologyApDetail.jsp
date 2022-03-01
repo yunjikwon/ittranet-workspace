@@ -72,7 +72,7 @@
             margin-left: 40px;
             margin-right: 40px;
             border:none;
-            width:100px;
+            width:130px;
             height:40px;
             border-radius: 3px;
             font-weight: 600;
@@ -82,69 +82,20 @@
         .modalcc{
             color:gray;
             border:none;
-            width:40%;
+            width:200px;
             height:100%;
-            margin:auto;
         }
         .modalok{
             color:skyblue;
             border:none;
-            width:40%;
+            width:200px;
             height:100%;
-            margin:auto;
         }
-        /*
-        .modal{
-            width:100%;  height:100%;
-            background: rgba(0, 0, 0, 0.5);
-            top:0; left:0;
-            margin:auto;
-            vertical-align: middle;
-            position:fixed;
-            display:none;
-            z-index:100;
-        }
-        .modal-con{
-		  display:none;
-		  position:fixed;
-		  top:50%; left:50%;
-		  transform: translate(-50%,-50%);
-		  max-width: 60%;
-		  min-height: 30%;
-		  background:#fff;
-		}
-		.modal-con .title{
-		  font-size:20px; 
-		  padding: 20px; 
-		  background : gold;
-		}
-		.modal-con .mbody{
-		  font-size:15px; line-height:1.3;
-		  padding: 30px;
-		}
-        .modal-con .close{
-		  display:block;
-		  position:absolute;
-		  width:30px; height:30px;
-		  border-radius:50%; 
-		  border: 3px solid #000;
-		  text-align:center; line-height: 30px;
-		  text-decoration:none;
-		  color:#000; font-size:20px; font-weight: bold;
-		  right:10px; top:10px;
-		}
-		*/
-		/*
-        .modal{
-            width:300px;
-            height:400px;
-            margin:auto;
-            vertical-align: middle;
-        }
-        */
+
         /* modal position(center)*/
         .modal {
           text-align: center;
+          width:500px;
         }
         @@media screen and (min-width: 768px) {
           .modal:before {
@@ -158,6 +109,13 @@
             display: inline-block;
             text-align: left;
             vertical-align: middle;
+        }
+        .modal-content {
+        	width:400px;
+        	magin:auto;
+        }
+        .modal-body{
+        	margin:auto;
         }
     </style>
     
@@ -246,27 +204,35 @@
 		            </table> <br>      
 		            
 		            <!----------------------------------------------------------------------------->
-		            
+		            <!-- jQuery 라이브러리 -->
+					<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+					<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+					<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+					<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+					<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 		            <div style="text-align: center;">
 		
 					<button class="apbtn" style="background-color:rgba(36, 151, 123, 0.26);"type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-		                	반려처리
+		                	관리자 권한 반려
                 	</button>
 		                <!-- The Modal -->
 		                <div class="modal" id="myModal1">
 		                    <div class="modal-dialog">
 			                    <div class="modal-content">
-			                
-			                
+			                		<!-- Modal header-->
+			                        <div class="modal-header" style="margin-top: 10px; font-weight: 700; font-size:20px;">
+			                           	   	 &nbsp;&nbsp; 반려
+			                        </div>
 			                        <!-- Modal body -->
-			                        <div class="modal-body" style="height: 80px; margin-top: 12px; font-weight: 600;">
-			                           	 반려 처리가 완료되었습니다.
+			                        <div class="modal-body">
+			                        	관리자 의견<br><br>
+			                        <textarea style="width:350px; height:150px; border:1px solid lightgray; align:center;"></textarea>
 			                        </div>
 			                
 			                        <!-- Modal footer -->
 			                        <div class="modal-footer">
 			                            <button type="button" class="btn modalcc" data-dismiss="modal">CANCEL</button>
-			                            <button type="button" class="btn modalok" data-dismiss="modal">OK</button>
+			                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(1);">OK</button>
 			                        </div>
 			                
 		                    	</div>
@@ -274,25 +240,29 @@
 		                </div>
 		
 		            <button class="apbtn" style="background-color:rgba(122, 39, 135, 0.26);" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
-		                	결재확인
+		                	관리자 권한 결재
 		            </button>
 		                <!-- The Modal -->
 		                <div class="modal" id="myModal2">
 		                    <div class="modal-dialog">
 			                    <div class="modal-content">
-			
+			                		<!-- Modal header-->
+			                        <div class="modal-header" style="margin-top: 10px; font-weight: 700; font-size:20px;">
+			                           	   	 &nbsp;&nbsp; 결재
+			                        </div>
 			                        <!-- Modal body -->
-			                        <div class="modal-body" style="height: 80px; margin-top: 12px; font-weight: 600;">
-			                           	 결재 처리가 완료되었습니다.
+			                        <div class="modal-body">
+			                        	관리자 의견<br><br>
+			                        <textarea style="width:350px; height:150px; border:1px solid lightgray; align:center;"></textarea>
 			                        </div>
 			                
 			                        <!-- Modal footer -->
 			                        <div class="modal-footer">
 			                            <button type="button" class="btn modalcc" data-dismiss="modal">CANCEL</button>
-			                            <button type="button" class="btn modalok" data-dismiss="modal">OK</button>
+			                            <button type="button" class="btn modalok" data-dismiss="modal" onclick="postFormSubmit(2);">OK</button>
 			                        </div>
 			                
-			                    </div>
+		                    	</div>
 		                    </div>
 		                </div>
 		        
@@ -304,18 +274,6 @@
         		<input type="hidden" name="drNo" value="${ b.drNo }">
         	</form>
         	<script>
-        		/* 모달창
-	        	function openModal(modalname){
-	       		  document.get
-	       		  $(".modal").fadeIn(300);
-	       		  $("."+modalname).fadeIn(300);
-	       		}
-	
-	       		$(".modal, .close").on('click',function(){
-	       		  $(".modal").fadeOut(300);
-	       		  $(".modal-con").fadeOut(300);
-	       		});
-	       		*/
 	       		function postFormSubmit(num){
 	       			if(num==1){
 	       				$("#postForm").attr("action", "updateAdminReject.ap").submit();

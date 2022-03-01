@@ -158,23 +158,18 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.selectadminApList(sqlSession, pi);
 	}
 
+	// 관리자 권한 결재/반려
 	@Override
 	public int updateAdminReject(int drNo) {
-		HashMap<String, Integer> map = new HashMap<>();
-		map.put("drNo", drNo);
-		
-		int result1 = aDao.apUpdateReject(sqlSession, map);
-		int result2 = aDao.updateAdminReject(sqlSession, drNo);
+		int result1 = aDao.apAdminReject(sqlSession, drNo);
+		int result2 = aDao.drAdminReject(sqlSession, drNo);
 		return result1 * result2;
 	}
-
+	
 	@Override
 	public int updateAdminComplete(int drNo) {
-		HashMap<String, Integer> map = new HashMap<>();
-		map.put("drNo", drNo);
-		
-		int result1 = aDao.apUpdateReject(sqlSession, map);
-		int result2 = aDao.updateAdminComplete(sqlSession, drNo);
+		int result1 = aDao.apAdminComplete(sqlSession, drNo);
+		int result2 = aDao.drAdminComplete(sqlSession, drNo);
 		return result1 * result2;
 	}
 	
