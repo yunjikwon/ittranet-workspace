@@ -120,52 +120,52 @@
 	                				<td colspan="6">승인 대기중인 회원이 없습니다.</td>
 	                			</c:when>
 	                			<c:otherwise>
-	                			<c:forEach var="w" items="${ wlist }">
-		                			<input type="hidden" value="${ w.empNo }">
-					                <tr>
-					                    <td><input type="checkbox" class="checkEmp"></td>
-					                    <td>${ w.empName }</td>
-					                    <td>${ w.empId }</td>
-					                    <td>${ w.email }</td>
-					                    <td>
-						                    <select name="dept_code">
-						                    	<option selected value="D0-T00">미정</option>
-						                    	<option value="D2-T00">경영지원부-미정</option>
-									            <option value="D2-T02">경영지원부-총무팀</option>
-									            <option value="D2-T03">경영지원부-인사팀</option>
-									            <option value="D3-T00">영업부-미정</option>
-									            <option value="D3-T04">영업부-영업팀</option>
-									            <option value="D3-T05">영업부-영업관리팀</option>
-									            <option value="D4-T00">재무부-미정</option>
-									            <option value="D4-T06">재무부-구매팀</option>
-									            <option value="D4-T07">재무부-회계팀</option>
-									            <option value="D5-T00">광고홍보부-미정</option>
-									            <option value="D5-T08">광고홍보부-홍보마케팅팀</option>
-									            <option value="D5-T09">광고홍보부-기획팀</option>
-									            <option value="D5-T10">광고홍보부-디자인팀</option>
-									            <option value="D6-T00">IT전략부-미정</option>
-									            <option value="D6-T11">IT전략부-개발팀</option>
-									            <option value="D6-T12">IT전략부-솔루션제작팀</option>
-									            <option value="D6-T13">IT전략부-서버운영팀</option>
-									            <option value="D6-T14">IT전략부-보안팀</option>
-									            <option value="D7-T00">CS-미정</option>
-									            <option value="D7-T15">CS-지원팀</option>
-									            <option selected value="D0-T00">미정</option>
-									        </select>
-					              		</td>
-					                    <td>
-						                    <select name="job_code">
-									            <option value="J2">부장</option>
-									            <option value="J3">팀장</option>
-									            <option value="J4">과장</option>
-									            <option value="J5">대리</option>
-									            <option value="J6">주임</option>
-									            <option value="J7">사원</option>
-									            <option value="J8">인턴</option>
-									            <option selected value="J0">미정</option>
-									        </select>
-					              		</td>
-					                </tr>
+		                			<c:forEach var="w" items="${ wlist }">
+			                			<input type="hidden" value="${ w.empNo }">
+						                <tr>
+						                    <td><input type="checkbox" class="checkEmp"></td>
+						                    <td>${ w.empName }</td>
+						                    <td>${ w.empId }</td>
+						                    <td>${ w.email }</td>
+						                    <td>
+							                    <select name="dept_code">
+							                    	<option selected value="D0-T00">미정</option>
+							                    	<option value="D2-T00">경영지원부-미정</option>
+										            <option value="D2-T02">경영지원부-총무팀</option>
+										            <option value="D2-T03">경영지원부-인사팀</option>
+										            <option value="D3-T00">영업부-미정</option>
+										            <option value="D3-T04">영업부-영업팀</option>
+										            <option value="D3-T05">영업부-영업관리팀</option>
+										            <option value="D4-T00">재무부-미정</option>
+										            <option value="D4-T06">재무부-구매팀</option>
+										            <option value="D4-T07">재무부-회계팀</option>
+										            <option value="D5-T00">광고홍보부-미정</option>
+										            <option value="D5-T08">광고홍보부-홍보마케팅팀</option>
+										            <option value="D5-T09">광고홍보부-기획팀</option>
+										            <option value="D5-T10">광고홍보부-디자인팀</option>
+										            <option value="D6-T00">IT전략부-미정</option>
+										            <option value="D6-T11">IT전략부-개발팀</option>
+										            <option value="D6-T12">IT전략부-솔루션제작팀</option>
+										            <option value="D6-T13">IT전략부-서버운영팀</option>
+										            <option value="D6-T14">IT전략부-보안팀</option>
+										            <option value="D7-T00">CS-미정</option>
+										            <option value="D7-T15">CS-지원팀</option>
+										            <option selected value="D0-T00">미정</option>
+										        </select>
+						              		</td>
+						                    <td>
+							                    <select name="job_code">
+										            <option value="J2">부장</option>
+										            <option value="J3">팀장</option>
+										            <option value="J4">과장</option>
+										            <option value="J5">대리</option>
+										            <option value="J6">주임</option>
+										            <option value="J7">사원</option>
+										            <option value="J8">인턴</option>
+										            <option selected value="J0">미정</option>
+										        </select>
+						              		</td>
+						                </tr>
 					                </c:forEach>
 	                			</c:otherwise>
 	                		</c:choose>     

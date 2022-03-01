@@ -5,6 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!--fullCalendar-->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css' rel='stylesheet' />
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/gcal.js'></script>
 <title>Insert title here</title>
 <style>
     /*메인페이지 스타일*/
@@ -357,25 +362,36 @@
 	                </tbody>    
                 </table>
             </div>
-            <div class="contentbox" style="width: 390px; height: 590px; float: right; margin-left: 0px;">
+            <div class="contentbox" style="width: 400px; height: 590px; float: right; margin-left: 0px;">
                 <div class="category-title">
                     &nbsp;&nbsp;일정
-                    <a href="" class="plus-btn">+</a>
+                    <a href="viewUserCal.ca" class="plus-btn">+</a>
                 </div>
-                <div id="calendar-area" style="height: 320px; padding: 10px;" align="center">
+                <div id="calendar-area" style="height: 400px; padding: 10px;" align="center">
                     <!--캘린더 넣은 다음 border 지우기!-->
-                    <div style="width: 300px; height: 300px; border: solid 1px;">
-                        캘린더자리
+                    <div style="width:380px; height:400px;">
+                        <div id='calendar-container'>
+        					<div id='calendar'></div>
+    					</div>
                     </div>         
                 </div>
+                <br>
                 <table>
                     <tr>
-                        <th colspan="2">오늘의 일정</th>
+                        <th colspan="2"><i class="far fa-calendar-check fa-2x" style="float:left; margin-left:10px;"></i> <h5 style="display: inline-block; float:left; margin-left:5px;">Today's Schedule</h5></th>
                     </tr>
-                    <tr>
-                        <td width="50">12:00</td>
-                        <td>일정내용</td>
-                    </tr>
+                    <c:choose>
+    					<c:when test="${ empty uslist }">
+    						<th>일정이 없습니다</th>>
+    					</c:when>
+    					<c:otherwise>
+    						<c:forEach var="s" items="${ uslist }">
+    							<tr>
+    								<td><h6 style="float:left; margin-left:30px;"><i class="fas fa-paw"></i> ${ s.calContent }</h6></td>
+    							</tr>
+    						</c:forEach>
+    					</c:otherwise>
+    				</c:choose>
                 </table>
             </div>
             <div class="contentbox" style="width: 810px; height: 280px;">
@@ -469,5 +485,25 @@
     <!-- <br clear="both"> -->
     <!-- 푸터바 -->
     <jsp:include page="footer.jsp" />
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          googleCalendarApiKey : "AIzaSyCLvJjierhxYSxsWIumWXGddinCb-QSiUk" 
+          , eventSources : [
+              {
+                    googleCalendarId : "ko.south_korea#holiday@group.v.calendar.google.com"
+                  , className : "koHolidays"
+                  , color : "lightpink"
+                  , textColor : "tomato"
+              }
+          ],
+          height:400,
+          width:400
+        });
+        calendar.render();
+      });
+    </script>
 </body>
 </html>
