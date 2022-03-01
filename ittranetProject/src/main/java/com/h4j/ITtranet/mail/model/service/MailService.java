@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.mail.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.h4j.ITtranet.common.model.vo.Attachment;
@@ -13,17 +14,33 @@ public interface MailService {
 	int selectListCount(String empNo);
 	ArrayList<Mail> selectList(PageInfo pi, String email);
 	
-	// 2. 메일쓰기
+	// 2-1. 메일쓰기
 	int insertMail(Mail m, ArrayList<Attachment> list);
 	
-	// 12. 내게쓰기
+	// 2-2. 내게쓰기
 	int toMeInsertMail(Mail m, ArrayList<Attachment> list);
+	
+	// 2-3. 답장
+	int answerInsertMail(Mail m, ArrayList<Attachment> list);
 	
 	// 3. 메일 상세조회
 	Mail selectMail(int sendMailNo);
+	ArrayList<Attachment> selectMailAttachment(int sendMailNo);
+	
+	// 중요 메일
+	//int importantMail(int receiveMailNo);
 	
 	// 5. 메일 삭제
 	int deleteMail(List<Integer> receiveMailNo);
+	
+	// 12. 메일 복원
+	int restorationMail(List<Integer> receiveMailNo);
+	
+	// 중요 메일
+	int updateImportantMail(HashMap<String, String> map);
+	
+	// 중요 메일 (보낸메일함)
+	//int updateImportantSendMail(HashMap<String, String> map);
 	
 	
 	// 6. 휴지통
@@ -50,5 +67,11 @@ public interface MailService {
 	int selectTemListCount(String empNo);
 	ArrayList<Mail> selectTemList(PageInfo pi, String email);
 	
+	// 13. 디테일화면 : 스팸메일
+	int updateSpamMail(int rvno);
 	
+	/*
+	// 5-2. (상세조회) 메일 삭제
+	int deleteOneMail(int rvno);
+	*/
 }

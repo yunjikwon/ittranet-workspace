@@ -75,9 +75,8 @@
 		        <br>
 		        <div id="draftTitle">
 		           	 기안함 > 완료 결재
-		        </div>
+		        </div> <br>
 		        
-		        <form action="" method="post" onsubmit="">
 		            <div id="innerouter" style="padding:5% 10%;">
 			            <div class="search" id="search1">
 				           	 결재분류
@@ -103,33 +102,38 @@
 				        </div>
 					<table id="boardList" class="table table-hover" align="center">		
 		            
-		            	<c:forEach var="d" items="${ list }">
+		            	<thead>
 		                    <tr>
-		                    	<td><input type="hidden" name="empNo" value="${ d.empNo }"></td>		                    	
-		                        <th>
-		                        	<c:if test="${ d.drDivision eq 1}">지출결의서</c:if>
-		                        	<c:if test="${ d.drDivision eq 2}">추가예산신청</c:if>
-		                        	<c:if test="${ d.drDivision eq 3}">연장근무신청</c:if>
-		                        	<c:if test="${ d.drDivision eq 4}">회의록</c:if>
-		                        	<c:if test="${ d.drDivision eq 5}">사업계획서</c:if>
-		                        	<c:if test="${ d.drDivision eq 6}">시말서</c:if>
-		                        </th>
-		                        <td>${ d.drTitle }</td>
-		                        <td>${ d.drDate }</td>
-		                        <td>
-		                            <img src="" alt=""> <!--프로필 이미지-->
-		                           	 ${ d.teamName  }${ d.empName }
-		                        </td>
-		                        <td>${ d.drStatus }</td>
+		                    	<th>결재분류</th>
+		                    	<th>제목</th>
+		                    	<th>등록일</th>
+		                    	<th>결재자</th>
+		                    	<th>결재상태</th>
 		                    </tr>
-		                </c:forEach>   		                   
-		
-		            </table>
-		
-		            
-		            
-</div>
-		        <br><br>
+		                </thead>    
+		                <tbody>    
+			            	<c:forEach var="d" items="${ list }">
+			                    <tr>
+			                    	<input type="hidden" class="drNo" value="${ d.drNo }">
+			                    	<input type="hidden" class="drDivision" value="${ d.drDivision }">
+			                    	<input type="hidden" class="category" value="${ category }">
+			                    	<input type="hidden" name="empNo" value="${ d.empNo }">	                    	
+			                        <th class="drDivison"> ${ d.drDivision } </th>
+			                        <td>${ d.drTitle }</td>
+			                        <td>${ d.drDate }</td>
+			                        <td class="linePerson">
+			                        	<c:forEach var="l" items="${ linePerson }">
+				                        	<c:if test="${ l.drNo eq d.drNo }">
+					                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
+				                           	 </c:if>
+				                        </c:forEach>
+			                        </td>
+			                        <td>${ d.drStatus }</td>
+			                    </tr>
+			                </c:forEach>  
+		                </tbody> 	
+		            </table>   <br>
+	            </div> <br><br>
 		        		        
 		        <div id="pagingArea">
 	                <ul class="pagination">
@@ -159,11 +163,70 @@
 	                    </c:choose>
 	                    
 	                </ul>
-            </div>
-		       
+            	</div>
 		        <br clear="both"><br>
-		        </form>
 		    </div>
+		    
+		    <!-- 분류별 검색 -->    
+		  <script>
+		   $("#boardSearch1").change(function(){  
+		           ajaxSearch(1, $(this).val());  
+		   })
+		   $("#boardSearch2").change(function() {
+		          ajaxSearch(2, $(this).val()); 
+		   })
+			
+			function ajaxSearch(flag, search){
+				console.log("search : " + search);
+				
+					$.ajax({
+						type : 'GET',
+						url : "search.board",
+						data : {
+							flag : flag,
+							search : search
+						} , success : function(result){
+							//테이블 초기화
+		    				$('#boardList tbody').empty();
+							let appPerson = "";
+							
+		    				let str = "";
+							for(let i in result.list){
+								str += "<tr>"
+									    	+ "<input type='hidden' name='empNo' value='" + result.list[i].empNo + "'>"		                    	
+					                        + "<th>"+ result.list[i].drDivision +"</th>"
+					                        + "<td>"+ result.list[i].drTitle + "</td>"
+					                        + "<td>"+ result.list[i].drDate + "</td>"
+					                        + "<td>" ;
+					                        	for(let a in result.linePerson){
+					                        		if( result.list[i].drNo == result.linePerson[a].drNo){
+					                        			appPerson += result.linePerson[a].empName + result.linePerson[a].job + "&nbsp;"
+					                        		}
+												}
+					                        str += appPerson + "</td>" 
+						                        + "<td>"+ result.list[i].drStatus + "</td>"
+					                        + "</tr>";
+								}
+							$('#boardList > tbody').html(str);
+							$("#boardSearch1 option:eq(0)").prop("selected", true); //select(셀렉트) 원위치
+							$("#boardSearch2 option:eq(0)").prop("selected", true);
+						} , error : function(){
+							console.log("ajax 통신 실패 ");
+						}
+					});
+			}
+			
+		// 상세페이지 이동
+			$(function(){
+          		$("#boardList>tbody>tr").click(function(){
+          			location.href = 'detail.dr?drNo=' + $(this).children(".drNo").val()
+          					       +'&drDivision=' + $(this).children(".drDivision").val()
+          					       +'&category=' + $(this).children(".category").val();                 			
+          		});
+          	})
+				
+		</script>
+		    
 	    <!-- 푸터 -->
 	    <jsp:include page="../common/footer.jsp"/>
 	    

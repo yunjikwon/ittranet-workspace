@@ -78,19 +78,24 @@
         <div class="mainOuter" style="font-family: 'Gowun Dodum', sans-serif;">
 		
 			<br>
+			
+			<form id="detaildelete" action="detail.ml" method="post">
+				<input type="hidden" name="mno" value="${ m.sendMailNo }">
+				<input type="hidden" name="rvno" value="${ m.receiveMailNo }">
+
 
 			<!-- 버튼바 (목록, 삭제, 스팸, 답장) -->
 	        <div id="buttonbar">
-	        	<button type="button" id="delete" class="btn btn-danger" onclick="deleteMail">삭제</button>
-	            <button type="button" id="spam" class="btn btn-warning" onclick="spamMail">스팸</button>
-	            <button type="button" id="answer" class="btn btn-secondary" onclick="answerMail">답장</button>
-	         	<button type="button" id="backpage" class="btn btn-secondary" onclick="history.back()">뒤로</button>
+	        	<button type="button" class="delete" class="btn btn-danger" onclick="detaildelete();">삭제</button>
+	            <button type="button" class="spam" class="btn btn-warning" onclick="spamMail();">스팸</button>
+	            <button type="button" class="answer" class="btn btn-secondary" onclick="asMail();">답장</button>
+	         	<button type="button" class="backpage" class="btn btn-secondary" onclick="history.back()">뒤로</button>
 	        </div>
 			<!-- 메일 상세내용 -->
 	        <div class="mailcontent">
 	        
-	        	<input type="hidden" value="${ m.sendMailNo }">
-	        	<input type="hidden" value="${ m.receiveMailNo }">
+	        	<input type="hidden" name="mno" value="${ m.sendMailNo }">
+	        	<input type="hidden" name="rvno" class="rvno" value="${ m.receiveMailNo }">
 	        	
 	            <div>${ m.mailTitle }</div>
 	            <div>${ m.sendDate }</div>
@@ -105,6 +110,9 @@
 	            <div>${ m.mailContent }</div>
 	            <br>
 	            
+	            <input type="hidden" value="${m.statusRv }">
+	            <input type="hidden" spam="${m.spam }">
+	            
 	            <hr>
 	            
 	            <div>
@@ -114,12 +122,14 @@
 	            			첨부파일이 없습니다.
 	            		</c:when>
 	            		<c:otherwise>
-	            			<a href="${ at.changeName }" download="${at.originName}">${ at.originName }</a>	
+	            			<a href="${at.filePath}${ at.changeName }" download="${at.originName}">${ at.originName }</a>	
 	            		</c:otherwise>
 	            	</c:choose>
 	            </c:forEach>
 	            </div>
 	        </div>
+	        
+	        </form>
 	        
 	        <!-- 
 	        <script>
@@ -129,6 +139,47 @@
 	        }
 	        </script>
 	         -->
+	        
+	        
+			
+	        <!-- 메일 삭제 
+	        <script>
+	        function detaildelete() {
+	        	$("#detaildelete").submit;
+	        }
+	        </script>-->
+	          
+	        
+	        <!-- 메일 스팸처리 -->
+	        <script>
+	        function spamMail() {
+	        	var rvno = $("input[name='rvno']").val();
+	        	console.log(rvno);
+	        	
+	        	
+	        $.ajax({
+	        	   type : "POST",
+	        	   url : "dtspam.ml",
+	        	   data : {rvno:rvno},
+	        	   success: function(result){
+	        		   if(result == 'success'){
+	        			   alert("스팸메일 전송 완료");
+	        			   location.href="alllist.ml?cpage=1";
+	        		   }else{
+	        			   alert("스팸메일 전송 실패");
+	        		   }
+	        	    },
+	        	   error : function (data) {
+	        	    	alert('ajax 스팸 메일 전송 실패');
+	        	   }
+	        })
+	        }
+	        
+	        function asMail(){
+	        	location.href="enrollForm.mlas?mno=" + $("input[name='mno']").val();
+	        	console.log($("input[name='mno']").val());
+	        }
+	        </script> 
 	        
 	        <br><br><br>
 	        

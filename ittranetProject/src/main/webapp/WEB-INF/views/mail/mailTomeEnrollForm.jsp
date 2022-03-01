@@ -101,7 +101,7 @@
         	<!-- 버튼바 (내게쓰기, 보내기, 취소) -->
 			<div id="buttonbar">
             	<button type="submit" class="btn btn-success">보내기</button>
-            	<button type="reset" class="btn btn-light">취소</button>
+            	<button type="submit" class="btn btn-light">취소</button>
         	</div>
         	
         	<br><br>
@@ -140,6 +140,11 @@
     </div>
     </div>
        
+    <script>
+    	$(".btn-light").on("click", function(){
+    		location.href="alllist.ml";
+    	})
+    </script>
 
 </body>
 </html>

@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -87,13 +89,13 @@ public class MailController {
 		return "redirect:alllist.ml";
 	}
 	
-	// 12-1. 내게쓰기 폼
+	// 2-1. 내게쓰기 폼
 	@RequestMapping("enrollForm.mlme")
 	public String toMeEnrollForm() {
 		return "mail/mailTomeEnrollForm";
 	}
 	
-	// 12-2. 새로운 메일 데이터 추가 (+첨부파일)
+	// 2-2. 내게쓰기 새로운 메일 데이터 추가 (+첨부파일)
 	@RequestMapping("tomeinsert.ml")
 	public String toMeInsertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
 		
@@ -118,27 +120,112 @@ public class MailController {
 		return "redirect:alllist.ml";
 	}
 	
+	
+	// 2-1. 답장하기 폼
+	@RequestMapping("enrollForm.mlas")
+	public ModelAndView answerEnrollForm(int mno, ModelAndView mv) {
+		
+		Mail m = mService.selectMail(mno);
+		
+		mv.addObject("m", m).setViewName("mail/mailAnswerView");
+		
+		return mv;
+	}
+	// 2-2. 답장하기 새로운 메일 데이터 추가 (+첨부파일)
+	@RequestMapping("asinsert.ml")
+	public String answerInsertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
+		ArrayList<Attachment> list = new ArrayList<>();
+		
+		for(MultipartFile f : upfile) {
+			if(!f.getOriginalFilename().equals("")) {
+				Attachment at = new Attachment();
+				
+				at.setOriginName(f.getOriginalFilename());
+				at.setChangeName(saveFile(f, session));
+				at.setFilePath("resources/uploadFiles/");
+				
+				list.add(at);
+			}
+		}
+
+		int result = mService.insertMail(m, list);
+
+		return "redirect:alllist.ml";
+	}
+	
+	
 	// 3. 상세조회 메일
 	@RequestMapping("detail.ml")
 	public ModelAndView selectMail(int mno, ModelAndView mv) {
-
+		
 		Mail m = mService.selectMail(mno);
-		mv.addObject("m", m).setViewName("mail/mailDetailView");
+
+		ArrayList<Attachment> list = mService.selectMailAttachment(mno);
+		
+		
+		mv.addObject("m", m).addObject("list", list).setViewName("mail/mailDetailView");
 		return mv;
 
 
 	}
 	
-	// 5. 메일 삭제
+	// 4. 중요 메일 조회
 	@ResponseBody
-	@RequestMapping(value="delete.ml", produces="application/text; charset=UTF-8")
-	public String deletemail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
+	@RequestMapping(value="impo.ml", produces="application/text; charset=UTF-8")
+	public String importantmail(String rvno, String important) {
 		
-		int result = mService.deleteMail(receiveMailNo);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("rvno", rvno);
+		map.put("important", important);
+		
+		int result = mService.updateImportantMail(map);
 		
 		return result>0? "success" : "fail";
 	}
 	
+	// 4-2. 중요 메일 조회 (보낸편지함)	// 왜 맨 상위만 선택되는가??????????????????????
+	/*
+	@ResponseBody
+	@RequestMapping(value="impo.sdml", produces="application/text; charset=UTF-8")
+	public String importantsendmail (String mno, String important) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("mno", mno);
+		map.put("important", important);
+		
+		System.out.println(map);
+		int result = mService.updateImportantSendMail(map);
+		
+		return result>0? "success" : "fail";
+		
+	}
+	*/
+	
+	
+	// 5. (리스트에서) 메일 삭제
+	@ResponseBody
+	@RequestMapping(value="delete.ml", produces="application/text; charset=UTF-8")
+	public String deletemail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
+		
+		
+		
+		int result = mService.deleteMail(receiveMailNo);
+		
+	
+		return result>0? "success" : "fail";
+	}
+	
+	// 12. (리스트에서) 메일 복원
+	@ResponseBody
+	@RequestMapping(value="resto.ml", produces="application/text; charset=UTF-8")
+	public String restorationmail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
+		int result = mService.restorationMail(receiveMailNo);
+
+		return result>0? "success" : "fail";
+	}
+	
+	
+
+
 
 	
 	// 넘어온 첨부파일 서버의 폴더에 저장시킴
@@ -170,10 +257,9 @@ public class MailController {
 	public String selectBinList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		
-		int listCount = mService.selectBinListCount(empNo);
+		int listCount = mService.selectBinListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -192,10 +278,10 @@ public class MailController {
 	public String selectUnreadList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectUnreadListCount(empNo);
-		
+		int listCount = mService.selectUnreadListCount(email);
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
 		ArrayList<Mail> unreadlist = mService.selectUnreadList(pi, email);
@@ -211,9 +297,9 @@ public class MailController {
 	public String selectImpoList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectImpoListCount(empNo);
+		int listCount = mService.selectImpoListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -230,9 +316,9 @@ public class MailController {
 	public String selectSpamList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectSpamListCount(empNo);
+		int listCount = mService.selectSpamListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -249,9 +335,9 @@ public class MailController {
 	public String selectSendList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectSendListCount(empNo);
+		int listCount = mService.selectSendListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -263,14 +349,14 @@ public class MailController {
 		return "mail/mailSendView";
 	}
 	
-	// 11 임시보관함
+	// 11. 임시보관함
 	@RequestMapping("temlist.ml")
 	public String selectTemList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
 		String email = ((Employee)session.getAttribute("loginUser")).getEmail();
-		String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
+		//String empNo = ((Employee)session.getAttribute("loginUser")).getEmpNo();
 		
-		int listCount = mService.selectTemListCount(empNo);
+		int listCount = mService.selectTemListCount(email);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		
@@ -281,5 +367,32 @@ public class MailController {
 		
 		return "mail/mailTemView";
 	}
+	
+	// 디테일화면 : 스팸메일
+	@ResponseBody
+	@RequestMapping(value="dtspam.ml", produces="application/text; charset=UTF-8")
+	public String updateSpamMail(int rvno) {
+		
+		int result = mService.updateSpamMail(rvno);
+
+		System.out.println(result);
+		return result>0? "success" : "fail";
+	}
+	
+	/*
+	// 5-2. (상세조회페이지에서) 메일 삭제 //////////////////////////////// 수정해야됨
+	@RequestMapping("deleteone.ml")
+	public String deleteOneMail(int rvno, HttpSession session, Model model) {
+		int result = mService.deleteOneMail(rvno);
+		
+		
+		if(result>0) {
+			return "redirect:alllist.ml";
+		}else {
+			return "common/errorPage";
+		}
+
+	}
+	*/
 
 }

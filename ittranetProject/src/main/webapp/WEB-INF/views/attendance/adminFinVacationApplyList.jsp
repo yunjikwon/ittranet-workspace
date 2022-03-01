@@ -14,15 +14,6 @@
         font-size: 18px; 
         font-weight: 600;
     }
-    .vc-box{
-        background: white;
-        width: 950px;
-        border-radius: 25px;
-        padding: 50px;
-        margin-left: 15px;
-        font-size: 17px;
-        margin-bottom: 50px;
-    }
     table{
         font-size: 15px;
         font-weight: 400;
@@ -87,7 +78,7 @@
                         <div class="vc-box">
                             
                             <br><br><br>
-                            <table id="finVcList" border="1">
+                            <table id="finVcList" class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th width="110">No</th>
@@ -114,7 +105,7 @@
                             <script>
 	                            $(function(){
 	                        		$("#finVcList>tbody>tr").click(function(){
-	                        			location.href='detail.vcno?vcno=' + $(this).children(".vcno").text();
+	                        			location.href='vcdetail.at?vcno=' + $(this).children(".vcno").text();
 	                        		})
 	                        	})
 							</script>

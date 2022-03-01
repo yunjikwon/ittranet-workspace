@@ -1,7 +1,13 @@
 package com.h4j.ITtranet.employee.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +15,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.h4j.ITtranet.calendar.model.vo.Calendar;
+import com.h4j.ITtranet.common.model.vo.PageInfo;
+import com.h4j.ITtranet.common.template.Pagination;
 import com.h4j.ITtranet.employee.model.service.EmployeeService;
+import com.h4j.ITtranet.employee.model.vo.Department;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.employee.model.vo.EmployeeMail;
 
@@ -31,6 +44,7 @@ public class EmployeeController {
 	 */
 	@RequestMapping("goUserMain.me")
 	public String goUserMain() {
+		
 		return "common/userMain";
 	}
 	
@@ -39,8 +53,20 @@ public class EmployeeController {
 	 * @return
 	 */
 	@RequestMapping("goAdminMain.me")
-	public String goAdminMain() {
-		return "common/adminMain";
+	public ModelAndView goAdminMain(ModelAndView mv) {
+		
+		Department dlist = eService.empCount();
+		ArrayList slist = eService.selectAdminSchedule();
+		
+		// System.out.println(dlist);
+		// System.out.println("안녕");
+		
+		mv.addObject("dlist", dlist)
+		  .addObject("slist", slist)
+		  .setViewName("common/adminMain");
+		
+		return mv;
+		
 	}
 	
 	/**
@@ -58,11 +84,22 @@ public class EmployeeController {
 		// System.out.println(loginUser);
 		
 		if(loginUser != null && (loginUser.getAdmin()).equals("Y") && bcryptPasswordEncoder.matches(e.getEmpPwd(), loginUser.getEmpPwd())) {
+			
 			session.setAttribute("loginUser", loginUser);
-			mv.setViewName("common/adminMain");
+			
+			Department dlist = eService.empCount();
+			ArrayList<Calendar> slist = eService.selectAdminSchedule();
+			
+			mv.addObject("dlist", dlist)
+			  .addObject("slist", slist)
+			  .setViewName("common/adminMain");
+			
 		} else if(loginUser != null && bcryptPasswordEncoder.matches(e.getEmpPwd(), loginUser.getEmpPwd())) {
+			
 			session.setAttribute("loginUser", loginUser);
-			mv.setViewName("common/userMain");
+			ArrayList<Calendar> uslist = eService.selectUserSchedule(loginUser.getEmpNo());
+			mv.addObject("uslist", uslist)
+			  .setViewName("common/userMain");
 		} else {
 			model.addAttribute("errorMsg", "아이디 혹은 비밀번호를 다시 확인해주세요!");
 			mv.setViewName("common/error");
@@ -250,8 +287,23 @@ public class EmployeeController {
 	 * @return
 	 */
 	@RequestMapping("update.me")
-	public String updateMember(Employee e, HttpSession session) {
+	public String updateMember(Employee e, MultipartFile upfile, HttpSession session, Model model) {
+		
+		// System.out.println(upfile);
+		
+		if(!upfile.getOriginalFilename().equals("")) { // 파일명이 빈 문자열이 아닐 때(존재할 때)
+		
+			// saveFile에서 return된 파일수정명 changeName으로 받아옴
+			// 와~~~ 이 부분 너무 중요함
+			String changeName = saveFile(upfile, session);
+		
+			// 원본명 & 서버업로드된경로를 Board b에 이어서 담기 (마지막 과정)
+			e.setProfile("resources/images/profile/" + changeName);
+		
+		}
+		
 		// System.out.println(e);
+
 		int result = eService.updateMember(e);
 		if(result>0) {
 			session.setAttribute("loginUser",  eService.loginMember(e));
@@ -263,6 +315,34 @@ public class EmployeeController {
 		}	
 	}
 	
+	public String saveFile(MultipartFile upfile, HttpSession session) {
+
+		
+		// "년월일시분초"
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		
+		// "랜덤숫자5개"
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		
+		String changeName = currentTime + ranNum;
+		
+		// 업로드 시키고자 하는 폴더의 물리적인 경로 알아내기
+		// 경로 알아내려면 세션 객체 필요함 HttpSession 매개변수로 받기
+		String savePath = session.getServletContext().getRealPath("resources/images/profile/"); // jsp에서도 했었음!! 
+		
+		// savePath 경로에 changeName으로 이름 바꾼 첨부파일 업로드
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		// 이 메소드를 호출했던 곳으로 수정명 return
+		return changeName;
+	}
+
 	/**
 	 * 회원 탈퇴
 	 * @param empPwd
@@ -359,6 +439,168 @@ public class EmployeeController {
 		
 	}
 	
+	// ============================ 사원 관리 =================================
+	
+	/**
+	 * 사원 초대 페이지 호출
+	 * @return
+	 */
+	@RequestMapping("addEmpForm.me")
+	public String inviteEmpForm() {
+		return "member/adminMemberInsert";
+	}
+	
+	/**
+	 * ajax 사원 초대 메일 발송
+	 * @param inviteMail
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("addEmp.me")
+	public String inviteEmployee(String inviteMail) {
+		
+		EmployeeMail em = new EmployeeMail();
+		try {
+			em.inviteEmployee(inviteMail);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "success";
+
+	} 
+	
+	/**
+	 * 가입 승인 페이지 호출
+	 * @return
+	 */
+	@RequestMapping("appEmpForm.me")
+	public ModelAndView approvalEmpForm(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
+		
+		int employeeCount = eService.selectWemployeeCount();
+		
+		PageInfo pi = Pagination.getPageInfo(employeeCount, currentPage, 5, 5);
+		
+		ArrayList<Employee> wlist = eService.selectWemployee(pi);
+
+		mv.addObject("pi", pi)
+		  .addObject("wlist", wlist)
+		  .setViewName("member/adminMemberWtoY");
+		
+		return mv;
+	}
+	
+	/**
+	 * ajax 사원 가입 승인 완료 (메일 && update)
+	 * @param e
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("appEmp.me")
+	public String confirmMember(Employee e) {
+		
+		// System.out.println(e);
+		
+		EmployeeMail em = new EmployeeMail(); // status W => Y 변경 후 메일 보내기
+		
+		int result = eService.confirmMember(e);
+		
+		if(result>0) {
+			// 메일 보내기
+			try {
+				em.confirmEmployee(e);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+			return "PASS";
+			
+		}else {
+			return "FAIL";
+		}
+
+	} 
+	
+	
+	/**
+	 * 관리자 다수 계정 삭제
+	 * 가입 승인 반려 | 사원 계정 삭제 (status 'N'으로 변경)
+	 * @param e
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("delEmps.me")
+	public String delEmpls(Employee e) {
+		int result = eService.deleteMember(e.getEmpNo());
+		
+		return result > 0 ? "PASS" : "FAIL";
+		
+	}
+	
+	/**
+	 * 사원 계정 삭제 페이지 호출
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping("delEmpForm.me")
+	public ModelAndView delEmpForm(ModelAndView mv) {
+		ArrayList<Employee> list = eService.selectAllemployee2();
+		mv.addObject("list", list)
+		  .setViewName("member/adminMemberDelete");
+		
+		return mv;
+		
+	}
+	
+	
+	
+	/**
+	 * 직위 직무 관리 페이지 호출
+	 * @return
+	 */
+	@RequestMapping("setEmpForm.me")
+	public String approvalEmployee() {
+		return "member/adminMemberUpdate";
+	}
+	
+	
+	
+	
+	// 전체 사원 데이터 
+	/*
+	@ResponseBody
+	@RequestMapping("delEmpForm.me")
+	public String delEmpls(Employee e) {
+		int result = eService.deleteMember(e.getEmpNo());
+		
+		return result > 0 ? "PASS" : "FAIL";
+		
+	}
+	*/
+	
+	// 사원 계정 삭제 페이지 호출
+	/*
+	@RequestMapping("delEmpForm.me")
+	public ModelAndView delEmpForm(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
+		
+		int employeeCount = eService.selectAllemployeeCount();
+		
+		PageInfo pi = Pagination.getPageInfo(employeeCount, currentPage, 5, 15);
+		
+		ArrayList<Employee> list = eService.selectAllemployee(pi);
+
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .setViewName("member/adminMemberDelete");
+		
+		return mv;
+	}
+	*/
+
+	
+	
+	
 
 	// adminJobcode => 사원 정보 
 	// adminJobcodeDetail => 사원 정보 디테일
@@ -377,9 +619,9 @@ public class EmployeeController {
 	// 사원 추가 addEmp.me (이메일 주소 작성하고 버튼 누르면 회원가입폼 보내는 메일 발송 - DB연결 x)
 	
 	// ~~가입 승인
-	// 사원 가입 승인 페이지 호출 addEmpAppForm.me
+	// 사원 가입 승인 페이지 호출 appEmpForm.me
 	
-	// 사원 가입 승인 addEmpApp.me (status를 W에서 Y로 update)
+	// 사원 가입 승인 appEmpApp.me (status를 W에서 Y로 update)
 	
 	// 사원 가입 반려 addEmpCom.me (status를 W에서 N으로 update)
 	

@@ -119,7 +119,7 @@
         <div class="cont">
             <ul id="ac">
                 <li class="division">
-                    <a href="#">전자결재</a>
+                    <a href="#">전자결재 </a>
                 </li>
                 
                 <li id="newDraft">                	  
@@ -134,7 +134,7 @@
 	                  <a href="#">기안함</a>
 	                  <ul class="subMenu">
 	                  	 <li><a href="draftWait.dr?category=1">대기 결재</a></li>
-	                     <li><a href="draftOngoing.dr?category=2">진행중 결재</a></li>
+	                     <!-- <li><a href="draftOngoing.dr?category=2">진행중 결재</a></li> -->
 	                     <li><a href="draftReject.dr?category=3">반려 결재</a></li>
 	                     <li><a href="draftComplete.dr?category=4">완료 결재</a></li>
 	                  </ul>
@@ -142,8 +142,9 @@
 	               <li class="sideMenu">
 	                  <a href="#">결재함</a>
 	                  <ul class="subMenu">
-	                     <li><a href="#">미처리 결재</a></li>
-	                     <li><a href="#">완료 결재</a></li>
+	                     <li><a href="approvalWait.ap?category=5">미처리 결재</a></li>
+	                     <li><a href="approvalReject.ap?category=6">반려 결재</a></li>
+	                     <li><a href="approvalComplete.ap?category=7">완료 결재</a></li>
 	                  </ul>
 	               </li>
             	</div>

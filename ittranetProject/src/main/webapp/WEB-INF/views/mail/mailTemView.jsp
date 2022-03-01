@@ -5,40 +5,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>임시보관함</title>
 <style>
+	/*공통*/
 	.wrap{
         width: 900px;
     }
+    /*내용*/
     #mainOuter{
            width:1200px;
            height:800px;
           }
-    .outer div{float:left;}
-    .top{
-         width:1200px;
-         height:200px;
-    }
-    .sidebar{
-         width:300px;
-         height:600px;
-        }
-    .middle{
-            width:880px;
-            height:580px;
-    }
-
-
+	/*버튼*/
     #buttonbar{
     	float:right;
-    	padding-left:5px;        
-               
+    	padding-left:5px;             
     }
+    /*조회 테이블*/
     table{
           text-align:center;
     }
-    
-    /* 버튼 그라데이션 존예 */
+    /* 버튼 그라데이션  */
     .w-btn {
     	position: relative;
     	border: none;
@@ -59,7 +46,6 @@
 		background: linear-gradient(to top right, #33ccff 0%, #ff0000 100%);
 		color: white;
 	}
-
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,34 +72,11 @@
 
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="submit">삭제</button>
-            
-            	<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  					<div class="modal-dialog" role="document">
-    				<div class="modal-content">
-    				
-      					<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							</button>
-      					</div>
-      			
-      				<div class="modal-body">
-						정말로 삭제하시겠습니까?
-      				</div>
-      			
-      				<div class="modal-footer">
-        				<button type="button" class="btn btn-danger">네</button>
-        				<button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
-      				</div>
-    			
-    				</div>
-  					</div>
-				</div>
-				
+            	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
+                <button class="w-btn w-btn-gra2" type="button" onclick="deletemail();">삭제</button>
 			</div>
 			
+			<!-- 폼 -->
             <form id="postForm" action="temlist.ml" method="post">
 
             
@@ -124,9 +87,8 @@
                 <table id="mailtemlist" style="background-color:white">
                 	<thead>
                     	<tr>
-                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
-                        	<th style="width:50px;">☆</th>
-                        	<th style="width:150px;">받는사람</th>
+                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
+                        	<th style="width:200px;">받는사람</th>
                         	<th style="width:500px;">제목</th>
                         	<th style="width:200px;">날짜</th>
                     	</tr>
@@ -134,41 +96,65 @@
                     <tbody>
                     	<c:forEach var="m" items="${ temlist }">
 	                    	<tr>
-	                    		<input type="hidden" value=${ m.sendMailNo }>
-                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
-                        		<td>★</td>
-                        		<td>${ m.empNameSd }</td>
+	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
+                        		<td onclick="event.cancelBubble=true;"><input class="sdno" type="checkbox" name="mno" value="${ m.sendMailNo }"></td>
+                        		<td>${ m.empNameRv }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
                     		</tr>
                     	</c:forEach>
                     </tbody>
                 </table>
-                
+            </div>
 			</form>
 			
+				<!-- 상세페이지 조회 -->
                 <script>
             		$(function(){
             			$("#mailtemlist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
-            				console.log(mno);
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
             			});
             		})
             	</script>
+            	
+            	<!-- 체크박스 전체체크/체크해제 -->
             	<script>	
-            		$(document).ready(function() {
-            			$("#allCheck").click(function() {
+            		function checkAll(check){
             				if($("#allCheck").prop("checked")) { 
-            				$("input[name=checked]").prop("checked", true);
+            				$("input[class=sdno]").prop("checked", true);
             			}else {
-            				$("input[name=checked]").prop("checked", false);
+            				$("input[class=sdno]").prop("checked", false);
             			}
-            			});
-            		})
+            		}
 				</script>
 				
-			<!-- 내용닫는곳 -->
-            </div>
+				<!-- 체크박스 : 삭제 -->			
+				<script>	
+            		function deletemail() {
+            			var rcArr = [];
+            			$("input[name='rvno']:checked").each(function(){
+            				rcArr.push($(this).val());
+           	    		})
+            		 	console.log(rcArr);
+            		 
+            		 	$.ajax({
+            			 	url:"delete.ml",
+            			 	type:"post",
+            			 	data:{receiveMailNo:rcArr},
+            			 	success:function(result){
+            				 	if(result == 'success'){
+            				 		console.log("게시글 삭제 성공!");
+            				 	}else{
+            					 	console.log("게시글 삭제실패");
+            				 	}
+            			 	},error:function(){
+            				 	console.log("ajax게시글 삭제 통신 실패!");
+            			 	}
+	            		})
+            		}            	
+            	</script>
+				
+
 
           	<div id="pagingArea">
     			<ul class="pagination justify-content-center">
@@ -197,12 +183,14 @@
             </div>
             
         	</div>
+        	
+        <!-- 내용닫는곳 -->
+        </div>
         
         <!-- 푸터바 -->
         <jsp:include page="../common/footer.jsp" />
 
 
-    </div>
     </div>
     </div>
 

@@ -78,15 +78,48 @@
         	margin-left:400px;
         	margin-bottom:150px; /*푸터바와의 간격*/
         }
+        
+        /*근태 공용 스타일*/
+        /*버튼*/
+        .att-btn{
+            border: 2px solid rgb(131, 26, 163);
+            background: none;
+            color: rgb(131, 26, 163);
+            font-weight: 800;
+            border-radius: 5px;
+            width: 100px;
+            height: 35px;
+            margin-left: 29px;
+            margin-top:10px;
+        }
+        .att-btn:hover{
+            background: rgb(131, 26, 163);
+            color: #ffffff;
+        }
+        /*input, select*/
+        #att-search input, select{
+            height: 36px;
+            width: 180px;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+        }
+        /*outer*/
+        .vc-box{
+            background: white;
+            width: 950px;
+            border-radius: 25px;
+            padding: 50px;
+            margin-left: 15px;
+            font-size: 17px;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 20px 0 rgba(23, 23, 24, 0.096);
+        }
         </style>
     	<script>
 	   		$(function(){
 	   			$(window).scroll(function(){
 	   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
 	   				let mainOuterTop = $(".mainOuter").offset().top;
-	   				
-	   				//console.log("scroll : " + scrollTop);
-	   				//console.log("mainOuter : " + mainOuterTop);
 	   				
 	   				if(scrollTop > mainOuterTop - 70){
 	   					$(".cont").addClass("fixed");
@@ -109,7 +142,7 @@
 		                  <a href="main.at">내 근무</a>
 		               </li>
                        <li class="menu1">
-                          <a href="#">근무 현황</a>
+                          <a href="attlist.at">근무 현황</a>
                        </li>
 		               <li class="menu1">
 		                  <a href="vclist.at">휴가 신청</a>

@@ -27,13 +27,17 @@
 
         }
         #listbtn{
+        	text-decoration:none;
             display: inline-block;
-            margin-left:660px;
+            margin-left:700px;
             border:none;
             border-radius: 3px;
-            width:80px;
-            height: 30px;
+            width:90px;
+            height: 35px;
             background-color: rgba(122, 39, 135, 0.26);
+            color:black;
+            text-align:center;
+            padding-top: 5px;
         }       
         #contentArea{
             width:90%;
@@ -68,24 +72,46 @@
 <div class="back">
 	<div class="innerBack">
 		<!-- 헤더 -->
-	    <jsp:include page="../common/pageHeader.jsp"/>
+	    <jsp:include page="../../common/pageHeader.jsp"/>
 	    <!-- 메뉴바 -->
-	   	<jsp:include page="../common/userMenu.jsp"/>
+	   	<jsp:include page="../../common/userMenu.jsp"/>
 	   	
 	   	
 	   	<br clear="both">
 	   	
 	   	<div style="position:relative">
 		   	<!-- 사이드바 -->
-		   	<jsp:include page="approvalSidebar.jsp" />
+		   	<jsp:include page="../approvalSidebar.jsp" />
 		   	
-		    <div class="mainOuter">
-		        <br>
+		    <div class="mainOuter"> <br>
+		    
 		        <div id="detailTitle">
-		            	진행중 결재 상세
+		            <c:choose>
+				        <c:when test = "${ category eq 1 }">
+				        	대기
+			            </c:when>
+			             <c:when test = "${ category eq 3 }">
+				        	반려
+			            </c:when>
+			             <c:when test = "${ category eq 4 }">
+				        	완료
+			            </c:when>
+		            </c:choose>	
+					결재 상세
 		        </div>
 		        
-		        <button id="listbtn">목록으로</button>
+		         <c:choose>
+			        <c:when test = "${ category eq 1 }">
+			        	<a id="listbtn" href="draftWait.dr">목록으로</a>
+		            </c:when>
+		             <c:when test = "${ category eq 3 }">
+			        	<a id="listbtn" href="draftReject.dr">목록으로</a>
+		            </c:when>
+		             <c:when test = "${ category eq 4 }">
+			        	<a id="listbtn" href="draftComplete.dr">목록으로</a>
+		            </c:when>
+	            </c:choose>
+	            
 	            <div id="innerouter" style="padding:5% 5%;">
 		            <table id="contentArea" align="center">
 		                <tr>
@@ -100,7 +126,13 @@
 		                </tr>
 		                <tr>
 		                    <th>결재자</th>
-		                    <td>개발팀 xxx</td>
+		                    <td>
+		                    	<c:forEach var="l" items="${ aline }">
+		                        	<c:if test="${ l.drNo eq b.drNo }">
+			                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
+		                           	 </c:if>
+		                        </c:forEach>
+		                    </td>
 		                </tr>
 		                <tr>
 		                    <th>제목</th>
@@ -108,20 +140,20 @@
 		                </tr>
 		                <tr>
 		                    <th>첨부파일</th>
-		                    <td></td>
+		                    <td>${ at.filePath }</td>
 		                </tr>
 		                <tr>
 		                    <td colspan="2" id="detailContent">
-		                      	  위 안건으로 회의 완료했습니다. 자세한 사항 첨부파일 확인 부탁드립니다.
+		                      	  위 안건으로 회의 완료했습니다. 자세한 사항 첨부파일 확인 부탁드립니다.<br>
 		                        ${ b.drContent }
 		                        <br><br>
 		                        <span class="contentTitle" name="">회의안건</span>    
-		                        :
-		                        <span class="contentdata">db 구축</span>
+		                        : 
+		                        <span class="contentdata">${ b.drProTitle }</span>
 		                        <br>
 		                        <span class="contentTitle" name="">회의날짜</span>    
 		                        :
-		                        <span class="contentdata">2022.01.19</span>
+		                        <span class="contentdata">${ b.drProDate }</span>
 		                        
 		                    </td>
 		                </tr>
@@ -132,7 +164,7 @@
         	
         	</div>
 	    <!-- 푸터 -->
-	    <jsp:include page="../common/footer.jsp"/>
+	    <jsp:include page="../../common/footer.jsp"/>
 	    
 		</div>    
 	</div> 

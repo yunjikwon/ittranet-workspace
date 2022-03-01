@@ -128,6 +128,7 @@
 						</c:if>
 						<form id="postForm" action="" method="post">
 							<input type="hidden" name="nno" value="${ n.noticeNo }">
+							<input type="hidden" name="admin" value="${ loginUser.admin }">
 							<input type="hidden" name="filePath" value="${ at.filePath }">
 						</form>
 						<br><br>

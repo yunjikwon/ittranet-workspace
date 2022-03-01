@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/gcal.js'></script>
     <!-- fullcalendar 언어 CDN -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.min.js'></script>
     <style>
@@ -73,6 +74,16 @@
      	margin:auto;
      	display:block;
      }
+          #calendar button{
+     	background:lightblue;
+     	border-color:lightskyblue;
+     	color:white;
+     	height:50px;
+     }
+     #calendar button:hover{
+     	color:black;
+     	font-weight:bold;
+     }
    	</style>
 
     <script>
@@ -123,6 +134,15 @@
   	   	        var calendar = new FullCalendar.Calendar(calendarEl, {
   	   	          initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
   	   	          locale: 'ko', // 한국어 설정
+  	   	     	  googleCalendarApiKey : "AIzaSyCLvJjierhxYSxsWIumWXGddinCb-QSiUk" 
+	               , eventSources : [
+	                   {
+	                         googleCalendarId : "ko.south_korea#holiday@group.v.calendar.google.com"
+	                       , className : "koHolidays"
+	                       , color : "lightpink"
+	                       , textColor : "tomato"
+	                   }
+	               ],
   	   	          expandRows: true, // 화면에 맞게 높이 재설정
   	   	          headerToolbar: { // 헤더에 표시할 툴바
   	   	            left: 'prev,next today',

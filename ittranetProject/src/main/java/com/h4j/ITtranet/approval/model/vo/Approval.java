@@ -20,7 +20,7 @@ public class Approval {
 	private int drNo;
 	private String drTitle;
 	private Date drDate;
-	private String drStatus; // 결재 상태
+	private String drStatus; // 결재 상태 (대기/진행중/반려/완료)
 	private String drDivision;  //양식 종류 - sql문에서 decode함수 이용하여 이름으로 출력
 	private int empNo;
 	private String empName;
@@ -36,10 +36,18 @@ public class Approval {
 	private String drProTitle;  // 회의안건
 	private String drProDate;   // 회의일
 	
+	private int aplineOrder; 
+	private int aplineNo;
+	private String apStatus; // 결재 상태 (미처리/반려/완료)
+	private Date apDate;
+	
 	private ArrayList<AppLine> appList;
 	// appList[0].empNo 
 	// appList[0].aplineOrder
 	
 	// appList[1].empNo 
 	// appList[1].aplineOrder
+	
+	private String originName;
+	private String changeName;
 }

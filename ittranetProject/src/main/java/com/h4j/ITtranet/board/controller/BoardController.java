@@ -121,7 +121,9 @@ public class BoardController {
 			
 			
 			session.setAttribute("alertMsg", "게시글이 성공적으로 삭제되었습니다.");
+						
 			return "redirect:list.bo";
+			
 		}else {
 			return "common/error";
 		}
@@ -129,14 +131,19 @@ public class BoardController {
 	
 	// 게시글 수정 페이지로 이동
 	@RequestMapping("updateForm.bo")
-	public String updateForm(int bno, Model model) {
+	public String updateForm(int bno, @RequestParam(value="admin", defaultValue="N")String admin, Model model) {
 		model.addAttribute("b", bService.SelectBoard(bno));
 		model.addAttribute("atList", bService.selectAttachment(bno));
-		return "board/boardUpdateForm";
+		if(admin.equals("Y")) {
+			return "board/adminBoardUpdateForm";
+		}else {
+			
+			return "board/boardUpdateForm";
+		}
 	}
 	// 게시글 수정하기
 	@RequestMapping("update.bo")
-	public String updateBoard(int boardNo, Board b, Attachment at, @RequestParam(value="fileNoDel[]") String[] delFiles, MultipartFile[] reupfile, HttpSession session, Model model) {
+	public String updateBoard(int boardNo, String admin, Board b, Attachment at, @RequestParam(value="fileNoDel[]") String[] delFiles, MultipartFile[] reupfile, HttpSession session, Model model) {
 
 		
 		int result = bService.updateBoard(b);
@@ -168,8 +175,13 @@ public class BoardController {
 		}
 
 		if(result + resultAt > 0) {
-			session.setAttribute("alertMsg", "게시글이 성공적으로 수정되었습니다.");
-			return "redirect:detail.bo?bno=" + boardNo;
+			if(admin.equals("Y")) {
+				session.setAttribute("alertMsg", "게시글이 성공적으로 수정되었습니다.");
+				return "redirect:detailAdmin.bo?bno=" + boardNo;
+			}else {
+				session.setAttribute("alertMsg", "게시글이 성공적으로 수정되었습니다.");
+				return "redirect:detail.bo?bno=" + boardNo;
+			}
 		}else {
 			return "common/error";
 		}
@@ -238,10 +250,77 @@ public class BoardController {
 		return new Gson().toJson(list);
 	}
 	
+	// 관리자 영역
 	
+	// 관리자 페이지 이동
+	@RequestMapping("listAdmin.bo")
+	public ModelAndView selectAdminList(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
+		
+		int listCount = bService.selectListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		ArrayList<Board> list = bService.selectList(pi);
+		
+		mv.addObject("pi", pi);
+		mv.addObject("list", list);
+		mv.setViewName("board/adminBoardListView");
+		
+		
+		return mv;
+	}
+
+	// 관리자 페이지 글 삭제 기능
+	@RequestMapping("deleteAdmin.bo")
+	public String delectAdminBoard(@RequestParam(value="boardNoDel[]") int[] checkArr, String filePath, HttpSession session, Model model) {
+		
+		int result = 0;
+		int resultAt = 1;
+		
+		for(int bno : checkArr) {
+			
+			result = bService.deleteBoard(bno);
+		
+			if(result > 0) {	
+				ArrayList<Attachment> atList = new ArrayList<Attachment>();
+				atList = bService.selectAttachment(bno);
+
+				for(int i=0; i<atList.size(); i++) {
+					int atNo = atList.get(i).getAttachmentNo();
+					resultAt = bService.deleteAttachment(atNo);
+				}
+			}	
+		}
+		if(result + resultAt > 0) {
+			
+			session.setAttribute("alertMsg", "게시글이 성공적으로 삭제되었습니다.");
+			return "redirect:listAdmin.bo";
+		}else {
+			return "common/error";
+		}
+	}
 	
-	
-	
+	// 관리자 게시글 상세조회
+	@RequestMapping("detailAdmin.bo")
+	public ModelAndView adminSelectBoard(int bno, ModelAndView mv) {
+		
+		int result = bService.increaseCount(bno);
+		
+		if(result > 0) {
+			
+			Board b = bService.SelectBoard(bno);
+			ArrayList<Attachment> atList = bService.selectAttachment(bno);
+			mv.addObject("b", b);
+			mv.addObject("atList", atList);
+			mv.setViewName("board/adminBoardDetailView");
+			
+		}else {
+			
+			mv.addObject("errorMsg", "페이지 조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
 	
 	
 	

@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.mail.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -33,7 +34,7 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectList(sqlSession, pi, email);
 	}
 
-	// 2. 메일 쓰기 (+첨부파일)
+	// 2-1. 메일 쓰기 (+첨부파일)
 	@Override
 	public int insertMail(Mail m, ArrayList<Attachment> list) {
 		
@@ -46,7 +47,7 @@ public class MailServiceImpl implements MailService{
 		
 	}
 	
-	// 12-1. 내게쓰기
+	// 2-2. 내게 쓰기 (+첨부파일)
 	@Override
 	public int toMeInsertMail(Mail m, ArrayList<Attachment> list) {
 		
@@ -58,18 +59,18 @@ public class MailServiceImpl implements MailService{
 		return result1 * result2 * result3;
 		
 	}
-
-	// 3. 메일 상세조회
-	@Override
-	public Mail selectMail(int sendMailNo) {
-		
-		//Mail result1 = mDao.selectMail(sqlSession, sendMailNo);
-		//ArrayList<Attachment> result2 = mDao.selectMailAttachment(sqlSession);
-		
-		return mDao.selectMail(sqlSession, sendMailNo);
-	}
 	
-	// 5. 삭제
+	// 2-3. 답장
+	@Override
+	public int answerInsertMail(Mail m, ArrayList<Attachment> list) {
+		
+		int result1 = mDao.insertSendMail(sqlSession, m);
+		int result2 = mDao.insertReceiveMail(sqlSession, m);
+		int result3 = mDao.insertMailAttachment(sqlSession, list);
+		
+		return result1 * result2 * result3;
+		
+	}
 
 	// 6-1. [휴지통] 메일 리스트 *카운트* 조회
 	@Override
@@ -143,17 +144,67 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectTemList(sqlSession, pi, email);
 	}
 
-	// 삭제
+	// 리스트 : 메일 삭제
 	@Override
 	public int deleteMail(List<Integer> receiveMailNo) {
 		return mDao.deleteMail(sqlSession, receiveMailNo);
 	}
 	
+/*
+	// (상세조회) 삭제
+	@Override
+	public int deleteOneMail(int rvno) {
+		return mDao.deleteOneMail(sqlSession, rvno);
+	}
+	*/
+
+	// 리스트 : 중요 메일 체크/체크해제
+	@Override
+	public int updateImportantMail(HashMap<String, String> map) {
+		return mDao.updateImportantMail(sqlSession, map);
+	}
+
+	// 중요 메일 (보낸메일함)
+	/*
+	@Override
+	public int updateImportantSendMail(HashMap<String, String> map) {
+		return mDao.updateImportantSendMail(sqlSession, map);
+	}
+	
+
+	@Override
+	public int importantMail(int receiveMailNo) {
+		return 0;
+	}
+	*/
+
+	// 리스트 : 메일 복원
+	@Override
+	public int restorationMail(List<Integer> receiveMailNo) {
+		return mDao.restorationMail(sqlSession, receiveMailNo);
+	}
+	
+
+	// 3-1. 메일 상세조회 (메일)
+	@Override
+	public Mail selectMail(int sendMailNo) {
+		return mDao.selectMail(sqlSession, sendMailNo);
+	}
+	
+	// 3-2. 메일 상세조회 (첨부파일)
+	@Override
+	public ArrayList<Attachment> selectMailAttachment(int sendMailNo) {
+		return mDao.selectMailAttachment(sqlSession, sendMailNo);
+	}
+
+	@Override
+	public int updateSpamMail(int rvno) {
+		return mDao.updateSpamMail(sqlSession, rvno);
+	}
 
 
 	
-	
-	
+
 
 	
 	

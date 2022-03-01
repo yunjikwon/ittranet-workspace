@@ -110,28 +110,30 @@ public class NoticeController {
 	
 	// 게시글 삭제
 	@RequestMapping("delete.no")
-	public String delectBoard( @RequestParam(value="noticeNoDel[]") int[] checkArr, String filePath, HttpSession session, Model model) {
+	public String deleteBoard(int nno, @RequestParam(value="admin", defaultValue="N")String admin, @RequestParam(value="adminPage", defaultValue="N")String adminPage, String filePath, HttpSession session, Model model) {
 		
 		int result = 0;
 		int resultAt = 1;
-		
-		for(int nno : checkArr) {
-			
-			result = nService.deleteNotice(nno);
-		
-			if(result > 0) {	
-				ArrayList<Attachment> atList = new ArrayList<Attachment>();
-				atList = nService.selectAttachment(nno);
+		result = nService.deleteNotice(nno);
+	
+		System.out.println(adminPage);
+		if(result > 0) {	
+			ArrayList<Attachment> atList = new ArrayList<Attachment>();
+			atList = nService.selectAttachment(nno);
 
-				for(int i=0; i<atList.size(); i++) {
-					int atNo = atList.get(i).getAttachmentNo();
-					resultAt = nService.deleteAttachment(atNo);
-				}
+			for(int i=0; i<atList.size(); i++) {
+				int atNo = atList.get(i).getAttachmentNo();
+				resultAt = nService.deleteAttachment(atNo);
 			}
 		}
 		if(result + resultAt > 1) {
 			session.setAttribute("alertMsg", "게시글이 성공적으로 삭제되었습니다.");
-			return "redirect:listAdmin.no";
+			
+			if(admin.equals("Y") && adminPage.equals("Y")) {
+				return "redirect:listAdmin.no";
+			}else {
+				return "redirect:list.no";
+			}
 		}else {
 			return "common/error";
 		}
@@ -259,6 +261,8 @@ public class NoticeController {
 		return new Gson().toJson(list);
 	}
 	
+	
+	// 관리자 페이지
 	// 게시글 전체 페이지 조회
 	@RequestMapping("listAdmin.no")
 	public ModelAndView selectAdminList(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
@@ -278,8 +282,98 @@ public class NoticeController {
 		return mv;
 	}
 	
+	// 게시글 전체 삭제 서비스
+	@RequestMapping("deleteAdmin.no")
+	public String deleteAdminBoard(@RequestParam(value="noticeNoDel[]") int[] checkArr, String filePath, HttpSession session, Model model) {
+		
+		int result = 0;
+		int resultAt = 1;
+		
+		for(int nno : checkArr) {
+			
+			result = nService.deleteNotice(nno);
+		
+			if(result > 0) {	
+				ArrayList<Attachment> atList = new ArrayList<Attachment>();
+				atList = nService.selectAttachment(nno);
+
+				for(int i=0; i<atList.size(); i++) {
+					int atNo = atList.get(i).getAttachmentNo();
+					resultAt = nService.deleteAttachment(atNo);
+				}
+			}
+		}
+		if(result + resultAt > 1) {
+			session.setAttribute("alertMsg", "게시글이 성공적으로 삭제되었습니다.");
+			return "redirect:listAdmin.no";
+		}else {
+			return "common/error";
+		}
+	}
 	
+	// 게시글 상세 조회
+	@RequestMapping("detailAdmin.no")
+	public ModelAndView selectNoticeAdmin(int nno, ModelAndView mv) {
+		
+		int result = nService.increaseCount(nno);
+		
+		if(result > 0) {
+			
+			Notice n = nService.selectNotice(nno);
+			ArrayList<Attachment> atList = nService.selectAttachment(nno);
+			mv.addObject("n", n);
+			mv.addObject("atList", atList);
+			mv.setViewName("notice/adminNoticeDetailView");
+			
+		}else {
+			
+			mv.addObject("errorMsg", "페이지 조회 실패");
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
 	
+	// 말머리 관리 페이지 이동
+	@RequestMapping("headerAdmin.no")
+	public String noticeHeaderView(Model model) {
+		
+		ArrayList<NoticeHeader> headerList = nService.selectHeaderList();
+		model.addAttribute("headerList", headerList);
+		//System.out.println(list);
+		return "notice/adminNoticeHeaderView";
+	}
 	
+	// 말머리 추가
+	@ResponseBody
+	@RequestMapping(value="addHeader.no")
+	public String ajaxInsertHeader(String headerTitle) {
+		int result = nService.insertHeader(headerTitle);
+		return result>0? "success" : "fail";
+	}
 	
+	// 말머리 수정
+	@ResponseBody
+	@RequestMapping(value="updateHeader.no")
+	public String ajaxUpdateHeader(NoticeHeader nh) {
+		int result = nService.updateHeader(nh);
+		return result>0? "success" : "fail";
+	}
+	
+	// 말머리 삭제
+	@RequestMapping(value="deleteHeader.no")
+	public String ajaxDeleteHeader(@RequestParam(value="headerNoDel[]") int[] headerNoDel, HttpSession session) {
+		
+		int result = 0;
+		for(int hno : headerNoDel) {
+			result = nService.deleteHeader(hno);
+		}
+		if (result > 0) {
+			session.setAttribute("alertMsg", "말머리가 성공적으로 삭제되었습니다.");
+			return "redirect:headerAdmin.no";
+		}else {
+			session.setAttribute("error", "말머리가 삭제되지 않았습니다.");
+			return "common/error";
+		}
+	}
 }

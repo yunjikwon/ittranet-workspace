@@ -79,15 +79,48 @@
         	margin-left:450px;
         	margin-bottom:150px;
         }
+        /*근태 공용 스타일*/
+        /*근태 공용 스타일*/
+        /*버튼*/
+        .att-btn{
+            border: 2px solid rgb(131, 26, 163);
+            background: none;
+            color: rgb(131, 26, 163);
+            font-weight: 800;
+            border-radius: 5px;
+            width: 100px;
+            height: 35px;
+            margin-left: 29px;
+            margin-top:10px;
+        }
+        .att-btn:hover{
+            background: rgb(131, 26, 163);
+            color: #ffffff;
+        }
+        /*input, select*/
+        #att-search input, select{
+            height: 36px;
+            width: 180px;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+        }
+        /*outer*/
+        .vc-box{
+            background: white;
+            width: 950px;
+            border-radius: 25px;
+            padding: 50px;
+            margin-left: 15px;
+            font-size: 17px;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 20px 0 rgba(23, 23, 24, 0.096);
+        }
         </style>
        	<script>
 	   		$(function(){
 	   			$(window).scroll(function(){
 	   				let scrollTop = $(this).scrollTop(); // 현재 스크롤위치
 	   				let mainOuterTop = $(".mainOuter").offset().top;
-	   				
-	   				console.log("scroll : " + scrollTop);
-	   				console.log("mainOuter : " + mainOuterTop);
 	   				
 	   				if(scrollTop > mainOuterTop - 70){
 	   					$(".cont").addClass("fixed");
@@ -110,7 +143,7 @@
                   <a href="#">근무 관리</a>
                   <ul class="menu2">
                      <li><a href="dayat.ad">일일근태 관리</a></li>
-                     <li><a href="yearat.ad">근무 통계</a></li>
+                     <li><a href="atstats.ad">근무 통계</a></li>
                   </ul>
                </li>
                <li class="menu1">

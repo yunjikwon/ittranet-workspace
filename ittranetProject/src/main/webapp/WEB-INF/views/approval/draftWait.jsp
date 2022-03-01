@@ -81,7 +81,7 @@
 	            <div id="innerouter" style="padding:5% 10%;">
 		            <div class="search" id="search1">
 			           	 결재분류
-			            <select class="divisionSelect" name="boardSearch" id="boardSearch">
+			            <select class="divisionSelect" id="boardSearch1">
 			                <option value="">(결재분류)</option>
 			                <option value=1>사업계획서</option>
 			                <option value=2>시말서</option>
@@ -93,7 +93,7 @@
 			        </div>
 			        <div class="search" id="search2">
 			           	 기안일
-			            <select class="divisionSelect" name="boardDate" id="boardSearch">
+			            <select class="divisionSelect" id="boardSearch2">
 			                <option value="">(기안일)</option>
 			                <option value=7>1주일</option>
 			                <option value=8>1개월</option>
@@ -115,16 +115,15 @@
 			            	<c:forEach var="d" items="${ list }">
 			                    <tr>
 			                    	<input type="hidden" class="drNo" value="${ d.drNo }">
-			                    	<input type="hidden" name="empNo" value="${ d.empNo }">		                    	
-			                        <th>
-			                        	${ d.drDivision }
-			                        </th>
+			                    	<input type="hidden" class="drDivision" value="${ d.drDivision }">
+			                    	<input type="hidden" class="category" value="${ category }">
+			                    	<input type="hidden" name="empNo" value="${ d.empNo }">	                    	
+			                        <th class="drDivison"> ${ d.drDivision } </th>
 			                        <td>${ d.drTitle }</td>
 			                        <td>${ d.drDate }</td>
-			                        <td>
+			                        <td class="linePerson">
 			                        	<c:forEach var="l" items="${ linePerson }">
 				                        	<c:if test="${ l.drNo eq d.drNo }">
-					                            <img src="" alt=""> <!--프로필 이미지-->
 					                           		${ l.empName }&nbsp;${l.job } &nbsp;&nbsp;
 				                           	 </c:if>
 				                        </c:forEach>
@@ -170,50 +169,65 @@
 		    
 		<!-- 분류별 검색 -->    
 		<script>
-			$('.divisionSelect').change(function(){
-				let searchType = $("select[name=boardSearch]").val();
-				let searchDate = $("select[name=boardDate]").val()
-				
-				console.log("searchType:"+searchType);
-				console.log("searchDate:"+searchDate);
+		   $("#boardSearch1").change(function(){  
+		           ajaxSearch(1, $(this).val());  
+		   })
+		   $("#boardSearch2").change(function() {
+		          ajaxSearch(2, $(this).val()); 
+		   })
+			
+			function ajaxSearch(flag, search){
+				console.log("search : " + search);
 				
 					$.ajax({
 						type : 'GET',
 						url : "search.board",
 						data : {
-							searchType : searchType,
-							searchDate : searchDate
-						} , success : function(list){
-							console.log(boardSearch);
+							flag : flag,
+							search : search
+						} , success : function(result){
 							//테이블 초기화
-		    				$('#boardList').empty();
-							
-		    				
-							for(let i in list){
+		    				$('#boardList tbody').empty();
+							let appPerson = "";
+		    				let str = "";
+	                        	
+		    				for(let i in result.list){
 								str += "<tr>"
-									    	+ "<td><input type='hidden' name='empNo' value='" + list[i].empNo + "'></td>"		                    	
-					                        + "<th>"+ list[i].drDivision +"</th>"
-					                        + "<td>"+ list[i].drTitle + "</td>"
-					                        + "<td>"+ list[i].drDate + "</td>"
-					                        + "<td>"+ list[i].empName + "</td>"
-					                        + "<td>"+ list[i].drStatus + "</td>"
-				                        + "</tr>";
+									    	+ "<input type='hidden' name='empNo' value='" + result.list[i].empNo + "'>"		                    	
+					                        + "<th>"+ result.list[i].drDivision +"</th>"
+					                        + "<td>"+ result.list[i].drTitle + "</td>"
+					                        + "<td>"+ result.list[i].drDate + "</td>"
+					                        + "<td>";  
+						                        
+											// 결재자 리스트
+											for(let a in result.linePerson){						                        		
+						                        if((result.list[i].drNo == result.linePerson[a].drNo)){
+						                        	appPerson += result.linePerson[a].empName + result.linePerson[a].job + "&nbsp;"
+						                        	result.list.push(appPerson);
+												}		
+				                        	} 
+					                 	str += result.list[i].appPerson + "</td>" 
+						                    + "<td>"+ result.list[i].drStatus + "</td>"
+					                + "</tr>";
 							}
-							$("#boardList tbody").html(str);
-							$("#boardSearch option:eq(0)").prop("selected", true); //select(셀렉트) 원위치
+								
+							$('#boardList > tbody').html(str);
+							$("#boardSearch1 option:eq(0)").prop("selected", true); //select(셀렉트) 원위치
+							$("#boardSearch2 option:eq(0)").prop("selected", true);
 						} , error : function(){
 							console.log("ajax 통신 실패 ");
 						}
 					});
-			})
+			}
 			
 			// 상세페이지 이동
 			$(function(){
-            		$("#boardList>tbody>tr").click(function(){
-            			console.log($(this).children(".drNo").val());
-            			location.href = 'detail.dr?drNo=' + $(this).children(".drNo").val();            			
-            		});
-            	})
+           		$("#boardList>tbody>tr").click(function(){
+           			location.href = 'detail.dr?drNo=' + $(this).children(".drNo").val()
+           					       +'&drDivision=' + $(this).children(".drDivision").val()
+           					       +'&category=' + $(this).children(".category").val();                 			
+           		});
+           	})
 				
 		</script>		    
 		    

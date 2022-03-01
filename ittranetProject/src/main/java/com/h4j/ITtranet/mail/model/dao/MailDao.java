@@ -1,6 +1,7 @@
 package com.h4j.ITtranet.mail.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -30,7 +31,7 @@ public class MailDao {
 		
 	}
 	
-	// 2. 메일 쓰기 (+첨부파일)
+	// 2-1. 메일 쓰기 (+첨부파일)
 	public int insertSendMail(SqlSessionTemplate sqlSession, Mail m) {
 		return sqlSession.insert("mailMapper.insertMailSd", m);
 	}
@@ -48,19 +49,34 @@ public class MailDao {
 		return result;
 	}
 	
-	// 3. 내게쓰기 (+첨부파일)
+	// 2-2. 내게쓰기 (+첨부파일)
 	public int insertToMeSendMail(SqlSessionTemplate sqlSession, Mail m) {
-		
-		System.out.println("보내는 사람 : " + m);
 		return sqlSession.insert("mailMapper.insertMailSd", m);
 	}
 	
 	public int insertToMeReceiveMail(SqlSessionTemplate sqlSession, Mail m) {
-		System.out.println(m);
 		return sqlSession.insert("mailMapper.insertMailRv", m);
 	}
 	
 	public int insertToMeMailAttachment(SqlSessionTemplate sqlSession, ArrayList<Attachment> list) {
+		int result = 1;
+		for(Attachment at : list) {
+			result += sqlSession.insert("mailMapper.insertMailAttachment", at);
+		}
+		
+		return result;
+	}
+	
+	// 2-3. 답장 (+첨부파일)
+	public int insertAnswerSendMail(SqlSessionTemplate sqlSession, Mail m) {
+		return sqlSession.insert("mailMapper.insertMailSd", m);
+	}
+	
+	public int insertAnswerReceiveMail(SqlSessionTemplate sqlSession, Mail m) {
+		return sqlSession.insert("mailMapper.insertMailRv", m);
+	}
+	
+	public int insertAnswerMailAttachment(SqlSessionTemplate sqlSession, ArrayList<Attachment> list) {
 		int result = 1;
 		for(Attachment at : list) {
 			result += sqlSession.insert("mailMapper.insertMailAttachment", at);
@@ -73,6 +89,16 @@ public class MailDao {
 	public Mail selectMail(SqlSessionTemplate sqlSession, int sendMailNo) {
 		return sqlSession.selectOne("mailMapper.selectMail", sendMailNo);
 	}
+	public ArrayList<Attachment> selectMailAttachment(SqlSessionTemplate sqlSession, int sendMailNo) {
+		return (ArrayList)sqlSession.selectList("mailMapper.selectMailAttachment", sendMailNo);
+	}
+	
+	// 중요메일
+	public int importantMail(SqlSessionTemplate sqlSession, int receiveMailNo) {
+		int starresult = sqlSession.update("mailMapper.starMail", receiveMailNo);
+		System.out.println(starresult);
+		return starresult;
+	}
 	
 	// 5. 삭제
 	public int deleteMail(SqlSessionTemplate sqlSession, List<Integer> receiveMailNo) {
@@ -83,12 +109,35 @@ public class MailDao {
 		return result;
 	}
 	
+	// 12. 메일 복원
+	public int restorationMail(SqlSessionTemplate sqlSession, List<Integer> receiveMailNo) {
+		int result = 0;
+		for(int i=0; i<receiveMailNo.size(); i++) {
+			result = sqlSession.update("mailMapper.restorationMail", receiveMailNo.get(i));
+		}
+		return result;
+	}
+	
+	/*
+	// 5-2. (상세조회) 메일삭제
+	public int deleteOneMail(SqlSessionTemplate sqlSession, int rvno) {
+		return sqlSession.update("mailMapper.deleteOneMail", rvno);
+	}
+	
+	
+	//
+	public ArrayList<Mail> selectMailList(SqlSessionTemplate sqlSession, int receiveMailNo){
+		return (ArrayList)sqlSession.selectList("mailMapper.selectMailList", receiveMailNo);
+	}
+	*/
+	
 	// 6-1. [휴지통] 메일 리스트 카운트 조회
 	public int selectBinListCount(SqlSessionTemplate sqlSession, String empNo) {
 		
 		return sqlSession.selectOne("mailMapper.selectBinListCount", empNo);
 		
 	}
+	
 	
 	
 	// 6-2. [휴지통] 메일 리스트 조회
@@ -160,6 +209,9 @@ public class MailDao {
 		return sqlSession.selectOne("mailMapper.selectTemListCount", empNo);
 	}
 	
+	
+	
+	
 	// 11-2. [임시보관함] 메일 리스트 조회
 	public ArrayList<Mail> selectTemList(SqlSessionTemplate sqlSession, PageInfo pi, String email) {
 		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
@@ -170,5 +222,26 @@ public class MailDao {
 		
 	}
 	
+	// 중요 메일
+	public int updateImportantMail(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.update("mailMapper.updateImportantMail", map);
+		
+	}
+	
+	// 중요 메일 (보낸 메일함)
+	public int updateImportantSendMail(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.update("mailMapper.updateImportantSendMail", map);
+	}
+	
+	// 13. 디테일화면 : 스팸
+	public int updateSpamMail(SqlSessionTemplate sqlSession, int rvno) {
+		
 
+		return sqlSession.update("mailMapper.updateSpamMail", rvno);
+	}
+	
+	// 
+	
 }

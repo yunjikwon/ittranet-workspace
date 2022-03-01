@@ -99,12 +99,15 @@
 		                    <a href="#">게시판 관리</a>
 		                </li>
 		                <div id="border">
-				               <li class="menu1">
-				                  <a href="listAdmin.no">공지사항 관리</a>
-				               </li>
-				               <li class="menu1">
-				                  <a href="listAdmin.bo">자유게시판 관리</a>
-				               </li>
+				                <li class="menu1">
+				                    <a href="listAdmin.no">공지사항 관리</a>
+				                </li>
+                                <li class="menu1">
+                                    <a href="headerAdmin.no">공지사항 말머리 관리</a>
+                                </li>
+				                <li class="menu1">
+				                    <a href="listAdmin.bo">자유게시판 관리</a>
+				                </li>
 				              
 		            	</div>
 		            </ul>
@@ -154,6 +157,8 @@
                                     <form id="postForm" action="" method="post">
                                         <input type="hidden" name="nno" value="${ n.noticeNo }">
                                         <input type="hidden" name="filePath" value="${ at.changeName }">
+                                        <input type="hidden" name="admin" value="${ loginUser.admin }">
+                                        <input type="hidden" name="adminPage" value="Y">
                                         <input type="hidden" id="noticeNoDel" name="noticeNoDel[]" value="">
                                     </form>
                                 </c:forEach>
@@ -218,8 +223,7 @@
                                 $("#noticeNoDel").attr("value", checkArr);
                                 //console.log(checkArr);
                                 //console.log(count);
-                                
-                                $("#postForm").attr("action", "delete.no").submit();  
+                                $("#postForm").attr("action", "deleteAdmin.no").submit();  
 								   
                                 
                             }
@@ -233,12 +237,12 @@
                                     <button class="pageBtn" disabled>&lt;</button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="pageBtn"><a class="aTag" href="list.no?cpage=${ pi.currentPage-1 }">&lt;</a></button>
+                                    <button class="pageBtn"><a class="aTag" href="listAdmin.no?cpage=${ pi.currentPage-1 }">&lt;</a></button>
                                 </c:otherwise>
                             </c:choose>
                             
                             <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                                <button class="pageBtn"><a class="aTag" href="list.no?cpage=${ p }">${ p }</a></button>
+                                <button class="pageBtn"><a class="aTag" href="listAdmin.no?cpage=${ p }">${ p }</a></button>
                             </c:forEach>
                         
                             <c:choose>
@@ -246,7 +250,7 @@
                                     <button class="pageBtn" disabled>&gt;</button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button class="pageBtn"><a class="aTag" href="list.no?cpage=${ pi.currentPage+1 }">&gt;</a></button>
+                                    <button class="pageBtn"><a class="aTag" href="listAdmin.no?cpage=${ pi.currentPage+1 }">&gt;</a></button>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -361,7 +365,7 @@
                                 	if($(this).hasClass("noResult")){
                                 		return false;
                                 	}else{
-                                    	location.href = 'detail.no?nno=' + $(this).siblings(".nno").text();
+                                    	location.href = 'detailAdmin.no?nno=' + $(this).siblings(".nno").text();
                                 	}
                                 })
                                 

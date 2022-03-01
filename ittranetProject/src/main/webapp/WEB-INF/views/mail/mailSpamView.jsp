@@ -5,39 +5,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>스팸메일함</title>
 <style>
+	/*공통*/
 	.wrap{
         width: 900px;
     }
+    /*내용*/
     #mainOuter{
            width:1200px;
            height:800px;
           }
-    .outer div{float:left;}
-    .top{
-         width:1200px;
-         height:200px;
-    }
-    .sidebar{
-         width:300px;
-         height:600px;
-        }
-    .middle{
-            width:880px;
-            height:580px;
-    }
-
-
+	/*버튼 2개(복원, 완전삭제)*/
     #buttonbar{
     	float:right;
     	padding-left:5px;        
-               
     }
+    /*조회테이블*/
     table{
           text-align:center;
     }
-    
     /* 버튼 그라데이션 존예 */
     .w-btn {
     	position: relative;
@@ -59,12 +46,10 @@
 		background: linear-gradient(to top right, #33ccff 0%, #ff0000 100%);
 		color: white;
 	}
-
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-
 </head>
 <body>
 	<!-- 공용 -->
@@ -85,49 +70,24 @@
 			
             <br><br>
 
-			<!-- 버튼바 (메일쓰기, 삭제) -->
+			<!-- 버튼바 (복원, 완전삭제) -->
             <div id="buttonbar">
-            	<button class="w-btn w-btn-gra1" type="button"><a href="">복원</a></button>
-                <button class="w-btn w-btn-gra2" type="submit">완전삭제</button>
-            
-            	<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  					<div class="modal-dialog" role="document">
-    				<div class="modal-content">
-    				
-      					<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							</button>
-      					</div>
-      			
-      				<div class="modal-body">
-						정말로 삭제하시겠습니까?
-      				</div>
-      			
-      				<div class="modal-footer">
-        				<button type="button" class="btn btn-danger">네</button>
-        				<button type="button" class="btn btn-secondary" data-dismiss="modal">아니요</button>
-      				</div>
-    			
-    				</div>
-  					</div>
-				</div>
-				
+            	<button class="w-btn w-btn-gra1" type="button"  onclick="restorationmail();">복원</button>
+                <button class="w-btn w-btn-gra2" type="button" onclick="deletemail();">완전삭제</button>				
 			</div>
 			
-            <form id="postForm" action="alllist.ml" method="post">
+			<!-- 폼 -->
+            <form id="postForm" action="spamlist.ml" method="post">
 
-            
             <br><br><br>
 
 			<!-- 메일 조회 리스트 -->
             <div class="table table-hover" align="center">
-                <table id="mailalllist" style="background-color:white">
+                <table id="mailspamlist" style="background-color:white">
                 	<thead>
                     	<tr>
-                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll"></th>
-                        	<th style="width:50px;">☆</th>
-                        	<th style="width:150px;">보낸사람</th>
+                        	<th style="width:50px;"><input type="checkbox" name="checkedAll" id="allCheck" onclick="checkAll(this);"></th>
+                        	<th style="width:200px;">보낸사람</th>
                         	<th style="width:500px;">제목</th>
                         	<th style="width:200px;">날짜</th>
                     	</tr>
@@ -135,9 +95,8 @@
                     <tbody>
                     	<c:forEach var="m" items="${ spamlist }">
 	                    	<tr>
-	                    		<input type="hidden" value=${ m.sendMailNo }>
-                        		<td><input type="checkbox" name="checked" id="Check" value="${ m.sendMailNo }"></td>
-                        		<td>★</td>
+	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
+                        		<td onclick="event.cancelBubble=true;"><input type="checkbox" name="rvno" id="Check" value="${ m.receiveMailNo }"></td>
                         		<td>${ m.empNameSd }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
@@ -145,31 +104,87 @@
                     	</c:forEach>
                     </tbody>
                 </table>
-                
+            </div>
 			</form>
 			
+				<!-- 메일 상세조회 -->
                 <script>
             		$(function(){
-            			$("#mailalllist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().eq(0).val();
-            				console.log(mno);
+            			$("#mailspamlist>tbody>tr").click(function(){
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
             			});
             		})
             	</script>
-            	<script>	
-            		$(document).ready(function() {
-            			$("#allCheck").click(function() {
-            				if($("#allCheck").prop("checked")) { 
-            				$("input[name=checked]").prop("checked", true);
-            			}else {
-            				$("input[name=checked]").prop("checked", false);
-            			}
-            			});
-            		})
+            	
+            	<!-- 체크박스 전체체크/체크해제 -->
+            	<script>
+            		function checkAll(check){
+            			if($("#allCheck").prop("checked")) { 
+        					$("input[name=rvno]").prop("checked", true);
+        				}else {
+        					$("input[name=rvno]").prop("checked", false);
+        				}
+            		}
 				</script>
 				
-			<!-- 내용닫는곳 -->
-            </div>
+				
+				<!-- 체크박스 : 삭제 -->			
+				<script>	
+            	function deletemail() {
+            		var rcArr = [];
+            		$("input[name='rvno']:checked").each(function(){
+            			rcArr.push($(this).val());
+            		 })
+            		 console.log(rcArr);
+            		 
+            		 $.ajax({
+            			 url:"delete.ml",
+            			 type:"post",
+            			 data:{receiveMailNo:rcArr},
+            			 success:function(result){
+            				 if(result == 'success'){
+            				 	console.log("게시글 삭제 성공!");
+            				 	location.reload();
+            				 }else{
+            					 console.log("게시글 삭제실패");
+            				 }
+            			 },error:function(){
+            				 console.log("ajax게시글 삭제 통신 실패!");
+            			 }
+            			 
+            			 
+            		 })
+            	}            	
+            	</script>
+            	
+            	<!-- 체크박스 : 복원 -->
+            	<script>
+            		function restorationmail() {
+            			var rmArr = [];
+            			$("input[name='rvno']:checked").each(function(){
+            				rmArr.push($(this).val());
+            			})
+            			console.log(rmArr);
+            			
+            			$.ajax({
+            				url:"resto.ml",
+            				type:"post",
+            				data:{receiveMailNo:rmArr},
+            				success:function(result){
+            					if(result == 'success'){
+            						console.log("게시글 복원 성공!");
+            						location.reload();
+            					}else{
+            						console.log("게시글 복원 실패");
+            					}
+            				},error:function(){
+            					console.log("ajax게시글 복원 통신 실패!");
+            				}
+            			})
+            		}
+            	</script>
+				
+			
 
           	<div id="pagingArea">
     			<ul class="pagination justify-content-center">
@@ -178,12 +193,12 @@
                    			<li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage-1 }">&lt;</a></li>
+                    		<li class="page-item"><a class="page-link" href="spamlist.ml?cpage=${ pi.currentPage-1 }">&lt;</a></li>
                     	</c:otherwise>
                     </c:choose>
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                    	<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ p }">${ p }</a></li>
+                    	<li class="page-item"><a class="page-link" href="spamlist.ml?cpage=${ p }">${ p }</a></li>
                     </c:forEach>
                     
                     <c:choose>
@@ -191,19 +206,21 @@
                     		<li class="page-item disabled"><a class="page-link" href="#">&gt;</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="alllist.ml?cpage=${ pi.currentPage+1 }">&gt;</a></li>
+                    		<li class="page-item"><a class="page-link" href="spamlist.ml?cpage=${ pi.currentPage+1 }">&gt;</a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>
             </div>
             
         	</div>
+        	
+        	<!-- 내용닫는곳 -->
+            </div>
         
         <!-- 푸터바 -->
         <jsp:include page="../common/footer.jsp" />
 
 
-    </div>
     </div>
     </div>
 

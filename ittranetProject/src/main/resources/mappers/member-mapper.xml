@@ -25,7 +25,12 @@
 		<result column="team_name" property="teamName"/>
 		<result column="job_name" property="jobName"/>
 	</resultMap>
+	
+	<resultMap id="scheduleResult" type="Calendar">
+		<result column="cal_content" property="calContent"/>
+	</resultMap>
 
+	<!-- 로그인 -->
 	<select id="loginMember" resultMap="memberResult">
 		select
 		      emp_no
@@ -55,6 +60,7 @@
 		  and emp_id = #{empId}
 	</select>
 	
+	<!-- 회원가입 -->
 	<insert id="insertMember">
 		insert
 		  into employee
@@ -79,6 +85,7 @@
 		  )
 	</insert>
 	
+	<!-- 중복 메일 체크 : 중복o(1) 중복x(0) -->
 	<select id="mailCheck" resultType="_int">
   		select
   			   count(*)
@@ -86,6 +93,7 @@
   		 where email = #{checkMail}
   	</select>
   	
+  	<!-- 중복 아이디 체크 : 중복o(1) 중복x(0) -->
   	<select id="idCheck" resultType="_int">
   		select
   			   count(*)
@@ -93,6 +101,7 @@
   		 where emp_id = #{checkId}
   	</select>
   	
+  	<!-- 누구 메일인지 -->
   	<select id="whosMail" resultMap="memberResult">
   		select
   		       emp_id
@@ -103,6 +112,7 @@
   		 where email = #{accordMail}
   	</select>
   	
+  	<!-- 비밀번호 변경 -->
   	<update id="setTempwd">
   		update
   		       employee
@@ -110,6 +120,7 @@
   		 where emp_id = #{empId}
   	</update>
   	
+  	<!-- 사원 스스로 정보 변경(마이페이지) -->
   	<update id="updateMember">
   		update
   		       employee
@@ -117,9 +128,11 @@
   		     , email = #{email}
   		     , phone = #{phone}
   		     , address = #{address}
+  		     , profile = #{profile}
   		 where emp_id = #{empId}
   	</update>
   	
+  	<!-- 계정 삭제(회원탈퇴,사원삭제) -->
   	<update id="deleteMember">
 		update
 		       employee
@@ -127,11 +140,187 @@
 		 where emp_no = #{empNo}
 	</update>
 	
+	<!-- 비밀번호 변경 -->
 	<update id="updatePwd">
 		update
 		       employee
 		   set emp_pwd = #{empPwd}
 		 where emp_no = #{empNo}
 	</update>
+	
+	<!-- 승인 대기 페이지 회원수(페이징) -->
+	<select id="selectWemployeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where status = 'W'
+	</select>
+	
+	<!-- 승인 대기 회원 select -->
+	<select id="selectWemployee" resultMap="memberResult">
+		select
+		       emp_no
+		     , emp_name
+		     , emp_id
+		     , phone
+		     , email
+		  from employee
+		 where status = 'W'
+		 order
+		    by emp_no desc
+	</select>
+	
+	<!-- 모든 회원 수 (페이징) -->
+	<select id="selectAllemployeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where status = 'Y'
+	</select>
+	
+	<!-- 모든 회원 정보 select -->
+	<select id="selectAllemployee" resultMap="memberResult">
+		select
+		       emp_no
+		     , emp_name
+		     , emp_id
+		     , phone
+		     , email
+		     , address
+		     , d.dept_name
+		     , t.team_name
+		     , j.job_name
+		  from employee e,department d,team t,job j
+		 where status = 'Y'
+		   and e.dept_code = d.dept_code
+		   and e.team_code = t.team_code
+		   and e.job_code = j.job_code
+		 order
+		    by emp_no desc
+	</select>
+	
+	
+	
+	<select id="selectAllemployee2" resultMap="memberResult">
+		select
+		       emp_no
+		     , emp_name
+		     , emp_id
+		     , phone
+		     , email
+		     , address
+		     , d.dept_name
+		     , t.team_name
+		     , j.job_name
+		  from employee e,department d,team t,job j
+		 where status = 'Y'
+		   and e.dept_code = d.dept_code
+		   and e.team_code = t.team_code
+		   and e.job_code = j.job_code
+		 order
+		    by emp_no desc
+	</select>
+	
+	
+	<!-- 가입 승인 완료 && 부서, 팀, 직급 지정 -->
+	<update id="confirmMember">
+		update
+		       employee
+		   set status = 'Y'
+		     , dept_code = #{deptCode}
+		     , team_code = #{teamCode}
+		     , job_code = #{jobCode}
+		 where emp_no = #{empNo}
+	</update>
+	
+	<!-- 관리자 페이지 진입시  -->
+	<select id="selectYemployeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where status = 'Y'
+	</select>
+	
+	<select id="selectD0employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D0'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD1employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D1'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD2employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D2'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD3employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D3'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD4employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D4'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD5employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D5'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD6employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D6'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectD7employeeCount" resultType="_int">
+		select
+		       count(*)
+		  from employee
+		 where dept_code = 'D7'
+		   and status = 'Y'
+	</select>
+	
+	<select id="selectAdminSchedule" resultMap="scheduleResult">
+		select 
+		       cal_content
+		  from calendar 
+		 where emp_no= 1
+		   and substr(cal_start,1,10) = TO_CHAR(SYSDATE, 'MM/DD/YYYY')
+	</select>
+	
+	
+	<select id="selectUserSchedule" resultMap="scheduleResult">
+		select 
+		       cal_content
+		  from calendar 
+		 where emp_no = ${empNo}
+		   and substr(cal_start,1,10) = TO_CHAR(SYSDATE, 'MM/DD/YYYY')
+	</select>
+	
 
 </mapper>

@@ -104,8 +104,7 @@
                     <div class="content-area">
                         &lt; YYYY년 MM년 DD일 &gt;
                         <br><br>
-                        <c:if test="${ not empty list }">
-	                        <div class="vc-box">
+                        <div class="vc-box">
 	                            <select name="" id="">
 	                                <option value="">무슨팀</option>
 	                                <option value="">무슨팀</option>
@@ -116,6 +115,7 @@
 	                                <button><i class="fas fa-search"></i></button>
 	                            </div>
 	                            <br><br><br>
+                       	 		<c:if test="${ not empty list }">
 	                            <table border="1">
 	                                <thead>
 	                                    <tr>
@@ -133,8 +133,8 @@
 	                                	<c:forEach var="at" items="${ list }">
 		                                    <tr>
 			                                    <td>${ at.attDate }</td>
-			                                    <td>${ at.empNo }</td>
-			                                    <td>무슨팀</td>
+			                                    <td>${ at.empName }</td>
+			                                    <td>${ at.teamName }</td>
 			                                    <td>${ at.attStatus }</td>
 			                                    <td>${ at.arriveTime }</td>
 			                                    <td>${ at.leaveTime }</td>
@@ -171,8 +171,8 @@
 				                	</ul>
 	                            </div>
 	                            <br>
-	                        </div>
-	                     </c:if>
+	                     	</c:if>
+                        </div>
                     </div>
                 </div>
             </div>
