@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 <style>
     .wrap{
-        border: 1px solid red;
         width: 900px;
     }
     .secondwrap{
@@ -60,11 +59,20 @@
         height: 110px;
         padding: 5px;
     }
+   .result2{
+        margin-top: 10px;
+        border: 1px solid rgb(202, 202, 202);
+        border-radius: 1mm;
+        background-color: white;
+        width: 290px;
+        height: 110px;
+        padding: 5px;
+    }
     #search{
         border: 1px solid rgb(202, 202, 202);
         border-radius: 1mm;
         height: 25px;
-        width: 200px;
+        width: 180px;
     }
     #searchButton{
         float: right;
@@ -81,7 +89,11 @@
         margin-top:10px;
         float: right;
     }
-
+    .modal-content{
+    	padding: 10px;
+    	height : 450px;
+    	width : 400px;
+    }
 </style>
 </head>
 <body>
@@ -120,18 +132,22 @@
         <br>
 
         <div class="secondwrap">
-            <form in="newProject" method="post" action="npro.pr">
+            <form id="newProject" method="post" action="npro.pr">
             	<input type="hidden" name="empNo" value="${loginUser.empNo}">
                 <ul style="font-size: 14px;">
                     <li><p>
-                        프로젝트명
+                   	     프로젝트명
                         <input type="text" id="prTitle" name="prTitle">
                     </p></li>
-                    <li><p>담당자 &emsp;&emsp;
-                        <input type="text" name="prSize">
-                        <a data-toggle="modal" data-target="#mem" onclick="searchMem();">
-				          	사원 선택
-				        </a>
+                    <li>
+                        <div id="proMember">담당자 &emsp;&emsp;</div>
+	                        <span id="proMemberList"> </span>
+                        <button>
+                        <a data-toggle="modal" data-target="#mem">
+				         	사원 선택
+				        </a>                        
+                        </button>
+
                     </p></li>
                     <li><p>만기일 &emsp;&emsp;&emsp;&emsp; <input type="date" name="prEnddate" id="prEnddate">
                     </p></li>
@@ -139,11 +155,36 @@
                         &emsp;&emsp;<textarea name="prContent" id="prContent" cols="50" rows="10"></textarea>
                     </li>
                     <li><p>로고 &emsp;&emsp;&emsp;&emsp;&emsp;
-                        <input type="text" name="prLogo">
+                        <select name="prLogo">
+ 			                <option value="resources/images/projectlogo/adjust.png">adjust</option>
+ 			                <option value="resources/images/projectlogo/ball.png">ball</option>
+ 			                <option value="resources/images/projectlogo/book.png">book</option>
+ 			                <option value="resources/images/projectlogo/bookmark.png">bookmark</option>
+ 			                <option value="resources/images/projectlogo/building.png">building</option>
+ 			                <option value="resources/images/projectlogo/callender.png">callender</option>
+ 			                <option value="resources/images/projectlogo/cart.png">cart</option>
+ 			                <option value="resources/images/projectlogo/drink.png">drink</option>
+ 			                <option value="resources/images/projectlogo/exercise.png">exercise</option>
+ 			                <option value="resources/images/projectlogo/film.png">film</option>
+ 			                <option value="resources/images/projectlogo/global.png">global</option>
+ 			                <option value="resources/images/projectlogo/home.png">home</option>
+			                <option value="resources/images/projectlogo/hotel.png">hotel</option>                      	
+							<option value="resources/images/projectlogo/image.png">image</option>
+							<option value="resources/images/projectlogo/language.png">language</option>
+							<option value="resources/images/projectlogo/light.png">light</option>
+							<option value="resources/images/projectlogo/list.png">list</option>
+							<option value="resources/images/projectlogo/love.png">love</option>
+							<option value="resources/images/projectlogo/money.png">money</option>
+							<option value="resources/images/projectlogo/people.png">people</option>
+							<option value="resources/images/projectlogo/setting.png">setting</option>
+							<option value="resources/images/projectlogo/teaching.png">teaching</option>
+							<option value="resources/images/projectlogo/tour.png">tour</option>
+							<option value="resources/images/projectlogo/wallet.png">wallet</option>               
+                        </select>
                     </p></li>
                 </ul>
 
-                <button style="background-color: rgb(202, 183, 211);" type="submit">확인</button>
+                <button style="background-color: rgb(202, 183, 211);">확인</button>
                 <button style="background-color: rgb(160, 156, 163);">취소</button>
             </form>
                 <br><br>
@@ -151,53 +192,69 @@
     </div>
     <br><br>
     </div></div></div>
+
+	<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     
 	    <!-- 사원 선택 -->
-		<div id="mem" class="modal">
-		    <div class="modal-dialog" style="max-width: 700px;">
-		        <div class="modal-content">
-		        </div>
-		    </div>
-		</div>	
-		
-<div class="searchwrap">
-    <div class="name">
-        <input type="text" id="search" val="" placeholder="이름을 입력하세요">
-        <button onclick="searchName();" id="searchButton">검색</button>
-    </div>
-    <div class="result">
-        <table>
-            <tbody>
-
-            </tbody>
-        </table>
-    </div>
-    <button class="okButton">확인</button>
-    <button data-dismiss="modal" onclick="cancelButton">취소</button>
-</div>
-
-
-</body>
+	<div id="mem" class="modal">
+		<div class="modal-dialog" style="max-width: 350px;" >
+		   <div class="modal-content">
+		        <br>
+				<div class="name">
+			        <input type="text" class="search" val="" placeholder="이름을 입력하세요">
+			        <button onclick="searchName();" id="searchButton">검색
+			        </button>
+			    </div>
+	   
+ 		<div class="result" id="listResult">
+	        <table class="memberList" id="memberList">
+	            <tbody>
+	            
+	            </tbody>
+	        </table>
+ 		  </div>
+		<button class="selectMem">선택</button>
+ 		<div class="result2" id="listResult2">
+	       <table class="memberList2" >
+	           <tbody id="memberList2">
+	            
+	           </tbody>
+	        </table>
+ 		 </div>
+		    <button data-dismiss="modal" onclick="cancelButton">취소</button>
+		    <button class="okButton">확인</button>
+		</div>
+	</div>
+	
+	
 <script>
+
 function searchName(){
-	  let search = $(".search").val();
-	    			
+	
+	$('.memberList > tbody').empty();
+	
+	  let search = $(".search").val();	    	
 	  $.ajax({
-	    type : 'GET',
+	    type :'GET',
 	    url:"addmem.pr",
 	    data:{
 	    	search:search
 	    }, success : function(list){
+	    	console.log(search);
 			let arr="";
-		    for(let i in list){
-                 arr +="<tr class='rows'>"
-			    	 + "<td>" + <input type='radio' name='newMem'> + "</td>"
-			    	 + "<td name='team'>"+ list[i].team + "</td>"
-			    	 + "<td name='job'>"+ list[i].job + "</td>"
-			    	 + "<td name='empName'>"+ list[i].empName + "</td>"    						   
+			for(let i in list){
+                 arr +="<tr>"
+			    	 + "<td>" + "<input type='checkbox' name='newMem'>" + "</td>"
+			    	 + "<td name='empName'>"+ list[i].empName + "&nbsp</td>"  
+			    	 + "<td name='teamName'>"+ list[i].teamName + "&nbsp</td>"
+			    	 + "<td name='jobName'>"+ list[i].jobName + "&nbsp</td>"	
+					 + "<input type='hidden' name='empNo' value='" + list[i].empNo + "'>"
 		    		 + "</tr>";
 		    	}
-	   	  $('.result > tbody').html(arr);
+	   	  $('.memberList > tbody').html(arr);
 	   	  $("#search").val('');
 	    }, error:function(){
 	    	console.log("멤버추가 ajax 통신 실패");
@@ -205,8 +262,45 @@ function searchName(){
 	 })
   }
   
+	$(document).on("click", ".selectMem",function(){
+	
+		let checkValue = [];
+		let $downRow;
+	
+		$("input[name='newMem']:checked").each(function(){
+			checkM = $(this).parent().parent().html(); //체크된행
+			checkValue.push(checkM);
+			console.log(checkM);
+		});
+		
+		let trHtml = '';
+		for(let i in checkValue){
+			trHtml += '<tr>'+ checkValue[i] +'</tr>';
+		}
+		$("#memberList2").html(trHtml);    		
+	})
+  
+	
+	$(document).on("click", ".okButton",function(){
+	  
+	  let value = "";
+	  
+	  $("#memberList2").each(function(i, tr){
+		  value 
+		    += "<span>"+ $(tr).find("td[name=empName]").text() + " " + $(tr).find("td[name=job]").text() + "</span>"
+	         + "<input type='hidden' name='newprMem[" + i + "].empNo' value='" +  $(tr).find("input[name=empNo]").val() + "'>" //name='appList[0,1,...].empNo' value='empNo' 
+		})
+		console.log(value);
+		value = '<span id="proMemberList">담당자 &emsp;&emsp;</span>' + value;
+		$("#proMember").html(value);
+		$(".searchwrap").hide();
+  })
+	
   function cancelButton(){
 	  $(".searchwrap").hide();
   }
+	
 </script>
+
+</body>
 </html>

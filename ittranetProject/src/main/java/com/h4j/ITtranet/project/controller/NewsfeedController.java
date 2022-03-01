@@ -188,5 +188,12 @@ public class NewsfeedController {
 		return new Gson().toJson(list);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="rdelete.pr")
+	public String ajaxDeleteReply(int replyNo) {
+		int result = nService.deleteReply(replyNo);
+		System.out.println(replyNo);
+		return result>0? "success" : "fail";
+	}
 
 }

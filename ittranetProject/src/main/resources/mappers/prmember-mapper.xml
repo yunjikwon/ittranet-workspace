@@ -3,20 +3,39 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
  
-<mapper namespace="prmemberMapper">
+<mapper namespace="PrmemberMapper">
 
 	<resultMap type="Prmember" id="prMemberList">
 		<result column="pr_no" property="prNo"  />
 		<result column="emp_no" property="empNo"  />
+		<result column="emp_name" property="empName" />
+		<result column="team_name" property="teamName" />
+		<result column="job_name" property="jobName" />
 	</resultMap>
 
 <select id="searchMember" resultMap="prMemberList">
-select
-	emp_no
-    emp_name
- from prmember p
- join employee e on e.emp_no = p.emp_no
- where emp_name like '%' || #{search} || '%' 	
+	select
+       emp_no
+       ,emp_name
+       ,team_name
+       ,job_name
+	from employee
+	join job using(job_code)
+	join team using(team_code)
+	where emp_name like '%' || #{search} || '%' 		
 </select>
 
+<insert id="insertPromem">
+insert
+	into project
+		  (
+		  	pr_no
+		  , emp_no
+		 )
+     values 
+     	  (
+     		58
+     	   ,#{empNo}
+     		)
+</insert>
 </mapper>

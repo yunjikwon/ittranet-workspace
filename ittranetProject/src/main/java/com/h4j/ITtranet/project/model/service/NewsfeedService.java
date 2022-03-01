@@ -50,6 +50,9 @@ public interface NewsfeedService {
 	// 게시글 첨부파일 삭제
 	int deleteAttachment(Newsfeed n);
 	
+	// 댓글 삭제
+	int deleteReply(int replyNo);
+	
 
 	
 

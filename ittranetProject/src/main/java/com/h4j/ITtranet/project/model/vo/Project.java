@@ -19,7 +19,6 @@ public class Project {
 	private String prTitle;
 	private Date prStartdate;
 	private String prEnddate;
-	private String prSize;
 	private String prContent;
 	private String prLogo;
 	private String status;

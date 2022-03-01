@@ -45,6 +45,12 @@ public class ProjectServiceImpl implements ProjectService{
 	public ArrayList<Prmember> searchMember(String search) {
 		return pDao.searchMember(sqlSession, search);
 	}
+
+	@Override
+	public int insertPromem(Project p) {
+		return pDao.insertPromem(sqlSession, p);
+	}
+
 	
 
 }

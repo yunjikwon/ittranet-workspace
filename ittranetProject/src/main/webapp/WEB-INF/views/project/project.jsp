@@ -217,7 +217,20 @@
         height: 150px;
         border: 1px solid rgb(202, 202, 202);
     }
-
+    .replyUpButton{
+        width: 50px;
+        margin-right:10px;
+        border-radius: 1mm;
+        height: 30px;
+        background-color: rgb(203, 188, 218);
+    }
+        .replyDelButton{
+        width: 50px;
+        margin-right:10px;
+        border-radius: 1mm;
+        height: 30px;
+        background-color: rgb(203, 188, 218);
+    }
 </style>
 </head>
 <body>
@@ -523,17 +536,19 @@
               for(let i in list){
             	  if(list[i].empNo == '${loginUser.empNo}'){
                       value +="<tr>"
-                          +   "<td>"+ list[i].empName + "</td>"
-                          +   "<td colspan='2'>" + list[i].replyContent + "</td>"
-                          +   "<td>"+ list[i].createDate + "</td>"
-                          +   "<td>"+ "<button type='button'> 수정 </button>"  +"</td>"	
-                          +   "<td>"+ "<button type='button'> 삭제 </button>"  +"</td>"	
+                          +   "<th width='30'>"+ list[i].empName + "</th>"
+                          +   "<td width='200'>" + list[i].replyContent + "</td>"
+                          +   "<td width='40'>"+ list[i].createDate + "</td>"
+                          +   "<td width='20'>"+ "<button type='button' class='replyUpButton'> 수정 </button>"  +"</td>"	
+                          +   "<td  width='20'>"+ "<button type='button' class='replyDelButton'> 삭제 </button>" +"</td>"	
                           + "</tr>"
             	  }else{
             		     value +="<tr>"
-                             +   "<td>"+ list[i].empName + "</td>"
-                             +   "<td colspan='2'>" + list[i].replyContent + "</td>"
-                             +   "<td colspan='3'>"+ list[i].createDate + "</td>"	
+                             +   "<th width='30'>"+ list[i].empName + "</th>"
+                             +   "<td width='200'>" + list[i].replyContent + "</td>"
+                             +   "<td width='20'></td>"
+                             +   "<td width='40'>"+ list[i].createDate + "</td>"	
+                             +   "<td width='20'></td>"   
                              + "</tr>"
             	  }
               }
@@ -546,9 +561,37 @@
               console.log("댓글리스트조회용 ajax 통신실패");
            }
         })
+        
+        function updateReply(btn){
+                $(btn).parent().parent().next("#replyButton").attr("style", "display:block");
+                $(btn).parent().parent().attr("style", "display:none");
+                console.log("되나?");
+           }
+        
+
      }
 	</script>
 	
+	<script>
+
+	// 댓글 삭제 기능
+	function delReply(replyNo){
+		$.ajax({
+			url:"rdelete.pr",
+			data:{
+				replyNo:replyNo
+			},success:function(status){
+				if(status == "success"){
+					selectReplyList();
+				}
+			},error:function(){
+				console.log("댓글 삭제용 ajax 통신 실패");
+
+			}
+		})
+	}
+	
+	</script>
     </div>
     </div>
     </div>

@@ -63,7 +63,7 @@
 	.projectBox2{
 	}
 	
-	.checkProject{
+	#checkProject{
         border: 1px solid rgb(202, 202, 202);
         border-radius: 2mm;
         width: 500px;
@@ -124,8 +124,9 @@
 		            <h6 style="font-weight: bold;">&emsp;진행중 프로젝트</h6>
 		        </div>    
 	            <!--진행중 프로젝트--> 
-	
+
 	            <c:forEach var="p" items="${ list1 }">
+	            <a data-toggle="modal" data-target="#checkProject">
 		            <div class="proing" style="text-align: center;">
 		            <input method="post" type="hidden" class="prno" name="prNo" value="${ p.prNo }">
 		                <div class="logo">
@@ -133,8 +134,9 @@
 		                </div>
 		              		${ p.prTitle }
 		                <br>
-		                <small>${ p.prSize }&emsp;&emsp;&emsp;${ p.prStartdate }</small>
+		                <small>${ p.prStartdate }</small>
 		            </div>
+		         </a>   
 				</c:forEach>
 		   </div>
 		   
@@ -155,7 +157,7 @@
 		                </div>
 		              		${ e.prTitle }
 		                <br>
-		                <small>${ e.prSize }&emsp;&emsp;&emsp;${ e.prStartdate }</small>
+		                <small>${ e.prStartdate }</small>
 	            </div>
             </c:forEach>
           </div>   
@@ -191,8 +193,13 @@
 	               })
 	             </script>
         
+    <!-- 부트스트랩에서 제공하고 있는 스타일 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
         <!-- 프로젝트 상세 내용 -->
-		<div class="checkProject">
+		<div id="checkProject" class="modal">
 		    <div class="checkPr">
 		        <table class="projectTable">
 		            <tr>

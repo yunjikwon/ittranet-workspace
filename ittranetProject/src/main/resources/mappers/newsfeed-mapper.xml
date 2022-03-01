@@ -224,4 +224,11 @@ delete
     and ref_no=#{nfNo}
 </delete>
 
+<update id="deleteReply">
+	update
+		reply
+	set status = 'N'
+  where reply_no = #{replyNo}
+</update>
+
 </mapper>

@@ -11,7 +11,6 @@
 	<result column="pr_title" property="prTitle"  />
 	<result column="pr_startdate" property="prStartdate"  />
 	<result column="pr_enddate" property="prEnddate"  />
-	<result column="pr_size" property="prSize"  />
 	<result column="pr_content" property="prContent"  />
 	<result column="pr_logo" property="prLogo"  />
 	<result column="status" property="status"  />
@@ -24,7 +23,6 @@
 	    ,pr_title
 	    ,pr_startdate
 	    ,pr_enddate
-	    ,pr_size
 	    ,pr_content
 	    ,pr_logo
 	    ,status
@@ -41,7 +39,6 @@
 	    ,pr_title
 	    ,pr_startdate
 	    ,pr_enddate
-	    ,pr_size
 	    ,pr_content
 	    ,pr_logo
 	    ,status
@@ -61,7 +58,6 @@ insert
 		  , pr_title
 		  , pr_startdate
           , pr_enddate
-          , pr_size
           , pr_content
           , pr_logo
           , status
@@ -73,7 +69,6 @@ insert
 		  , #{prTitle}
 		  , sysdate
           , #{prEnddate}
-          , #{prSize}
           , #{prContent}
           , #{prLogo}
           , 'Y'

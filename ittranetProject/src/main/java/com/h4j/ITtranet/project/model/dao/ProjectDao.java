@@ -26,8 +26,13 @@ public class ProjectDao {
 	}
 
 	public ArrayList<Prmember> searchMember(SqlSessionTemplate sqlSession, String search) {
-		return (ArrayList)sqlSession.selectList("prememberMapper.searchMember", search);
+		return (ArrayList)sqlSession.selectList("PrmemberMapper.searchMember", search);
 	}
+
+	public int insertPromem(SqlSessionTemplate sqlSession, Project p) {
+		return sqlSession.insert("prmemberMapper.insertPromem", p);
+	}
+
 	
 
 }

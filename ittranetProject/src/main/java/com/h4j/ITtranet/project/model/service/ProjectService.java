@@ -24,7 +24,9 @@ public interface ProjectService {
 	// 프로젝트 생성 - 멤버 검색
 	ArrayList<Prmember> searchMember(String search);
 
-
+	// 프로젝트 생성 - 멤버 추가
+	int insertPromem(Project p);
+	
 
 
 }

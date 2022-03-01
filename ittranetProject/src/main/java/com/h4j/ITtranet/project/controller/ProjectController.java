@@ -52,8 +52,6 @@ public class ProjectController {
 		
 		Employee loginUser = (Employee)session.getAttribute("loginUser");
 		String empNo = loginUser.getEmpNo();
-		
-		System.out.println("프로젝트 새로 만들때 p에 담겨잇는 것  : " + p);
 		int result = pService.insertProject(p);
 		return "redirect:list.pr";
 	}
@@ -62,11 +60,9 @@ public class ProjectController {
 	@RequestMapping(value ="addmem.pr", produces="application/json; charset=utf-8")
 	public String searchMember(String search) {
 		
-		ArrayList<Prmember> list = new ArrayList<>();
-		list = pService.searchMember(search);
+		ArrayList<Prmember> list = pService.searchMember(search);
 		System.out.println("클릭했을때 list : " + list);
 		return new Gson().toJson(list);
 	}
-
 	
 }

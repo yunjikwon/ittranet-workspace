@@ -15,4 +15,7 @@ import lombok.ToString;
 	public class Prmember {
 		private int prNo;
 		private int empNo;
+		private String teamName;
+		private String jobName;
+		private String empName;
 }
