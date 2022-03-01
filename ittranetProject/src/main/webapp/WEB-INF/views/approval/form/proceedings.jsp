@@ -111,7 +111,7 @@
 			                </tr>		
 			                <tr>
 			                    <td>회의안건</td>
-			                    <td><input type="text" placeholder="회의안건"  name="drProTitle" value="" size=""> 시간</td>
+			                    <td><input type="text" placeholder="회의안건"  name="drProTitle" value="" size=""></td>
 			                    <td></td>
 			                </tr>
 			                <tr>
@@ -129,7 +129,7 @@
 			                    </td>
 			                </tr>
 			            </table>
-			            <input type="hidden" name="drDivision" value=5>
+			            <input type="hidden" name="drDivision" value=4>
 			            <input type="hidden" name="empNo" value=${ loginUser.empNo }>
 			        </div>
 		        </form>
