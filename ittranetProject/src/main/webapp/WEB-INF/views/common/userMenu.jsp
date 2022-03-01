@@ -97,7 +97,7 @@
                 </a>
             </li>
             <li class="menu">
-                <a href="alllist.ml">
+                <a href="unreadlist.ml">
                         <div class="circle" style="background: rgba(91, 211, 211, 0.17)">
                             <i class="far fa-envelope fa-3x mail_mn"></i>  
                         </div>
