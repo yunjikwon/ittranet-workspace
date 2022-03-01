@@ -177,22 +177,21 @@
             <input type="password" class="input-form" id="empPwd" name="empPwd" placeholder="비밀번호를 입력하세요" onfocus="this.placeholder = ''" onblur="this.placeholder='비밀번호를 입력하세요'" required>
             <br><br>
             
+            <%-- 
             <div class="form-check-inline">
                 <label class="form-check-label">
                   <input type="checkbox" class="form-check-input" value=""><span>로그인 상태 유지</span>
                 </label>
             </div>
+            --%>
             
-            <div id="modalDiv"><span data-toggle="modal" data-target="#myModal">ID/PWD 찾기</span></div>
+            <div id="modalDiv" style="float:right;"><span data-toggle="modal" data-target="#myModal">ID/PWD 찾기</span></div>
             <br><br><br>
             
             <button id="submitBtn">CLICK!</button>
             
         </form>
         
-        <br><br><br><br><br><br>
-        
-        <a href='joinForm.me'>회원가입테스트</a>
     </div>
     
     <%-- 로딩이미지 div --%>

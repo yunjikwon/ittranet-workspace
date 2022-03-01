@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.h4j.ITtranet.calendar.model.vo.Calendar;
 import com.h4j.ITtranet.common.model.vo.PageInfo;
 import com.h4j.ITtranet.common.template.Pagination;
 import com.h4j.ITtranet.employee.model.service.EmployeeService;
+import com.h4j.ITtranet.employee.model.vo.Department;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.employee.model.vo.EmployeeMail;
 
@@ -42,6 +44,7 @@ public class EmployeeController {
 	 */
 	@RequestMapping("goUserMain.me")
 	public String goUserMain() {
+		
 		return "common/userMain";
 	}
 	
@@ -50,8 +53,20 @@ public class EmployeeController {
 	 * @return
 	 */
 	@RequestMapping("goAdminMain.me")
-	public String goAdminMain() {
-		return "common/adminMain";
+	public ModelAndView goAdminMain(ModelAndView mv) {
+		
+		Department dlist = eService.empCount();
+		ArrayList slist = eService.selectAdminSchedule();
+		
+		// System.out.println(dlist);
+		// System.out.println("안녕");
+		
+		mv.addObject("dlist", dlist)
+		  .addObject("slist", slist)
+		  .setViewName("common/adminMain");
+		
+		return mv;
+		
 	}
 	
 	/**
@@ -69,11 +84,22 @@ public class EmployeeController {
 		// System.out.println(loginUser);
 		
 		if(loginUser != null && (loginUser.getAdmin()).equals("Y") && bcryptPasswordEncoder.matches(e.getEmpPwd(), loginUser.getEmpPwd())) {
+			
 			session.setAttribute("loginUser", loginUser);
-			mv.setViewName("common/adminMain");
+			
+			Department dlist = eService.empCount();
+			ArrayList<Calendar> slist = eService.selectAdminSchedule();
+			
+			mv.addObject("dlist", dlist)
+			  .addObject("slist", slist)
+			  .setViewName("common/adminMain");
+			
 		} else if(loginUser != null && bcryptPasswordEncoder.matches(e.getEmpPwd(), loginUser.getEmpPwd())) {
+			
 			session.setAttribute("loginUser", loginUser);
-			mv.setViewName("common/userMain");
+			ArrayList<Calendar> uslist = eService.selectUserSchedule(loginUser.getEmpNo());
+			mv.addObject("uslist", uslist)
+			  .setViewName("common/userMain");
 		} else {
 			model.addAttribute("errorMsg", "아이디 혹은 비밀번호를 다시 확인해주세요!");
 			mv.setViewName("common/error");
@@ -496,6 +522,7 @@ public class EmployeeController {
 
 	} 
 	
+	
 	/**
 	 * 관리자 다수 계정 삭제
 	 * 가입 승인 반려 | 사원 계정 삭제 (status 'N'으로 변경)
@@ -510,6 +537,22 @@ public class EmployeeController {
 		return result > 0 ? "PASS" : "FAIL";
 		
 	}
+	
+	/**
+	 * 사원 계정 삭제 페이지 호출
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping("delEmpForm.me")
+	public ModelAndView delEmpForm(ModelAndView mv) {
+		ArrayList<Employee> list = eService.selectAllemployee2();
+		mv.addObject("list", list)
+		  .setViewName("member/adminMemberDelete");
+		
+		return mv;
+		
+	}
+	
 	
 	
 	/**
@@ -536,25 +579,7 @@ public class EmployeeController {
 	}
 	*/
 	
-	/* 
-	 * 페이징 처리 x버전
-	 */
-
-	@RequestMapping("delEmpForm.me")
-	public ModelAndView delEmpForm(ModelAndView mv) {
-		ArrayList<Employee> list = eService.selectAllemployee2();
-		mv.addObject("list", list)
-		  .setViewName("member/adminMemberDelete");
-		
-		return mv;
-		
-	}
-	
-	
-	/**
-	 * 사원 계정 삭제 페이지 호출
-	 * @return
-	 */
+	// 사원 계정 삭제 페이지 호출
 	/*
 	@RequestMapping("delEmpForm.me")
 	public ModelAndView delEmpForm(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
