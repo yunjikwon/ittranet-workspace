@@ -305,7 +305,7 @@
 					}, success: function(at){
 						let arr = "";
 						let lev = "";
-						console.log(at);
+						//console.log(at);
 						if(at.arriveTime != null){
 							
 							arr = at.arriveTime;
@@ -364,15 +364,14 @@
         <!--각 메뉴 연결할 영역-->
         <div class="content-area">
             <div class="contentbox" style="width: 390px; height: 280px;">
-                <div class="category-title">
+                 <div class="category-title">
                     &nbsp;&nbsp;프로젝트
-                    <a href="" class="plus-btn">+</a>
+                    <a href="newpro.pr" class="plus-btn">+</a>
                 </div>
-                <table>
-                    <tr>
-                        <th width="90">프로젝트명</th>
-                        <td>내용</td>
-                    </tr>
+                <table id="projectList">
+                    <tbody>
+                    
+                    </tbody>
                 </table>
             </div>
             <div class="contentbox" style="width: 390px; height: 280px; margin-left: 0px;">
@@ -450,6 +449,7 @@
                 	$(function(){
                 		selectNewList();
                 		selectDrList(); // 결재 리스트
+                		selectProject();
                 		
                 		$(document).on("click", "#newBoardList>tbody>tr", function(){
                 			
@@ -481,6 +481,12 @@
                 							  + "&category=" + category;
                 			
                 		})
+                		
+                		$(document).on("click", "#projectList>tbody>tr", function(){
+                			console.log("projectNo : " + $(this).children(".prNo").val());
+                			var prNo = $(this).children(".prNo").val();
+                			location.href = "feed.pr?prNo=" + prNo;
+                    	})	
 
                 		
                 	})
@@ -537,6 +543,28 @@
                 			}
                 		})
                 	}
+                	
+                	function selectProject(){
+                		$.ajax({
+                			url: "mainpr.pr",
+                			success:function(list){
+                				console.log(list);
+                				let value="";
+                				for(let i in list){
+                					value += "<tr class='projectTr'>"
+                					      +  "<input type='hidden' name='prNo' class='prNo' value='" + list[i].prNo + "'>" 
+	                					  +  "<td class='prtitle'>" + list[i].prTitle + "</td>"
+	                				      +  "<td class='endDate'>" + list[i].prEnddate + "</td>"
+	                				      +	 "</tr>";
+                					}
+
+                				$("#projectList>tbody").html(value);
+                			},error:function(){
+                				console.log("프로젝트 리스트 ajax 통신 실패");
+                			}
+                		})
+                	}
+                		
                 </script>
             </div>
         </div>

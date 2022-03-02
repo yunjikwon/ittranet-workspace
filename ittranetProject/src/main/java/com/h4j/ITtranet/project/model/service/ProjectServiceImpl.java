@@ -59,6 +59,11 @@ public class ProjectServiceImpl implements ProjectService{
 	public String selectProjectTitle(int prNo) {
 		return pDao.selectProjectTitle(sqlSession, prNo);
 	}
+
+	@Override
+	public ArrayList<Project> mainProject(String empNo) {
+		return pDao.mainProject(sqlSession, empNo);
+	}
 	
 
 }

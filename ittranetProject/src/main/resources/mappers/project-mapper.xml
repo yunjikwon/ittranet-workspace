@@ -81,4 +81,14 @@ insert
 		 where pr_no = #{prNo}
 	</select>
 
+<select id="mainProject" resultMap="projectList">
+	select 
+			p.pr_no
+		   ,pr_title
+	       ,pr_enddate
+    from project p
+    join prmember pr on pr.pr_no = p.pr_no
+	where pr.emp_no = #{empNo}
+    and pr_enddate >= to_char(sysdate, 'mm/dd/yyyy')
+</select>
 </mapper>

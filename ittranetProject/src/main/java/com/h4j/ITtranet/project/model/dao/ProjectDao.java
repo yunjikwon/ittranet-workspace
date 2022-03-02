@@ -47,6 +47,10 @@ public class ProjectDao {
 		return sqlSession.selectOne("projectMapper.selectProjectTitle", prNo);
 	}
 
+	public ArrayList<Project> mainProject(SqlSessionTemplate sqlSession, String empNo) {
+		return (ArrayList)sqlSession.selectList("projectMapper.mainProject", empNo);
+	}
+
 	
 
 }

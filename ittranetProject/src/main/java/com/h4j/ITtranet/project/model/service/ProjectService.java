@@ -28,6 +28,9 @@ public interface ProjectService {
 	int insertPromem(Project p);
 	
 	String selectProjectTitle(int prNo);
+
+	// 메인 프로젝트 조회
+	ArrayList<Project> mainProject(String empNo);
 	
 
 

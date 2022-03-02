@@ -200,7 +200,7 @@
 	             </script>       	
           	-->
           	
-	          <!-- 더블클릭 이벤트 (프로젝트 상세 내용) -->   
+	          <!-- 더블클릭 이벤트 (프로젝트 상세 내용) 
 	             <script>
 	             $(function(){
 	                 $(".proing").dblclick(function(){
@@ -214,7 +214,7 @@
 	                  })
 	               })
 	             </script>
-        
+        		-->   
     <!-- 부트스트랩에서 제공하고 있는 스타일 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 	<!-- 부트스트랩에서 제공하고 있는 스크립트 -->

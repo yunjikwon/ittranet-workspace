@@ -69,4 +69,17 @@ public class ProjectController {
 		
 	}
 	
+
+	@ResponseBody
+	@RequestMapping(value="mainpr.pr", produces="application/json; charset=utf-8")
+	public String mainProject(HttpSession session) {
+		
+		Employee loginUser = (Employee) session.getAttribute("loginUser");
+		String empNo = loginUser.getEmpNo();
+		
+		ArrayList<Project> list = pService.mainProject(empNo);
+		System.out.println("메인페이지 프로젝트 리스트  : " + list);
+		return new Gson().toJson(list);
+	}
+	
 }
