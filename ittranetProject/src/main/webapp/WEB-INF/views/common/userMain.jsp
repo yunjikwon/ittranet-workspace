@@ -330,7 +330,7 @@
 				const sec = nowTime.getSeconds();
 				
 				
-				let month = addzero(nowTime.getMonth());
+				let month = addzero(nowTime.getMonth() + 1);
 				let day =  addzero(nowTime.getDate());
 				let year = nowTime.getFullYear();
 				let value = hour + ":" + addzero(min) + ":" + addzero(sec);
