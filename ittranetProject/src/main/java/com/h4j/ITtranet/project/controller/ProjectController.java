@@ -50,9 +50,12 @@ public class ProjectController {
 	@RequestMapping("npro.pr")
 	public String newProject(Project p, HttpSession session) {
 		
-		Employee loginUser = (Employee)session.getAttribute("loginUser");
-		String empNo = loginUser.getEmpNo();
+		//Employee loginUser = (Employee)session.getAttribute("loginUser");
+		//String empNo = loginUser.getEmpNo();
+		
 		int result = pService.insertProject(p);
+		
+		session.setAttribute("alertMsg", "새로운 프로젝트를 생성했습니다.");
 		return "redirect:list.pr";
 	}
 	
@@ -61,8 +64,9 @@ public class ProjectController {
 	public String searchMember(String search) {
 		
 		ArrayList<Prmember> list = pService.searchMember(search);
-		System.out.println("클릭했을때 list : " + list);
+		//System.out.println("클릭했을때 list : " + list);
 		return new Gson().toJson(list);
+		
 	}
 	
 }

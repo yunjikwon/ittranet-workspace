@@ -154,14 +154,6 @@
         
         <!--프로젝트 리스트-->
         <div id="list">
-           <!--
-            <div class="projectbox">
-                <div class="projectlogo">
-                    <img class="logoimg" src="resources/images/projectlogo/list.png"  />
-                </div>
-                <p class="projectname" style="font-size: 13px; text-align: center;">전체 소식</p>   
-            </div>
-             -->
             <div class="projectbox">
                 <div class="projectlogo">
                     <img class="logoimg" src="resources/images/projectlogo/bookmark.png"  />
@@ -218,7 +210,7 @@
                        
         </div>
         
-     
+     	<br clear="both">
     
         <br>
         <!--뉴스피드 리스트-->

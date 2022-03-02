@@ -7,6 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- jQuery 라이브러리 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- alert창 꾸미기 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <style>
     .wrap{
        padding: 30px;
@@ -84,6 +92,18 @@
 </style>
 </head>
 <body>
+
+	<c:if test="${ not empty alertMsg }">
+		<script>
+			Swal.fire({
+				icon: 'success',
+				title: 'Success!',
+				text: '${ alertMsg }',
+			})
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+	</c:if>
+	
 <div class="back">
  <div class="innerBack">
  	<jsp:include page="../common/pageHeader.jsp" />
@@ -99,13 +119,13 @@
              </li>
                 <div id="border">
 		               <li class="menu1">
-		                  <a href="#">내 프로젝트</a>
+		                  <a href="list.pr">내 프로젝트</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">프로젝트 만들기</a>
+		                  <a href="newpro.pr">프로젝트 만들기</a>
 		               </li>
 		               <li class="menu1">
-		                  <a href="#">내 업무</a>
+		                  <a href="todo.pr">내 업무</a>
 		               </li>
 		               <li class="menu1">
 		                  <a href="news.pr">뉴스피드</a>
@@ -160,6 +180,8 @@
 		                <small>${ e.prStartdate }</small>
 	            </div>
             </c:forEach>
+            
+            <br><br><br>
           </div>   
           	
           	<!-- 싱글클릭 이벤트 (페이지 이동) 

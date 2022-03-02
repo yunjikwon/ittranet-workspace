@@ -27,6 +27,8 @@ public interface ProjectService {
 	// 프로젝트 생성 - 멤버 추가
 	int insertPromem(Project p);
 	
+	String selectProjectTitle(int prNo);
+	
 
 
 }

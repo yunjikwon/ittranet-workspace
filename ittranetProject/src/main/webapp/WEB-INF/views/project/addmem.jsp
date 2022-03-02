@@ -41,7 +41,7 @@
         float: right;
         background-color: rgb(187, 159, 202);
     }
-    .cancleButton{
+    .cancelButton{
         background-color: rgb(190, 190, 190);
         margin-top:10px;
         margin-right: 10px;
@@ -51,6 +51,38 @@
         background-color: rgba(207, 168, 241, 0.45);
         margin-top:10px;
         float: right;
+    }
+
+    .updateFeed{
+        width: 600px;
+        height: 130px;
+        border: 1px solid rgb(202, 202, 202);
+        border-radius: 2mm;
+        background-color: rgb(231, 217, 238);
+        padding: 15px;
+    }
+    #nfContent{
+        width: 590px;
+        border-radius: 2mm;
+        height: 80px;
+        border: 1px solid rgb(202, 202, 202);
+    }
+    .checkProject{
+        border: 1px solid rgb(202, 202, 202);
+        border-radius: 2mm;
+        width: 500px;
+        height: 400px;
+        background-color: rgb(231, 217, 238);
+        padding: 15px;
+    }
+    .projectTable{
+        background-color: white;
+        border-radius: 2mm;
+        width: 495px;
+        height: 360px;
+    }
+    th,td,tr >.projectTable{
+        border-bottom: 1px dotted rgb(202, 202, 202);
     }
 </style>
 <body>
@@ -67,7 +99,7 @@
         </table>
     </div>
     <button class="okButton">확인</button>
-    <button data-dismiss="modal" class="cancleButton">취소</button>
+    <button data-dismiss="modal" class="cancelButton">취소</button>
 </div>
 <script>
 
@@ -101,5 +133,37 @@
   }
 </script>
 
+<div class="updateFeed">
+    <div class="update">
+        <textarea id="nfContent" name="nfContent"></textarea>
+        <input id="upfile" type="file" name="upfile">
+        <button class="okButton">확인</button>
+        <button data-dismiss="modal" class="cancelButton">취소</button>
+    </div>   
+</div>
+
+<div class="checkProject">
+    <div class="checkPr">
+        <table class="projectTable">
+            <tr>
+                <th style="width: 100px;">프로젝트명</th>
+                <td>잇트라넷</td>
+            </tr>
+            <tr>
+                <th>담당자</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>기간</th>
+                <td></td>
+            </tr>
+            <tr style="height: 200px;">
+                <th>내용</th>
+                <td></td>
+            </tr>
+        </table>
+        <button class="okButton">확인</button>
+    </div>   
+</div>
 </body>
 </html>

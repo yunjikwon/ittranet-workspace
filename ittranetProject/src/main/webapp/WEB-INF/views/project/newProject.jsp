@@ -5,9 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- jQuery 라이브러리 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- alert창 꾸미기 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <style>
     .wrap{
-        width: 900px;
+        padding: 30px;
     }
     .secondwrap{
         width: 800px;
@@ -19,7 +27,7 @@
     input[type="text"],[type="search"]{
         border-radius: 1mm;
         border: 1px solid rgb(192, 191, 191);
-        width: 250px;
+        width: 200px;
         height: 35px;
         margin-left: 30px;
         margin-bottom: 20px;
@@ -32,15 +40,10 @@
         margin-bottom: 20px;
     }
     button{
-        width: 70px;
-        height: 35px;
-        border-radius: 1mm;
         border: none;
         font-size: 13px;
         font-weight: bold;
         color: white;
-        float: right;
-        margin-right: 30px;
     }
      .searchwrap{
         border: 1px solid rgb(202, 202, 202);
@@ -51,6 +54,7 @@
         padding : 15px;
     }
     .result{
+        margin-left: 16px;
         margin-top: 10px;
         border: 1px solid rgb(202, 202, 202);
         border-radius: 1mm;
@@ -58,8 +62,10 @@
         width: 290px;
         height: 110px;
         padding: 5px;
+        overflow: auto
     }
    .result2{
+        margin-left: 16px;
         margin-top: 10px;
         border: 1px solid rgb(202, 202, 202);
         border-radius: 1mm;
@@ -67,36 +73,100 @@
         width: 290px;
         height: 110px;
         padding: 5px;
+        overflow: auto
     }
     #search{
         border: 1px solid rgb(202, 202, 202);
         border-radius: 1mm;
         height: 25px;
-        width: 180px;
+        width: 100px;
     }
     #searchButton{
         float: right;
         background-color: rgb(187, 159, 202);
+        width : 80px;
+        height: 35px;
+        border-radius: 1mm;
     }
     .cancleButton{
         background-color: rgb(190, 190, 190);
         margin-top:10px;
         margin-right: 10px;
-        float: right;
+        margin: auto;
+        border-radius: 1mm;
+        width: 80px;
+        height: 30px;
     }
     .okButton{
         background-color: rgba(207, 168, 241, 0.45);
         margin-top:10px;
         float: right;
+        margin: auto;
+        border-radius: 1mm;
+        width: 80px;
+        height: 30px;
     }
     .modal-content{
     	padding: 10px;
     	height : 450px;
     	width : 400px;
+        background-color: rgb(245, 225, 250);
+    }
+    .memaddb{
+        width: 100px;
+        border-radius: 1mm;
+        background-color: rgb(204, 185, 223);
+        height: 30px;
+        width: 80px;
+    }
+    #prLogo{
+        border: 1px solid rgb(202, 202, 202);
+        border-radius: 1mm;
+        width: 180px;
+        margin-left: 30px;
+    }
+    #prContent{
+        border: 1px solid rgb(202, 202, 202);
+        border-radius: 1mm;
+        margin-left: 30px;
+    }
+    #prEnddate{
+        border: 1px solid rgb(202, 202, 202);
+        border-radius: 1mm;
+        width: 180px;
+        margin-left: 30px;
+    }
+    #okb{
+        width: 100px;
+        border-radius: 1mm; 
+        margin: 10px;
+        float: right;
+        margin-right: 30px;
+        height: 30px;
+    }
+    #cancelb{
+        width: 100px;
+        border-radius: 1mm; 
+        margin: 10px; 
+        float: right;
+        margin-right: 30px;
+        height: 30px;
+    }
+    .selectMem{
+        height: 35px;
+        width: 80px;
+        border-radius: 1mm;
+        margin: auto;
+        background-color: rgb(187, 159, 202);
+    }
+    #proMemberList{
+        margin-left: 30px;
     }
 </style>
 </head>
 <body>
+
+	
 <div class="back">
  <div class="innerBack">
  	<jsp:include page="../common/pageHeader.jsp" />
@@ -134,7 +204,71 @@
         <div class="secondwrap">
             <form id="newProject" method="post" action="npro.pr">
             	<input type="hidden" name="empNo" value="${loginUser.empNo}">
-                <ul style="font-size: 14px;">
+                <table>
+                    <tr >
+                        <td style="width: 110px;">프로젝트명</td>
+                        <td><input type="text" id="prTitle" name="prTitle"></td>
+                    </tr>
+                    <tr >
+                        <td>담당자</td>
+                        <td>
+                             <div  id="proMember">  <span id="proMemberList"> </span> 
+                             <button class="memaddb">
+                                <a data-toggle="modal" data-target="#mem">
+                                     사원 선택
+                                </a>                        
+                            </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>만기일</td>
+                        <td><input type="date" name="prEnddate" id="prEnddate"></td>
+                    </tr>
+                    <tr>
+                        <td>내용</td>
+                        <td>
+                            <textarea name="prContent" id="prContent" cols="50" rows="10"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>로고</td>
+                        <td>
+                            <select name="prLogo" id="prLogo">
+                                <option value="resources/images/projectlogo/adjust.png">adjust</option>
+                                <option value="resources/images/projectlogo/ball.png">ball</option>
+                                <option value="resources/images/projectlogo/book.png">book</option>
+                                <option value="resources/images/projectlogo/bookmark.png">bookmark</option>
+                                <option value="resources/images/projectlogo/building.png">building</option>
+                                <option value="resources/images/projectlogo/callender.png">callender</option>
+                                <option value="resources/images/projectlogo/cart.png">cart</option>
+                                <option value="resources/images/projectlogo/drink.png">drink</option>
+                                <option value="resources/images/projectlogo/exercise.png">exercise</option>
+                                <option value="resources/images/projectlogo/film.png">film</option>
+                                <option value="resources/images/projectlogo/global.png">global</option>
+                                <option value="resources/images/projectlogo/home.png">home</option>
+                               <option value="resources/images/projectlogo/hotel.png">hotel</option>                      	
+                               <option value="resources/images/projectlogo/image.png">image</option>
+                               <option value="resources/images/projectlogo/language.png">language</option>
+                               <option value="resources/images/projectlogo/light.png">light</option>
+                               <option value="resources/images/projectlogo/list.png">list</option>
+                               <option value="resources/images/projectlogo/love.png">love</option>
+                               <option value="resources/images/projectlogo/money.png">money</option>
+                               <option value="resources/images/projectlogo/people.png">people</option>
+                               <option value="resources/images/projectlogo/setting.png">setting</option>
+                               <option value="resources/images/projectlogo/teaching.png">teaching</option>
+                               <option value="resources/images/projectlogo/tour.png">tour</option>
+                               <option value="resources/images/projectlogo/wallet.png">wallet</option>               
+                           </select>
+                        </td>
+                    </tr>
+                </table>
+
+                <button style="background-color: rgb(202, 183, 211);" id="okb">확인</button>
+                <button style="background-color: rgb(160, 156, 163);" id="cancelb">취소</button>
+            </form>    
+                <!--
+                       <ul style="font-size: 14px;">
                     <li><p>
                    	     프로젝트명
                         <input type="text" id="prTitle" name="prTitle">
@@ -187,6 +321,9 @@
                 <button style="background-color: rgb(202, 183, 211);">확인</button>
                 <button style="background-color: rgb(160, 156, 163);">취소</button>
             </form>
+
+                -->
+             
                 <br><br>
         </div>
     </div>
@@ -224,7 +361,7 @@
 	           </tbody>
 	        </table>
  		 </div>
-		    <button data-dismiss="modal" onclick="cancelButton">취소</button>
+		    <button data-dismiss="modal"  onclick="cancelButton" class="cancleButton">취소</button>
 		    <button class="okButton">확인</button>
 		</div>
 	</div>
@@ -285,13 +422,13 @@ function searchName(){
 	  
 	  let value = "";
 	  
-	  $("#memberList2").each(function(i, tr){
+	  $("#memberList2 tr").each(function(i, tr){
 		  value 
 		    += "<span>"+ $(tr).find("td[name=empName]").text() + " " + $(tr).find("td[name=job]").text() + "</span>"
 	         + "<input type='hidden' name='newprMem[" + i + "].empNo' value='" +  $(tr).find("input[name=empNo]").val() + "'>" //name='appList[0,1,...].empNo' value='empNo' 
 		})
 		console.log(value);
-		value = '<span id="proMemberList">담당자 &emsp;&emsp;</span>' + value;
+		value = '<span id="proMemberList"> </span>' + value;
 		$("#proMember").html(value);
 		$(".searchwrap").hide();
   })

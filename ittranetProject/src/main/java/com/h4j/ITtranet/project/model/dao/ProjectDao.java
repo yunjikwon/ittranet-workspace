@@ -30,7 +30,21 @@ public class ProjectDao {
 	}
 
 	public int insertPromem(SqlSessionTemplate sqlSession, Project p) {
-		return sqlSession.insert("prmemberMapper.insertPromem", p);
+		
+		int result = 0;
+		ArrayList<Employee> list = p.getNewprMem();
+		
+		for(Employee e : list) {
+			result += sqlSession.insert("PrmemberMapper.insertPromem", e);
+		}
+		
+		//return sqlSession.insert("prmemberMapper.insertPromem", p);
+		
+		return result;
+	}
+
+	public String selectProjectTitle(SqlSessionTemplate sqlSession, int prNo) {
+		return sqlSession.selectOne("projectMapper.selectProjectTitle", prNo);
 	}
 
 	

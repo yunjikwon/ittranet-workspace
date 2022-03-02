@@ -21,6 +21,7 @@ import com.h4j.ITtranet.common.model.vo.Attachment;
 import com.h4j.ITtranet.common.model.vo.Reply;
 import com.h4j.ITtranet.employee.model.vo.Employee;
 import com.h4j.ITtranet.project.model.service.NewsfeedService;
+import com.h4j.ITtranet.project.model.service.ProjectService;
 import com.h4j.ITtranet.project.model.vo.Newsfeed;
 import com.h4j.ITtranet.project.model.vo.Todo;
 
@@ -29,6 +30,9 @@ public class NewsfeedController {
 	
 	@Autowired
 	private NewsfeedService nService;
+	
+	@Autowired
+	private ProjectService pService;
 	
 	@RequestMapping("news.pr")
 	public ModelAndView selectNews(ModelAndView mv, HttpSession session) {
@@ -50,6 +54,8 @@ public class NewsfeedController {
 	@RequestMapping("feed.pr")
 	public ModelAndView prNewsfeed(String nfNo, Newsfeed n, String prNo, ModelAndView mv) {
 
+		String title = pService.selectProjectTitle(Integer.parseInt(prNo));
+		
 		ArrayList<Newsfeed> list = nService.prNewsfeed(prNo);
 		ArrayList<Todo> todo = nService.prTodo(prNo);
 		//ArrayList<Todo> countTd = nService.countTd(prNo);
@@ -61,6 +67,8 @@ public class NewsfeedController {
 		.addObject("todo", todo)
 		.addObject("nf",nf)
 		.addObject("pra",pra)
+		.addObject("prNo", prNo)
+		.addObject("prTitle", title)
 		//.addObject("countTd", countTd)
 		.setViewName("project/project");
 		

@@ -23,7 +23,12 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public int insertProject(Project p) {
-		return pDao.insertProject(sqlSession, p);
+		//return pDao.insertProject(sqlSession, p);
+		int result1 = pDao.insertProject(sqlSession, p); // 프로젝트 테이블 insert
+		
+		int result2 = pDao.insertPromem(sqlSession, p); // prmember테이블 insert
+		
+		return result1 * result2;
 	}
 
 	@Override
@@ -51,6 +56,9 @@ public class ProjectServiceImpl implements ProjectService{
 		return pDao.insertPromem(sqlSession, p);
 	}
 
+	public String selectProjectTitle(int prNo) {
+		return pDao.selectProjectTitle(sqlSession, prNo);
+	}
 	
 
 }

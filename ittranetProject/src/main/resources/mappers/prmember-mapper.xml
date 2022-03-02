@@ -27,14 +27,14 @@
 
 <insert id="insertPromem">
 insert
-	into project
+	into prmember
 		  (
 		  	pr_no
 		  , emp_no
 		 )
      values 
      	  (
-     		58
+     		seq_prno.currval
      	   ,#{empNo}
      		)
 </insert>

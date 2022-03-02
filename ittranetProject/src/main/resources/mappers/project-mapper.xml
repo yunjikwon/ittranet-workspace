@@ -28,7 +28,7 @@
 	    ,status
 	from project p
 	join prmember pr on pr.pr_no = p.pr_no
-	where pr.emp_no = #{empNo}
+	where pr.emp_no = #{empNo} 
 	and pr_enddate >= to_char(sysdate, 'mm/dd/yyyy')
 </select>
 
@@ -74,5 +74,11 @@ insert
           , 'Y'
 		  )
 </insert>
+
+	<select id="selectProjectTitle" resultType="string">
+		select pr_title
+		  from project
+		 where pr_no = #{prNo}
+	</select>
 
 </mapper>

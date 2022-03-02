@@ -90,13 +90,12 @@
        margin-top: 20px;
        
    }
-   .profile{
+   .userProfile{
        display:inline-block;
        width: 70px;
        height: 70px;
        background-color: white;
        border-radius: 50%;
-       border: 1px solid;
        margin: 10px;
    }
    .projectmem{
@@ -231,6 +230,20 @@
         height: 30px;
         background-color: rgb(203, 188, 218);
     }
+    .okButton{
+       float: right;
+       margin-right: 20px;
+       border-radius: 1mm;
+       width: 70px;
+       background-color: rgb(203, 188, 218);
+    }
+    .cancelButton{
+       float: right;
+       margin-right: 20px;
+       border-radius: 1mm;
+       width: 70px;
+       background-color: rgb(190, 190, 190);
+    }   
 </style>
 </head>
 <body>
@@ -267,7 +280,7 @@
 
     <div class="mainOuter"> 
     <div class="wrap">   
-        <h4 style="font-weight:bold;">${ list.get(0).prTitle }</h4>
+        <h4 style="font-weight:bold;">${ prTitle }</h4>
         
         <!--담당 업무, 업무 버튼, 리스트-->
         <div class="menuname">
@@ -348,7 +361,7 @@
            <!--게시물 작성-->
            <div id="feedwrite">
                  <form id="ttt" action="ninsert.pr" method="post" enctype="multipart/form-data">
-				   <input type="hidden" name="prNo" value="${list.get(0).prNo}">
+				   <input type="hidden" name="prNo" value="${prNo}">
 				   <input type="hidden" name="empNo" value="${ loginUser.empNo }">
 				   <input id="write" name="nfContent" type="text" placeholder="&emsp;내용을 입력해주세요">
           		   <input id="upfile" type="file" class="upfilec" name="upfile">
@@ -358,11 +371,17 @@
 		    </div>
 
             <!-- 게시물 -->
+            <c:if test="${!empty list}">
             <c:forEach var="n" items="${ list }">
 	            <div class="feedlist">
-	                <div class="profile">
-	                   <br>사진
-	                </div>
+                   <c:choose>
+                      <c:when test="${ loginUser.profile eq 'NULL'}">
+                         <img class="userProfile" src="resources/images/userprofile.png">
+                      </c:when>
+                      <c:otherwise>
+                         <img class="userProfile" src="${ loginUser.profile }">
+                      </c:otherwise>
+                   </c:choose>
 	                <div class="projectmem">
 	                    <b>${n.empName } &emsp;&emsp;&emsp;</b>
 	                    <h style="font-size: 12px; color: dimgray;">${n.nfDate } &emsp; 13:01</h>
@@ -443,7 +462,7 @@
 			</div>   
 		</div>
     </c:forEach>
-	
+</c:if>
 
      <script>
           function updateFeed(btn){
@@ -451,34 +470,7 @@
                 $(btn).parent().parent().attr("style", "display:none");
            }
           
-          
-          /*
-          $(".okButton").click(function(){
-
-        	  let content = $(this).siblings("textarea[name='nfContent']").val();
-        	  let nfNo = $(this).siblings("input[name='nfNo']").val();
-        	  let reupfile = $(this).siblings("input[name='upfile']").val();
-        	
-        	     $.ajax({
-               	  url:"update.pr",
-                 	 data:{
-                 		 nfNo:nfNo,
-                 		 nfContent:content, 
-                 		 reupfile:reupfile
-                 		 prNo:${ list.get(0).prNo }
-                 	 },success :
-                 		 function(status){
-                 		 if(status = "success"){
-                 			 location.reload();
-                 		 }
-                 	 }, error: function(status){
-                 		console.log("뉴스피드 게시글 수정 ajax 통신 실패");
-                 	 }
-                 })     
-          })
-	*/
-     </script>
-
+      </script>
 
 
 
@@ -503,7 +495,7 @@
 					url : "rinsert.pr",
 					data : {
 						refNo:no,
-						empNo:${ list.get(0).empNo },
+						empNo:${ loginUser.empNo },
 						replyContent:content.val()
 					}, success:function(status){
 						if(status == "success"){
@@ -637,7 +629,7 @@
                         $.ajax({
                             url:"tdinsert.pr",
                             data:{
-                                prNo:'${ list.get(0).prNo }',
+                                prNo:'${ prNo }',
 	                			empNo:'${loginUser.empNo}',
 	                			todoTitle:$("#tdTitle").val(),
 	                			todoEnddate:$("#tdEnddate").val(),

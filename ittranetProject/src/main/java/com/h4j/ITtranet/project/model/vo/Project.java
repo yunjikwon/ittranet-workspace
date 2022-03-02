@@ -1,6 +1,9 @@
 package com.h4j.ITtranet.project.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
+
+import com.h4j.ITtranet.employee.model.vo.Employee;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +25,7 @@ public class Project {
 	private String prContent;
 	private String prLogo;
 	private String status;
+	
+	private ArrayList<Employee> newprMem;
 
 }
