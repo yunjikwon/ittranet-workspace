@@ -119,6 +119,7 @@
 			                    <tr>
 			                    	<input type="hidden" class="drNo" value="${ d.drNo }">
 			                    	<input type="hidden" class="drDivision" value="${ d.drDivision }">
+			                    	<input type="hidden" class="category" value="${ category }">
 			                    	<input type="hidden" name="empNo" value="${ d.empNo }">	                    	
 			                        <th class="drDivison"> ${ d.drDivision } </th>
 			                        <td>${ d.drTitle }</td>
@@ -218,7 +219,8 @@
 			$(function(){
            		$("#boardList>tbody>tr").click(function(){
            			location.href = 'detail.ap?drNo=' + $(this).children(".drNo").val()
-           					       +'&drDivision=' + $(this).children(".drDivision").val();            			
+           					       +'&drDivision=' + $(this).children(".drDivision").val()
+           					       +'&category=' + $(this).children(".category").val();            			
            		});
            	})
 				

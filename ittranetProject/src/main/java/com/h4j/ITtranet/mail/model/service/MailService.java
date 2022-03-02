@@ -26,12 +26,19 @@ public interface MailService {
 	// 3. 메일 상세조회
 	Mail selectMail(int sendMailNo);
 	ArrayList<Attachment> selectMailAttachment(int sendMailNo);
+	int updateUnreadMail(int mno);
 	
 	// 중요 메일
 	//int importantMail(int receiveMailNo);
 	
-	// 5. 메일 삭제
+	// 5-1. 메일 삭제 (받은메일함 외)
 	int deleteMail(List<Integer> receiveMailNo);
+	
+	// 5-2. 메일 삭제 (보낸메일함, 임시보관함)
+	int sdDeleteMail(List<Integer> sendMailNo);
+	
+	// 5-3. 메일 완전삭제
+	int comDeleteMail(List<Integer> receiveMailNo);
 	
 	// 12. 메일 복원
 	int restorationMail(List<Integer> receiveMailNo);
@@ -40,8 +47,7 @@ public interface MailService {
 	int updateImportantMail(HashMap<String, String> map);
 	
 	// 중요 메일 (보낸메일함)
-	//int updateImportantSendMail(HashMap<String, String> map);
-	
+	int updateImportantSendMail(HashMap<String, String> map);
 	
 	// 6. 휴지통
 	int selectBinListCount(String empNo);
@@ -70,8 +76,8 @@ public interface MailService {
 	// 13. 디테일화면 : 스팸메일
 	int updateSpamMail(int rvno);
 	
-	/*
-	// 5-2. (상세조회) 메일 삭제
-	int deleteOneMail(int rvno);
-	*/
+	
+	// 14. 디테일화면 : 메일 삭제
+	int deleteOneMail(HashMap<String, Integer> map);
+	
 }

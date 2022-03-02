@@ -73,7 +73,7 @@
 			<!-- 버튼바 (메일쓰기, 삭제) -->
             <div id="buttonbar">
             	<button class="w-btn w-btn-gra1" type="button"><a href="enrollForm.ml" style="text-decoration:none; color:white;">메일쓰기</a></button>
-                <button class="w-btn w-btn-gra2" type="button" onclick="deletemail();">삭제</button>
+                <button class="w-btn w-btn-gra2" type="button" onclick="sddeletemail();">삭제</button>
 			</div>
 			
 			<!-- 폼 -->
@@ -97,7 +97,7 @@
                     	<c:forEach var="m" items="${ temlist }">
 	                    	<tr>
 	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
-                        		<td onclick="event.cancelBubble=true;"><input class="sdno" type="checkbox" name="mno" value="${ m.sendMailNo }"></td>
+                        		<td onclick="event.cancelBubble=true;"><input class="rvno" type="checkbox" name="rvno" value="${ m.sendMailNo }"></td>
                         		<td>${ m.empNameRv }</td>
                         		<td>${ m.mailTitle }</td>
                         		<td>${ m.sendDate }</td>
@@ -112,7 +112,7 @@
                 <script>
             		$(function(){
             			$("#mailtemlist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val() + "&statusCheck=2";
             			});
             		})
             	</script>
@@ -121,16 +121,16 @@
             	<script>	
             		function checkAll(check){
             				if($("#allCheck").prop("checked")) { 
-            				$("input[class=sdno]").prop("checked", true);
+            				$("input[class=rvno]").prop("checked", true);
             			}else {
-            				$("input[class=sdno]").prop("checked", false);
+            				$("input[class=rvno]").prop("checked", false);
             			}
             		}
 				</script>
 				
 				<!-- 체크박스 : 삭제 -->			
 				<script>	
-            		function deletemail() {
+            		function sddeletemail(btn) {
             			var rcArr = [];
             			$("input[name='rvno']:checked").each(function(){
             				rcArr.push($(this).val());
@@ -140,10 +140,11 @@
             		 	$.ajax({
             			 	url:"delete.ml",
             			 	type:"post",
-            			 	data:{receiveMailNo:rcArr},
+            			 	data:{sendMailNo:rcArr},
             			 	success:function(result){
             				 	if(result == 'success'){
             				 		console.log("게시글 삭제 성공!");
+            				 		location.reload();
             				 	}else{
             					 	console.log("게시글 삭제실패");
             				 	}

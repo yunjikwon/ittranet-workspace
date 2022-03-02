@@ -72,28 +72,22 @@
 	
 	<!-- 메일 상세조회 (메일, 첨부파일) -->
 	<select id="selectMail" resultMap="mailResult">
-		select send_mail_no
-      		 , sdpp
-      		 , sender_account
-      		 , mail_title
-      		 , mail_content
-      		 , send_date
-      		 , receiver_account
-      		 , e2.emp_name rvpp
-      		 , receive_mail_no 
-  		  from (
-  		  select
+		select
                  send_mail_no
-               , emp_name sdpp
+               , e1.emp_name sdpp
+               , e2.emp_name rvpp
                , sender_account
                , mail_title
                , mail_content
                , send_date
                , receiver_account
-               , receive_mail_no 
+               , receive_mail_no
+               , spam
+               , ms.status statusSd
+               , mail_receive.status statusRv
             from mail_send ms
             join employee e1 on (ms.emp_no = e1.emp_no)
-            join mail_receive using(send_mail_no)) 
+            join mail_receive using(send_mail_no)
            join employee e2 on(receiver_account = e2.email)
           where send_mail_no = #{sendMailNo}
 	</select>
@@ -106,6 +100,12 @@
 		 where ref_code = 'M'
 		   and ref_no = #{sendMailNo}
 	</select>
+	<update id="updateUnreadMail">
+		update
+			   mail_receive
+		   set read = 'Y'
+		 where send_mail_no = #{mno}
+	</update>
 	
 	<!-- 메일쓰기 -->
 	<insert id="insertMailSd">
@@ -232,24 +232,28 @@
      		 , mail_title
       		 , send_date
      		 , receiver_account
-     		 , rvst
+     		 , statusRv
              , read
              , important
+             , spam
+             , statusSd
 		 from(
 		select send_mail_no
 		      , emp_name
 		      , mail_title
 		      , send_date
 		      , receiver_account
-              , rv.status rvst
+              , rv.status statusRv
               , read
               , important
+              , spam
+              , sd.status statusSd
 		  from mail_send sd
 		  join employee using(emp_no)
 		  join mail_receive rv using (send_mail_no)
 		 where tem_status = 'N')
 		 where receiver_account = #{receiverAccount}
-      	   and rvst = 'Y'
+      	   and statusRv = 'Y'
            and read = 'N'
 		 order
 	   	    by send_mail_no desc
@@ -273,6 +277,7 @@
      		 , receiver_account
      		 , rvst
              , important
+             , receive_mail_no
 		 from(
 		select send_mail_no
 		      , emp_name
@@ -281,6 +286,7 @@
 		      , receiver_account
               , rv.status rvst
               , important
+              , receive_mail_no
 		  from mail_send sd
 		  join employee using(emp_no)
 		  join mail_receive rv using (send_mail_no)
@@ -350,6 +356,7 @@
       	       , send_mail_no
       		   , msst
       		   , important
+      		   , receive_mail_no
   		   from(select
                  	   mv.emp_no  rvpp
                   	 , mail_title
@@ -358,6 +365,7 @@
                  	 , send_mail_no
                  	 , ms.status msst
                  	 , important
+                 	 , receive_mail_no
                   from mail_send ms
               	  join mail_receive mv using(send_mail_no)
               	 where ms.sender_account = #{senderAccount}
@@ -385,6 +393,7 @@
 			 , receiver_account
 			 , send_mail_no
 			 , msst
+			 , receive_mail_no
 		from(select
 				     mv.emp_no rvpp
 				   , mail_title
@@ -392,6 +401,7 @@
 				   , receiver_account
 				   , send_mail_no
 				   , ms.status msst
+				   , receive_mail_no
 		  		from mail_send ms
 				join mail_receive mv using(send_mail_no)
 			   where ms.sender_account = #{senderAccount}
@@ -400,12 +410,27 @@
 		    left join employee on (email = receiver_account)
 	  </select>
 	  
-	  <!-- 리스트 : 메일 삭제 -->
+	  <!-- 리스트 : 메일 삭제 (받은메일함 비롯 외) -->
 	  <update id="deleteMail">
 	  	update
 		       mail_receive
 		   set status= 'T'
 	     where receive_mail_no = #{receiveNo}
+	  </update>
+	  
+	  <update id="sdDeleteMail">
+	  	update
+	  		   mail_send
+	  	   set status = 'T'
+	  	 where send_mail_no = #{sendNo}
+	  </update>
+	  
+	  <!-- 리스트 : 완전삭제 (스팸메일함, 휴지통) -->
+	  <update id="comDeleteMail">
+	  	update
+	  		   mail_receive
+	  	   set status = 'N'
+	  	 where receive_mail_no = #{receiveNo}
 	  </update>
 	  
 	  <!-- 리스트 : 메일 복원 -->
@@ -446,18 +471,31 @@
 			set important = 'N'
 		</otherwise>
 		</choose>
-			where send_mail_no = #{mno}
+			where send_mail_no = #{rvno}
 	  	</update>
 	  	
-	  	<!-- 스팸메일 -->
+	  	<!-- 디테일 : 스팸 -->
 		<update id="updateSpamMail">
 			update
 			   	   mail_receive
 		   	   set spam = 'Y'
 		 	 where receive_mail_no = #{rvno}
 	    </update>
-	  
-	  
+	    
+	    <!-- 디테일 : 삭제 -->
+	  	<update id="deleteOneMail">
+	  		update
+	  		<if test="statusCheck == 1">
+	  			   mail_receive	   
+	  		   set status = 'T'
+	  		 where receive_mail_no = #{rvno}
+	  		</if>
+	  		<if test="statusCheck == 2">
+	  			   mail_send
+	  		   set status = 'T'
+	  		  where send_mail_no = #{mno}
+	  		</if>
+	  	</update>
 	  
 	  
 	  

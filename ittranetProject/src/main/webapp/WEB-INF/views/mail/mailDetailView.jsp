@@ -86,10 +86,12 @@
 
 			<!-- 버튼바 (목록, 삭제, 스팸, 답장) -->
 	        <div id="buttonbar">
-	        	<button type="button" class="delete" class="btn btn-danger" onclick="detaildelete();">삭제</button>
-	            <button type="button" class="spam" class="btn btn-warning" onclick="spamMail();">스팸</button>
-	            <button type="button" class="answer" class="btn btn-secondary" onclick="asMail();">답장</button>
-	         	<button type="button" class="backpage" class="btn btn-secondary" onclick="history.back()">뒤로</button>
+	        	<c:if test="${m.spam eq 'N' and m.statusSd eq 'Y' or m.spam eq 'N' and m.statusRv eq 'Y'}">
+		        	<button type="button" class="btn btn-danger" onclick="deleteMail();">삭제</button>
+		            <button type="button" class="btn btn-warning" onclick="spamMail();">스팸</button>
+		            <button type="button" class="btn btn-secondary" onclick="asMail();">답장</button>
+	            </c:if>
+	         	<button type="button" class="btn btn-secondary" onclick="history.back()">뒤로</button>
 	        </div>
 			<!-- 메일 상세내용 -->
 	        <div class="mailcontent">
@@ -111,7 +113,8 @@
 	            <br>
 	            
 	            <input type="hidden" value="${m.statusRv }">
-	            <input type="hidden" spam="${m.spam }">
+	            <input type="hidden" value="${m.spam }">
+	            <input type="hidden" value="${statusCheck}" name="statusCheck">
 	            
 	            <hr>
 	            
@@ -122,7 +125,7 @@
 	            			첨부파일이 없습니다.
 	            		</c:when>
 	            		<c:otherwise>
-	            			<a href="${at.filePath}${ at.changeName }" download="${at.originName}">${ at.originName }</a>	
+	            			<a href="${at.filePath}${ at.changeName }" download="${at.originName}">${ at.originName } <br> </a>	
 	            		</c:otherwise>
 	            	</c:choose>
 	            </c:forEach>
@@ -131,23 +134,6 @@
 	        
 	        </form>
 	        
-	        <!-- 
-	        <script>
-	        function fileDownload(fileNameKey, fileName, filePath){
-	            
-	            location.href = "/board/fileDownload?fileNameKey="+fileNameKey+"&fileName="+fileName+"&filePath="+filePath;
-	        }
-	        </script>
-	         -->
-	        
-	        
-			
-	        <!-- 메일 삭제 
-	        <script>
-	        function detaildelete() {
-	        	$("#detaildelete").submit;
-	        }
-	        </script>-->
 	          
 	        
 	        <!-- 메일 스팸처리 -->
@@ -163,14 +149,43 @@
 	        	   data : {rvno:rvno},
 	        	   success: function(result){
 	        		   if(result == 'success'){
-	        			   alert("스팸메일 전송 완료");
+	        			   alert("스팸 메일에 추가 되었습니다.");
 	        			   location.href="alllist.ml?cpage=1";
 	        		   }else{
-	        			   alert("스팸메일 전송 실패");
+	        			   alert("스팸 메일 추가에 실패하였습니다!");
 	        		   }
 	        	    },
 	        	   error : function (data) {
 	        	    	alert('ajax 스팸 메일 전송 실패');
+	        	   }
+	        })
+	        }
+	        
+	        function deleteMail() {
+	        	var rvno = $("input[name='rvno']").val();
+	        	var statusCheck = $("input[name='statusCheck']").val();
+	        	var mno = $("input[name='mno']").val();
+	        	console.log(rvno);
+	        	
+	        	
+	        $.ajax({
+	        	   type : "POST",
+	        	   url : "deleteone.ml",
+	        	   data : {
+	        		   rvno:rvno,
+	        		   statusCheck:statusCheck,
+	        		   mno:mno
+	        	   },
+	        	   success: function(result){
+	        		   if(result == 'success'){
+	        			   alert("메일 삭제가 완료되었습니다.");
+	        			   location.href="binlist.ml?cpage=1";
+	        		   }else{
+	        			   alert("메일 삭제가 실패하였습니다!");
+	        		   }
+	        	    },
+	        	   error : function (data) {
+	        	    	alert('ajax 메일 삭제 전송 실패');
 	        	   }
 	        })
 	        }

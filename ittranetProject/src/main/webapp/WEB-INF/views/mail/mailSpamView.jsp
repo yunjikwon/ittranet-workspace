@@ -138,7 +138,7 @@
             		 console.log(rcArr);
             		 
             		 $.ajax({
-            			 url:"delete.ml",
+            			 url:"comdelete.ml",
             			 type:"post",
             			 data:{receiveMailNo:rcArr},
             			 success:function(result){

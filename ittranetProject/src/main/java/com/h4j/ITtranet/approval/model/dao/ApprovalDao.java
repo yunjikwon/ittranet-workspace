@@ -57,7 +57,7 @@ public class ApprovalDao {
 	}
 	
 	// 문서별 insert
-	public int insertBussinessPlan(SqlSession sqlSession, Approval app) {		
+	public int insertBusinessPlan(SqlSession sqlSession, Approval app) {		
 		return sqlSession.insert("appMapper.businessplan", app);
 	}
 	public int insertApology(SqlSession sqlSession, Approval app) {		
@@ -177,13 +177,28 @@ public class ApprovalDao {
 		
 		return (ArrayList)sqlSession.selectList("appMapper.selectadminApList", rowBounds);
 	}
-
-	public int updateAdminReject(SqlSession sqlSession, int drNo) {
-		return sqlSession.update("appMapper.updateAdminReject", drNo);
+	
+	// 관리자 권한 반려/결재 update
+	public int apAdminReject(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.apAdminReject", drNo);
+	}
+	
+	public int drAdminReject(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.drAdminReject", drNo);
+	}
+	
+	public int drAdminComplete(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.drAdminComplete", drNo);
 	}
 
-	public int updateAdminComplete(SqlSession sqlSession, int drNo) {
-		return sqlSession.update("appMapper.updateAdminComplete", drNo);
+	public int apAdminComplete(SqlSession sqlSession, int drNo) {
+		return sqlSession.update("appMapper.apAdminComplete", drNo);
+	}
+
+	//----------------------------------------------------------------------
+	// 메인화면 기안 리스트
+	public ArrayList<Approval> mainSelectList(SqlSession sqlSession, int empNo) {
+		return (ArrayList)sqlSession.selectList("appMapper.mainSelectList", empNo);
 	}
 	
 	

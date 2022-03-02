@@ -100,7 +100,7 @@
         	
         	<!-- 버튼바 (내게쓰기, 보내기, 취소) -->
 			<div id="buttonbar">
-            	<button type="button" class="btn btn-secondary"><a href="enrollForm.mlme">내게쓰기</a></button>
+            	<button type="button" class="btn btn-secondary"><a href="enrollForm.mlme" style="text-decoration:none; color:white;">내게쓰기</a></button>
             	<button type="submit" class="btn btn-success">보내기</button>
             	<button type="submit" class="btn btn-light">취소</button>
         	</div>
@@ -143,7 +143,7 @@
     
     <script>
     	$(".btn-light").on("click", function(){
-    		location.href="alllist.ml";
+    		location.href="unreadlist.ml";
     	})
     </script>
        

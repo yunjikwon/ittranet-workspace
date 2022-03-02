@@ -33,5 +33,7 @@ public class Mail {
 	private String wrotemeStatus;
 	
 	private ArrayList<Mail> mailNo;
+	
+	private int statusCheck;
 
 }

@@ -58,7 +58,7 @@
     /*근태 스타일*/
     .commute-box{
         width: 300px;
-        height: 250px;
+        height: 265px;
         margin: auto;
         background: lightgray;
         border-radius: 20px;
@@ -96,6 +96,14 @@
     	float: left;
     	border: solid 1px red;
     }
+    #nowYear, #nowMonth, #nowDay{
+        font-size: 16px;
+    }
+    #nowTimes{
+        font-size: 25px;
+        font-weight: 500;
+    }
+
     /*게시판 연결*/
     .contentbox{
         background: lightgray;
@@ -121,6 +129,7 @@
         float: right;
         font-size: 22px;
         margin-right: 15px;
+        cursor:pointer;
     }
     table{
         margin: auto;
@@ -143,6 +152,26 @@
     	height:150px;
     	border-radius:50%;	
     }
+        /*결재내역 스타일*/
+        #drList {
+	    	height:150px;
+	    	border-collapse: collapse;
+	        border-top: 3px solid rgba(204, 181, 212, 0.822);        
+	        border-bottom:3px solid rgba(204, 181, 212, 0.822);
+	        font-size:15px;
+	    }
+	    #drList th,td{
+	        padding: 5px;
+	    	text-align:center;
+	    }
+	    #drList td{
+	    }
+	    
+	    #drList th{
+	        color: rgba(88, 4, 124, 0.8);
+	        border-bottom:3px solid rgba(204, 181, 212, 0.822);
+	        font-size:18px;
+	    }
 </style>
 </head>
 <body>
@@ -208,8 +237,9 @@
                     <br>
                     <span id="nowTimes"></span>
                 </div>
+                <br>
                 <button id="arr-btn" class="commute-btn" onclick="insertArrive();" style="border-right: 0.1px solid rgb(156, 156, 156);">
-                	<div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(163, 100, 223);"></i></div>
+                	<div id="cdiv1"><i class="far fa-arrow-alt-circle-right fa-4x fa-rotate-90" style="color: rgb(131, 26, 163);"></i></div>
                     <br>
                     <div id="cdiv2">
                         출근하기
@@ -300,8 +330,8 @@
 				const sec = nowTime.getSeconds();
 				
 				
-				let month = nowTime.getMonth();
-				let day =  nowTime.getDate();
+				let month = addzero(nowTime.getMonth());
+				let day =  addzero(nowTime.getDate());
 				let year = nowTime.getFullYear();
 				let value = hour + ":" + addzero(min) + ":" + addzero(sec);
 				
@@ -321,13 +351,13 @@
         	    $('#arr-btn').attr("disabled","disabled");
         	    $('#arr-btn i').css("color","gray"); 
         	    $('#lev-btn').removeAttr("disabled");
-        	    $('#lev-btn i').css("color","rgb(163, 100, 223)");
+        	    $('#lev-btn i').css("color","rgb(131, 26, 163)");
     	    })
     	    $('#lev-btn').click(function() {
         	    $('#lev-btn').attr("disabled","disabled");
         	    $('#lev-btn i').css("color","gray");
         	    $('#arr-btn').removeAttr("disabled");
-        	    $('#arr-btn i').css("color","rgb(163, 100, 223)");
+        	    $('#arr-btn i').css("color","rgb(131, 26, 163)");
     	    })   
 		</script>
 
@@ -348,19 +378,31 @@
             <div class="contentbox" style="width: 390px; height: 280px; margin-left: 0px;">
                 <div class="category-title">
                     &nbsp;&nbsp;결재내역
-                    <a href="newForm.fo" class="plus-btn">+</a>
+                    <a class="plus-btn" data-toggle="modal" data-target="#newFormModal" role="button" data-backdrop="static">
+                      	+ 
+                    </a>
+                    <!-- 새기안 모달창 -->
+					<div id="newFormModal" class="modal fade" tabindex="-1" role="dialog" >
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+						   		<jsp:include page="../approval/newForm.jsp"/>
+					        </div>
+					    </div>
+					</div>
                 </div>
-                <table id="drList">
-                	<thead>
-	                    <tr>
-	                        <th width="300">기안 제목</th>
-	                        <td>상태</td>
-	                    </tr>
-	                </thead>
-	                <tbody>
-	                	
-	                </tbody>    
-                </table>
+                <div style="text-align: center; padding-top:15px;">
+            		<table id="drList">
+	                	<thead>
+		                    <tr>
+		                        <th width="200">기안 제목</th>
+		                        <th>상태</th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+		                	
+		                </tbody>    
+	                </table>
+	        	</div>        
             </div>
             <div class="contentbox" style="width: 400px; height: 590px; float: right; margin-left: 0px;">
                 <div class="category-title">
@@ -407,6 +449,7 @@
                 <script>
                 	$(function(){
                 		selectNewList();
+                		selectDrList(); // 결재 리스트
                 		
                 		$(document).on("click", "#newBoardList>tbody>tr", function(){
                 			
@@ -422,7 +465,22 @@
                 			}
                 		})
                 		
-                		selectDrList();
+                		$(document).on("click", "#drList>tbody>tr", function(){
+                			
+                			console.log("drDivision : " +  $(this).children(".drDivision").val())
+                			var drNo = $(this).children(".drNo").val();
+                			var drStatus = $(this).children(".drStatus").val();
+                			var drDivision = $(this).children(".drDivision").val();
+                			if(drStatus == "결재대기"){
+                				var category = 1;
+                			} else if(drStatus == "반려" || "관리자반려"){
+                				var category = 3;
+                			}
+                				location.href = "detail.dr?drNo=" + drNo
+                							  + "&drDivision=" + drDivision
+                							  + "&category=" + category;
+                			
+                		})
 
                 		
                 	})
@@ -456,28 +514,29 @@
                 	}
                 	
                 	// 결재내역 불러오기
-                	$(document).on("click", "#drList>tbody", function selectDrList(){
+                	function selectDrList(){
                 		$.ajax({
-                			url: "draftWait.dr",
+                			url: "draft.main",
                 			success:function(list){
                 				console.log(list);
                 				
                 				let value="";
                 				for(let i in list){
                 					value += "<tr>"
-                							+ 	"<th width='120' class='type' height='30'>";
-											+	"<input type='hidden' name='drNo'  value='" + list[i].drNo + "'>" + "</th>"
-               								+ 	"<td width='500' height='30'>" + list[i].drTitle + "</td>"
-	                						+ 	"<td width='500' height='30'>" + list[i].drDivision + "</td>";
-                							+ "</td>"
+											+	"<input type='hidden' class='drNo'  value='" + list[i].drNo + "'>"
+											+   "<input type='hidden' class='drStatus'  value='" + list[i].drStatus + "'>"
+											+   "<input type='hidden' class='drDivision'  value='" + list[i].drDivision + "'>"
+               								+ 	"<td>" + list[i].drTitle + "</td>"
+	                						+ 	"<td>" + list[i].drStatus + "</td>"
+                							+ "</tr>";
                 				}
                 				
-                				$("#drList>tbody").html(value);
+                				$('#drList>tbody').html(value);
                 			},error:function(){
                 				console.log("최신글 ajax 통신 실패");
                 			}
                 		})
-                	})
+                	}
                 </script>
             </div>
         </div>
