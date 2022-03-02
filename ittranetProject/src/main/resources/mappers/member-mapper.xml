@@ -198,9 +198,7 @@
 		 order
 		    by emp_no desc
 	</select>
-	
-	
-	
+
 	<select id="selectAllemployee2" resultMap="memberResult">
 		select
 		       emp_no
@@ -221,6 +219,27 @@
 		    by emp_no desc
 	</select>
 	
+	<!-- 직무직위 변경 페이지 정보 조회 & 부서별 페이지 정보 조회 -->
+	<select id="selectEmpJobList" resultMap="memberResult">
+		select
+		       emp_no
+		     , emp_name
+		     , emp_id
+		     , phone
+		     , email
+		     , address
+		     , profile
+		     , d.dept_name
+		     , t.team_name
+		     , j.job_name
+		  from employee e,department d,team t,job j
+		 where status = 'Y'
+		   and e.dept_code = d.dept_code
+		   and e.team_code = t.team_code
+		   and e.job_code = j.job_code
+		 order
+		    by e.job_code
+	</select>
 	
 	<!-- 가입 승인 완료 && 부서, 팀, 직급 지정 -->
 	<update id="confirmMember">
@@ -310,7 +329,9 @@
 		       cal_content
 		  from calendar 
 		 where emp_no= 1
-		   and substr(cal_start,1,10) = TO_CHAR(SYSDATE, 'MM/DD/YYYY')
+		   and TO_CHAR(SYSDATE, 'MM/DD/YYYY') 
+	   between substr(cal_start,1,10) 
+	       and substr(cal_end,1,10)
 	</select>
 	
 	
@@ -319,8 +340,35 @@
 		       cal_content
 		  from calendar 
 		 where emp_no = ${empNo}
-		   and substr(cal_start,1,10) = TO_CHAR(SYSDATE, 'MM/DD/YYYY')
+		   and TO_CHAR(SYSDATE, 'MM/DD/YYYY') 
+	   between substr(cal_start,1,10) 
+	       and substr(cal_end,1,10)
 	</select>
+	
+	<select id="selectAllemployeeByDept" resultMap="memberResult">
+		select
+		       emp_no
+		     , emp_name
+		     , emp_id
+		     , phone
+		     , email
+		     , address
+		     , profile
+		     , d.dept_name
+		     , t.team_name
+		     , j.job_name
+		  from employee e,department d,team t,job j
+		 where status = 'Y'
+		 	and e.dept_code = #{deptCode}
+		   and e.dept_code = d.dept_code
+		   and e.team_code = t.team_code
+		   and e.job_code = j.job_code
+		 order
+		    by e.job_code
+	</select>
+	
+	
+	
 	
 
 </mapper>

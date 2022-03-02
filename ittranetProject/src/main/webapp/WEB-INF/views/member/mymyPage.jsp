@@ -98,7 +98,6 @@
 
         background-color: rgba(0, 0, 0, 0.4);
       }
-
       .modal.show {
         display: block;
       }
@@ -215,7 +214,7 @@
 			            </tr>
 		        	</table>
 		        	
-		        	<%-- 숨겨진 첨부파일 infut (form안에 있어야 함) --%>
+		        	<%-- 숨겨진 첨부파일 input (form안에 있어야 함) --%>
 					<div id="file-area" style="display:none">
 				        <input type="file" name="upfile" class="file" onchange="loadImg(this);">
 				    </div>

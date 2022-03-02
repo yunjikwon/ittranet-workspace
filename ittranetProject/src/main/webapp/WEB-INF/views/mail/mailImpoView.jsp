@@ -100,7 +100,7 @@
 	                    		<input class="sdNo" type="hidden" name="mno" value=${ m.sendMailNo }>
                         		<td onclick="event.cancelBubble=true;"><input type="checkbox" name="rvno" id="Check" value="${ m.receiveMailNo }"></td>
                         		<td>
-                        			<button id="on" class="btn btn-sm" onclick="importantSendStar();">
+                        			<button id="on" class="btn btn-sm" onclick="importantStar(this);">
                         			<c:choose>
                         				<c:when test="${m.important eq 'N'}">
                         					<img src="resources/images/whitestar.png" style="widt:15px; height:15px;">
@@ -129,7 +129,7 @@
                 <script>
             		$(function(){
             			$("#impolist>tbody>tr").click(function(){
-            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val();
+            				location.href = 'detail.ml?mno=' + $(this).children().siblings(".sdNo").val() + "&statusCheck=1";
             			});
             		})
             	</script>
@@ -148,21 +148,30 @@
 				<!-- 체크박스 : 중요 -->
 				<script>
 				
-				function importantStar(){
+				function importantStar(btn){
 					
-					$.ajax({
-						url:"impo.ml",
-						data:{
-							rvno:$("input[name='rvno']").val(),
-							important:$("input[name='important']").val()
-						},
-						success:function(result){
-							if(result == 'success'){
-								location.onload();
+					let rvno = $(btn).parent().prev().children("input[name='rvno']").val();
+					console.log(rvno);
+						let important = $(btn).parent().siblings("input[name='important']").val();
+						console.log(important);
+					
+						$.ajax({
+							url:"impo.ml",
+							data:{
+								rvno:rvno,
+								important:important
+							},
+							success:function(result){
+								if(result == 'success'){
+									console.log("중요 메일 성공");
+									location.onload();
+								}else {
+									console.log("중요 메일 실패");
+								}
+							}, error:function() {
+								console.log("ajax 중요 메일 통신 실패");
 							}
-						}
-					})
-					
+						})
 				}
 				</script>
 				
@@ -182,6 +191,7 @@
             			 success:function(result){
             				 if(result == 'success'){
             				 	console.log("게시글 삭제 성공!");
+            				 	location.reload();
             				 }else{
             					 console.log("게시글 삭제실패");
             				 }

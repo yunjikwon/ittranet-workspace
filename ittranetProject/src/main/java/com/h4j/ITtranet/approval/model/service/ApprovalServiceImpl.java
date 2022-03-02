@@ -46,7 +46,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		int result2 = 0;
 		switch(formNo) {
-			case 1: result2 = aDao.insertBussinessPlan(sqlSession, app);
+			case 1: result2 = aDao.insertBusinessPlan(sqlSession, app);
 			        break;
 			case 2: result2 = aDao.insertApology(sqlSession, app);
 					break;
@@ -171,6 +171,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result1 = aDao.apAdminComplete(sqlSession, drNo);
 		int result2 = aDao.drAdminComplete(sqlSession, drNo);
 		return result1 * result2;
+	}
+
+	//----------------------------------------------------------------------
+	// 메인화면 기안 리스트
+	@Override
+	public ArrayList<Approval> mainSelectList(int empNo) {
+		return aDao.mainSelectList(sqlSession, empNo);
 	}
 	
 

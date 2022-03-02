@@ -91,17 +91,16 @@
 		<!-- 내용 -->
         <div class="mainOuter" align="center">
         
-        	<form id="enrollForm" method="post" action="insert.ml" enctype="multipart/form-data">
+        	<form id="enrollForm" method="post" action="asinsert.ml" enctype="multipart/form-data">
         
-        	<input type="hidden" name="empNameSd" value="${ loginUser }">
+        	<input type="hidden" name="empNameSd" value="${ loginUser.empNo }">
         
         	<br><br>
         	
         	<!-- 버튼바 (내게쓰기, 보내기, 취소) -->
 			<div id="buttonbar">
-            	<button type="button" class="btn btn-secondary">내게쓰기</button>
             	<button type="submit" class="btn btn-success">보내기</button>
-            	<button type="reset" class="btn btn-light">취소</button>
+            	<button type="submit" class="btn btn-light">취소</button>
         	</div>
         	
         	<br><br>
@@ -109,11 +108,12 @@
         	<!-- 입력폼 -->
             <div class="maildetail">
 
-				<input type="hidden" name="senderAccount" name="rvac" value="${m.receiverAccount}">
+				<input type="hidden" name="mno" value="${m.receiveMailNo }">
+				<input type="hidden" name="receiverAccount" value="${m.receiverAccount}">
 				<table id="mailinsert" align="center" style="font-family: 'Gowun Dodum', sans-serif;">
 					<tr>
 						<th>받는사람</th>
-						<td><input type="text" name="sdac" value="${m.senderAccount}" required disabled></td>
+						<td><input type="text" name="senderAccount" value="${m.senderAccount}" required readonly></td>
 					</tr>
 					<tr>
 						<th>제목</th>
@@ -138,6 +138,12 @@
 	</div>
     </div>
     </div>
+    
+    <script>
+    	$(".btn-light").on("click", function(){
+    		location.href="unreadlist.ml";
+    	})
+    </script>
        
 
 </body>

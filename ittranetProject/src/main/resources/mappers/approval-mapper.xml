@@ -308,7 +308,7 @@
 
 	<!-- 사업계획서 -->
 	<select id="businessDetail" resultMap="appResultSet">
-		select
+		select distinct
 		       dr_no
 		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
 		     , emp_name
@@ -325,7 +325,7 @@
 	
 	<!-- 시말서 -->
 	<select id="apologyDetail" resultMap="appResultSet">
-		select
+		select distinct
 		       dr_no
 		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
 		     , emp_name
@@ -342,7 +342,7 @@
 	
 	<!-- 연장근무신청 -->
 	<select id="overtimeDetail" resultMap="appResultSet">
-		select
+		select distinct
 		       dr_no
 		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
 		     , emp_name
@@ -360,7 +360,7 @@
 	
 	<!-- 지출결의서 -->
 	<select id="expenditureDetail" resultMap="appResultSet">
-		select
+		select distinct
 		       dr_no
 		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
 		     , emp_name
@@ -378,7 +378,7 @@
 	
 	<!-- 추가예산신청 -->
 	<select id="budgetDetail" resultMap="appResultSet">
-		select
+		select distinct
 		       dr_no
 		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
 		     , emp_name
@@ -397,7 +397,7 @@
 	
 	<!-- 회의록 -->
 	<select id="proceedingsDetail" resultMap="appResultSet">
-		select
+		select distinct
 		       dr_no
 		     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division" 
 		     , emp_name
@@ -414,7 +414,7 @@
 	</select>
 	
 	<select id="selectLineDetail" resultMap="appLineResultSet">
-		select
+		select distinct
 		       dr_no
 		     , emp_no
 		     , emp_name
@@ -543,7 +543,7 @@
 	<!-- 관리자 완료 draft -->
 	<update id="drAdminComplete">
 		update draft
-		   set dr_status = '관리자완료'
+		   set dr_status = '관리자승인'
 		where dr_no = #{drNo}
 	</update>
 	<!-- 관리자 완료 approval_line -->
@@ -587,6 +587,23 @@
 		 	and apline_order = 1
 		 order 
 		    by dr_date desc
+	</select>
+	
+	<!-- 메인화면 기안 리스트 -->
+	<select id="mainSelectList" resultMap="appResultSet">
+		select *
+		  from(
+				select 
+				       d.dr_no  
+				     , decode(dr_division, 1, '지출결의서', 2, '추가예산신청',3, '연장근무신청', 4, '회의록', 5, '사업계획서', 6, '시말서') "dr_division"  
+				     , d.dr_title
+				     , d.dr_status
+				     , e.emp_no
+				  from draft d
+				  join employee e on (d.emp_no = e.emp_no)
+				  where e.emp_no =#{empNo}
+			  )
+		where rownum between 1 and 5
 	</select>
 
 

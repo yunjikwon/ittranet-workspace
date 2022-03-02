@@ -14,17 +14,18 @@
    .emplManage {
     	color:black;
     }
-    .buttonbar{
-        float:right;
-        margin-right:10px;
+    #searchForm{
+        margin:auto;
         height:100px;
+        float:right;
+    }
+    #searchForm>*{
+        float:left;
+        margin:5px;
     }
     table{
         text-align:center;
         width:800px;
-    }
-    #pagingArea{
-    	margin-left:500px;
     }
     #hi{
 		font-family: 'Anton', sans-serif;
@@ -74,11 +75,11 @@
 	               <li class="menu1">
 	                  <a href="delEmpForm.me">사원 계정 삭제</a>
 	               </li>
-	               <li class="menu1" style="background:rgb(147, 205, 207);">
-	                  <a href="appEmpForm.me" style="color:white;">가입 승인/반려</a>
-	               </li>
 	               <li class="menu1">
-	                  <a href="setEmpForm.me">직무/직위 관리</a>
+	                  <a href="appEmpForm.me">가입 승인/반려</a>
+	               </li>
+	               <li class="menu1" style="background:rgb(147, 205, 207);">
+	                  <a href="setEmpForm.me" style="color:white;">직무/직위 관리</a>
 	               </li>
 	               <li class="menu1">
 	                  <a href="depEmpForm.me">부서별 사원 조회</a>
@@ -98,9 +99,9 @@
 		        <br><br>
 
 		        
-		        <div class="buttonbar">
-		        	<button type="button" class="btn btn-outline-info" id="approvalBtn">승인</button>
-		            <button type="button" class="btn btn-outline-danger" id="disapprovalBtn">반려</button>
+		        <div id="searchForm">
+		        	<input type="text" class="form-control" id="keyword" name="empName" style="width:300px;" placeholder="변경할 회원의 이름을 검색하세요">
+		        	<button type="button" class="btn btn-outline-info" id="approvalBtn">변경</button>
 		        </div>
 
 		        <br><br>
@@ -119,20 +120,20 @@
 		            	</thead>
 		                <tbody>
 	                		<c:choose>
-	                			<c:when test="${ empty wlist }">
-	                				<td colspan="6">승인 대기중인 회원이 없습니다.</td>
+	                			<c:when test="${ empty list }">
+	                				<td colspan="6"> 회원이 없습니다.</td>
 	                			</c:when>
 	                			<c:otherwise>
-		                			<c:forEach var="w" items="${ wlist }">
-			                			<input type="hidden" value="${ w.empNo }">
+		                			<c:forEach var="e" items="${ list }">
+			                			<input type="hidden" value="${ e.empNo }">
 						                <tr>
 						                    <td><input type="checkbox" class="checkEmp"></td>
-						                    <td>${ w.empName }</td>
-						                    <td>${ w.empId }</td>
-						                    <td>${ w.email }</td>
+						                    <td>${ e.empName }</td>
+						                    <td>${ e.empId }</td>
+						                    <td>${ e.email }</td>
 						                    <td>
 							                    <select name="dept_code">
-							                    	<option selected value="D0-T00">미정</option>
+							                    	<option selected>${ e.deptName } ${ e.teamName }</option>
 							                    	<option value="D2-T00">경영지원부-미정</option>
 										            <option value="D2-T02">경영지원부-총무팀</option>
 										            <option value="D2-T03">경영지원부-인사팀</option>
@@ -153,11 +154,12 @@
 										            <option value="D6-T14">IT전략부-보안팀</option>
 										            <option value="D7-T00">CS-미정</option>
 										            <option value="D7-T15">CS-지원팀</option>
-										            <option selected value="D0-T00">미정</option>
+										            <option value="D0-T00">미정</option>
 										        </select>
 						              		</td>
 						                    <td>
 							                    <select name="job_code">
+							                    	<option selected>${ e.jobName }</option>
 										            <option value="J2">부장</option>
 										            <option value="J3">팀장</option>
 										            <option value="J4">과장</option>
@@ -165,7 +167,7 @@
 										            <option value="J6">주임</option>
 										            <option value="J7">사원</option>
 										            <option value="J8">인턴</option>
-										            <option selected value="J0">미정</option>
+										            <option value="J0">미정</option>
 										        </select>
 						              		</td>
 						                </tr>
@@ -177,42 +179,6 @@
 
 				</div>
 				<br><br>
-				
-        	    <div id="pagingArea">
-                <ul class="pagination">
-                	
-                	<c:choose>
-                		<c:when test="${ pi.currentPage eq 1 }">
-                    		<li class="page-item disabled"><a class="page-link" href="#" style="display:none">◀</a></li>
-                    	</c:when>
-                    	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="appEmpForm.me?cpage=${ pi.currentPage-1 }" style="color:rgb(147, 205, 207);">◀</a></li>
-                    	</c:otherwise>
-                    </c:choose>
-                    
-                    
-                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-	                    <c:choose>
-	                    	<c:when test="${ p eq pi.currentPage }">
-	                    		<li class="page-item"><a class="page-link" href="appEmpForm.me?cpage=${ p }" style="background:rgb(147, 205, 207); color:white;">${ p }</a></li>
-	                    	</c:when>
-	                    	<c:otherwise>
-	                    		<li class="page-item"><a class="page-link" href="appEmpForm.me?cpage=${ p }" style="color:rgb(147, 205, 207);">${ p }</a></li>
-	                    	</c:otherwise>
-	                    </c:choose>
-                    </c:forEach>
-                    
-                    <c:choose>
-                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
-                    		<li class="page-item disabled"><a class="page-link" href="#" style="display:none">▶</a></li>
-                    	</c:when>
-                    	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="appEmpForm.me?cpage=${ pi.currentPage+1 }" style="color:rgb(147, 205, 207);">▶</a></li>
-                    	</c:otherwise>
-                    </c:choose>
-                    
-                </ul>
-            	</div>
 			        
         	  </div> <%-- mainOuter --%>         
 
@@ -220,7 +186,7 @@
 
     </div><%-- back --%>
     
-    <script>   
+    <script>
     
     	// *** 전체 선택 ***
 		$("#allCheck").click(function(){
@@ -229,7 +195,14 @@
 	        }else {
 	            $(":checkbox", $("#tableArea")).prop("checked", false);
 	        }
-	    });	
+	    });
+    	// *** 검색 ***
+		$("#keyword").keyup(function() {
+        	var k = $(this).val();
+        	$("#tableArea > tbody > tr").hide();
+        	var temp = $("#tableArea > tbody > tr > td:nth-child(5n+2):contains('" + k + "')");
+            $(temp).parent().show();
+    	});
 		
 		// *** 선택된 회원 정보 (승인 버튼 눌렀을 시) ***
 		$("#approvalBtn").click(function(){
@@ -269,7 +242,7 @@
 				for(var i = 0; i < empArray.length; i++){
 					  (function(i) {
 					            $.ajax({
-					            url: "appEmp.me",
+					            url: "setEmpJob.me",
 					            data:{
 					            	empNo:empArray[i].empNo,
 					            	empName:empArray[i].empName,
@@ -302,7 +275,7 @@
 					  
 						Swal.fire({
 							  icon: 'success',
-			      			  title: '가입 승인 메일을 발송합니다',
+			      			  title: '해당 사원의 부서/팀/직급을 성공적으로 수정하였습니다!',
 			      			  confirmButtonText: 'Ok'
 			      			});
 					  

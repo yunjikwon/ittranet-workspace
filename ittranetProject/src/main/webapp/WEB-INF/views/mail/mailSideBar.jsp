@@ -102,7 +102,7 @@
         <div class="cont">
             <ul id="ac">
                 <li class="division">
-                    <a href="alllist.ml">메일</a>
+                    <a href="unreadlist.ml">메일</a>
                 </li>
                 <div id="border">
 		               <li class="menu1">

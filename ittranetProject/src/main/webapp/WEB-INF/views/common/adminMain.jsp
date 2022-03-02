@@ -268,7 +268,7 @@
 	                    </tr>        
 	                    <c:choose>
 	    					<c:when test="${ empty slist }">
-	    						<th>일정이 없습니다</th>>
+	    						<th>일정이 없습니다</th>
 	    					</c:when>
 	    					<c:otherwise>
 	    						<c:forEach var="s" items="${ slist }">
@@ -292,9 +292,9 @@
     </div>
     </div>
     
-    <!-- 푸터바 -->
+    <!-- 푸터바
     <jsp:include page="footer.jsp" />
-    
+     -->
 	<script>
 		// 캘린더 조회
 		function selectCalendar() {
@@ -420,7 +420,8 @@
 	                        'rgba(255, 206, 86, 1)',
 	                        'rgba(75, 192, 192, 1)',
 	                        'rgba(153, 102, 255, 1)',
-	                        'rgba(255, 159, 64, 1)'
+	                        'rgba(255, 159, 64, 1)',
+	                        'darkgray'
 	                    ],
 	                    borderWidth: 1 //경계선 굵기
 	                
