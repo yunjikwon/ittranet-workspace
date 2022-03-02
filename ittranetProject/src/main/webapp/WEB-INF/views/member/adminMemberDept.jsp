@@ -11,6 +11,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+   .emplManage {
+    	color:black;
+    }
     .middle{
         width:800px;
         height:800px;
@@ -117,7 +120,7 @@
 	    	<div class="mainOuter" id="mainOuter" style="font-family: 'Gowun Dodum', sans-serif; background:whitesmoke;">
 			    
 			    <br><br>
-			    <p class="anton" style="font-style:italic;" id="hi">Employee Position Management</p> 	
+			    <p class="anton" style="font-style:italic;" id="hi">Employee Department</p> 	
 			    <br><br><br>
 			    
 			    <div class="selectBox gj" style="font-size:23px;">
