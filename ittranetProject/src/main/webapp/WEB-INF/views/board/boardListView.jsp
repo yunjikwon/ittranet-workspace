@@ -122,7 +122,7 @@
                         <!-- 게시글 전체보기 리스트 영역-->
                         <table id="boardListTable" class="table thead-light table-hover">
                             <thead>
-                                <tr align="center">
+                                <tr align="center" style="background-color: rgba(66, 103, 202, 0.17);">
                                     <th width="50px">No.</th>
                                     <th width="450px">글제목</th>
                                     <th width="125px">작성자</th>

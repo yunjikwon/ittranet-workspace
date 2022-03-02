@@ -100,7 +100,7 @@
 		        <div class="cont">
 		            <ul id="ac">
 		                <li class="division">
-		                    <a href="#">게시판 관리</a>
+		                    <a href="#" >게시판 관리</a>
 		                </li>
 		                <div id="border">
 				                <li class="menu1">
@@ -131,10 +131,10 @@
                         
                         <br clear="both"><br>
                         <!-- 게시글 상세내역-->
-                        <table id="headerDetailTable" width="700">
+                        <table id="headerDetailTable" width="800">
                             <thead>
-                                <tr align="center">
-                                    <th width="100">
+                                <tr align="center" style="background-color: rgba(66, 103, 202, 0.17);">
+                                    <th width="100" height="50">
                                         <input type="checkbox" id="checkAll">
                                     </th>
                                     <th width="100">No.</th>
@@ -145,7 +145,7 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="h" items="${headerList}">
-                                    <tr align="center">
+                                    <tr align="center" >
                                         <td><input type="checkbox" name="check" class="checkOne"></td>
                                         <td class="headerNo">${h.headerNo}<input type=hidden class="headerNoInput" value=""></td>
                                         <td class="headerTitle">${h.headerTitle}</td>
@@ -250,7 +250,7 @@
                                         <form action="" id="updateHeaderModal">
                                             <table width="400px" height="200px" >
                                             
-                                                <tr>
+                                                <tr >
                                                     <th width="100px" height="100px">
                                                         말머리 제목
                                                     </th>

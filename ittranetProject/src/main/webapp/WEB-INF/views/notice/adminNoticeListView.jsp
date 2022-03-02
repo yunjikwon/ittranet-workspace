@@ -129,7 +129,7 @@
                         <!-- 게시글 전체보기 리스트 영역-->
                         <table id="noticeListTable" class="table thead-light table-hover">
                             <thead>
-                                <tr align="center">
+                                <tr align="center" style="background-color: rgba(66, 103, 202, 0.17);">
                                     <th ><input type="checkbox" id="checkAll"></th>
                                     <th width="50px">No.</th>
                                     <th width="100px">말머리</th>
