@@ -8,7 +8,7 @@
 </head>
     <style>
     	/*메뉴바 픽스 스타일*/
-     	.attendance_mn{
+     	.approval_mn{
      		color:#000000;
      	}
      	

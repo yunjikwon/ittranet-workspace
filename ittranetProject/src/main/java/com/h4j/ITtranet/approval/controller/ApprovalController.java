@@ -238,7 +238,7 @@ public class ApprovalController {
 		
 		String str = "";
 		switch(drDivision) {
-		case "사업계획서" : str = "bussinessPlanDetail";
+		case "사업계획서" : str = "businessDetail";
 		break;
 		
 		case "시말서": str = "apologyDetail";
@@ -424,7 +424,7 @@ public class ApprovalController {
 			
 			String str = "";
 			switch(drDivision) {
-			case "사업계획서" : str = "bussinessPlanApDetail";
+			case "사업계획서" : str = "businessApDetail";
 							 break;
 			case "시말서": str = "apologyApDetail";
 						 break;	
@@ -536,7 +536,7 @@ public class ApprovalController {
 			
 			String str = "";
 			switch(drDivision) {
-			case "사업계획서" : str = "AdBussinessPlanApDetail";
+			case "사업계획서" : str = "AdBusinessApDetail";
 							 break;
 			case "시말서": str = "AdApologyApDetail";
 						 break;	
