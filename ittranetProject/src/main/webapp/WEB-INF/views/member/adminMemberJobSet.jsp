@@ -95,7 +95,7 @@
          	
          	<div class="mainOuter" id="mainOuter" style="height:800px; font-family: 'Gowun Dodum', sans-serif; background:whitesmoke;">
 			  	<br><br>
-        	    <p class="anton" style="font-style:italic;" id="hi">Approval Employee</p>
+        	    <p class="anton" style="font-style:italic;" id="hi">Employee Position Management</p>
 		        <br><br>
 
 		        
