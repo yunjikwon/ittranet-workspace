@@ -334,7 +334,7 @@
 		 union
 		select rnum, bno, title, cdate, 0
 		  from board_view 
-		  where rnum <![CDATA[<=]]>  4
+		  where rnum <![CDATA[<=]]>  3
 		 order by cdate desc
 	</select>
 	
