@@ -43,9 +43,13 @@ public class EmployeeController {
 	 * @return
 	 */
 	@RequestMapping("goUserMain.me")
-	public String goUserMain() {
+	public ModelAndView goUserMain(String empNo, ModelAndView mv) {
+
+		ArrayList<Calendar> uslist = eService.selectUserSchedule(empNo);
+		mv.addObject("uslist", uslist)
+		  .setViewName("common/userMain");
 		
-		return "common/userMain";
+		return mv;
 	}
 	
 	/**
@@ -100,6 +104,7 @@ public class EmployeeController {
 			ArrayList<Calendar> uslist = eService.selectUserSchedule(loginUser.getEmpNo());
 			mv.addObject("uslist", uslist)
 			  .setViewName("common/userMain");
+			
 		} else {
 			model.addAttribute("errorMsg", "아이디 혹은 비밀번호를 다시 확인해주세요!");
 			mv.setViewName("common/error");
@@ -545,6 +550,7 @@ public class EmployeeController {
 	 */
 	@RequestMapping("delEmpForm.me")
 	public ModelAndView delEmpForm(ModelAndView mv) {
+		
 		ArrayList<Employee> list = eService.selectAllemployee2();
 		mv.addObject("list", list)
 		  .setViewName("member/adminMemberDelete");
@@ -554,87 +560,82 @@ public class EmployeeController {
 	}
 	
 	
-	
 	/**
 	 * 직위 직무 관리 페이지 호출
 	 * @return
 	 */
-	@RequestMapping("setEmpForm.me")
-	public String approvalEmployee() {
-		return "member/adminMemberUpdate";
-	}
-	
-	
-	
-	
-	// 전체 사원 데이터 
-	/*
-	@ResponseBody
-	@RequestMapping("delEmpForm.me")
-	public String delEmpls(Employee e) {
-		int result = eService.deleteMember(e.getEmpNo());
-		
-		return result > 0 ? "PASS" : "FAIL";
-		
-	}
-	*/
-	
-	// 사원 계정 삭제 페이지 호출
-	/*
-	@RequestMapping("delEmpForm.me")
-	public ModelAndView delEmpForm(@RequestParam(value="cpage", defaultValue="1") int currentPage, ModelAndView mv) {
-		
-		int employeeCount = eService.selectAllemployeeCount();
-		
-		PageInfo pi = Pagination.getPageInfo(employeeCount, currentPage, 5, 15);
-		
-		ArrayList<Employee> list = eService.selectAllemployee(pi);
+	@RequestMapping("depEmpForm.me")
+	public ModelAndView selectEmpJobList(ModelAndView mv) {
 
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .setViewName("member/adminMemberDelete");
+		ArrayList<Employee> list = eService.selectEmpJobList();
+		mv.addObject("list", list)
+		  .setViewName("member/adminMemberDept");
 		
 		return mv;
+		
 	}
-	*/
-
 	
 	
-	
-
-	// adminJobcode => 사원 정보 
-	// adminJobcodeDetail => 사원 정보 디테일
-	// adminMemberDelete => 사원 ㄱㅖ정 삭제 ★ 체크 표시 있음!! 대박~~ 테이블 짱
-	// adminMemberInsert => 사원 초대
-	/*
-	 * 사원 추가
-	 * 사원 가입 승인
-	 * 직위/직무 관리
-	 * 사원 계정 삭제
+	/**
+	 * ajax 직위 직무 관리 페이지 부서별 리스트
+	 * @param deptCode
+	 * @return
 	 */
+	@ResponseBody
+	@RequestMapping(value="getEmpListByDept", produces="application/json; charset=utf-8")
+	public ArrayList<Employee> getEmpListByDept(String deptCode) {
+		//System.out.println(deptCode);
+		ArrayList<Employee> employeeList = new ArrayList<>();
+		
+		if(deptCode.equals("All")) {
+			employeeList = eService.selectEmpJobList();
+		}else {
+			employeeList = eService.selectAllemployeeByDept(deptCode);
+		}
+		
+		//ArrayList<Employee> employeeList = eService.selectAllemployeeByDept(deptCode);
+		//System.out.println(employeeList);
+		return employeeList;
 
-	// ~~사원 추가
-	// 사원 추가 페이지 호출 addEmpForm.me (사원관리 메뉴를 누르면 제일 처음 보여지는 페이지 - DB연결 x)
+	}
 	
-	// 사원 추가 addEmp.me (이메일 주소 작성하고 버튼 누르면 회원가입폼 보내는 메일 발송 - DB연결 x)
 	
-	// ~~가입 승인
-	// 사원 가입 승인 페이지 호출 appEmpForm.me
+	/**
+	 * 직위 직무 수정 페이지 호출
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping("setEmpForm.me")
+	public ModelAndView setEmpForm(ModelAndView mv) {
+		
+		ArrayList<Employee> list = eService.selectEmpJobList();
+		mv.addObject("list", list)
+		  .setViewName("member/adminMemberJobSet");
+		
+		return mv;
+		
+	}
 	
-	// 사원 가입 승인 appEmpApp.me (status를 W에서 Y로 update)
 	
-	// 사원 가입 반려 addEmpCom.me (status를 W에서 N으로 update)
-	
-	// ~~직위,직무 관리
-	// 직위직무관리 페이지 호출 empSetForm.me
-	
-	// 직위 직무 관리 empSet.me (Department, Team, Job 변경 / jsp에서 한 번에 값 담아서 보내고 update시키기)
-	
-	// ~~사원 계정 삭제
-	// 사원 계정 삭제 페이지 호출 delEmpForm.me
-	
-	// 사원 계정 삭제 delEmp.me (status Y에서 N으로 update)
-	
+	/**
+	 * ajax 사원 직위 직무 수정
+	 * @param e
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("setEmpJob.me")
+	public String setEmpJob(Employee e) {
+		
+		
+		int result = eService.confirmMember(e);
+		
+		if(result>0) {
+			return "PASS";
+		}else {
+			return "FAIL";
+		}
+
+	} 
 	
 	
 

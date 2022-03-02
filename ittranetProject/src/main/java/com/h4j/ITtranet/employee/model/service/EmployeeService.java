@@ -54,31 +54,12 @@ public interface EmployeeService {
 	// 상태 Y인 사원  조회 
 	int selectAllemployeeCount();
 	ArrayList<Employee> selectAllemployee(PageInfo pi);
-	
+
+	ArrayList<Employee> selectAllemployeeByDept(String deptCode);
 	// 상태 Y인 회원 조회 2
 	ArrayList<Employee> selectAllemployee2();
 	
-	// ~~사원 추가
-	// 사원 추가 페이지 호출 addEmpForm.me
-	
-	// 사원 추가(초대메일보내는거) addEmp.me (W에서 Y로 변경)
-	// int addEmployee(String empNo);
-	
-	// ~~가입 승인
-	// 사원 가입 승인 페이지 호출 addEmpAppForm.me
-	
-	// 사원 가입 승인 addEmpApp.me
-	
-	// 사원 가입 반려 addEmpCom.me
-	
-	// ~~직위,직무 관리
-	// 직위직무관리 페이지 호출 empSetForm.me
-	
-	// 직위 직무 관리 empSet.me
-	
-	// ~~사원 계정 삭제
-	// 사원 계정 삭제 페이지 호출 delEmpForm.me
-	
-	// 사원 계정 삭제 delEmp.me
+	// 직무/직급 관리 화면 조회
+	ArrayList<Employee> selectEmpJobList();
 
 }

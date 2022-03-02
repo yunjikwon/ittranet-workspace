@@ -125,7 +125,7 @@
         <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
         <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>
 		<c:if test="${ loginUser.empNo eq '1' }">
-			<button class="header-btn" onclick="location.href='goUserMain.me'">유저페이지</button>
+			<button class="header-btn" onclick="location.href='goUserMain.me?empNo=1'">유저페이지</button>
 		</c:if>    
     </div>
     <!--로고영역-->
@@ -136,15 +136,15 @@
 		    </div>
     	</c:when>
     	<c:otherwise>
-    		<div id="pageLogo" onclick="goUserMain();">
+    		<div id="pageLogo" onclick="goUserMain(${ loginUser.empNo });">
 		        <img src="resources/images/colorLogo.png"/>
 		    </div>
     	</c:otherwise>
     </c:choose>
     
     <script>
-     	function goUserMain(){
-     		location.href="goUserMain.me"; 
+     	function goUserMain(empNo){
+     		location.href="goUserMain.me?empNo=" + empNo; // ☆
      	}
      	
      	function goAdminMain(){

@@ -375,14 +375,14 @@
     					</div>
                     </div>         
                 </div>
-                <br>
+                <br> 
                 <table>
                     <tr>
                         <th colspan="2"><i class="far fa-calendar-check fa-2x" style="float:left; margin-left:10px;"></i> <h5 style="display: inline-block; float:left; margin-left:5px;">Today's Schedule</h5></th>
                     </tr>
                     <c:choose>
     					<c:when test="${ empty uslist }">
-    						<th>일정이 없습니다</th>>
+    						<th>일정이 없습니다</th>
     					</c:when>
     					<c:otherwise>
     						<c:forEach var="s" items="${ uslist }">

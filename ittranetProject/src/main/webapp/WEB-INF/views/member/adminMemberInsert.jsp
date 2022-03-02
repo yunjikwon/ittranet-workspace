@@ -111,18 +111,21 @@
                     <a href="#">사원관리</a>
                 </li>
                 <div id="border">
-		               <li class="menu1" style="background:rgb(147, 205, 207);">
-		                  <a href="addEmpForm.me" style="color:white;">사원 초대</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="delEmpForm.me">사원 계정 삭제</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="appEmpForm.me">가입 승인/반려</a>
-		               </li>
-		               <li class="menu1">
-		                  <a href="setEmpForm.me">직무/직위 관리</a>
-		               </li>
+               	   <li class="menu1" style="background:rgb(147, 205, 207);">
+	                  <a href="addEmpForm.me" style="color:white;">사원 초대</a>
+	               </li>
+	               <li class="menu1">
+	                  <a href="delEmpForm.me">사원 계정 삭제</a>
+	               </li>
+	               <li class="menu1">
+	                  <a href="appEmpForm.me">가입 승인/반려</a>
+	               </li>
+	               <li class="menu1">
+	                  <a href="setEmpForm.me">직무/직위 관리</a>
+	               </li>
+	               <li class="menu1">
+	                  <a href="depEmpForm.me">부서별 사원 조회</a>
+	               </li>
             	</div>
             </ul>
          	</div>

@@ -128,7 +128,6 @@ public class EmployeeDao {
 	}
 	
 	public ArrayList<Employee> selectAllemployee2(SqlSessionTemplate sqlSession) {
-
 		return (ArrayList)sqlSession.selectList("memberMapper.selectAllemployee2");
 	}
 	
@@ -136,6 +135,12 @@ public class EmployeeDao {
 		return sqlSession.update("memberMapper.confirmMember", e);
 	}
 	
+	public ArrayList<Employee> selectEmpJobList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectAllemployee2");
+	}
 	
+	public ArrayList<Employee> selectAllemployeeByDept(SqlSessionTemplate sqlSession, String deptCode){
+		return (ArrayList)sqlSession.selectList("memberMapper.selectAllemployeeByDept", deptCode);
+	}
 
 }

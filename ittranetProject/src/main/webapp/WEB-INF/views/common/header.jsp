@@ -60,7 +60,7 @@
             <button class="header-btn" onclick="location.href='myPage.me'">마이페이지</button>
             <button class="header-btn" onclick="location.href='bye.me'">로그아웃</button>
            	<c:if test="${ loginUser.empNo eq '1' }">
-            	<button class="header-btn" onclick="location.href='goUserMain.me'">유저페이지</button>
+            	<button class="header-btn" onclick="location.href='goUserMain.me?empNo=${loginUser.empNo}'">유저페이지</button>
             </c:if>        
         </div>
 
