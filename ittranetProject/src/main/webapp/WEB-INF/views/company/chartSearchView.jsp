@@ -16,7 +16,7 @@
         margin-bottom: 70px;
     }
     .search-area{
-        background-color: rgb(211, 208, 208);
+        background-color: rgba(129, 70, 161, 0.26);
         width:800px;
         height: 100px;
         border-radius: 1.05ex;
@@ -26,7 +26,7 @@
     .search-area *{margin:10px;}
     #result-area{
         width:800px;
-        background-color: rgb(211, 208, 208);
+        background-color: rgba(129, 70, 161, 0.26);
         border-radius: 1.05ex;
         padding-top: 30px;
         padding-left: 10px;

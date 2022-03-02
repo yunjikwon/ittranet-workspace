@@ -28,8 +28,8 @@
         border-radius: 1.05ex;
         width: 100px;
     }
-    .noneBtn{height: 40px; background: rgb(148, 148, 148);}
-    .liBtn{height:40px; background: rgba(134, 131, 131, 0.308);}
+    .noneBtn{height: 40px; background: rgba(156, 47, 214, 0.397);}
+    .liBtn{height:40px; background: rgba(129, 70, 161, 0.26);}
     #department-area>li{
         float:left;
         margin-left: 25px;
@@ -197,7 +197,7 @@
 	                    
 	                            <!-- Modal footer -->
 	                            <div class="modal-footer">
-	                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	                            <button type="button" class="btn" style="color:rgba(156, 47, 214, 0.397)" data-dismiss="modal">Close</button>
 	                            </div>
                     
                         	</div>
