@@ -54,7 +54,7 @@ public class MessageController {
 	
 	// 3. 메세지 전송 서비스 (insert)
 	@RequestMapping("sendMsg.ms")
-	public String insertMsg(@RequestParam(value="rEmpArr[]") int[] empArr, int sEmpNo, Message msg, String content, HttpSession session) {
+	public String insertMsg( int[] rEmpNo, int sEmpNo, Message msg, String content, HttpSession session) {
 		
 		// send테이블 저장 (senderNo, msgContent)
 		// receiver테이블 저장 (sendMsgNo, receiverNo)
@@ -62,10 +62,11 @@ public class MessageController {
 		int resultR = 0;
 		msg.setSenderNo(sEmpNo);
 		msg.setMsgContent(content);
-		for(int receiverNo : empArr) {
+		resultS = mService.sendMessage(msg);
+
+		for(int receiverNo : rEmpNo) {
 			msg.setReceiverNo(receiverNo);
 			
-			resultS = mService.sendMessage(msg);
 			resultR = mService.receiveMessage(msg);
 		}
 		
@@ -89,7 +90,7 @@ public class MessageController {
 		// 4_1. 처음받은 메시지면 읽음 시간도 함께 업데이트
 		if(m.getReadDate() == null) {
 			int result = mService.readMessage(receiveMsgNo);
-			System.out.println(result);
+			//System.out.println(result);
 		}
 		
 		return new Gson().toJson(m);
@@ -115,7 +116,52 @@ public class MessageController {
 		return mv;
 	}
 	
-	
-	
-	
+	// 6. 보낸 메세지 읽기 
+	@ResponseBody
+	@RequestMapping(value="selectSMsg.ms", produces="application/json; charset=utf-8")
+	public String selectSMsg(int receiverNo, int sendMsgNo, int senderNo, Message msg) {
+		
+		msg.setReceiverNo(receiverNo);
+		msg.setSendMsgNo(sendMsgNo);
+		msg.setSenderNo(senderNo);
+		Message m = mService.selectSMsg(msg);
+
+		return new Gson().toJson(m);
+	}
+		
+	// 7.받은 메세지 삭제하기
+	@RequestMapping("deleteRMsg.ms")
+	public String deleteRMsg(@RequestParam(value="msgNoDel[]") int[] checkArr, HttpSession session) {
+		
+		int result = 0;
+		
+		for(int rno : checkArr) {
+			result = mService.deleteRMsg(rno);
+		}
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "메세지를 삭제하였습니다.");
+			return "redirect:list.ms";
+		}else {
+			return "common/error";
+		}
+	}
+
+	// 8. 보낸 메세지 삭제하기
+	@RequestMapping("deleteSMsg.ms")
+	public String deleteSMsg(@RequestParam(value="msgNoDel[]") int[] checkArr, HttpSession session) {
+		
+		int result = 0;
+		
+		for(int sno : checkArr) {
+			result = mService.deleteSMsg(sno);
+		}
+		System.out.println(result);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "메세지를 삭제하였습니다.");
+			return "redirect:slist.ms";
+		}else {
+			return "common/error";
+		}
+	}
 }

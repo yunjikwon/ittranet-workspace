@@ -62,7 +62,35 @@
 	.message_mn{
 		color: #000000;
 	}
-	
+    /*모달창 스타일*/
+    #tableArea{ 
+        margin:auto;
+        margin-top:10px;
+        margin-bottom:10px;
+        border-radius: 1.05ex; 
+        background-color: rgb(206, 224, 240);
+        width:750px;
+    }
+    #empInfo, #sendDate{
+        border-radius: 1.05ex;
+        background-color: white;
+        padding:5px;
+    }
+    .content-area, .content{
+        border-radius: 1.05ex;
+        background-color: white;
+        padding:10px;
+        width: 550px;
+        height:250px;
+        text-align:left;
+    }
+    #replyMsgBtn{background-color: rgb(84, 173, 247);}
+    #nameListArea{
+            background-color: white;
+            border:none;
+            border-radius: 1.05ex;
+            width: 150px;
+        }
 </style>
 </head>
 <body>
@@ -101,14 +129,13 @@
                     </span>
                     
                     <div class="messageOuter" align="center">
-                        <button id="addBtn" class="btnStyle" style="float:right; margin-right:5px;"><a class="aTag" href="">쪽지작성</a></button>
-                        <button id="addBtn" class="btnStyle" style="float:right"><a class="aTag" href="">삭제</a></button>
+                        <button id="delBtn" class="btnStyle" style="float:right" onclick="delMsg();"><a class="aTag">삭제</a></button>
                         <br clear="both"><br>
                         <table id="rMsgTable" align="center">
                             <thead>
                                 <tr align="center"  style=" background-color: rgb(181, 211, 236);">
                                     <th width="50">
-                                        <input type="checkbox" id="checkAll">
+                                        <input type="checkbox" id="checkAll" name="check">
                                     </th>
                                     <th width="50" height="70">
                                         <button class="starBtn show">
@@ -128,7 +155,7 @@
                                 <c:forEach var="m" items="${ list }">
                                     <tr align="center">
                                         <td>
-                                            <input type="checkbox" class="checkOne">
+                                            <input type="checkbox" class="checkOne" name="check">
                                         </td>
                                         <td height="50">
                                             <button class="starBtn show">
@@ -140,17 +167,121 @@
                                         </td>
                                         <td>${m.empName}</td>
                                         <td>${m.sendDate}</td>
-                                        <td  class="mContent" max-width="350px">
+                                        <td class="mContent" max-width="350px" data-toggle="modal" data-target="#readMsg">
                                         	${m.msgContent}
                                         	<input type="hidden" class="sNo" value="${m.sendMsgNo }">
                                         	<input type="hidden" class="rNo" value="${m.receiveMsgNo }">
                                         </td>
                                         <td>${m.readDate}</td>
                                     </tr>
+                                    <form id="postForm" action="" method="post">
+                                        <input type="hidden" id="msgNoDel" name="msgNoDel[]" value="">
+                                    </form>
                                 </c:forEach>
                             </tbody>
                         </table>
+                        <!-- 개별 쪽지 모달창 -->
+                        <!-- The Modal -->
+                        <div class="modal" id="readMsg" >
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content" >
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"  onclick="location.reload();">&times;</button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="modal-body" align="center" id="tableArea" >
+                                        <button type="button" class="btnStyle" id="replyMsgBtn" style="float:right; margin-right:30px;" data-toggle="modal" data-target="#replyMsg">답장</button>
+                                        <table width="650px" height="400px">
+                                            <tr >
+                                                <th width="150" id="rereceiverNo" height="50px" >  
+                                                    발신인                                             
+                                                </th>
+                                                <td colspan="2" id="senderName">
+                                                    <div id="empInfo">
+                                                        <span id="dName" style="font-size:12px"></span>
+                                                        <span id="tName" style="font-size:12px"></span>
+                                                        <span id="eName" style="font-weight:900"></span>
+                                                        <span id="jName"></span>
+                                                        <input type="hidden" id="eNo" value="">
+                                                        
+                                                    </div>               
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th height="80px">발신날짜</th>
+                                                <td colspan="2" >
+                                                    <div id="sendDate">
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    내용
+                                                </th>
+                                                <td colspan="2" align="center">
+                                                    
+                                                    <pre class="content-area">
+
+                                                    </pre>
+                                                    
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                       
+                                    </div>
+                                </div>
+                            </div>  
+                        </div>
+                        <!-- 답장하기 모달창 -->
+                        <!-- The Modal -->
+                        <div class="modal" id="replyMsg" >
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content" >
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                    <h3 class="modal-title">답장 보내기</h3>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <form action="sendMsg.ms" id="replyForm">
+                                        <div class="modal-body" align="center" id="tableArea" >
+                                            <table width="650px" height="400px">
+                                                <tr >
+                                                    <th width="150" id="receiverNo" height="50px" >  
+                                                        수신인                                             
+                                                    </th>
+                                                    <td colspan="2" id="reName">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                <tr>
+                                                    <th>
+                                                        내용
+                                                    </th>
+                                                    <td colspan="2" align="center" class="content">
+                                                        <textarea name="content" id="reContent" cols="65" rows="14" style="resize:none"></textarea>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <input type="hidden" id="rEmpNo" name="rEmpNo" value="">
+                                            <input type="hidden" id="sEmpNo" name="sEmpNo" value="${loginUser.empNo }">
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btnStyle" id="sendMsgBtn">전송</button>
+                                            <button type="button" class="btnStyle" data-dismiss="modal">닫기</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         <script>
+                            
                             // 별 버튼 변경기능
                             $(document).on("click", ".starBtn", function(){
 								
@@ -193,14 +324,13 @@
                                     }
                                 })
                                 
+                                
                             })
                             
                            	$(document).on("click", ".mContent", function(){
                                	let $sNo = $(this).children(".sNo").val();
                                	let $rNo = $(this).children(".rNo").val();
                                	
-                               	console.log($sNo);
-                               	console.log($rNo);
                                	
                                	if($(this).hasClass("noResult")){
                                		return false;
@@ -210,6 +340,7 @@
                               
                            	});
 							
+                            // 메세지 선택보기
                             function selectMsg(rMsgNo, sMsgNo){
                             	let receiverNo = '${loginUser.empNo}'
                             	$.ajax({
@@ -219,13 +350,80 @@
                             			sendMsgNo:sMsgNo,
                             			receiveMsgNo:rMsgNo
                             		},success:function(msg){
-                            			console.log(msg);
+                            			//console.log(msg);
+                                        let deptName = msg.deptName;
+                                        let teamName = msg.teamName;
+                                        let jobName = msg.jobName;
+                                        if(deptName === "없음" || deptName === "미정"){
+                                            deptName = "";
+                                        }
+                                        if(teamName === "없음" || teamName === "미정"){
+                                            teamName = "";
+                                        }
+                                        if(jobName === "없음" || jobName === "미정"){
+                                            jobName = "";
+                                        }
+                                        $("#dName").text(deptName);
+                                        $("#tName").text(teamName);
+                                        $("#eName").text(msg.empName);
+                                        $("#jName").text(jobName);
+                                        $("#sendDate").text(msg.sendDate);
+                                        $(".content-area").text(msg.msgContent);
+                                        $("#eNo").attr("value", msg.senderNo);
                             		},error:function(){
                             			console.log("메세지 1개 클릭용 ajax 통신 실패");
                             		}
                             	})
                             }
+
+                             //글 삭제하기 알러트
+                             function delMsg(){
+                                    
+                                Swal.fire({
+                                title: '삭제하시겠습니까?',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: '삭제하기',
+                                cancelButtonText : '취소'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+
+                                        delFormSubmit();  
+                                    
+                                    }
+                                })
+                            }
+
+                            function delFormSubmit(){
+                                
+                                let count = $("input[name='check']:checked").length;
+                                let checkArr = new Array();
+                                $("input[name='check']:checked").each(function(){
+                                    checkArr.push($(this).parent().siblings(".mContent").children(".rNo").val())
+                                    
+                                }); 
+                                $("#msgNoDel").attr("value", checkArr);
+                                //console.log(checkArr);
+                                //console.log(count);
+                                    
+                                $("#postForm").attr("action", "deleteRMsg.ms").submit(); 
+                            }
+                            
+                            // 답장하기
+                            $(document).on("click", "#replyMsgBtn", function(){                           
+                                let $rEmpName = $(this).next().children().children().children("#senderName").children().children("#eName").text();
+                                let $rEmpNo = $(this).next().children().children().children("#senderName").children().children("#eNo").val();
+                                //console.log($rEmpName);
+                                $("#reName").text($rEmpName);
+                                $("#rEmpNo").attr("value", $rEmpNo);
+                            })
+
+
                         </script>
+
+                        
                         <br clear="both"><br>
 
                         <!-- 페이징 바 영역-->

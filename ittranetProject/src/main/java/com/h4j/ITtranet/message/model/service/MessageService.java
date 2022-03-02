@@ -23,10 +23,15 @@ public interface MessageService {
 	int sendMessage(Message msg);
 	int receiveMessage(Message msg);
 	
-	// 5. 메세지 읽기
+	// 5. 받은 메세지 읽기
 	Message selectRMsg(Message msg);
 	int readMessage(int receiveMsgNo);
 	
-	// 6. 메세지 삭제
-	int deleteMessage();
+	
+	// 6. 보낸 메세지 읽기
+	Message selectSMsg(Message msg);
+	
+	// 7. 받은메세지 삭제
+	int deleteRMsg(int receiveMsgNo);
+	int deleteSMsg(int sendMsgNo);
 }

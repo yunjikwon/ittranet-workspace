@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
   
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -133,6 +134,7 @@
         </script>
     </head>
     <body>
+       
         <div class="cont">
             <ul id="ac">
                 <li class="division">
@@ -155,7 +157,7 @@
                 </div>
             </ul>
         </div>
-
+        
 		<!-- 새 쪽지 모달창 -->
 		<!-- The Modal -->
         <div class="modal" id="newMsg" >
@@ -167,55 +169,57 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <!-- Modal body -->
-                    <div class="modal-body">
-                        <div id="left-area" >
-                            <table width="250px" height="400px" id="searchTable">
-                                <tr align="center">
-                                    <th width="70px;" height="100px;">수신인</th>
-                                    <td >
-                                        <input type="text" name="nameInput">
-                                        <div id="nameListArea"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" height="150px;" align="right">
-                                        
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div id="right-area">
-                            <form action="" id="addMsgForm" type="post">
-                                <table width="450px" height="400px">
-                                    <tr style="border-bottom:1px solid grey">
-                                        <th width="100" id="receiverNo" height="100px" >  
-                                            수신인                                             
-                                        </th>
-                                        <td colspan="2" id="receiverName">
+                    <form action="sendMsg.ms" id="addMsgForm" type="post" height="600px">
+                        <div class="modal-body">
+                            <div id="left-area" >
+                                <table width="250px" height="400px" id="searchTable">
+                                    <tr align="center">
+                                        <th width="70px;" height="100px;">수신인</th>
+                                        <td >
+                                            <input type="text" name="nameInput">
+                                            <div id="nameListArea"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" height="150px;" align="right">
                                             
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <th colspan="3">
-                                            내용
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" align="center">
-                                            <textarea name="content" id="content" cols="50" rows="10" required></textarea>
-                                        </td>
-                                    </tr>
                                 </table>
-                                <input type="hidden" id="sEmpNo" name="sEmpNo" value="">
-                                <input type="hidden" id="rEmpArr" name="rEmpArr[]" value="">
-                            </form>
+                            </div>
+                            <div id="right-area">
+                            
+                                    <table width="450px" height="400px">
+                                        <tr style="border-bottom:1px solid grey">
+                                            <th width="100" id="receiverNo" height="100px" >  
+                                                수신인                                             
+                                            </th>
+                                            <td colspan="2" id="receiverName">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3">
+                                                내용
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" align="center">
+                                                <textarea name="content" id="content" cols="50" rows="10" required></textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" id="sEmpNo" name="sEmpNo" value="${loginUser.empNo }">
+                                    <input type="hidden" id="rEmpArr" name="rEmpArr[]" value="">
+                            </div>
                         </div>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btnStyle" id="sendMsgBtn" onclick="sendMsg();">전송</button>
-                        <button type="button" class="btnStyle" data-dismiss="modal">닫기</button>
-                    </div>
+                        <br clear="both">
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btnStyle" id="sendMsgBtn" >전송</button>
+                            <button type="button" class="btnStyle" data-dismiss="modal">닫기</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -269,6 +273,7 @@
                 })
                 $("#rEmpArr").attr("value", empArr);
                 console.log(empArr);
+                console.log($("#rEmpArr").val());
             })
 
             $(document).on("click", ".xBtn", function(){

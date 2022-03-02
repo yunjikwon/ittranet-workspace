@@ -31,5 +31,9 @@ public class Message {
 	private String empName;
 	private String teamCode;
 	private String teamName;
+	private String deptCode;
+	private String deptName;
+	private String jobCode;
+	private String jobName;
 
 }

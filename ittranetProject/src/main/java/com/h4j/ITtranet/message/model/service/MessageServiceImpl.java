@@ -55,10 +55,6 @@ public class MessageServiceImpl implements MessageService{
 		return mDao.readMessage(sqlSession, receiveMsgNo);
 	}
 
-	@Override
-	public int deleteMessage() {
-		return 0;
-	}
 
 	@Override
 	public int selectSMsgCount(int empNo) {
@@ -70,6 +66,20 @@ public class MessageServiceImpl implements MessageService{
 		return mDao.selectSMsgList(sqlSession, pi, empNo);
 	}
 
+	@Override
+	public Message selectSMsg(Message msg) {
+		return mDao.selectSMsg(sqlSession, msg);
+	}
+
+	@Override
+	public int deleteRMsg(int receiveMsgNo) {
+		return mDao.deleteRMsg(sqlSession, receiveMsgNo);
+	}
+	
+	@Override
+	public int deleteSMsg(int sendMsgNo) {
+		return mDao.deleteSMsg(sqlSession, sendMsgNo);
+	}
 
 
 }

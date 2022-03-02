@@ -17,6 +17,10 @@
 		<result column="emp_name" property="empName" />
 		<result column="team_code" property="teamCode" />
 		<result column="team_name" property="teamName" />
+		<result column="dept_code" property="deptCode" />
+		<result column="dept_name" property="deptName" />
+		<result column="job_code" property="jobCode" />
+		<result column="job_name" property="jobName" />
 		
 	</resultMap>
 	
@@ -66,6 +70,7 @@
 		  from employee e
 		  join team t on (e.team_code = t.team_code)
 		 where emp_name LIKE '%' || #{keyword} || '%'
+		   and e.status = 'Y'
 		 order
 		    by emp_name
 	</select>
@@ -110,19 +115,23 @@
 		     )	
 	</insert>
 	
-	<!-- 메세지 내용확인 -->
+	<!-- 받은 메세지 내용확인 -->
 	<select id="selectRMsg" resultMap="messageResult">
 		select 
 	           receive_msg_no
 	         , sender_no
 	         , emp_name
 	         , team_name
+	         , dept_name
+	         , job_name
 	         , msg_content
 	         , to_char(send_date, 'YYYY-MM-DD HH24:mm') as "send_date"
 	         , read_date
 	         , r.status as "status"
 	      from msg_send s
 	      join employee on (sender_no = emp_no)
+	      join department using (dept_code)
+	      join job using (job_code)
 	      join team using(team_code)
 	      join msg_receive r on (r.send_msg_no = s.send_msg_no)
 	     where r.status = 'Y'
@@ -146,7 +155,7 @@
 		     , msg_content
 		     , to_char(send_date, 'YYYY-MM-DD') as "send_date"
 		     , to_char(read_date, 'YYYY-MM-DD HH24:MM') as "read_date"
-		     , s.status as "status"
+		     , s.status
 		  from msg_send s
           join msg_receive r on (r.send_msg_no = s.send_msg_no)
 		  join employee on (receiver_no = emp_no)
@@ -155,4 +164,45 @@
 		 order
     		by send_date desc
 	</select>
+	
+	<!-- 보낸 메세지 내용확인 -->
+	<select id="selectSMsg" resultMap="messageResult">
+		select 
+	           sender_no
+	         , s.send_msg_no
+	         , receiver_no
+	         , emp_no
+	         , emp_name
+	         , team_name
+	         , dept_name
+	         , job_name
+	         , msg_content
+	         , to_char(send_date, 'YYYY-MM-DD HH24:mm') as "send_date"
+	         , read_date
+	         , s.status as "status"
+	      from msg_send s
+	      join msg_receive r on (r.send_msg_no = s.send_msg_no)
+	      join employee on (receiver_no = emp_no)
+	      join department using (dept_code)
+	      join job using (job_code)
+	      join team using(team_code)
+	     where s.status = 'Y'
+	       and sender_no = #{senderNo}
+	       and receiver_no = #{receiverNo}
+	       and s.send_msg_no = #{sendMsgNo}
+	</select>
+	
+	<!-- 받은 메세지 삭제 -->
+	<update id="deleteRMsg">
+		update msg_receive
+		   set status = 'N'
+		 where receive_msg_no = #{receiveMsgNo}		
+	</update>
+	
+	<!-- 보낸 메세지 삭제 -->
+	<update id="deleteSMsg">
+		update msg_send
+		   set status = 'N'
+		 where send_msg_no = #{sendMsgNo}		
+	</update>
 </mapper>

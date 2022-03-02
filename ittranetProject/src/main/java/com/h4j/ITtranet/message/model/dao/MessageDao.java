@@ -55,8 +55,17 @@ public class MessageDao {
 		return (ArrayList)sqlSession.selectList("messageMapper.selectSMsgList", empNo, rowBounds);
 	}
 	
+	public Message selectSMsg(SqlSessionTemplate sqlSession, Message msg){
+		return sqlSession.selectOne("messageMapper.selectSMsg", msg);
+	}
 	
+	public int deleteRMsg(SqlSessionTemplate sqlSession, int receiveMsgNo) {
+		return sqlSession.update("messageMapper.deleteRMsg", receiveMsgNo);
+	}
 	
+	public int deleteSMsg(SqlSessionTemplate sqlSession, int sendMsgNo) {
+		return sqlSession.update("messageMapper.deleteSMsg", sendMsgNo);
+	}
 	
 	
 }
