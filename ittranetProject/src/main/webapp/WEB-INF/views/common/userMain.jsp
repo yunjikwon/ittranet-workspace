@@ -543,7 +543,6 @@
     </div>
     <!-- <br clear="both"> -->
     <!-- 푸터바 -->
-    <jsp:include page="footer.jsp" />
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
