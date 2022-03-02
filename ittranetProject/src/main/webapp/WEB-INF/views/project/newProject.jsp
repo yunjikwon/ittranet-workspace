@@ -14,6 +14,9 @@
 <!-- alert창 꾸미기 -->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <style>
+	.project_mn{
+     		color:#000000;
+     	}
     .wrap{
         padding: 30px;
     }

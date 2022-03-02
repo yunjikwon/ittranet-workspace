@@ -16,6 +16,9 @@
 <!-- alert창 꾸미기 -->
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <style>
+	.project_mn{
+     		color:#000000;
+     	}
     .wrap{
        padding: 30px;
     }
@@ -184,7 +187,7 @@
             <br><br><br>
           </div>   
           	
-          	<!-- 싱글클릭 이벤트 (페이지 이동) 
+          	
                <script>
 	             $(function(){
 	                 $(".proing").click(function(){
@@ -198,7 +201,7 @@
 	                  })
 	               })
 	             </script>       	
-          	-->
+         
           	
 	          <!-- 더블클릭 이벤트 (프로젝트 상세 내용) 
 	             <script>
@@ -220,7 +223,7 @@
 	<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     
-        <!-- 프로젝트 상세 내용 -->
+        <!-- 프로젝트 상세 내용 
 		<div id="checkProject" class="modal">
 		    <div class="checkPr">
 		        <table class="projectTable">
@@ -243,6 +246,8 @@
 		        </table>
 		        <button class="okButton">확인</button>
 		    </div>   
+		  -->  
+		    
 		</div>
         </div>
         </div>

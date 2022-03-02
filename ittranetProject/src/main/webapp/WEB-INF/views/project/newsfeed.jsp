@@ -7,7 +7,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-    
+    .project_mn{
+     		color:#000000;
+     	}
     .wrap{
        padding: 30px;
     }
