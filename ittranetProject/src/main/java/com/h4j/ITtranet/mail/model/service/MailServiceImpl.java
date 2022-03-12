@@ -28,7 +28,7 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectListCount(sqlSession, empNo);
 	}
 
-	// 1-2. [받은메일함] 리스트 페이지 (페이징바)
+	// 1-2. [받은메일함] 리스트 페이지 (+페이징바)
 	@Override
 	public ArrayList<Mail> selectList(PageInfo pi, String email) {
 		return mDao.selectList(sqlSession, pi, email);
@@ -56,7 +56,7 @@ public class MailServiceImpl implements MailService{
 		return result1 * result2 * result3;
 	}
 	
-	// 2-3. 답장
+	// 2-3. 답장 (+첨부파일)
 	@Override
 	public int answerInsertMail(Mail m, ArrayList<Attachment> list) {
 		
@@ -73,7 +73,7 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectBinListCount(sqlSession, empNo);
 	}
 
-	// 6-2. [휴지통] 리스트 페이지 (페이징바)
+	// 6-2. [휴지통] 리스트 페이지 (+페이징바)
 	@Override
 	public ArrayList<Mail> selectBinList(PageInfo pi, String email) {
 		return mDao.selectBinList(sqlSession, pi, email);
@@ -85,7 +85,7 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectUnreadListCount(sqlSession, empNo);
 	}
 
-	// 7-2. [안읽은메일함] 리스트 페이지 (페이징바)
+	// 7-2. [안읽은메일함] 리스트 페이지 (+페이징바)
 	@Override
 	public ArrayList<Mail> selectUnreadList(PageInfo pi, String email) {
 		return mDao.selectUnreadList(sqlSession, pi, email);
@@ -97,7 +97,7 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectImpoListCount(sqlSession, empNo);
 	}
 
-	// 8-2. [중요메일함] 리스트 페이지 (페이징바)
+	// 8-2. [중요메일함] 리스트 페이지 (+페이징바)
 	@Override
 	public ArrayList<Mail> selectImpoList(PageInfo pi, String email) {
 		return mDao.selectImpoList(sqlSession, pi, email);
@@ -109,7 +109,7 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectSpamListCount(sqlSession, empNo);
 	}
 
-	// 9-2. [스팸메일함] 리스트 페이지 (페이징바)
+	// 9-2. [스팸메일함] 리스트 페이지 (+페이징바)
 	@Override
 	public ArrayList<Mail> selectSpamList(PageInfo pi, String email) {
 		return mDao.selectSpamList(sqlSession, pi, email);
@@ -121,7 +121,7 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectSendListCount(sqlSession, empNo);
 	}
 
-	// 10-2. [보낸메일함] 메일 리스트 (페이징바)
+	// 10-2. [보낸메일함] 메일 리스트 (+페이징바)
 	@Override
 	public ArrayList<Mail> selectSendList(PageInfo pi, String email) {
 		return mDao.selectSendList(sqlSession, pi, email);
@@ -133,58 +133,49 @@ public class MailServiceImpl implements MailService{
 		return mDao.selectTemListCount(sqlSession, empNo);
 	}
 
-	// 11-2. [임시보관함] 메일 리스트 (페이징바)
+	// 11-2. [임시보관함] 메일 리스트 (+페이징바)
 	@Override
 	public ArrayList<Mail> selectTemList(PageInfo pi, String email) {
 		return mDao.selectTemList(sqlSession, pi, email);
 	}
 
-	// 리스트 : 메일 삭제 (받은메일테이블 기준)
+	// 5-1. [삭제] 리스트 : 메일 삭제 (받은메일테이블 기준:안읽은메일함,받은메일함,중요메일함)
 	@Override
 	public int deleteMail(List<Integer> receiveMailNo) {
 		return mDao.deleteMail(sqlSession, receiveMailNo);
 	}
 	
-	// 리스트 : 메일 삭제 (보낸메일테이블 기준 ;보낸메일함,임시보관함)
+	// 5-2. [삭제] 리스트 : 메일 삭제 (보낸메일테이블 기준:보낸메일함,임시보관함)
 	@Override
 	public int sdDeleteMail(List<Integer> sendMailNo) {
 		return mDao.sdDeleteMail(sqlSession, sendMailNo);
 	}
 	
-	// 리스트 : 메일 완전삭제
+	// 5-3. [완전삭제] 리스트 : 메일 완전삭제 (스팸메일함,휴지통)
 	@Override
 	public int comDeleteMail(List<Integer> receiveMailNo) {
 		return mDao.comDeleteMail(sqlSession, receiveMailNo);
 	}
 
-
-	// (상세조회) 삭제
+	// 14. [삭제] 상세조회페이지 : 삭제
 	@Override
 	public int deleteOneMail(HashMap<String, Integer> map) {
 		return mDao.deleteOneMail(sqlSession, map);
 	}
-	
 
-	// 리스트 : 중요 메일 체크/체크해제
+	// 4-1. [중요메일체크] 리스트 : 중요 메일 체크/체크해제(뱓은메일 테이블)
 	@Override
 	public int updateImportantMail(HashMap<String, String> map) {
 		return mDao.updateImportantMail(sqlSession, map);
 	}
 
-	// 중요 메일 (보낸메일함)
+	// 4-2. [중요메일체크] 리스트 : 중요 메일 체크/체크해제(보낸메일 테이블)
 	@Override
 	public int updateImportantSendMail(HashMap<String, String> map) {
 		return mDao.updateImportantSendMail(sqlSession, map);
 	}
-	
-/*
-	@Override
-	public int importantMail(int receiveMailNo) {
-		return 0;
-	}
-	*/
 
-	// 리스트 : 메일 복원
+	// 12. [복원] 리스트 : 메일 복원
 	@Override
 	public int restorationMail(List<Integer> receiveMailNo) {
 		return mDao.restorationMail(sqlSession, receiveMailNo);
@@ -208,21 +199,11 @@ public class MailServiceImpl implements MailService{
 		return mDao.updateUnreadMail(sqlSession, mno);
 	}
 
-
-	// 디테일 : 스팸
+	// 13. [스팸] 상세조회페이지 : 스팸
 	@Override
 	public int updateSpamMail(int rvno) {
 		return mDao.updateSpamMail(sqlSession, rvno);
 	}
-
-
-
-
-
-
-	
-
-
 	
 	
 

@@ -50,46 +50,46 @@
      		 , important
      		 , spam
 		 from(
-		select send_mail_no
-		      , emp_name sdpp
-		      , mail_title
-		      , send_date
-		      , receiver_account
-              , rv.status statusRv
-              , receive_mail_no
-              , important
-              , spam
-		  from mail_send sd
-		  join employee using(emp_no)
-		  join mail_receive rv using (send_mail_no)
-		 where tem_status = 'N')
-		 where receiver_account = #{receiveAccount}
-      	   and statusRv = 'Y'
-      	   and spam = 'N'
-		 order
-	   	    by send_mail_no desc
+			  select send_mail_no
+		     	   , emp_name sdpp
+		           , mail_title
+		           , send_date
+		           , receiver_account
+                   , rv.status statusRv
+                   , receive_mail_no
+                   , important
+                   , spam
+		        from mail_send sd
+		        join employee using(emp_no)
+		        join mail_receive rv using (send_mail_no)
+		       where tem_status = 'N')
+		where receiver_account = #{receiveAccount}
+      	  and statusRv = 'Y'
+      	  and spam = 'N'
+		order
+	   	   by send_mail_no desc
 	</select>
 	
-	<!-- 메일 상세조회 (메일, 첨부파일) -->
+	<!-- 메일 상세조회 (메일조회, 첨부파일조회, 읽음여부 업데이트) -->
 	<select id="selectMail" resultMap="mailResult">
 		select
-                 send_mail_no
-               , e1.emp_name sdpp
-               , e2.emp_name rvpp
-               , sender_account
-               , mail_title
-               , mail_content
-               , send_date
-               , receiver_account
-               , receive_mail_no
-               , spam
-               , ms.status statusSd
-               , mail_receive.status statusRv
-            from mail_send ms
-            join employee e1 on (ms.emp_no = e1.emp_no)
-            join mail_receive using(send_mail_no)
-           join employee e2 on(receiver_account = e2.email)
-          where send_mail_no = #{sendMailNo}
+               send_mail_no
+             , e1.emp_name sdpp
+             , e2.emp_name rvpp
+             , sender_account
+             , mail_title
+             , mail_content
+             , send_date
+             , receiver_account
+             , receive_mail_no
+             , spam
+             , ms.status statusSd
+             , mail_receive.status statusRv
+          from mail_send ms
+          join employee e1 on (ms.emp_no = e1.emp_no)
+          join mail_receive using(send_mail_no)
+          join employee e2 on(receiver_account = e2.email)
+         where send_mail_no = #{sendMailNo}
 	</select>
 	<select id="selectMailAttachment" resultMap="attachmentResult">
 		select
@@ -107,7 +107,7 @@
 		 where send_mail_no = #{mno}
 	</update>
 	
-	<!-- 메일쓰기 -->
+	<!-- 메일쓰기 (보낸메일테이블,받은메일테이블,첨부파일테이블) -->
 	<insert id="insertMailSd">
 		insert
 		  into mail_send
@@ -140,35 +140,35 @@
           	   seq_rvmno.nextval
           	 , seq_sdmno.currval
           	 <choose>
-          	 <when test="receiverAccount != null">
-          	 , #{receiverAccount}
-          	 </when>
-          	 <otherwise>
-          	 , #{senderAccount}
-          	 </otherwise>
+          	 	<when test="receiverAccount != null">
+          	 		, #{receiverAccount}
+          	 	</when>
+          	 	<otherwise>
+          	 		, #{senderAccount}
+          	 	</otherwise>
           	 </choose>
           	 )
 	</insert>
 	<insert id="insertMailAttachment">
 		insert
 		  into attachment
-		        (
-		           attachment_no
-		         , origin_name
-		         , change_name
-		         , file_path
-		         , ref_code
-		         , ref_no
-		        )
+		     (
+		       attachment_no
+		     , origin_name
+		     , change_name
+		     , file_path
+		     , ref_code
+		     , ref_no
+		     )
 		values
-		        (
-		          seq_atno.nextval
-		        , #{originName}
-		        , #{changeName}
-		        , #{filePath}
-		        , 'M'
-		        , seq_sdmno.currval
-		        )
+		     (
+		       seq_atno.nextval
+		     , #{originName}
+		     , #{changeName}
+		     , #{filePath}
+		     , 'M'
+		     , seq_sdmno.currval
+		     )
 	</insert>
 	
 	<!-- 휴지통 -->
@@ -178,9 +178,9 @@
 		  from mail_receive rv
           join mail_send sd using(send_mail_no)
 		 where (rv.status = 'T'
-           or sd.status = 'T')
+            or sd.status = 'T')
 		   and (rv.receiver_account = #{receiverAccount}
-           or sd.sender_account = #{senderAccount})
+            or sd.sender_account = #{senderAccount})
 	</select>
 	<select id="selectBinList" resultMap="mailResult">
 		select send_mail_no
@@ -194,40 +194,40 @@
              , spam
              , receive_mail_no
 		 from(
-		select send_mail_no
-              , sender_account
-		      , emp_name
-		      , mail_title
-		      , send_date
-		      , receiver_account
-              , rv.status rvst
-              , sd.status sdst
-              , spam
-              , receive_mail_no
-		  from mail_send sd
-		  join employee using(emp_no)
-		  join mail_receive rv using (send_mail_no)
-		 where tem_status = 'N')
-		 where (receiver_account = #{receiverAccount}
-            or sender_account = #{senderAccount})
-      	   and (rvst = 'T'
-            or sdst = 'T')
-		 order
-	   	    by send_mail_no desc
-	  </select>
+			   select send_mail_no
+                    , sender_account
+		            , emp_name
+		            , mail_title
+		            , send_date
+			        , receiver_account
+	                , rv.status rvst
+	                , sd.status sdst
+	                , spam
+	                , receive_mail_no
+		  		 from mail_send sd
+		  		 join employee using(emp_no)
+		  		 join mail_receive rv using (send_mail_no)
+		 		where tem_status = 'N')
+	    where (receiver_account = #{receiverAccount}
+           or sender_account = #{senderAccount})
+      	  and (rvst = 'T'
+           or sdst = 'T')
+		order
+	   	   by send_mail_no desc
+	</select>
 	  
-	  <!-- 안읽은메일함 -->
-	  <select id="selectUnreadListCount" resultType="_int">
-	  	select
+	<!-- 안읽은메일함 -->
+	<select id="selectUnreadListCount" resultType="_int">
+		select
 			   count(*)
 		  from mail_receive rv
           join mail_send sd using(send_mail_no)
 		 where rv.status = 'Y'
            and rv.read = 'N'
 		   and rv.receiver_account = #{receiverAccount}
-	  </select>
-	  <select id="selectUnreadList" resultMap="mailResult">
-	  	select send_mail_no
+	</select>
+	<select id="selectUnreadList" resultMap="mailResult">
+		select send_mail_no
      		 , emp_name sdpp
      		 , mail_title
       		 , send_date
@@ -238,39 +238,39 @@
              , spam
              , statusSd
 		 from(
-		select send_mail_no
-		      , emp_name
-		      , mail_title
-		      , send_date
-		      , receiver_account
-              , rv.status statusRv
-              , read
-              , important
-              , spam
-              , sd.status statusSd
-		  from mail_send sd
-		  join employee using(emp_no)
-		  join mail_receive rv using (send_mail_no)
-		 where tem_status = 'N')
-		 where receiver_account = #{receiverAccount}
-      	   and statusRv = 'Y'
-           and read = 'N'
-		 order
-	   	    by send_mail_no desc
-	  </select>
+			  select send_mail_no
+			       , emp_name
+			       , mail_title
+			       , send_date
+			       , receiver_account
+	               , rv.status statusRv
+	               , read
+	               , important
+	               , spam
+	               , sd.status statusSd
+		  	    from mail_send sd
+		        join employee using(emp_no)
+		        join mail_receive rv using (send_mail_no)
+		       where tem_status = 'N')
+		where receiver_account = #{receiverAccount}
+      	  and statusRv = 'Y'
+          and read = 'N'
+		order
+	   	   by send_mail_no desc
+	</select>
 	  
-	  <!-- 중요메일함 -->
-	  <select id="selectImpoListCount" resultType="_int">
-	    select
+	<!-- 중요메일함 -->
+	<select id="selectImpoListCount" resultType="_int">
+		select
 			   count(*)
 		  from mail_receive rv
           join mail_send sd using(send_mail_no)
 		 where rv.status in ('Y')
            and rv.important = 'Y'
 		   and rv.receiver_account = #{receiverAccount}
-	  </select>
-	  <select id="selectImpoList" resultMap="mailResult">
-	  	select send_mail_no
+	</select>
+	<select id="selectImpoList" resultMap="mailResult">
+		select send_mail_no
      		 , emp_name sdpp
      		 , mail_title
       		 , send_date
@@ -279,36 +279,36 @@
              , important
              , receive_mail_no
 		 from(
-		select send_mail_no
-		      , emp_name
-		      , mail_title
-		      , send_date
-		      , receiver_account
-              , rv.status rvst
-              , important
-              , receive_mail_no
-		  from mail_send sd
-		  join employee using(emp_no)
-		  join mail_receive rv using (send_mail_no)
-		 where tem_status = 'N')
-		 where receiver_account = #{receiveAccount}
-      	   and rvst = 'Y'
-           and important = 'Y'
-		 order
-	   	    by send_mail_no desc
-	  </select>
+			  select send_mail_no
+			       , emp_name
+			       , mail_title
+			       , send_date
+			       , receiver_account
+	               , rv.status rvst
+	               , important
+	               , receive_mail_no
+		  		from mail_send sd
+		  		join employee using(emp_no)
+		  		join mail_receive rv using (send_mail_no)
+		 	   where tem_status = 'N')
+		where receiver_account = #{receiveAccount}
+      	  and rvst = 'Y'
+          and important = 'Y'
+		order
+	   	   by send_mail_no desc
+	</select>
 	  
-	  <!-- 스팸메일함 -->
-	  <select id="selectSpamListCount" resultType="_int">
+	<!-- 스팸메일함 -->
+	<select id="selectSpamListCount" resultType="_int">
 		select
 			   count(*)
 		  from mail_receive
 		 where status = 'Y'
            and spam = 'N'
 		   and receiver_account = #{receiverAccount}
-	  </select>
-	  <select id="selectSpamList" resultMap="mailResult">
-	  	select send_mail_no
+	</select>
+	<select id="selectSpamList" resultMap="mailResult">
+		select send_mail_no
      		 , emp_name sdpp
      		 , mail_title
       		 , send_date
@@ -317,28 +317,28 @@
              , spam
              , receive_mail_no
 		 from(
-		select send_mail_no
-		      , emp_name
-		      , mail_title
-		      , send_date
-		      , receiver_account
-              , rv.status rvst
-              , spam
-              , receive_mail_no
-		  from mail_send sd
-		  join employee using(emp_no)
-		  join mail_receive rv using (send_mail_no)
-		 where tem_status = 'N')
-		 where receiver_account = #{receiverAccount}
-      	   and rvst = 'Y'
-           and spam = 'Y'
-		 order
-	   	    by send_mail_no desc
-	  </select>
+			  select send_mail_no
+			       , emp_name
+			       , mail_title
+			       , send_date
+			       , receiver_account
+	               , rv.status rvst
+	               , spam
+	               , receive_mail_no
+		  		from mail_send sd
+		  		join employee using(emp_no)
+		  		join mail_receive rv using (send_mail_no)
+		 	   where tem_status = 'N')
+		where receiver_account = #{receiverAccount}
+      	  and rvst = 'Y'
+          and spam = 'Y'
+		order
+	       by send_mail_no desc
+	</select>
 	  
-	  <!-- 보낸메일함 -->
-	  <select id="selectSendListCount" resultType="_int">
-	  	select
+	<!-- 보낸메일함 -->
+	<select id="selectSendListCount" resultType="_int">
+		select
 			   count(*)
 		  from mail_receive rv
           join mail_send sd using(send_mail_no)
@@ -346,37 +346,37 @@
 		 where sd.sender_account = #{senderAccount}
 		   and sd.status = 'Y'
 		   and tem_status = 'N'
-	  </select>
-	  <select id="selectSendList" resultMap="mailResult">
-	  	  select 
-      		     emp_name rvpp
-      		   , mail_title
-      		   , send_date
-     		   , receiver_account
-      	       , send_mail_no
-      		   , msst
-      		   , important
-      		   , receive_mail_no
-  		   from(select
-                 	   mv.emp_no  rvpp
-                  	 , mail_title
-                  	 , send_date
-                 	 , receiver_account
-                 	 , send_mail_no
-                 	 , ms.status msst
-                 	 , important
-                 	 , receive_mail_no
-                  from mail_send ms
-              	  join mail_receive mv using(send_mail_no)
-              	 where ms.sender_account = #{senderAccount}
-                   and ms.status = 'Y'
-                   and tem_status = 'N')
-  	  left join employee on (email = receiver_account)
-	  </select>
+	</select>
+	<select id="selectSendList" resultMap="mailResult">
+		select 
+      		   emp_name rvpp
+      		 , mail_title
+      		 , send_date
+     		 , receiver_account
+      	     , send_mail_no
+      		 , msst
+      		 , important
+      		 , receive_mail_no
+  		 from(
+	  		  select mv.emp_no  rvpp
+                   , mail_title
+                   , send_date
+                   , receiver_account
+                   , send_mail_no
+                   , ms.status msst
+                   , important
+                   , receive_mail_no
+                from mail_send ms
+              	join mail_receive mv using(send_mail_no)
+        where ms.sender_account = #{senderAccount}
+          and ms.status = 'Y'
+          and tem_status = 'N')
+  	left join employee on (email = receiver_account)
+	</select>
 	  
-	  <!-- 임시보관함 -->
-	  <select id="selectTemListCount" resultType="_int">
-	  	select
+	<!-- 임시보관함 -->
+	<select id="selectTemListCount" resultType="_int">
+		select
 			   count(*)
 		  from mail_receive rv
           join mail_send sd using(send_mail_no)
@@ -384,9 +384,9 @@
 		 where sd.sender_account = #{senderAccount}
 		   and sd.status = 'Y'
            and sd.tem_status = 'Y'
-	  </select>
-	  <select id="selectTemList" resultMap="mailResult">
-	  	select
+	</select>
+	<select id="selectTemList" resultMap="mailResult">
+		select
 			   emp_name rvpp
 			 , mail_title
 			 , send_date
@@ -394,122 +394,111 @@
 			 , send_mail_no
 			 , msst
 			 , receive_mail_no
-		from(select
-				     mv.emp_no rvpp
-				   , mail_title
-				   , send_date
-				   , receiver_account
-				   , send_mail_no
-				   , ms.status msst
-				   , receive_mail_no
-		  		from mail_send ms
-				join mail_receive mv using(send_mail_no)
-			   where ms.sender_account = #{senderAccount}
-				 and ms.status = 'Y'
-				 and tem_status = 'Y')
-		    left join employee on (email = receiver_account)
-	  </select>
+		from(
+			 select mv.emp_no rvpp
+				  , mail_title
+				  , send_date
+				  , receiver_account
+				  , send_mail_no
+				  , ms.status msst
+				  , receive_mail_no
+		  	   from mail_send ms
+			   join mail_receive mv using(send_mail_no)
+	   where ms.sender_account = #{senderAccount}
+		 and ms.status = 'Y'
+		 and tem_status = 'Y')
+	left join employee on (email = receiver_account)
+	</select>
 	  
-	  <!-- 리스트 : 메일 삭제 (받은메일함 비롯 외) -->
-	  <update id="deleteMail">
-	  	update
+	<!-- 리스트 : 메일 삭제 (받은메일함 비롯 외) -->
+	<update id="deleteMail">
+		update
 		       mail_receive
 		   set status= 'T'
 	     where receive_mail_no = #{receiveNo}
-	  </update>
-	  
-	  <update id="sdDeleteMail">
-	  	update
+	</update>
+	<!-- 리스트 : 메일 삭제 (보낸메일함) -->
+	<update id="sdDeleteMail">
+		update
 	  		   mail_send
 	  	   set status = 'T'
 	  	 where send_mail_no = #{sendNo}
-	  </update>
+	</update>
 	  
-	  <!-- 리스트 : 완전삭제 (스팸메일함, 휴지통) -->
-	  <update id="comDeleteMail">
-	  	update
+	<!-- 리스트 : 완전삭제 (스팸메일함,휴지통) -->
+	<update id="comDeleteMail">
+		update
 	  		   mail_receive
 	  	   set status = 'N'
 	  	 where receive_mail_no = #{receiveNo}
-	  </update>
+	</update>
 	  
-	  <!-- 리스트 : 메일 복원 -->
-	  <update id="restorationMail">
-	  	update
+	<!-- 리스트 : 복원 (스팸메일,휴지통) -->
+	<update id="restorationMail">
+		update
 	  			mail_receive
 	  	   set spam = 'N',
 	  	  	   status = 'Y'
 	  	 where receive_mail_no = #{receiveNo}
-	  </update>
+	</update>
 	  
-	  <!-- 리스트 : 중요메일 체크/체크해제 -->
-	  <update id="updateImportantMail">
+	<!-- 리스트 : 중요메일 체크/체크해제 (받은메일함)-->
+	<update id="updateImportantMail">
 		update
 			   mail_receive
 		<choose>
-		<when test='important == "N"'>
-		    set important = 'Y'
-		</when>
-		<otherwise>
-			set important = 'N'
-		</otherwise>
+			<when test='important == "N"'>
+		    	set important = 'Y'
+			</when>
+			<otherwise>
+				set important = 'N'
+			</otherwise>
 		</choose>
-		 where receive_mail_no = #{rvno}
-		   and status = 'Y'
-		   and spam = 'N'
-	  </update>
+	    where receive_mail_no = #{rvno}
+		  and status = 'Y'
+		  and spam = 'N'
+	</update>
 	  
-	  <!-- 리스트 : 중요메일 체크/체크해제 (보낸메일함) (진행중)-->
-	  <update id="updateImportantSendMail">
+	<!-- 리스트 : 중요메일 체크/체크해제 (보낸메일함) -->
+	<update id="updateImportantSendMail">
 		update
                mail_receive
 		<choose>
-		<when test='important == "N"'>
-			set important = 'Y'
-		</when>
-		<otherwise>
-			set important = 'N'
-		</otherwise>
+			<when test='important == "N"'>
+				set important = 'Y'
+			</when>
+			<otherwise>
+				set important = 'N'
+			</otherwise>
 		</choose>
-			where send_mail_no = #{rvno}
-	  	</update>
+	    where send_mail_no = #{rvno}
+	</update>
 	  	
-	  	<!-- 디테일 : 스팸 -->
-		<update id="updateSpamMail">
-			update
-			   	   mail_receive
-		   	   set spam = 'Y'
-		 	 where receive_mail_no = #{rvno}
-	    </update>
+	<!-- 디테일 : 스팸 -->
+	<update id="updateSpamMail">
+		update
+			   mail_receive
+		   set spam = 'Y'
+		 where receive_mail_no = #{rvno}
+	</update>
 	    
-	    <!-- 디테일 : 삭제 -->
-	  	<update id="deleteOneMail">
-	  		update
-	  		<if test="statusCheck == 1">
-	  			   mail_receive	   
-	  		   set status = 'T'
-	  		 where receive_mail_no = #{rvno}
-	  		</if>
-	  		<if test="statusCheck == 2">
-	  			   mail_send
-	  		   set status = 'T'
-	  		  where send_mail_no = #{mno}
-	  		</if>
-	  	</update>
+	<!-- 디테일 : 삭제 -->
+	<update id="deleteOneMail">
+		update
+	  	<if test="statusCheck == 1">
+	  		   mail_receive	   
+	  	   set status = 'T'
+	  	 where receive_mail_no = #{rvno}
+	  	</if>
+	  	<if test="statusCheck == 2">
+	  			mail_send
+	  	   set status = 'T'
+	  	 where send_mail_no = #{mno}
+		</if>
+	</update>
 	  
 	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+ 
 	  
 	
 </mapper>
