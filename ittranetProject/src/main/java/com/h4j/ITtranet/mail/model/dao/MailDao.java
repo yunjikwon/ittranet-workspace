@@ -31,14 +31,15 @@ public class MailDao {
 	}
 	
 	// 2-1. 메일 쓰기 (+첨부파일)
+	// 보낸메일 테이블에 추가
 	public int insertSendMail(SqlSessionTemplate sqlSession, Mail m) {
 		return sqlSession.insert("mailMapper.insertMailSd", m);
 	}
-	
+	// 받은메일 테이블에 추가
 	public int insertReceiveMail(SqlSessionTemplate sqlSession, Mail m) {
 		return sqlSession.insert("mailMapper.insertMailRv", m);
 	}
-	
+	// 첨부파일 테이블에 추가
 	public int insertMailAttachment(SqlSessionTemplate sqlSession, ArrayList<Attachment> list) {
 		int result = 1;
 		for(Attachment at : list) {
@@ -51,11 +52,9 @@ public class MailDao {
 	public int insertToMeSendMail(SqlSessionTemplate sqlSession, Mail m) {
 		return sqlSession.insert("mailMapper.insertMailSd", m);
 	}
-	
 	public int insertToMeReceiveMail(SqlSessionTemplate sqlSession, Mail m) {
 		return sqlSession.insert("mailMapper.insertMailRv", m);
 	}
-	
 	public int insertToMeMailAttachment(SqlSessionTemplate sqlSession, ArrayList<Attachment> list) {
 		int result = 1;
 		for(Attachment at : list) {
@@ -68,11 +67,9 @@ public class MailDao {
 	public int insertAnswerSendMail(SqlSessionTemplate sqlSession, Mail m) {
 		return sqlSession.insert("mailMapper.insertMailSd", m);
 	}
-	
 	public int insertAnswerReceiveMail(SqlSessionTemplate sqlSession, Mail m) {
 		return sqlSession.insert("mailMapper.insertMailRv", m);
 	}
-	
 	public int insertAnswerMailAttachment(SqlSessionTemplate sqlSession, ArrayList<Attachment> list) {
 		int result = 1;
 		for(Attachment at : list) {
@@ -81,7 +78,7 @@ public class MailDao {
 		return result;
 	}
 
-	// 3. 메일 상세조회
+	// 3. 메일 상세페이지 조회
 	public Mail selectMail(SqlSessionTemplate sqlSession, int sendMailNo) {
 		return sqlSession.selectOne("mailMapper.selectMail", sendMailNo);
 	}
@@ -92,13 +89,7 @@ public class MailDao {
 		return sqlSession.update("mailMapper.updateUnreadMail", mno);
 	}
 	
-	// 중요메일
-	public int importantMail(SqlSessionTemplate sqlSession, int receiveMailNo) {
-		int starresult = sqlSession.update("mailMapper.starMail", receiveMailNo);
-		return starresult;
-	}
-	
-	// 5-1. 리스트 : 삭제
+	// 5-1. 리스트 : 삭제 (받은메일테이블 기준)
 	public int deleteMail(SqlSessionTemplate sqlSession, List<Integer> receiveMailNo) {
 		int result = 0;
 		for(int i=0; i<receiveMailNo.size(); i++) {
@@ -107,7 +98,7 @@ public class MailDao {
 		return result;
 	}
 	
-	// 5-2. 리스트 : 삭제 (보낸메일테이블 기준;보낸메일함, 임시보관함)
+	// 5-2. 리스트 : 삭제 (보낸메일테이블 기준:보낸메일함, 임시보관함)
 	public int sdDeleteMail(SqlSessionTemplate sqlSession, List<Integer> sendMailNo) {
 		int result = 0;
 		for(int i=0; i<sendMailNo.size(); i++) {
@@ -116,7 +107,7 @@ public class MailDao {
 		return result;
 	}
 	
-	// 5-2. 리스트 : 완전삭제
+	// 5-3. 리스트 : 완전삭제
 	public int comDeleteMail(SqlSessionTemplate sqlSession, List<Integer> receiveMailNo) {
 		int result = 0;
 		for(int i=0; i<receiveMailNo.size(); i++) {
@@ -125,7 +116,7 @@ public class MailDao {
 		return result;
 	}
 	
-	// 12. 메일 복원
+	// 12. 복원
 	public int restorationMail(SqlSessionTemplate sqlSession, List<Integer> receiveMailNo) {
 		int result = 0;
 		for(int i=0; i<receiveMailNo.size(); i++) {
@@ -134,19 +125,10 @@ public class MailDao {
 		return result;
 	}
 	
-	
-	// 5-2. (상세조회) 메일삭제
+	// 14. 디테일화면 : 삭제
 	public int deleteOneMail(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
 		return sqlSession.update("mailMapper.deleteOneMail", map);
 	}
-	
-	
-	/*
-	public ArrayList<Mail> selectMailList(SqlSessionTemplate sqlSession, int receiveMailNo){
-		return (ArrayList)sqlSession.selectList("mailMapper.selectMailList", receiveMailNo);
-	}
-	*/
-	
 	
 	// 6-1. [휴지통] 메일 리스트 카운트 조회
 	public int selectBinListCount(SqlSessionTemplate sqlSession, String empNo) {
@@ -233,12 +215,12 @@ public class MailDao {
 		return (ArrayList)sqlSession.selectList("mailMapper.selectTemList", email, rowBounds);
 	}
 	
-	// 중요 메일
+	// 4-1. 중요 메일 (받은메일)
 	public int updateImportantMail(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.update("mailMapper.updateImportantMail", map);
 	}
 	
-	// 중요 메일 (보낸 메일함)
+	// 4-2. 중요 메일 (보낸메일)
 	public int updateImportantSendMail(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.update("mailMapper.updateImportantSendMail", map);
 	}

@@ -10,7 +10,7 @@ import com.h4j.ITtranet.mail.model.vo.Mail;
 
 public interface MailService {
 	
-	// 1. 받은메일함 (리스트 페이지 (페이징바))
+	// 1. 받은메일함 리스트 조회
 	int selectListCount(String empNo);
 	ArrayList<Mail> selectList(PageInfo pi, String email);
 	
@@ -23,14 +23,11 @@ public interface MailService {
 	// 2-3. 답장
 	int answerInsertMail(Mail m, ArrayList<Attachment> list);
 	
-	// 3. 메일 상세조회
+	// 3. 상세페이지 조회
 	Mail selectMail(int sendMailNo);
 	ArrayList<Attachment> selectMailAttachment(int sendMailNo);
 	int updateUnreadMail(int mno);
-	
-	// 중요 메일
-	//int importantMail(int receiveMailNo);
-	
+
 	// 5-1. 메일 삭제 (받은메일함 외)
 	int deleteMail(List<Integer> receiveMailNo);
 	
@@ -40,44 +37,43 @@ public interface MailService {
 	// 5-3. 메일 완전삭제
 	int comDeleteMail(List<Integer> receiveMailNo);
 	
-	// 12. 메일 복원
+	// 12. 복원
 	int restorationMail(List<Integer> receiveMailNo);
 	
-	// 중요 메일
+	// 4-1. 중요 메일 
 	int updateImportantMail(HashMap<String, String> map);
 	
-	// 중요 메일 (보낸메일함)
+	// 4-2. 중요 메일 (보낸메일함)
 	int updateImportantSendMail(HashMap<String, String> map);
 	
-	// 6. 휴지통
+	// 6. 휴지통 리스트 조회
 	int selectBinListCount(String empNo);
 	ArrayList<Mail> selectBinList(PageInfo pi, String email);
 
-	// 7. 안읽은메일
+	// 7. 안읽은메일함 리스트 조회
 	int selectUnreadListCount(String empNo);
 	ArrayList<Mail> selectUnreadList(PageInfo pi, String email);
 	
-	// 8. 중요메일함 
+	// 8. 중요메일함 리스트 조회
 	int selectImpoListCount(String empNo);
 	ArrayList<Mail> selectImpoList(PageInfo pi, String email);
 	
-	// 9. 스팸메일함
+	// 9. 스팸메일함 리스트 조회
 	int selectSpamListCount(String empNo);
 	ArrayList<Mail> selectSpamList(PageInfo pi, String email);
 	
-	// 10. 보낸메일함
+	// 10. 보낸메일함 리스트 조회
 	int selectSendListCount(String empNo);
 	ArrayList<Mail> selectSendList(PageInfo pi, String email);
 	
-	// 11. 임시보관함
+	// 11. 임시보관함 리스트 조회
 	int selectTemListCount(String empNo);
 	ArrayList<Mail> selectTemList(PageInfo pi, String email);
 	
-	// 13. 디테일화면 : 스팸메일
+	// 13. 디테일화면 : 스팸
 	int updateSpamMail(int rvno);
 	
-	
-	// 14. 디테일화면 : 메일 삭제
+	// 14. 디테일화면 : 삭제
 	int deleteOneMail(HashMap<String, Integer> map);
 	
 }

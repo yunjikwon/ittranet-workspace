@@ -35,7 +35,7 @@ public class MailController {
 	@Autowired
 	private MailService mService;
 	
-	// 1. 받은메일함 조회 (메일 전체조회)
+	// 1. [받은메일함] 리스트 조회 (메일 전체조회)
 	@RequestMapping("alllist.ml")
 	public String selectList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
@@ -55,13 +55,13 @@ public class MailController {
 		return "mail/mailReceiveView";
 	}
 	
-	// 2-1. 메일쓰기 폼
+	// 2-1. [메일쓰기] 폼
 	@RequestMapping("enrollForm.ml")
 	public String enrollForm() {
 		return "mail/mailEnrollForm";
 	}
 	
-	// 2-2. 새로운 메일 데이터 추가 (+첨부파일)
+	// 2-2. [메일쓰기] 새로운 메일 데이터 추가 (+첨부파일)
 	@RequestMapping("insert.ml")
 	public String insertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
 		
@@ -85,13 +85,13 @@ public class MailController {
 		return "redirect:unreadlist.ml";
 	}
 	
-	// 2-1. 내게쓰기 폼
+	// 2-1. [내게쓰기] 폼
 	@RequestMapping("enrollForm.mlme")
 	public String toMeEnrollForm() {
 		return "mail/mailTomeEnrollForm";
 	}
 	
-	// 2-2. 내게쓰기 새로운 메일 데이터 추가 (+첨부파일)
+	// 2-2. [내게쓰기] 새로운 메일 데이터 추가 (+첨부파일)
 	@RequestMapping("tomeinsert.ml")
 	public String toMeInsertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
 		
@@ -115,7 +115,7 @@ public class MailController {
 		return "redirect:unreadlist.ml";
 	}
 	
-	// 2-1. 답장하기 폼
+	// 2-1. [답장] 폼
 	@RequestMapping("enrollForm.mlas")
 	public ModelAndView answerEnrollForm(int mno, ModelAndView mv) {
 		
@@ -126,11 +126,9 @@ public class MailController {
 		return mv;
 	}
 	
-	// 2-2. 답장하기 새로운 메일 데이터 추가 (+첨부파일)
+	// 2-2. [답장] 새로운 메일 데이터 추가 (+첨부파일)
 	@RequestMapping("asinsert.ml")
 	public String answerInsertMail(Mail m, MultipartFile[] upfile, HttpSession session, Model model) {
-		
-		System.out.println(m);
 		
 		ArrayList<Attachment> list = new ArrayList<>();
 		
@@ -151,10 +149,9 @@ public class MailController {
 		return "redirect:unreadlist.ml";
 	}
 	
-	// 3. 상세조회 메일
+	// 3. [상세페이지] 조회
 	@RequestMapping("detail.ml")
 	public ModelAndView selectMail(int mno, String statusCheck, ModelAndView mv, String read) {
-		System.out.println(statusCheck);
 		
 		Mail m = mService.selectMail(mno);
 
@@ -170,17 +167,16 @@ public class MailController {
 			}
 		}
 		
-		
 		return mv;
-
 	}
 	
-	// 4. 중요 메일 조회
+	// 4-1. [중요메일] 조회 (받은메일 테이블)
 	@ResponseBody
 	@RequestMapping(value="impo.ml", produces="application/text; charset=UTF-8")
 	public String importantmail(String rvno, String important) {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
+		
 		map.put("rvno", rvno);
 		map.put("important", important);
 		
@@ -189,22 +185,22 @@ public class MailController {
 		return result>0? "success" : "fail";
 	}
 	
-	// 4-2. 중요 메일 조회 (보낸편지함)	
+	// 4-2. [중요메일] 조회 (보낸메일함)	
 	@ResponseBody
 	@RequestMapping(value="impo.sdml", produces="application/text; charset=UTF-8")
 	public String importantsendmail (String rvno, String important) {
+		
 		HashMap<String, String> map = new HashMap<String, String>();
+		
 		map.put("rvno", rvno);
 		map.put("important", important);
-		
 
 		int result = mService.updateImportantSendMail(map);
 		
 		return result>0? "success" : "fail";
-		
 	}
 	
-	// 5. (리스트에서) 메일 삭제 (받은메일함 외)
+	// 5-1. [삭제] (리스트에서) 메일 삭제 (받은메일함 외)
 	@ResponseBody
 	@RequestMapping(value="delete.ml", produces="application/text; charset=UTF-8")
 	public String deletemail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
@@ -213,7 +209,7 @@ public class MailController {
 		return result>0? "success" : "fail";
 	}
 	
-	// 5-2. (리스트에서) 메일 삭제 (보낸메일함, 임시보관함)
+	// 5-2. [삭제] (리스트에서) 메일 삭제 (보낸메일함, 임시보관함)
 	@ResponseBody
 	@RequestMapping(value="sddelete.ml", produces="application/text; charset=UTF-8")
 	public String sddeletemail(@RequestParam(value="sendMailNo[]") List<Integer> sendMailNo) {
@@ -222,7 +218,7 @@ public class MailController {
 		return result>0? "success" : "fail";
 	}
 	
-	// 5-3. (리스트에서) 메일 완전삭제 (스팸메일함, 휴지통)
+	// 5-3. [완전삭제] (리스트에서) 메일 완전삭제 (스팸메일함, 휴지통)
 	@ResponseBody
 	@RequestMapping(value="comdelete.ml", produces="application/text; charset=UTF-8")
 	public String comdeletemail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
@@ -231,7 +227,7 @@ public class MailController {
 		return result>0? "success" : "fail";
 	}
 	
-	// 12. (리스트에서) 메일 복원
+	// 12. [복원] (리스트에서) 메일 복원
 	@ResponseBody
 	@RequestMapping(value="resto.ml", produces="application/text; charset=UTF-8")
 	public String restorationmail(@RequestParam(value="receiveMailNo[]") List<Integer> receiveMailNo) {
@@ -239,8 +235,6 @@ public class MailController {
 
 		return result>0? "success" : "fail";
 	}
-	
-	
 
 
 
@@ -267,7 +261,7 @@ public class MailController {
 		return changeName;
 	}
 	
-	// 6. 휴지통 조회 (받은메일함에서 상태값이 'N'인 메일)
+	// 6. [휴지통] 휴지통 리스트 조회 (받은메일함에서 상태값이 'T'인 메일)
 	@RequestMapping("binlist.ml")
 	public String selectBinList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
@@ -280,14 +274,13 @@ public class MailController {
 		
 		ArrayList<Mail> binlist = mService.selectBinList(pi, email);
 
-
 		model.addAttribute("pi", pi);
 		model.addAttribute("binlist", binlist);
 		 
 		return "mail/mailBinView";
 	}
 	
-	// 7. 안읽은메일 조회
+	// 7. [안읽은메일함] 안읽은메일 리스트 조회
 	@RequestMapping("unreadlist.ml")
 	public String selectUnreadList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
@@ -306,7 +299,7 @@ public class MailController {
 		return "mail/mailUnreadView";
 	}
 	
-	// 8. 중요메일 조회
+	// 8. [중요메일함] 중요메일 리스트 조회
 	@RequestMapping("impolist.ml")
 	public String selectImpoList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
@@ -325,7 +318,7 @@ public class MailController {
 		return "mail/mailImpoView";
 	}
 	
-	// 9. 스팸메일 조회
+	// 9. [스팸메일함] 스팸메일 리스트 조회
 	@RequestMapping("spamlist.ml")
 	public String selectSpamList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
@@ -344,7 +337,7 @@ public class MailController {
 		return "mail/mailSpamView";
 	}
 	
-	// 10. 보낸메일함
+	// 10. [보낸메일함] 보낸메일 리스트 조회
 	@RequestMapping("sendlist.ml")
 	public String selectSendList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
@@ -363,7 +356,7 @@ public class MailController {
 		return "mail/mailSendView";
 	}
 	
-	// 11. 임시보관함
+	// 11. [임시보관함] 임시보관메일 리스트 조회
 	@RequestMapping("temlist.ml")
 	public String selectTemList(@RequestParam (value="cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		
@@ -382,7 +375,7 @@ public class MailController {
 		return "mail/mailTemView";
 	}
 	
-	// 디테일화면 : 스팸메일
+	// 13-1. 디테일화면 : 스팸 
 	@ResponseBody
 	@RequestMapping(value="dtspam.ml", produces="application/text; charset=UTF-8")
 	public String updateSpamMail(int rvno) {
@@ -393,12 +386,13 @@ public class MailController {
 	}
 	
 	
-	// 5-2. 디테일화면 : 메일 삭제
+	// 13-2. 디테일화면 : 삭제
 	@ResponseBody
 	@RequestMapping(value="deleteone.ml", produces="application/text; charset=UTF-8")
 	public String deleteOneMail(int rvno, int statusCheck, int mno, HttpSession session, Model model) {
 		
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		
 		map.put("rvno", rvno);
 		map.put("statusCheck", statusCheck);
 		map.put("mno", mno);
@@ -406,7 +400,6 @@ public class MailController {
 		int result = mService.deleteOneMail(map);
 		
 		return result>0? "success" : "fail";
-
 	}
 	
 
